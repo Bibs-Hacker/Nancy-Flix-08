@@ -1,0 +1,1836 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="midnight">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<meta name="description" content="NANCYFLIX by Dev Brian Studios — Every story deserves a screen. Premium movie discovery." />
+<title>NANCYFLIX — Every Story Deserves A Screen</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Anton&family=Bebas+Neue&display=swap" rel="stylesheet">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='14' fill='%230a0a0f'/%3E%3Crect x='11' y='26' width='42' height='25' rx='3' fill='%23e11d2e'/%3E%3Cg transform='rotate(-9 32 20)'%3E%3Crect x='10' y='14' width='44' height='10' rx='2' fill='%23f5f5fa'/%3E%3Cpath d='M20 14l-5 10M30 14l-5 10M40 14l-5 10M50 14l-5 10' stroke='%230a0a0f' stroke-width='3'/%3E%3C/g%3E%3C/svg%3E" />
+<style>
+:root{
+  --bg:#06060a; --bg-2:#0d0d14; --surface:#12121c; --surface-2:#1a1a26;
+  --text:#f5f5fa; --muted:#9a9aae; --border:#24242f;
+  --accent:#e11d2e; --accent-2:#ff3b4e; --accent-soft:rgba(225,29,46,.14);
+  --neon:#ff5c6e; --ok:#2ecc71; --warn:#f1c40f; --err:#e74c3c;
+  --radius:16px; --radius-sm:10px; --shadow:0 18px 50px rgba(0,0,0,.55);
+  --glass:rgba(255,255,255,.04); --glass-br:rgba(255,255,255,.08);
+  --font:'Inter',system-ui,-apple-system,Segoe UI,Roboto,sans-serif;
+  --motion:1;
+}
+[data-theme=crimson]{--bg:#0a0205;--bg-2:#140306;--surface:#1c0509;--surface-2:#260a0f;--accent:#ff2d40;--accent-2:#ff6b78;--neon:#ff8a95;--border:#3a0f16;}
+[data-theme=pureblack]{--bg:#000;--bg-2:#050505;--surface:#0b0b0b;--surface-2:#141414;--border:#1e1e1e;--accent:#e11d2e;}
+[data-theme=daylight]{--bg:#eef0f5;--bg-2:#f6f7fb;--surface:#ffffff;--surface-2:#eef0f6;--text:#13131a;--muted:#5a5a6e;--border:#d7d9e2;--accent:#d11325;--glass:rgba(0,0,0,.03);--glass-br:rgba(0,0,0,.08);--shadow:0 14px 40px rgba(0,0,0,.14);}
+[data-theme=ocean]{--bg:#03121c;--bg-2:#041a28;--surface:#07263a;--surface-2:#0b3148;--border:#124055;--accent:#17c3d6;--accent-2:#4de2f0;--neon:#6ff0ff;--accent-soft:rgba(23,195,214,.16);}
+[data-theme=cosmic]{--bg:#0b0618;--bg-2:#120a24;--surface:#1a0f33;--surface-2:#241547;--border:#33225c;--accent:#8b5cf6;--accent-2:#b592ff;--neon:#c4a5ff;--accent-soft:rgba(139,92,246,.16);}
+[data-theme=forest]{--bg:#05140c;--bg-2:#071d11;--surface:#0b2917;--surface-2:#10371f;--border:#1b4b2d;--accent:#2fbf71;--accent-2:#5fe0a0;--neon:#8ff0bf;--accent-soft:rgba(47,191,113,.16);}
+[data-theme=silver]{--bg:#111318;--bg-2:#171a20;--surface:#1f232c;--surface-2:#2a2f3a;--border:#39404d;--accent:#c7ccd6;--accent-2:#e8ecf3;--neon:#ffffff;--text:#f0f2f6;--accent-soft:rgba(199,204,214,.14);}
+*{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth}
+body{background:var(--bg);color:var(--text);font-family:var(--font);line-height:1.5;overflow-x:hidden;-webkit-font-smoothing:antialiased}
+body.noscroll{overflow:hidden}
+a{color:inherit;text-decoration:none}
+button{font-family:inherit;cursor:pointer;border:none;background:none;color:inherit}
+img{display:block;max-width:100%}
+svg{display:block}
+::-webkit-scrollbar{width:10px;height:10px}
+::-webkit-scrollbar-thumb{background:var(--border);border-radius:20px}
+::-webkit-scrollbar-track{background:transparent}
+:focus-visible{outline:2px solid var(--accent-2);outline-offset:2px;border-radius:6px}
+.icon{width:22px;height:22px;stroke:currentColor;fill:none;stroke-width:2;stroke-linecap:round;stroke-linejoin:round;flex:none}
+.icon.sm{width:18px;height:18px}
+.icon.lg{width:28px;height:28px}
+.sr{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0)}
+.btn{display:inline-flex;align-items:center;gap:8px;padding:11px 18px;border-radius:var(--radius-sm);font-weight:600;font-size:14px;background:var(--surface-2);border:1px solid var(--border);transition:transform .15s,background .2s,box-shadow .2s;color:var(--text)}
+.btn:hover{transform:translateY(-2px)}
+.btn.primary{background:linear-gradient(135deg,var(--accent),var(--accent-2));border-color:transparent;color:#fff;box-shadow:0 8px 24px var(--accent-soft)}
+.btn.ghost{background:transparent}
+.btn.block{width:100%;justify-content:center}
+.btn.sm{padding:7px 12px;font-size:13px}
+.btn:disabled{opacity:.5;cursor:not-allowed;transform:none}
+.chip{padding:5px 12px;border-radius:999px;background:var(--glass);border:1px solid var(--glass-br);font-size:12.5px;color:var(--muted);white-space:nowrap}
+.badge{padding:3px 9px;border-radius:999px;font-size:11px;font-weight:700;letter-spacing:.3px}
+.badge.admin{background:linear-gradient(135deg,#f59e0b,#ef4444);color:#fff}
+.badge.ok{background:rgba(46,204,113,.16);color:var(--ok)}
+.badge.warn{background:rgba(241,196,15,.16);color:var(--warn)}
+.badge.err{background:rgba(231,76,60,.16);color:var(--err)}
+</style>
+<style>
+/* ---- Splash ---- */
+#splash{position:fixed;inset:0;z-index:1000;display:flex;flex-direction:column;align-items:center;justify-content:center;background:radial-gradient(circle at 50% 35%,#1a0409,#06060a 70%);gap:26px}
+#splash .particles{position:absolute;inset:0;overflow:hidden;pointer-events:none}
+#splash .particles i{position:absolute;width:3px;height:3px;border-radius:50%;background:var(--accent-2);opacity:.5;animation:floatp linear infinite}
+@keyframes floatp{from{transform:translateY(110vh) scale(.6);opacity:0}10%{opacity:.6}to{transform:translateY(-10vh) scale(1);opacity:0}}
+.splash-logo{position:relative;animation:logoReveal 1.1s cubic-bezier(.2,.8,.2,1) both,logoFloat 4s ease-in-out 1.1s infinite}
+@keyframes logoFloat{0%,100%{transform:translateY(0)}50%{transform:translateY(-10px)}}
+.splash-logo::before{content:'';position:absolute;inset:-26px;border-radius:50%;background:conic-gradient(from 0deg,transparent,var(--accent) 20%,transparent 42%,var(--accent-2) 70%,transparent 92%);filter:blur(10px);opacity:.55;z-index:-1;animation:spinRing 6s linear infinite}
+@keyframes spinRing{to{transform:rotate(360deg)}}
+@keyframes logoReveal{from{transform:scale(.6) translateY(20px);opacity:0;filter:blur(8px)}to{transform:none;opacity:1;filter:none}}
+.splash-word{font-family:'Anton','Bebas Neue',Impact,'Haettenschweiler','Franklin Gothic Bold','Arial Narrow Bold',system-ui,sans-serif;font-size:clamp(44px,9vw,96px);font-weight:400;letter-spacing:8px;background:linear-gradient(110deg,var(--accent) 0%,#fff 35%,var(--accent-2) 55%,#fff 75%,var(--accent) 100%);-webkit-background-clip:text;background-clip:text;color:transparent;animation:sheen 3.5s linear infinite,splashGlow 2.6s ease-in-out infinite;background-size:260% auto}
+@keyframes sheen{to{background-position:-260% center}}
+@keyframes splashGlow{0%,100%{filter:drop-shadow(0 0 6px rgba(225,29,46,.4))}50%{filter:drop-shadow(0 0 26px rgba(255,59,78,.85))}}
+.splash-tag{color:var(--muted);letter-spacing:4px;font-size:clamp(10px,2vw,14px);text-transform:uppercase;animation:logoReveal 1.3s .3s both}
+.splash-bar{width:min(320px,70vw);height:5px;border-radius:9px;background:var(--surface-2);overflow:hidden}
+.splash-bar i{display:block;height:100%;width:0;background:linear-gradient(90deg,var(--accent),var(--accent-2))}
+.splash-skip{position:absolute;bottom:26px;right:26px;color:var(--muted);font-size:13px}
+.splash-rotator{height:30px;display:flex;align-items:center;justify-content:center;overflow:hidden;margin-top:-4px}
+.rot-line{font-size:clamp(14px,3vw,19px);font-weight:700;letter-spacing:.3px;background:linear-gradient(100deg,var(--accent),#fff 50%,var(--accent-2));-webkit-background-clip:text;background-clip:text;color:transparent;white-space:nowrap}
+.rot-line.in{animation:rotIn .5s cubic-bezier(.2,.9,.3,1.2) both}
+.rot-line.out{animation:rotOut .4s ease-in both}
+@keyframes rotIn{from{opacity:0;transform:translateY(22px) scale(.92)}to{opacity:1;transform:none}}
+@keyframes rotOut{from{opacity:1;transform:none}to{opacity:0;transform:translateY(-22px) scale(.92)}}
+.film-float{position:absolute;inset:0;overflow:hidden;pointer-events:none;z-index:0}
+.film-float span{position:absolute;bottom:-50px;font-size:26px;opacity:0;filter:drop-shadow(0 4px 10px rgba(0,0,0,.5));animation:filmUp linear infinite}
+@keyframes filmUp{0%{transform:translateY(0) rotate(0);opacity:0}8%{opacity:.85}92%{opacity:.85}100%{transform:translateY(-118vh) rotate(260deg);opacity:0}}
+.splash-hint{color:var(--muted);font-size:clamp(10px,2vw,12.5px);letter-spacing:1px;opacity:0;animation:logoReveal 1s 2.7s both}
+.splash-sound{position:absolute;bottom:26px;left:26px;font-size:19px;width:42px;height:42px;border-radius:50%;background:var(--glass);border:1px solid var(--border);display:flex;align-items:center;justify-content:center;transition:transform .2s,opacity .2s;cursor:pointer}
+.splash-sound:hover{transform:scale(1.08)}
+.splash-sound.muted{opacity:.5}
+/* ---- Auth ---- */
+#auth{position:fixed;inset:0;z-index:900;display:none;align-items:center;justify-content:center;padding:20px;background:linear-gradient(135deg,#0a0206,#06060a 60%);overflow:auto}
+#auth.show{display:flex}
+.auth-card{width:min(440px,100%);background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);box-shadow:var(--shadow);padding:30px;backdrop-filter:blur(10px)}
+.auth-head{text-align:center;margin-bottom:22px}
+.auth-head h1{font-family:'Anton','Bebas Neue',Impact,'Haettenschweiler','Franklin Gothic Bold','Arial Narrow Bold',system-ui,sans-serif;font-weight:400;font-size:36px;letter-spacing:5px;margin:12px 0 4px;background:linear-gradient(110deg,var(--accent),#fff 45%,var(--accent-2),#fff 80%,var(--accent));background-size:260% auto;-webkit-background-clip:text;background-clip:text;color:transparent;animation:sheen 4s linear infinite,splashGlow 3s ease-in-out infinite}
+.auth-head p{color:var(--muted);font-size:13px;letter-spacing:2px}
+.auth-tabs{display:flex;background:var(--surface-2);border-radius:var(--radius-sm);padding:4px;margin-bottom:20px}
+.auth-tabs button{flex:1;padding:10px;border-radius:8px;font-weight:600;font-size:14px;color:var(--muted);transition:.2s}
+.auth-tabs button.active{background:var(--accent);color:#fff}
+.field{margin-bottom:14px}
+.field label{display:block;font-size:12.5px;color:var(--muted);margin-bottom:6px;font-weight:600}
+.field .wrap{position:relative;display:flex;align-items:center}
+.field input,.field select{width:100%;padding:12px 14px;background:var(--bg-2);border:1px solid var(--border);border-radius:var(--radius-sm);color:var(--text);font-size:14px;transition:border .2s}
+.field input:focus,.field select:focus{border-color:var(--accent);outline:none}
+.field .toggle{position:absolute;right:10px;color:var(--muted);padding:6px}
+.pw-meter{height:5px;border-radius:9px;background:var(--surface-2);margin-top:7px;overflow:hidden}
+.pw-meter i{display:block;height:100%;width:0;transition:.3s}
+.pw-hint{font-size:11.5px;color:var(--muted);margin-top:4px}
+.avatar-pick{display:flex;align-items:center;gap:14px}
+.avatar-prev{width:58px;height:58px;border-radius:50%;object-fit:cover;background:var(--surface-2);border:2px solid var(--border);display:flex;align-items:center;justify-content:center;color:var(--muted)}
+.form-msg{font-size:13px;padding:10px 12px;border-radius:var(--radius-sm);margin-bottom:12px;display:none}
+.form-msg.show{display:block}
+.form-msg.err{background:rgba(231,76,60,.14);color:#ff8a7e;border:1px solid rgba(231,76,60,.3)}
+.form-msg.ok{background:rgba(46,204,113,.14);color:#7ff0ab;border:1px solid rgba(46,204,113,.3)}
+.form-msg.info{background:var(--accent-soft);color:var(--accent-2);border:1px solid var(--glass-br)}
+.auth-alt{text-align:center;margin-top:16px;color:var(--muted);font-size:13px}
+.auth-alt button{color:var(--accent-2);font-weight:600}
+.demo-note{margin-top:16px;padding:10px 12px;border-radius:var(--radius-sm);background:var(--glass);border:1px dashed var(--glass-br);font-size:11.5px;color:var(--muted);text-align:center}
+</style>
+<style>
+/* ---- App shell ---- */
+#app{display:none;min-height:100vh}
+#app.show{display:block}
+.topbar{position:sticky;top:0;z-index:300;display:flex;align-items:center;gap:16px;padding:12px 22px;background:rgba(6,6,10,.82);backdrop-filter:blur(14px);border-bottom:1px solid var(--border)}
+[data-theme=daylight] .topbar{background:rgba(246,247,251,.85)}
+.brand{display:flex;align-items:center;gap:10px;font-weight:900;letter-spacing:2px;font-size:19px}
+.brand .t{font-family:'Anton','Bebas Neue',Impact,'Haettenschweiler','Franklin Gothic Bold','Arial Narrow Bold',system-ui,sans-serif;font-weight:400;font-size:25px;letter-spacing:3px;line-height:1;padding-right:2px;background:linear-gradient(110deg,var(--accent) 0%,#fff 32%,var(--accent-2) 55%,#fff 78%,var(--accent) 100%);background-size:260% auto;-webkit-background-clip:text;background-clip:text;color:transparent;animation:brandSheen 4.5s linear infinite,brandGlow 3s ease-in-out infinite;transition:transform .25s}
+.brand:hover .t{transform:scale(1.04)}
+@keyframes brandSheen{to{background-position:-260% center}}
+@keyframes brandGlow{0%,100%{filter:drop-shadow(0 0 3px rgba(225,29,46,.35))}50%{filter:drop-shadow(0 0 13px rgba(255,59,78,.8))}}
+.nav{display:flex;gap:4px;margin-left:10px}
+.nav button{padding:9px 14px;border-radius:var(--radius-sm);color:var(--muted);font-weight:600;font-size:14px;display:flex;align-items:center;gap:7px;transition:.2s}
+.nav button:hover{color:var(--text);background:var(--glass)}
+.nav button.active{color:var(--text);background:var(--accent-soft)}
+.top-right{margin-left:auto;display:flex;align-items:center;gap:8px}
+.search-box{position:relative;display:flex;align-items:center}
+.search-box input{width:220px;padding:10px 14px 10px 38px;background:var(--surface);border:1px solid var(--border);border-radius:999px;color:var(--text);font-size:13.5px;transition:width .25s,border .2s}
+.search-box input:focus{width:280px;border-color:var(--accent);outline:none}
+.search-box .si{position:absolute;left:12px;color:var(--muted)}
+.search-box .clr{position:absolute;right:10px;color:var(--muted);display:none}
+.fab-search{position:fixed;right:22px;bottom:24px;z-index:480;width:58px;height:58px;border-radius:50%;display:none;align-items:center;justify-content:center;color:#fff;background:linear-gradient(135deg,var(--accent),var(--accent-2));box-shadow:0 10px 26px rgba(225,29,46,.45),0 2px 6px rgba(0,0,0,.4);cursor:pointer;transition:transform .2s,box-shadow .2s}
+.fab-search.show{display:flex;animation:fabPop .35s cubic-bezier(.2,.9,.3,1.3) both}
+.fab-search:hover{transform:scale(1.08) rotate(6deg);box-shadow:0 14px 32px rgba(225,29,46,.55)}
+.fab-search:active{transform:scale(.95)}
+.fab-search .fab-ring{position:absolute;inset:0;border-radius:50%;border:2px solid var(--accent);opacity:.6;animation:fabRing 2.4s ease-out infinite;pointer-events:none}
+@keyframes fabPop{from{transform:scale(0);opacity:0}to{transform:scale(1);opacity:1}}
+@keyframes fabRing{0%{transform:scale(1);opacity:.55}100%{transform:scale(1.7);opacity:0}}
+.icon-btn{position:relative;width:40px;height:40px;border-radius:50%;display:flex;align-items:center;justify-content:center;color:var(--muted);background:var(--surface);border:1px solid var(--border);transition:.2s}
+.icon-btn:hover{color:var(--text);transform:translateY(-2px)}
+.icon-btn .dot{position:absolute;top:6px;right:7px;min-width:16px;height:16px;padding:0 4px;border-radius:9px;background:var(--accent);color:#fff;font-size:10px;font-weight:800;display:none;align-items:center;justify-content:center}
+.icon-btn .dot.show{display:flex}
+.avatar-btn img,.avatar-btn .ph{width:40px;height:40px;border-radius:50%;object-fit:cover;border:2px solid var(--accent)}
+.ph{display:flex;align-items:center;justify-content:center;background:var(--surface-2);font-weight:800;color:var(--accent-2)}
+.menu-toggle{display:none}
+.nav-backdrop{position:fixed;inset:0;background:rgba(2,2,6,.6);backdrop-filter:blur(3px);z-index:510;opacity:0;visibility:hidden;transition:opacity .3s,visibility .3s}
+.nav-backdrop.show{opacity:1;visibility:visible}
+.drawer-head{display:none}
+.drawer-close{display:none;margin-left:auto;pointer-events:auto;width:34px;height:34px;border-radius:50%;align-items:center;justify-content:center;color:var(--muted);background:var(--surface);border:1px solid var(--border)}
+@media(max-width:900px){.nav .drawer-head{display:flex}.nav .drawer-close{display:flex}}
+/* ---- Views ---- */
+.view{display:none;padding:24px 22px 80px;max-width:1500px;margin:0 auto}
+.view.show{display:block}
+.hero{position:relative;border-radius:var(--radius);overflow:hidden;min-height:clamp(300px,52vh,560px);display:flex;align-items:flex-end;margin-bottom:34px;background:var(--surface)}
+.hero .bg{position:absolute;inset:0;background-size:cover;background-position:center;transform:scale(1.04);transition:opacity .7s ease,transform 7s ease}
+.hero .bg.kenburns{transform:scale(1.14)}
+.hero .ov{position:absolute;inset:0;background:linear-gradient(90deg,rgba(6,6,10,.95) 10%,rgba(6,6,10,.35) 60%,transparent),linear-gradient(0deg,var(--bg),transparent 55%)}
+.hero .inner{position:relative;padding:clamp(22px,4vw,48px);max-width:640px}
+.hero h2{font-size:clamp(28px,5vw,52px);font-weight:900;line-height:1.05;margin-bottom:12px}
+.hero p{color:#d7d7e0;font-size:15px;margin-bottom:18px;display:-webkit-box;-webkit-line-clamp:3;-webkit-box-orient:vertical;overflow:hidden}
+.hero .meta{display:flex;gap:10px;margin-bottom:16px;flex-wrap:wrap}
+.hero .cta{display:flex;gap:10px;flex-wrap:wrap}
+.hero-dots{position:absolute;bottom:16px;right:20px;display:flex;gap:8px;z-index:3}
+.hero-dots .hdot{width:9px;height:9px;padding:0;border-radius:50%;background:rgba(255,255,255,.35);border:1px solid rgba(255,255,255,.55);transition:.25s}
+.hero-dots .hdot.active{background:var(--accent);border-color:var(--accent);width:26px;border-radius:9px}
+.hero .inner.hero-in{animation:heroIn .6s ease}
+@keyframes heroIn{from{opacity:0;transform:translateY(14px)}to{opacity:1;transform:none}}
+.section{margin-bottom:38px}
+.section-head{display:flex;align-items:center;justify-content:space-between;margin-bottom:16px;gap:12px}
+.section-head h3{font-size:20px;font-weight:800;display:flex;align-items:center;gap:9px}
+.section-head h3 .bar{width:4px;height:22px;border-radius:9px;background:var(--accent)}
+.row{display:flex;gap:16px;overflow-x:auto;padding:6px 2px 14px;scroll-snap-type:x mandatory}
+.row::-webkit-scrollbar{height:7px}
+.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(160px,1fr));gap:18px}
+/* ---- Movie card ---- */
+.card{position:relative;flex:0 0 clamp(140px,22vw,180px);scroll-snap-align:start;border-radius:var(--radius-sm);overflow:hidden;background:var(--surface);border:1px solid var(--border);cursor:pointer;transition:transform .22s,box-shadow .22s,border .2s}
+.grid .card{flex:none;width:100%}
+.card:hover{transform:translateY(-6px);box-shadow:var(--shadow);border-color:var(--accent)}
+.card .poster{position:relative;aspect-ratio:2/3;background:var(--surface-2)}
+.card .poster img{width:100%;height:100%;object-fit:cover}
+.card .rate{position:absolute;top:8px;left:8px;background:rgba(0,0,0,.72);color:#ffd451;font-size:11.5px;font-weight:800;padding:3px 8px;border-radius:999px;display:flex;align-items:center;gap:3px}
+.card .bk{position:absolute;top:7px;right:7px;width:32px;height:32px;border-radius:50%;background:rgba(0,0,0,.6);display:flex;align-items:center;justify-content:center;color:#fff;opacity:0;transition:.2s}
+.card:hover .bk{opacity:1}
+.card .bk.saved{color:var(--accent-2);opacity:1}
+.card .ov{position:absolute;inset:0;background:linear-gradient(0deg,rgba(0,0,0,.92),transparent 55%);display:flex;flex-direction:column;justify-content:flex-end;padding:10px;opacity:0;transition:.22s}
+.card:hover .ov{opacity:1}
+.card .ov .play{align-self:center;margin-bottom:auto;margin-top:auto;width:52px;height:52px;border-radius:50%;background:var(--accent);display:flex;align-items:center;justify-content:center;color:#fff;transform:scale(.7);transition:.22s}
+.card:hover .ov .play{transform:scale(1)}
+.card .info{padding:10px}
+.card .info .ttl{font-size:13.5px;font-weight:700;line-height:1.25;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}
+.card .info .yr{font-size:12px;color:var(--muted);margin-top:3px}
+/* skeleton */
+.skel{border-radius:var(--radius-sm);overflow:hidden;background:var(--surface);border:1px solid var(--border);flex:0 0 clamp(140px,22vw,180px)}
+.grid .skel{flex:none}
+.skel .sp{aspect-ratio:2/3;background:linear-gradient(100deg,var(--surface-2) 30%,var(--border) 50%,var(--surface-2) 70%);background-size:200% 100%;animation:shine 1.3s linear infinite}
+.skel .sl{height:12px;margin:10px;border-radius:6px;background:var(--surface-2)}
+@keyframes shine{to{background-position:-200% 0}}
+</style>
+<style>
+/* ---- genre rail / infinite ---- */
+.genre-tabs{display:flex;gap:8px;overflow-x:auto;padding-bottom:12px;margin-bottom:8px}
+.genre-tabs button{padding:8px 15px;border-radius:999px;background:var(--surface);border:1px solid var(--border);font-size:13px;font-weight:600;color:var(--muted);white-space:nowrap;transition:.2s}
+.genre-tabs button.active{background:var(--accent);color:#fff;border-color:transparent}
+.genre-block{margin-bottom:34px}
+.genre-block h3{font-size:18px;font-weight:800;margin-bottom:14px;display:flex;align-items:center;gap:9px}
+#sentinel{height:40px;display:flex;align-items:center;justify-content:center;color:var(--muted);font-size:13px}
+.spinner{width:26px;height:26px;border:3px solid var(--border);border-top-color:var(--accent);border-radius:50%;animation:spin .8s linear infinite}
+@keyframes spin{to{transform:rotate(360deg)}}
+/* ---- empty/error ---- */
+.state{text-align:center;padding:60px 20px;color:var(--muted)}
+.state svg{width:52px;height:52px;margin:0 auto 14px;color:var(--border)}
+.state h4{color:var(--text);font-size:18px;margin-bottom:6px}
+.state p{font-size:14px;max-width:420px;margin:0 auto 16px}
+.gcount{font-size:12px;color:var(--muted);font-weight:600;margin-left:8px}
+/* ---- Legal / doc modal ---- */
+.doc{padding:0}
+.doc-hero{position:relative;padding:34px 30px 24px;background:linear-gradient(135deg,var(--accent-soft),transparent),var(--surface-2);border-bottom:1px solid var(--border);border-radius:var(--radius) var(--radius) 0 0;overflow:hidden}
+.doc-hero .ic{width:52px;height:52px;border-radius:14px;display:flex;align-items:center;justify-content:center;background:linear-gradient(135deg,var(--accent),var(--accent-2));color:#fff;margin-bottom:14px;box-shadow:0 10px 26px var(--accent-soft)}
+.doc-hero h2{font-size:26px;font-weight:900;letter-spacing:.5px}
+.doc-hero .sub{color:var(--muted);font-size:13px;margin-top:6px;display:flex;gap:10px;flex-wrap:wrap;align-items:center}
+.doc-body{padding:26px 30px 34px;max-height:min(66vh,620px);overflow-y:auto}
+.doc-body h3{font-size:16px;font-weight:800;margin:22px 0 8px;display:flex;align-items:center;gap:9px;color:var(--text)}
+.doc-body h3:first-child{margin-top:0}
+.doc-body h3 .n{width:24px;height:24px;flex:none;border-radius:7px;background:var(--accent-soft);color:var(--accent-2);font-size:12px;font-weight:800;display:flex;align-items:center;justify-content:center}
+.doc-body p,.doc-body li{color:var(--muted);font-size:14px;line-height:1.72}
+.doc-body p{margin-bottom:10px}
+.doc-body ul{margin:4px 0 12px 4px;list-style:none}
+.doc-body li{position:relative;padding-left:20px;margin-bottom:7px}
+.doc-body li::before{content:'';position:absolute;left:3px;top:9px;width:7px;height:7px;border-radius:50%;background:var(--accent)}
+.doc-body b{color:var(--text)}
+.doc-body a.inl{color:var(--accent-2);font-weight:600}
+.doc-note{margin-top:18px;padding:13px 15px;border-radius:var(--radius-sm);background:var(--glass);border:1px dashed var(--glass-br);font-size:12.5px;color:var(--muted);line-height:1.6}
+.doc-tabs{display:flex;gap:6px;flex-wrap:wrap;padding:14px 30px 0}
+.doc-tabs button{padding:7px 13px;border-radius:999px;font-size:12.5px;font-weight:600;color:var(--muted);background:var(--surface-2);border:1px solid var(--border);transition:.2s}
+.doc-tabs button.active{background:var(--accent);color:#fff;border-color:transparent}
+.stat-row{display:grid;grid-template-columns:repeat(auto-fit,minmax(130px,1fr));gap:12px;margin:16px 0 4px}
+.stat-row .st{background:var(--surface-2);border:1px solid var(--border);border-radius:var(--radius-sm);padding:14px}
+.stat-row .st .k{font-size:22px;font-weight:900;background:linear-gradient(120deg,var(--accent-2),#fff);-webkit-background-clip:text;background-clip:text;color:transparent}
+.stat-row .st .l{font-size:11.5px;color:var(--muted);margin-top:3px}
+@media(max-width:560px){.doc-hero,.doc-body,.doc-tabs{padding-left:18px;padding-right:18px}}
+/* ---- Footer ---- */
+.site-footer{border-top:1px solid var(--border);background:var(--bg-2);margin-top:48px;padding:48px 22px 26px}
+.foot-grid{max-width:1500px;margin:0 auto;display:grid;grid-template-columns:2fr 1fr 1fr 1fr;gap:34px}
+.foot-brand .brand{margin-bottom:14px}
+.foot-brand p{color:var(--muted);font-size:13.5px;max-width:380px;line-height:1.65}
+.foot-social{display:flex;gap:10px;margin-top:16px}
+.foot-social a{width:38px;height:38px;border-radius:50%;display:flex;align-items:center;justify-content:center;background:var(--surface);border:1px solid var(--border);color:var(--muted);transition:transform .2s,background .2s,color .2s}
+.foot-social a:hover{color:#fff;background:var(--accent);border-color:transparent;transform:translateY(-2px)}
+.foot-col h4{font-size:13px;letter-spacing:1px;text-transform:uppercase;color:var(--text);margin-bottom:14px}
+.foot-col ul{list-style:none}
+.foot-col li{margin-bottom:10px}
+.foot-col a{color:var(--muted);font-size:13.5px;cursor:pointer;transition:color .2s}
+.foot-col a:hover{color:var(--accent-2)}
+.foot-bar{max-width:1500px;margin:34px auto 0;padding-top:20px;border-top:1px solid var(--border);display:flex;justify-content:space-between;gap:14px;flex-wrap:wrap;color:var(--muted);font-size:12px}
+.foot-meta{opacity:.85;text-align:right}
+@media(max-width:860px){.foot-grid{grid-template-columns:1fr 1fr}.foot-brand{grid-column:1/-1}}
+@media(max-width:520px){.foot-grid{grid-template-columns:1fr}.foot-bar{flex-direction:column}.foot-meta{text-align:left}}
+/* ---- Modal / overlays ---- */
+.overlay{position:fixed;inset:0;z-index:600;background:rgba(3,3,6,.78);backdrop-filter:blur(6px);display:none;align-items:center;justify-content:center;padding:20px;opacity:0;transition:opacity .2s}
+.overlay.show{display:flex;opacity:1}
+.modal{width:min(880px,100%);max-height:92vh;overflow:auto;background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);box-shadow:var(--shadow);transform:translateY(16px) scale(.98);transition:.25s}
+.overlay.show .modal{transform:none}
+.modal.sm{width:min(460px,100%)}
+.modal-close{position:absolute;top:14px;right:14px;z-index:5;width:38px;height:38px;border-radius:50%;background:rgba(0,0,0,.5);color:#fff;display:flex;align-items:center;justify-content:center;border:1px solid var(--glass-br)}
+/* detail */
+.detail-hero{position:relative;min-height:300px;border-radius:var(--radius) var(--radius) 0 0;overflow:hidden;background:var(--surface-2)}
+.detail-hero .bg{position:absolute;inset:0;background-size:cover;background-position:center}
+.detail-hero .ov{position:absolute;inset:0;background:linear-gradient(0deg,var(--surface),rgba(18,18,28,.4) 60%,transparent)}
+.detail-body{position:relative;padding:0 26px 26px;margin-top:-90px}
+.detail-top{display:flex;gap:22px;flex-wrap:wrap}
+.detail-top .pz{width:150px;flex:none;border-radius:var(--radius-sm);overflow:hidden;box-shadow:var(--shadow);background:var(--surface-2);aspect-ratio:2/3}
+.detail-top .meta{flex:1;min-width:220px;padding-top:96px}
+.detail-top h2{font-size:26px;font-weight:900;margin-bottom:8px}
+.detail-chips{display:flex;gap:8px;flex-wrap:wrap;margin:12px 0}
+.detail-ov{color:#cfcfe0;font-size:14.5px;margin:14px 0}
+.detail-sec{margin-top:22px}
+.detail-sec h4{font-size:15px;margin-bottom:12px;color:var(--muted);text-transform:uppercase;letter-spacing:1px}
+.cast{display:flex;gap:12px;overflow-x:auto;padding-bottom:8px}
+.cast .c{flex:0 0 84px;text-align:center}
+.cast .c img,.cast .c .ph{width:72px;height:72px;border-radius:50%;object-fit:cover;margin:0 auto 6px;border:2px solid var(--border)}
+.cast .c .nm{font-size:12px;font-weight:600}
+.cast .c .ch{font-size:11px;color:var(--muted)}
+/* ---- in-app trailer player ---- */
+#player{position:fixed;inset:0;z-index:800;background:#000;display:none;flex-direction:column}
+#player.show{display:flex}
+.player-bar{display:flex;align-items:center;gap:14px;padding:14px 20px;background:linear-gradient(180deg,rgba(0,0,0,.85),transparent);position:absolute;top:0;left:0;right:0;z-index:5}
+.player-bar .pt{font-weight:800;font-size:16px;flex:1;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.player-stage{flex:1;display:flex;align-items:center;justify-content:center;padding:62px 12px 18px}
+.player-stage iframe{width:100%;height:100%;max-width:1200px;border:0;border-radius:12px;aspect-ratio:16/9}
+.player-empty{color:var(--muted);text-align:center}
+</style>
+<style>
+/* ---- toasts ---- */
+#toasts{position:fixed;bottom:22px;right:22px;z-index:1200;display:flex;flex-direction:column;gap:10px;max-width:340px}
+.toast{display:flex;gap:11px;align-items:flex-start;padding:13px 15px;background:var(--surface);border:1px solid var(--border);border-left:4px solid var(--accent);border-radius:var(--radius-sm);box-shadow:var(--shadow);animation:toastIn .3s;font-size:13.5px}
+.toast.ok{border-left-color:var(--ok)}.toast.err{border-left-color:var(--err)}.toast.warn{border-left-color:var(--warn)}
+.toast .tt{font-weight:700;margin-bottom:2px}
+.toast .tm{color:var(--muted)}
+@keyframes toastIn{from{transform:translateX(30px);opacity:0}to{transform:none;opacity:1}}
+/* ---- notification panel ---- */
+.panel{position:fixed;top:0;right:0;bottom:0;width:min(400px,100%);background:var(--surface);border-left:1px solid var(--border);z-index:650;transform:translateX(100%);transition:transform .28s;display:flex;flex-direction:column;box-shadow:var(--shadow)}
+.panel.show{transform:none}
+.panel-head{display:flex;align-items:center;gap:10px;padding:18px 20px;border-bottom:1px solid var(--border)}
+.panel-head h3{font-size:17px;flex:1}
+.panel-body{flex:1;overflow:auto;padding:12px}
+.noti{display:flex;gap:11px;padding:13px;border-radius:var(--radius-sm);margin-bottom:9px;background:var(--bg-2);border:1px solid var(--border);position:relative}
+.noti.unread{border-color:var(--accent)}
+.noti.unread::before{content:'';position:absolute;top:14px;right:12px;width:8px;height:8px;border-radius:50%;background:var(--accent)}
+.noti .ni{width:34px;height:34px;border-radius:9px;display:flex;align-items:center;justify-content:center;background:var(--accent-soft);color:var(--accent-2);flex:none}
+.noti .nt{font-weight:700;font-size:13.5px}
+.noti .nm{font-size:12.5px;color:var(--muted);margin-top:2px}
+.noti .nd{font-size:11px;color:var(--muted);margin-top:5px}
+.noti.announce .ni{background:linear-gradient(135deg,#f59e0b,#ef4444);color:#fff}
+/* ---- forms/sections generic ---- */
+.panel-foot{padding:12px 16px;border-top:1px solid var(--border)}
+.card-box{background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);padding:22px}
+.grid2{display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:18px}
+.set-group{margin-bottom:26px}
+.set-group h4{font-size:15px;margin-bottom:14px;display:flex;align-items:center;gap:8px}
+.set-row{display:flex;align-items:center;justify-content:space-between;gap:14px;padding:13px 0;border-bottom:1px solid var(--border)}
+.set-row .lbl .t{font-weight:600;font-size:14px}
+.set-row .lbl .d{font-size:12px;color:var(--muted);margin-top:2px}
+.set-row .lbl .d.future{color:var(--warn)}
+.switch{position:relative;width:46px;height:26px;flex:none}
+.switch input{display:none}
+.switch .sl{position:absolute;inset:0;background:var(--surface-2);border:1px solid var(--border);border-radius:20px;transition:.2s}
+.switch .sl::before{content:'';position:absolute;top:2px;left:2px;width:20px;height:20px;border-radius:50%;background:var(--muted);transition:.2s}
+.switch input:checked+.sl{background:var(--accent)}
+.switch input:checked+.sl::before{transform:translateX(20px);background:#fff}
+select.mini{padding:8px 12px;background:var(--bg-2);border:1px solid var(--border);border-radius:8px;color:var(--text);font-size:13px}
+.theme-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(120px,1fr));gap:12px}
+.theme-opt{border:2px solid var(--border);border-radius:var(--radius-sm);padding:12px;cursor:pointer;transition:.2s}
+.theme-opt.active{border-color:var(--accent)}
+.theme-opt .sw{height:38px;border-radius:7px;margin-bottom:8px;display:flex;overflow:hidden}
+.theme-opt .sw i{flex:1}
+.theme-opt .nm{font-size:12.5px;font-weight:600}
+/* ---- feedback ---- */
+.seg{display:flex;background:var(--surface-2);border-radius:var(--radius-sm);padding:4px;margin-bottom:18px;flex-wrap:wrap}
+.seg button{flex:1;min-width:100px;padding:10px;border-radius:8px;font-weight:600;font-size:13.5px;color:var(--muted)}
+.seg button.active{background:var(--accent);color:#fff}
+.stars{display:flex;gap:6px;margin:8px 0 16px}
+.stars button{color:var(--border);transition:.15s}
+.stars button.on{color:#ffd451}
+textarea{width:100%;padding:13px;background:var(--bg-2);border:1px solid var(--border);border-radius:var(--radius-sm);color:var(--text);font-family:inherit;font-size:14px;resize:vertical;min-height:120px}
+textarea:focus{border-color:var(--accent);outline:none}
+.opt-tiles{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin:8px 0 2px}
+.opt-tile{text-align:left;padding:13px 34px 13px 14px;border:1.5px solid var(--border);border-radius:var(--radius-sm);background:var(--bg-2);color:var(--text);font-size:13.5px;font-weight:600;line-height:1.3;transition:.18s;position:relative;cursor:pointer}
+.opt-tile:hover{border-color:var(--accent);background:var(--glass)}
+.opt-tile.on{border-color:var(--accent);background:var(--accent-soft);box-shadow:0 0 0 3px var(--accent-soft)}
+.opt-tile.on::after{content:'✓';position:absolute;top:50%;right:12px;transform:translateY(-50%);color:var(--accent);font-weight:900}
+@media(max-width:480px){.opt-tiles{grid-template-columns:1fr}}
+</style>
+<style>
+/* ---- admin ---- */
+#view-admin{max-width:1600px}
+.admin-shell{display:grid;grid-template-columns:230px 1fr;gap:20px}
+.admin-side{background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);padding:16px;position:sticky;top:78px;align-self:start}
+.admin-brand{display:flex;align-items:center;gap:10px;font-weight:900;letter-spacing:1px;padding:6px 6px 16px;border-bottom:1px solid var(--border);margin-bottom:12px}
+.admin-brand .badge{font-size:9px}
+.admin-side button{display:flex;align-items:center;gap:10px;width:100%;padding:11px 12px;border-radius:var(--radius-sm);color:var(--muted);font-weight:600;font-size:13.5px;margin-bottom:3px;transition:.2s}
+.admin-side button:hover{color:var(--text);background:var(--glass)}
+.admin-side button.active{background:linear-gradient(135deg,var(--accent),var(--accent-2));color:#fff}
+.admin-main{min-width:0}
+.admin-tab{display:none}
+.admin-tab.show{display:block}
+.kpis{display:grid;grid-template-columns:repeat(auto-fill,minmax(200px,1fr));gap:16px;margin-bottom:26px}
+.kpi{background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);padding:18px;position:relative;overflow:hidden}
+.kpi::after{content:'';position:absolute;top:-30px;right:-30px;width:90px;height:90px;border-radius:50%;background:var(--accent-soft)}
+.kpi .kl{font-size:12.5px;color:var(--muted);display:flex;align-items:center;gap:7px}
+.kpi .kv{font-size:30px;font-weight:900;margin-top:8px}
+.kpi .ks{font-size:12px;color:var(--muted);margin-top:4px}
+.kpi .ks.demo{color:var(--warn)}
+.panel-card{background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);padding:20px;margin-bottom:20px}
+.panel-card h4{font-size:16px;margin-bottom:16px;display:flex;align-items:center;justify-content:space-between;gap:10px}
+canvas{max-width:100%}
+table{width:100%;border-collapse:collapse;font-size:13.5px}
+thead th{text-align:left;padding:11px 10px;color:var(--muted);font-size:12px;text-transform:uppercase;letter-spacing:.5px;border-bottom:1px solid var(--border);cursor:pointer;white-space:nowrap}
+tbody td{padding:11px 10px;border-bottom:1px solid var(--border);vertical-align:middle}
+tbody tr:hover{background:var(--glass)}
+.utbl .u{display:flex;align-items:center;gap:10px}
+.utbl .u img,.utbl .u .ph{width:34px;height:34px;border-radius:50%;object-fit:cover}
+.toolbar{display:flex;gap:10px;flex-wrap:wrap;margin-bottom:16px}
+.toolbar input,.toolbar select{padding:9px 13px;background:var(--bg-2);border:1px solid var(--border);border-radius:var(--radius-sm);color:var(--text);font-size:13.5px}
+.pager{display:flex;gap:6px;align-items:center;justify-content:center;margin-top:16px}
+.pager button{width:34px;height:34px;border-radius:8px;background:var(--surface-2);border:1px solid var(--border);color:var(--text);font-weight:600}
+.pager button.active{background:var(--accent);color:#fff}
+.inbox-item{padding:14px;border:1px solid var(--border);border-radius:var(--radius-sm);margin-bottom:10px;background:var(--bg-2)}
+.inbox-item .ih{display:flex;align-items:center;gap:10px;margin-bottom:6px;flex-wrap:wrap}
+.inbox-item .im{color:#cfcfe0;font-size:13.5px;white-space:pre-wrap}
+.inbox-item.unread{border-color:var(--accent)}
+.gbar{display:flex;align-items:center;gap:10px;margin-bottom:9px}
+.gbar .gl{width:120px;font-size:13px}
+.gbar .gt{flex:1;height:14px;border-radius:7px;background:var(--surface-2);overflow:hidden}
+.gbar .gt i{display:block;height:100%;background:linear-gradient(90deg,var(--accent),var(--accent-2))}
+.gbar .gv{width:92px;text-align:right;font-size:12.5px;color:var(--muted)}
+/* ---- responsive ---- */
+@media(max-width:900px){
+  .nav{position:fixed;top:0;left:0;bottom:0;width:min(300px,84vw);margin-left:0;flex-direction:column;align-items:stretch;gap:6px;background:var(--bg-2);border-right:1px solid var(--border);box-shadow:var(--shadow);padding:0 14px 20px;transform:translateX(-102%);transition:transform .34s cubic-bezier(.4,0,.2,1);z-index:520;overflow-y:auto}
+  .nav.open{transform:none}
+  .nav::before{content:'';display:block;height:60px;border-bottom:1px solid var(--border);margin:0 -14px 14px}
+  .nav .drawer-head{position:absolute;top:0;left:0;right:0;height:60px;display:flex;align-items:center;gap:10px;padding:0 14px;pointer-events:none}
+  .nav button{width:100%;justify-content:flex-start;padding:13px 16px;font-size:15px;border-radius:12px}
+  .nav button svg{width:20px;height:20px}
+  .menu-toggle{display:flex}
+  .admin-shell{grid-template-columns:1fr}
+  .admin-side{position:static;display:flex;gap:6px;overflow-x:auto}
+  .admin-side .admin-brand{display:none}
+  .admin-side button{width:auto;white-space:nowrap}
+  .search-box input{width:150px}
+  .search-box input:focus{width:170px}
+  .detail-top .meta{padding-top:12px}
+}
+@media(max-width:560px){
+  .topbar{padding:10px 14px;gap:10px}
+  .view{padding:16px 14px 70px}
+  .search-box{display:none}
+  .search-box.mshow{display:flex;position:absolute;top:62px;left:14px;right:14px;z-index:5}
+  .search-box.mshow input{width:100%}
+  .grid{grid-template-columns:repeat(auto-fill,minmax(130px,1fr));gap:12px}
+  .splash-sound{bottom:18px;left:18px}
+  .splash-skip{bottom:18px;right:18px}
+  .seg button{min-width:0;flex:1 1 30%;font-size:12.5px;padding:9px 6px}
+  .admin-main .toolbar{flex-direction:column;align-items:stretch}
+  .toolbar input,.toolbar select{width:100%}
+  .kpis{grid-template-columns:1fr 1fr;gap:10px}
+  .kpi .kv{font-size:24px}
+  .card-box{padding:16px}
+  table{font-size:12.5px}
+  thead th,tbody td{padding:9px 7px}
+}
+@media(max-width:400px){
+  .kpis{grid-template-columns:1fr}
+  .rot-line{font-size:13px}
+  .grid{grid-template-columns:repeat(auto-fill,minmax(110px,1fr));gap:10px}
+}
+@media(prefers-reduced-motion:reduce){*{animation-duration:.001ms!important;transition-duration:.001ms!important}}
+body.reduce-motion *{animation-duration:.001ms!important;transition:none!important}
+</style>
+</head>
+<body class="noscroll">
+<!-- ============ SPLASH ============ -->
+<div id="splash">
+  <div class="particles" id="parts"></div>
+  <div class="film-float" id="filmFloat"></div>
+  <div class="splash-logo">
+    <svg width="120" height="120" viewBox="0 0 64 64" aria-hidden="true"><defs><linearGradient id="lg" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#ff3b4e"/><stop offset="1" stop-color="#e11d2e"/></linearGradient></defs><rect width="64" height="64" rx="14" fill="#0a0a0f" stroke="#24242f"/><rect x="11" y="26" width="42" height="25" rx="3" fill="url(#lg)"/><g transform="rotate(-9 32 20)"><rect x="10" y="14" width="44" height="10" rx="2" fill="#f5f5fa"/><path d="M20 14l-5 10M30 14l-5 10M40 14l-5 10M50 14l-5 10" stroke="#0a0a0f" stroke-width="3" stroke-linecap="round"/></g></svg>
+  </div>
+  <div class="splash-word">NANCYFLIX</div>
+  <div class="splash-tag">Every Story Deserves A Screen</div>
+  <div class="splash-rotator"><span class="rot-line" id="splashRot"></span></div>
+  <div class="splash-bar"><i id="splashBar"></i></div>
+  <div class="splash-hint" id="splashHint">Crafted by Dev Brian Studios · Powered by TMDB</div>
+  <button class="splash-sound" id="splashSound" aria-label="Toggle intro sound" title="Toggle intro sound">🔊</button>
+  <button class="splash-skip" id="skipSplash">Skip ›</button>
+</div>
+
+<!-- ============ AUTH ============ -->
+<div id="auth">
+  <div class="auth-card">
+    <div class="auth-head">
+      <svg width="48" height="48" viewBox="0 0 64 64" style="margin:0 auto"><rect width="64" height="64" rx="14" fill="#12121c" stroke="#24242f"/><rect x="11" y="26" width="42" height="25" rx="3" fill="#e11d2e"/><g transform="rotate(-9 32 20)"><rect x="10" y="14" width="44" height="10" rx="2" fill="#f5f5fa"/><path d="M20 14l-5 10M30 14l-5 10M40 14l-5 10M50 14l-5 10" stroke="#12121c" stroke-width="3" stroke-linecap="round"/></g></svg>
+      <h1>NANCYFLIX</h1>
+      <p>DEV BRIAN STUDIOS</p>
+    </div>
+    <div class="auth-tabs">
+      <button id="tabLogin" class="active">Log in</button>
+      <button id="tabReg">Register</button>
+    </div>
+    <div class="form-msg" id="authMsg"></div>
+    <!-- login -->
+    <form id="loginForm">
+      <div class="field"><label>Email</label><div class="wrap"><input type="email" id="liEmail" autocomplete="email" required></div></div>
+      <div class="field"><label>Password</label><div class="wrap"><input type="password" id="liPass" autocomplete="current-password" required><button type="button" class="toggle" data-pw="liPass" aria-label="Show password"><svg class="icon sm" viewBox="0 0 24 24"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8S1 12 1 12z"/><circle cx="12" cy="12" r="3"/></svg></button></div></div>
+      <label class="set-row" style="border:0;padding:4px 0"><span class="lbl"><span class="t" style="font-size:13px">Remember me</span></span><span class="switch"><input type="checkbox" id="liRemember" checked><span class="sl"></span></span></label>
+      <button type="submit" class="btn primary block" style="margin-top:10px">Sign in</button>
+      <div class="auth-alt"><button type="button" id="forgotBtn">Forgot password?</button></div>
+    </form>
+    <!-- register -->
+    <form id="regForm" style="display:none">
+      <div class="field"><label>Full name</label><div class="wrap"><input type="text" id="rgName" autocomplete="name" required></div></div>
+      <div class="field"><label>Email</label><div class="wrap"><input type="email" id="rgEmail" autocomplete="email" required></div></div>
+      <div class="field"><label>Password</label><div class="wrap"><input type="password" id="rgPass" autocomplete="new-password" required><button type="button" class="toggle" data-pw="rgPass" aria-label="Show password"><svg class="icon sm" viewBox="0 0 24 24"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8S1 12 1 12z"/><circle cx="12" cy="12" r="3"/></svg></button></div><div class="pw-meter"><i id="pwBar"></i></div><div class="pw-hint" id="pwHint">Use 8+ characters with letters, numbers &amp; symbols.</div></div>
+      <div class="field"><label>Gender</label><select id="rgGender"><option value="">Select…</option><option>Female</option><option>Male</option><option>Non-binary</option><option>Prefer not to say</option></select></div>
+      <div class="field"><label>Profile picture</label><div class="avatar-pick"><div class="avatar-prev" id="avPrev"><svg class="icon" viewBox="0 0 24 24"><path d="M20 21v-2a4 4 0 00-4-4H8a4 4 0 00-4 4v2"/><circle cx="12" cy="7" r="4"/></svg></div><label class="btn sm" style="cursor:pointer">Choose image<input type="file" id="rgAvatar" accept="image/*" hidden></label></div></div>
+      <button type="submit" class="btn primary block" style="margin-top:6px">Create account</button>
+    </form>
+    <div class="auth-alt">or <button type="button" id="guestBtn">Continue as guest ›</button></div>
+    <div class="demo-note" id="demoNote">Accounts are stored locally in this browser. Movies, posters and trailers are live from TMDB.</div>
+  </div>
+</div>
+<!-- ============ APP ============ -->
+<div id="app">
+  <header class="topbar">
+    <button class="icon-btn menu-toggle" id="menuBtn" aria-label="Menu"><svg class="icon" viewBox="0 0 24 24"><path d="M3 6h18M3 12h18M3 18h18"/></svg></button>
+    <div class="brand"><svg width="26" height="26" viewBox="0 0 64 64" aria-hidden="true"><rect width="64" height="64" rx="14" fill="#12121c"/><rect x="11" y="26" width="42" height="25" rx="3" fill="#e11d2e"/><g transform="rotate(-9 32 20)"><rect x="10" y="14" width="44" height="10" rx="2" fill="#f5f5fa"/><path d="M20 14l-5 10M30 14l-5 10M40 14l-5 10M50 14l-5 10" stroke="#12121c" stroke-width="3" stroke-linecap="round"/></g></svg><span class="t">NANCYFLIX</span></div>
+    <nav class="nav" id="mainNav">
+      <div class="drawer-head"><div class="brand"><svg width="24" height="24" viewBox="0 0 64 64" aria-hidden="true"><rect width="64" height="64" rx="14" fill="#12121c"/><rect x="11" y="26" width="42" height="25" rx="3" fill="#e11d2e"/><g transform="rotate(-9 32 20)"><rect x="10" y="14" width="44" height="10" rx="2" fill="#f5f5fa"/><path d="M20 14l-5 10M30 14l-5 10M40 14l-5 10M50 14l-5 10" stroke="#12121c" stroke-width="3" stroke-linecap="round"/></g></svg><span class="t">NANCYFLIX</span></div><button class="drawer-close" id="drawerClose" aria-label="Close menu"><svg class="icon sm" viewBox="0 0 24 24"><path d="M18 6L6 18M6 6l12 12"/></svg></button></div>
+      <button data-view="home" class="active"><svg class="icon sm" viewBox="0 0 24 24"><path d="M3 12l9-9 9 9M5 10v10h14V10"/></svg>Home</button>
+      <button data-view="genres"><svg class="icon sm" viewBox="0 0 24 24"><path d="M4 6h16M4 12h16M4 18h10"/></svg>Genres</button>
+      <button data-view="watchlist"><svg class="icon sm" viewBox="0 0 24 24"><path d="M19 21l-7-5-7 5V5a2 2 0 012-2h10a2 2 0 012 2z"/></svg>Watchlist</button>
+      <button data-view="feedback"><svg class="icon sm" viewBox="0 0 24 24"><path d="M21 15a2 2 0 01-2 2H7l-4 4V5a2 2 0 012-2h14a2 2 0 012 2z"/></svg>Feedback</button>
+      <button data-view="admin" id="navAdmin" style="display:none"><svg class="icon sm" viewBox="0 0 24 24"><path d="M12 2l8 4v6c0 5-3.5 8-8 10-4.5-2-8-5-8-10V6z"/></svg>Admin Studio</button>
+    </nav>
+    <div class="top-right">
+      <button class="icon-btn" id="mSearchBtn" aria-label="Search" style="display:none"><svg class="icon" viewBox="0 0 24 24"><circle cx="11" cy="11" r="7"/><path d="M21 21l-4-4"/></svg></button>
+      <div class="search-box" id="searchBox"><span class="si"><svg class="icon sm" viewBox="0 0 24 24"><circle cx="11" cy="11" r="7"/><path d="M21 21l-4-4"/></svg></span><input type="search" id="searchInput" placeholder="Search movies…" aria-label="Search movies"><button class="clr" id="searchClear" aria-label="Clear"><svg class="icon sm" viewBox="0 0 24 24"><path d="M18 6L6 18M6 6l12 12"/></svg></button></div>
+      <button class="icon-btn" id="notiBtn" aria-label="Notifications"><svg class="icon" viewBox="0 0 24 24"><path d="M18 8a6 6 0 00-12 0c0 7-3 9-3 9h18s-3-2-3-9M13.73 21a2 2 0 01-3.46 0"/></svg><span class="dot" id="notiDot">0</span></button>
+      <button class="icon-btn" id="settingsBtn" aria-label="Settings"><svg class="icon" viewBox="0 0 24 24"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.6 1.6 0 00.3 1.8l.1.1a2 2 0 11-2.8 2.8l-.1-.1a1.6 1.6 0 00-1.8-.3 1.6 1.6 0 00-1 1.5V21a2 2 0 11-4 0v-.1a1.6 1.6 0 00-1-1.5 1.6 1.6 0 00-1.8.3l-.1.1a2 2 0 11-2.8-2.8l.1-.1a1.6 1.6 0 00.3-1.8 1.6 1.6 0 00-1.5-1H3a2 2 0 110-4h.1a1.6 1.6 0 001.5-1 1.6 1.6 0 00-.3-1.8l-.1-.1a2 2 0 112.8-2.8l.1.1a1.6 1.6 0 001.8.3H9a1.6 1.6 0 001-1.5V3a2 2 0 114 0v.1a1.6 1.6 0 001 1.5 1.6 1.6 0 001.8-.3l.1-.1a2 2 0 112.8 2.8l-.1.1a1.6 1.6 0 00-.3 1.8V9a1.6 1.6 0 001.5 1H21a2 2 0 110 4h-.1a1.6 1.6 0 00-1.5 1z"/></svg></button>
+      <button class="avatar-btn icon-btn" id="profileBtn" aria-label="Profile" style="border:0;background:none"><span class="ph" id="topAvatar">G</span></button>
+    </div>
+  </header>
+  <div class="nav-backdrop" id="navBackdrop"></div>
+  <main>
+    <section id="view-home" class="view show"></section>
+    <section id="view-genres" class="view"></section>
+    <section id="view-search" class="view"></section>
+    <section id="view-watchlist" class="view"></section>
+    <section id="view-feedback" class="view"></section>
+    <section id="view-profile" class="view"></section>
+    <section id="view-admin" class="view"></section>
+  </main>
+  <footer class="site-footer">
+    <div class="foot-grid">
+      <div class="foot-brand">
+        <div class="brand"><svg width="26" height="26" viewBox="0 0 64 64" aria-hidden="true"><rect width="64" height="64" rx="14" fill="#12121c"/><rect x="11" y="26" width="42" height="25" rx="3" fill="#e11d2e"/><g transform="rotate(-9 32 20)"><rect x="10" y="14" width="44" height="10" rx="2" fill="#f5f5fa"/><path d="M20 14l-5 10M30 14l-5 10M40 14l-5 10M50 14l-5 10" stroke="#12121c" stroke-width="3" stroke-linecap="round"/></g></svg><span class="t">NANCYFLIX</span></div>
+        <p>Every story deserves a screen. Discover trending films, browse by genre, build your watchlist and play official trailers — all powered by live TMDB data.</p>
+        <div class="foot-social">
+          <a href="#" onclick="return false" aria-label="X"><svg class="icon sm" viewBox="0 0 24 24"><path d="M4 4l16 16M20 4L4 20"/></svg></a>
+          <a href="#" onclick="return false" aria-label="Instagram"><svg class="icon sm" viewBox="0 0 24 24"><rect x="3" y="3" width="18" height="18" rx="5"/><circle cx="12" cy="12" r="4"/><circle cx="17.5" cy="6.5" r="1"/></svg></a>
+          <a href="#" onclick="return false" aria-label="YouTube"><svg class="icon sm" viewBox="0 0 24 24"><rect x="2" y="5" width="20" height="14" rx="4"/><path d="M10 9l5 3-5 3z" fill="currentColor" stroke="none"/></svg></a>
+          <a href="#" onclick="return false" aria-label="Email"><svg class="icon sm" viewBox="0 0 24 24"><rect x="3" y="5" width="18" height="14" rx="2"/><path d="M3 7l9 6 9-6"/></svg></a>
+        </div>
+      </div>
+      <div class="foot-col">
+        <h4>Browse</h4>
+        <ul>
+          <li><a onclick="switchView('home')">Home</a></li>
+          <li><a onclick="switchView('genres')">Genres</a></li>
+          <li><a onclick="switchView('watchlist')">My Watchlist</a></li>
+          <li><a onclick="document.getElementById('searchInput').focus()">Search</a></li>
+        </ul>
+      </div>
+      <div class="foot-col">
+        <h4>Studio</h4>
+        <ul>
+          <li><a onclick="switchView('profile')">Profile</a></li>
+          <li><a onclick="switchView('feedback')">Feedback</a></li>
+          <li><a onclick="Settings.openModal()">Settings</a></li>
+          <li><a href="#" onclick="Legal.open('about');return false">About Dev Brian Studios</a></li>
+        </ul>
+      </div>
+      <div class="foot-col">
+        <h4>Legal</h4>
+        <ul>
+          <li><a href="#" onclick="Legal.open('terms');return false">Terms of Use</a></li>
+          <li><a href="#" onclick="Legal.open('privacy');return false">Privacy Policy</a></li>
+          <li><a href="#" onclick="Legal.open('cookies');return false">Cookie Preferences</a></li>
+          <li><a href="https://www.themoviedb.org" target="_blank" rel="noopener noreferrer">Data by TMDB</a></li>
+        </ul>
+      </div>
+    </div>
+    <div class="foot-bar">
+      <span>© 2026–2027 NANCYFLIX · Dev Brian Studios. All rights reserved.</span>
+      <span class="foot-meta">Edition 2026/27 · This product uses the TMDB API but is not endorsed or certified by TMDB.</span>
+    </div>
+  </footer>
+</div>
+
+<!-- in-app trailer player -->
+<div id="player" role="dialog" aria-label="Trailer player">
+  <div class="player-bar">
+    <button class="btn ghost" id="playerBack"><svg class="icon sm" viewBox="0 0 24 24"><path d="M19 12H5M12 19l-7-7 7-7"/></svg>Back to movies</button>
+    <div class="pt" id="playerTitle"></div>
+    <button class="icon-btn" id="playerClose" aria-label="Close"><svg class="icon" viewBox="0 0 24 24"><path d="M18 6L6 18M6 6l12 12"/></svg></button>
+  </div>
+  <div class="player-stage" id="playerStage"></div>
+</div>
+
+<!-- overlays -->
+<div class="overlay" id="detailOverlay"><div class="modal" id="detailModal" role="dialog" aria-label="Movie details"></div></div>
+<div class="overlay" id="confirmOverlay"><div class="modal sm" id="confirmModal" style="padding:26px;position:relative"></div></div>
+<div class="overlay" id="gateOverlay"><div class="modal sm" id="gateModal" style="padding:30px;text-align:center;position:relative"></div></div>
+<div class="overlay" id="settingsOverlay"><div class="modal" id="settingsModal" style="position:relative"></div></div>
+<div class="overlay" id="legalOverlay"><div class="modal" id="legalModal" style="position:relative"></div></div>
+<button class="fab-search" id="fabSearch" aria-label="Quick search" title="Search movies"><svg class="icon lg" viewBox="0 0 24 24"><circle cx="11" cy="11" r="7"/><path d="M21 21l-4-4"/></svg><span class="fab-ring"></span></button>
+
+<!-- notification panel -->
+<aside class="panel" id="notiPanel" aria-label="Notifications">
+  <div class="panel-head"><svg class="icon" viewBox="0 0 24 24"><path d="M18 8a6 6 0 00-12 0c0 7-3 9-3 9h18s-3-2-3-9"/></svg><h3>Notifications</h3><button class="btn sm ghost" id="markAllRead">Mark all read</button><button class="icon-btn" id="notiClose" aria-label="Close"><svg class="icon sm" viewBox="0 0 24 24"><path d="M18 6L6 18M6 6l12 12"/></svg></button></div>
+  <div class="panel-body" id="notiList"></div>
+</aside>
+
+<div id="toasts" aria-live="polite"></div>
+<script>
+/* =====================================================================
+   NANCYFLIX  —  Dev Brian Studios  —  single-file frontend
+   Modules below are organized by responsibility. Search for  ===  headers.
+   ===================================================================== */
+
+/* ============ 1. CONFIGURATION ============
+   Edit these constants to connect real services. Leaving them blank keeps
+   the app in an honest, clearly-labelled DEMO MODE (local browser storage).
+   NEVER put a Supabase service-role key, DB password, or private email key
+   here — those belong on the server (see /backend). */
+const CONFIG = {
+  // TMDB: a browser-side key is VISIBLE to visitors. For production prefer the
+  // server proxy (set TMDB_PROXY to your deployed function and leave KEY blank).
+  TMDB_KEY: "6e4e4f6d237e1219957cc8a97eae1cb1", // v3 key wired in (NOTE: visible to visitors in a public deploy)
+  TMDB_PROXY: "",                     // e.g. https://yourapp.vercel.app/api/tmdb  (preferred)
+  TMDB_BASE: "https://api.themoviedb.org/3",
+  IMG: "https://image.tmdb.org/t/p/",
+  // Supabase (public anon values are safe to expose; service-role is NOT):
+  SUPABASE_URL: "",
+  SUPABASE_ANON_KEY: "",
+  ADMIN_EMAILS: ["bridah888@gmail.com", "agollanancy@gmail.com"] // display hint only; real role lives server-side
+};
+const HAS_TMDB = !!(CONFIG.TMDB_PROXY || CONFIG.TMDB_KEY);
+const HAS_BACKEND = !!(CONFIG.SUPABASE_URL && CONFIG.SUPABASE_ANON_KEY);
+const img = (path,size="w500")=> path ? CONFIG.IMG+size+path : "";
+
+/* ============ runtime state ============ */
+const State = {
+  user:null, guest:false, theme:"midnight", view:"home",
+  settings:{}, notifications:[], watchlist:[], genres:[], genreMap:{},
+  searchSeq:0
+};
+
+/* ============ 2. SVG ICON SYSTEM ============ */
+const ICON = {
+  play:'<path d="M8 5v14l11-7z"/>',
+  star:'<path d="M12 2l3 7 7 .5-5 4.5 1.5 7L12 17l-6 4 1.5-7-5-4.5 7-.5z"/>',
+  bookmark:'<path d="M19 21l-7-5-7 5V5a2 2 0 012-2h10a2 2 0 012 2z"/>',
+  close:'<path d="M18 6L6 18M6 6l12 12"/>',
+  film:'<rect x="3" y="3" width="18" height="18" rx="2"/><path d="M7 3v18M17 3v18M3 8h4M3 16h4M17 8h4M17 16h4"/>',
+  alert:'<path d="M12 9v4m0 4h.01M10.3 3.9l-8 14A2 2 0 004 21h16a2 2 0 001.7-3L13.7 3.9a2 2 0 00-3.4 0z"/>',
+  inbox:'<path d="M22 12h-6l-2 3h-4l-2-3H2"/><path d="M5 5h14l3 7v6a1 1 0 01-1 1H3a1 1 0 01-1-1v-6z"/>',
+  empty:'<rect x="3" y="3" width="18" height="18" rx="2"/><path d="M3 9h18"/>'
+};
+const svg=(p,cls="icon")=>`<svg class="${cls}" viewBox="0 0 24 24">${p}</svg>`;
+
+/* ============ safe text rendering ============ */
+function esc(s){return String(s==null?"":s).replace(/[&<>\"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','\"':'&quot;',"'":'&#39;'}[c]));}
+function fmtDate(d){if(!d)return "—";const t=new Date(d);return isNaN(t)?"—":t.toLocaleDateString(undefined,{year:'numeric',month:'short',day:'numeric'});}
+function fmtDT(d){if(!d)return "—";const t=new Date(d);return isNaN(t)?"—":t.toLocaleString(undefined,{dateStyle:'medium',timeStyle:'short'});}
+function uid(){return 'id-'+Date.now().toString(36)+Math.random().toString(36).slice(2,7);}
+</script>
+<script>
+/* ============ 3. STORAGE / BACKEND ADAPTER ============
+   DataStore gives the rest of the app one API. When Supabase is configured it
+   talks to the backend (real cross-device sync); otherwise it falls back to
+   namespaced localStorage (DEMO MODE — single browser only). We never store
+   plaintext passwords here: in demo mode auth is simulated locally and clearly
+   labelled; in backend mode Supabase Auth handles credentials & hashing. */
+const DB_NS = "nancyflix:";
+const LS = {
+  get(k,f){try{const v=localStorage.getItem(DB_NS+k);return v==null?f:JSON.parse(v);}catch(e){return f;}},
+  set(k,v){try{localStorage.setItem(DB_NS+k,JSON.stringify(v));}catch(e){}},
+  del(k){localStorage.removeItem(DB_NS+k);}
+};
+
+/* thin Supabase REST helpers (only used when HAS_BACKEND). The anon key is a
+   public key — Row Level Security on the server is what actually protects data. */
+async function sb(path,opts={}){
+  const headers=Object.assign({
+    apikey:CONFIG.SUPABASE_ANON_KEY,
+    Authorization:"Bearer "+(State.accessToken||CONFIG.SUPABASE_ANON_KEY),
+    "Content-Type":"application/json"
+  },opts.headers||{});
+  const res=await fetch(CONFIG.SUPABASE_URL+path,Object.assign({},opts,{headers}));
+  if(!res.ok)throw new Error("backend "+res.status);
+  const txt=await res.text();return txt?JSON.parse(txt):null;
+}
+
+const Store = {
+  mode: HAS_BACKEND ? "backend" : "demo",
+  // ---- users (demo mode only; backend uses Supabase Auth + profiles table)
+  users(){return LS.get("users",[]);},
+  saveUsers(u){LS.set("users",u);},
+  // ---- per-user owned collections
+  wlKey(id){return "wl:"+id;},
+  getWatchlist(id){return LS.get(this.wlKey(id),[]);},
+  setWatchlist(id,list){LS.set(this.wlKey(id),list);},
+  // ---- notifications per user + broadcast announcements
+  notiKey(id){return "noti:"+id;},
+  getNoti(id){return LS.get(this.notiKey(id),[]);},
+  setNoti(id,list){LS.set(this.notiKey(id),list);},
+  announcements(){return LS.get("announcements",[]);},
+  setAnnouncements(a){LS.set("announcements",a);},
+  // ---- admin inbox (feedback / ratings / reports)
+  inbox(){return LS.get("inbox",[]);},
+  setInbox(x){LS.set("inbox",x);},
+  // ---- audit log
+  audit(){return LS.get("audit",[]);},
+  log(action,meta){const a=this.audit();a.unshift({id:uid(),action,meta:meta||"",actor:(State.user&&State.user.email)||(State.guest?"guest":"system"),ts:Date.now()});LS.set("audit",a.slice(0,500));},
+  session(){return LS.get("session",null);},
+  setSession(s){s?LS.set("session",s):LS.del("session");},
+  // guest sessions counter (honest measurable metric)
+  bumpGuest(){const n=(LS.get("guestCount",0))+1;LS.set("guestCount",n);return n;},
+  guestCount(){return LS.get("guestCount",0);},
+  // movie-detail views + trailer requests (honest counters)
+  bump(k){const n=(LS.get(k,0))+1;LS.set(k,n);return n;},
+  val(k){return LS.get(k,0);}
+};
+
+/* very small, clearly-labelled DEMO password hash (NOT secure — backend mode
+   uses Supabase Auth instead). Prevents storing the literal plaintext. */
+async function demoHash(pw){
+  try{const b=await crypto.subtle.digest('SHA-256',new TextEncoder().encode("nf1$"+pw));
+    return [...new Uint8Array(b)].map(x=>x.toString(16).padStart(2,'0')).join('');}
+  catch(e){return 'x'+pw.length;}
+}
+</script>
+<script>
+/* ============ 4. TOAST MANAGER ============ */
+const Toast = {
+  show(title,msg,type="info",ms=4200){
+    if(State.settings.inApp===false)return;
+    const el=document.createElement('div');el.className='toast '+(type==='info'?'':type);
+    el.innerHTML=`<div style="flex:1"><div class="tt">${esc(title)}</div>${msg?`<div class="tm">${esc(msg)}</div>`:''}</div>`;
+    document.getElementById('toasts').appendChild(el);
+    if(State.settings.sound!==false)Sound.ping(type);
+    setTimeout(()=>{el.style.opacity=0;el.style.transform='translateX(30px)';setTimeout(()=>el.remove(),250);},ms);
+  }
+};
+
+/* ============ notification sounds via Web Audio (no autoplay before gesture) ============ */
+const Sound = {
+  ctx:null,
+  ping(type){
+    try{
+      if(!this.ctx)this.ctx=new (window.AudioContext||window.webkitAudioContext)();
+      const c=this.ctx,o=c.createOscillator(),g=c.createGain();
+      const f=type==='err'?220:type==='ok'?660:440;
+      o.frequency.value=f;o.type='sine';o.connect(g);g.connect(c.destination);
+      const vol=(State.settings.soundVol!=null?State.settings.soundVol:0.5)*0.12;
+      g.gain.setValueAtTime(vol,c.currentTime);
+      g.gain.exponentialRampToValueAtTime(0.0001,c.currentTime+0.25);
+      o.start();o.stop(c.currentTime+0.26);
+    }catch(e){}
+  }
+};
+
+/* ============ 5. NOTIFICATION CENTER ============ */
+const Noti = {
+  add(title,message,type="info",opts={}){
+    const n={id:uid(),title,message,type,read:false,ts:Date.now(),announce:!!opts.announce};
+    State.notifications.unshift(n);
+    if(State.user)Store.setNoti(State.user.id,State.notifications);
+    this.render();
+    if(opts.toast!==false)Toast.show(title,message,type);
+    return n;
+  },
+  markAll(){State.notifications.forEach(n=>n.read=true);if(State.user)Store.setNoti(State.user.id,State.notifications);this.render();},
+  render(){
+    const list=document.getElementById('notiList');
+    const unread=State.notifications.filter(n=>!n.read).length;
+    const dot=document.getElementById('notiDot');
+    dot.textContent=unread>9?'9+':unread;dot.classList.toggle('show',unread>0);
+    if(!State.notifications.length){list.innerHTML=`<div class="state">${svg(ICON.empty,'icon lg')}<h4>No notifications</h4><p>Updates, announcements and activity will appear here.</p></div>`;return;}
+    list.innerHTML=State.notifications.map(n=>`<div class="noti ${n.read?'':'unread'} ${n.announce?'announce':''}"><div class="ni">${svg(n.announce?ICON.alert:ICON.film,'icon sm')}</div><div style="flex:1"><div class="nt">${esc(n.title)}</div><div class="nm">${esc(n.message)}</div><div class="nd">${fmtDT(n.ts)}</div></div></div>`).join('');
+  },
+  // pull admin broadcast announcements the user hasn't seen yet
+  syncAnnouncements(){
+    if(!State.user)return;
+    const seen=State.notifications.filter(n=>n.announce).map(n=>n.srcId);
+    Store.announcements().forEach(a=>{
+      if(a.ts>=(State.user.createdAt||0) && !State.notifications.some(n=>n.srcId===a.id)){
+        const n={id:uid(),srcId:a.id,title:a.title||'Announcement from NANCYFLIX',message:a.message,type:'info',read:false,ts:a.ts,announce:true};
+        State.notifications.unshift(n);
+      }
+    });
+    if(State.user)Store.setNoti(State.user.id,State.notifications);
+    this.render();
+  }
+};
+</script>
+<script>
+/* ============ 6. MODAL / CONFIRM / GATE MANAGER ============ */
+function openOverlay(id){const o=document.getElementById(id);o.classList.add('show');document.body.classList.add('noscroll');}
+function closeOverlay(id){const o=document.getElementById(id);o.classList.remove('show');if(!document.querySelector('.overlay.show')&&!document.getElementById('player').classList.contains('show'))document.body.classList.remove('noscroll');}
+[['detailOverlay'],['confirmOverlay'],['gateOverlay'],['settingsOverlay']].forEach(([id])=>{
+  document.getElementById(id).addEventListener('click',e=>{if(e.target.id===id)closeOverlay(id);});
+});
+document.addEventListener('keydown',e=>{
+  if(e.key==='Escape'){
+    if(document.getElementById('player').classList.contains('show'))return Player.close();
+    const open=[...document.querySelectorAll('.overlay.show')].pop();
+    if(open)closeOverlay(open.id);
+    else if(document.getElementById('notiPanel').classList.contains('show'))toggleNoti(false);
+  }
+});
+
+const Confirm = {
+  ask(title,msg,{ok="Confirm",cancel="Cancel",danger=false}={}){
+    return new Promise(res=>{
+      const m=document.getElementById('confirmModal');
+      m.innerHTML=`<button class="modal-close" data-c>${svg(ICON.close,'icon sm')}</button>
+        <h3 style="font-size:19px;margin-bottom:8px">${esc(title)}</h3>
+        <p style="color:var(--muted);font-size:14px;margin-bottom:22px">${esc(msg)}</p>
+        <div style="display:flex;gap:10px;justify-content:flex-end">
+          <button class="btn" data-no>${esc(cancel)}</button>
+          <button class="btn ${danger?'':'primary'}" data-yes style="${danger?'background:var(--err);color:#fff':''}">${esc(ok)}</button></div>`;
+      openOverlay('confirmOverlay');
+      const done=v=>{closeOverlay('confirmOverlay');res(v);};
+      m.querySelector('[data-yes]').onclick=()=>done(true);
+      m.querySelector('[data-no]').onclick=()=>done(false);
+      m.querySelector('[data-c]').onclick=()=>done(false);
+    });
+  }
+};
+
+/* guest/auth gate — never traps the user; “Keep browsing” always closes it */
+function showGate(){
+  const m=document.getElementById('gateModal');
+  m.innerHTML=`<button class="modal-close" data-c>${svg(ICON.close,'icon sm')}</button>
+    <div style="width:60px;height:60px;border-radius:50%;background:var(--accent-soft);display:flex;align-items:center;justify-content:center;margin:0 auto 16px;color:var(--accent-2)">${svg(ICON.play,'icon lg')}</div>
+    <h3 style="font-size:21px;margin-bottom:8px">Your next cinematic experience is waiting</h3>
+    <p style="color:var(--muted);font-size:14px;margin-bottom:22px">Create your free NANCYFLIX account or log in to continue.</p>
+    <div style="display:flex;flex-direction:column;gap:10px">
+      <button class="btn primary block" data-reg>Create account</button>
+      <button class="btn block" data-login>Log in</button>
+      <button class="btn ghost block" data-keep>Keep browsing</button></div>`;
+  openOverlay('gateOverlay');
+  const go=tab=>{closeOverlay('gateOverlay');backToAuth(tab);};
+  m.querySelector('[data-reg]').onclick=()=>go('reg');
+  m.querySelector('[data-login]').onclick=()=>go('login');
+  m.querySelector('[data-keep]').onclick=()=>closeOverlay('gateOverlay');
+  m.querySelector('[data-c]').onclick=()=>closeOverlay('gateOverlay');
+}
+/* returns true if allowed, false if gate shown */
+function requireAuth(){if(State.user)return true;showGate();return false;}
+</script>
+<script>
+/* ============ 7. TMDB API CLIENT ============
+   Uses the server proxy if configured (keeps the key private), else a browser
+   key (exposed — dev only). All movie data, posters, ratings and trailers are
+   real TMDB results. If a request fails we surface empty/error states — we
+   never substitute fake movies. */
+const TMDB = {
+  errors:0, available:true,
+  async call(path,params={}){
+    if(!HAS_TMDB)throw new Error('TMDB not configured');
+    const q=new URLSearchParams(params);
+    let url;
+    if(CONFIG.TMDB_PROXY){url=CONFIG.TMDB_PROXY+(CONFIG.TMDB_PROXY.includes('?')?'&':'?')+'path='+encodeURIComponent(path)+'&'+q.toString();}
+    else{q.set('api_key',CONFIG.TMDB_KEY);url=CONFIG.TMDB_BASE+path+'?'+q.toString();}
+    try{const r=await fetch(url);if(!r.ok)throw new Error(r.status);this.available=true;return await r.json();}
+    catch(e){this.errors++;this.available=false;throw e;}
+  },
+  async genres(){const d=await this.call('/genre/movie/list');return d.genres||GENRE_FALLBACK;},
+  async list(kind,page=1){ // trending/popular/top_rated/upcoming
+    const map={trending:'/trending/movie/week',popular:'/movie/popular',top_rated:'/movie/top_rated',upcoming:'/movie/upcoming',now_playing:'/movie/now_playing'};
+    const d=await this.call(map[kind]||map.popular,{page});return d.results||[];
+  },
+  async byGenre(gid,page=1){
+    // “Latest 2026/27” edition: surface the newest already-released titles per
+    // genre, with a small vote floor so entries have real posters/metadata.
+    const today=new Date().toISOString().slice(0,10);
+    const d=await this.call('/discover/movie',{with_genres:gid,page,sort_by:'primary_release_date.desc','primary_release_date.lte':today,'vote_count.gte':25,'release_date.gte':'2024-01-01'});
+    return d.results||[];
+  },
+  async search(q,page=1){const d=await this.call('/search/movie',{query:q,page});return {results:d.results||[],total:d.total_results||0,pages:d.total_pages||1};},
+  async detail(id){const d=await this.call('/movie/'+id,{append_to_response:'videos,credits,similar'});return d;}
+};
+
+/* ---- Standard TMDB movie-genre IDs (real metadata, used only if the
+       /genre/movie/list call is unreachable so the genre rail can render). ---- */
+const GENRE_FALLBACK=[{id:28,name:'Action'},{id:12,name:'Adventure'},{id:16,name:'Animation'},{id:35,name:'Comedy'},{id:80,name:'Crime'},{id:99,name:'Documentary'},{id:18,name:'Drama'},{id:10751,name:'Family'},{id:14,name:'Fantasy'},{id:36,name:'History'},{id:27,name:'Horror'},{id:10402,name:'Music'},{id:9648,name:'Mystery'},{id:10749,name:'Romance'},{id:878,name:'Science Fiction'},{id:10770,name:'TV Movie'},{id:53,name:'Thriller'},{id:10752,name:'War'},{id:37,name:'Western'}];
+</script>
+<script>
+/* ============ 8. MOVIE CATALOGUE / CARD RENDERING ============ */
+function gname(ids){if(!ids||!ids.length)return '';const n=State.genreMap[ids[0]];return n||'';}
+function year(d){return d?String(d).slice(0,4):'—';}
+function cardHTML(m){
+  const saved=State.watchlist.some(w=>w.id===m.id);
+  const poster=img(m.poster_path);
+  return `<article class="card" data-id="${m.id}" tabindex="0" role="button" aria-label="${esc(m.title)}">
+    <div class="poster">
+      <div class="rate">${svg(ICON.star,'icon sm')} ${(m.vote_average||0).toFixed(1)}</div>
+      <button class="bk ${saved?'saved':''}" data-bk="${m.id}" aria-label="Save">${svg(ICON.bookmark,'icon sm')}</button>
+      ${poster?`<img loading="lazy" src="${poster}" alt="${esc(m.title)} poster" onerror="this.style.display='none'">`:`<div style="display:flex;align-items:center;justify-content:center;height:100%;color:var(--muted);padding:12px;text-align:center;font-size:12px">${esc(m.title)}</div>`}
+      <div class="ov"><div class="play" data-play="${m.id}">${svg(ICON.play,'icon lg')}</div></div>
+    </div>
+    <div class="info"><div class="ttl">${esc(m.title)}</div><div class="yr">${year(m.release_date)}${gname(m.genre_ids)?' · '+esc(gname(m.genre_ids)):''}</div></div>
+  </article>`;
+}
+function skeletons(n){return Array.from({length:n},()=>`<div class="skel"><div class="sp"></div><div class="sl" style="width:80%"></div><div class="sl" style="width:50%"></div></div>`).join('');}
+
+/* delegate card clicks globally */
+document.addEventListener('click',e=>{
+  const bk=e.target.closest('[data-bk]'); if(bk){e.stopPropagation();Watchlist.toggle(+bk.dataset.bk,bk);return;}
+  const pl=e.target.closest('[data-play]'); if(pl){e.stopPropagation();Player.fromMovie(+pl.dataset.play);return;}
+  const card=e.target.closest('.card[data-id]'); if(card){MovieDetail.open(+card.dataset.id);}
+});
+document.addEventListener('keydown',e=>{if(e.key==='Enter'){const c=document.activeElement;if(c&&c.classList&&c.classList.contains('card'))MovieDetail.open(+c.dataset.id);}});
+
+/* ============ HOME VIEW ============ */
+const Home = {
+  async render(){
+    clearInterval(this._heroTimer);
+    const v=document.getElementById('view-home');
+    v.innerHTML=`<div class="hero" id="hero"><div class="bg"></div><div class="ov"></div><div class="inner"><div class="chip">Loading spotlight…</div></div><div class="hero-dots" id="heroDots"></div></div>`+
+      this._sec('New Releases · 2026/27','now_playing')+this._sec('Trending This Week','trending')+this._sec('Popular Movies','popular')+
+      this._sec('Top Rated','top_rated')+this._sec('Upcoming Releases','upcoming');
+    const trend=await TMDB.list('trending');
+    if(trend.length)this._startHero(trend);
+    this._fill('trending',trend);
+    ['now_playing','popular','top_rated','upcoming'].forEach(async k=>this._fill(k,await TMDB.list(k)));
+  },
+  _sec(title,key){return `<div class="section"><div class="section-head"><h3><span class="bar"></span>${title}</h3></div><div class="row" id="row-${key}">${skeletons(7)}</div></div>`;},
+  _demoBanner(){/* demo catalogue removed — app always loads live TMDB data */},
+  /* rotating spotlight: cycles through up to 7 trending movies with a
+     cross-fade + slow Ken-Burns zoom; auto-advances, pauses on hover,
+     and jumps on dot click. */
+  _startHero(list){
+    this._heroList=(list||[]).filter(m=>m&&(m.backdrop_path||m.poster_path)).slice(0,7);
+    if(!this._heroList.length)this._heroList=(list||[]).slice(0,7);
+    if(!this._heroList.length)return;
+    this._heroIdx=0;
+    const h=document.getElementById('hero');if(!h)return;
+    const dots=h.querySelector('#heroDots');
+    dots.innerHTML=this._heroList.map((_,i)=>`<button class="hdot${i===0?' active':''}" data-h="${i}" aria-label="Spotlight ${i+1}"></button>`).join('');
+    dots.onclick=e=>{const b=e.target.closest('[data-h]');if(b){this._showHero(+b.dataset.h);this._heroTick();}};
+    h.onmouseenter=()=>clearInterval(this._heroTimer);
+    h.onmouseleave=()=>this._heroTick();
+    this._showHero(0);
+    this._heroTick();
+  },
+  _heroTick(){clearInterval(this._heroTimer);if(!this._heroList||this._heroList.length<2)return;this._heroTimer=setInterval(()=>this._showHero((this._heroIdx+1)%this._heroList.length),6000);},
+  _showHero(i){
+    const h=document.getElementById('hero');if(!h||!this._heroList||!this._heroList.length)return;
+    this._heroIdx=i;const m=this._heroList[i];
+    const bd=img(m.backdrop_path,'original')||img(m.poster_path,'w780');
+    const bg=h.querySelector('.bg');
+    bg.style.opacity=0;bg.classList.remove('kenburns');
+    clearTimeout(this._heroFade);
+    this._heroFade=setTimeout(()=>{bg.style.backgroundImage=bd?`url(${bd})`:'linear-gradient(135deg,#1a0409,#06060a)';bg.style.opacity=1;requestAnimationFrame(()=>bg.classList.add('kenburns'));},200);
+    const inner=h.querySelector('.inner');
+    inner.innerHTML=`<div class="meta"><span class="chip">${svg(ICON.star,'icon sm')} ${(m.vote_average||0).toFixed(1)}</span><span class="chip">${year(m.release_date)}</span><span class="chip">Spotlight</span></div><h2>${esc(m.title)}</h2><p>${esc(m.overview||'')}</p><div class="cta"><button class="btn primary" data-play="${m.id}">${svg(ICON.play,'icon sm')} Play trailer</button><button class="btn" data-id="${m.id}" onclick="MovieDetail.open(${m.id})">More info</button></div>`;
+    inner.classList.remove('hero-in');void inner.offsetWidth;inner.classList.add('hero-in');
+    h.querySelectorAll('.hdot').forEach((d,di)=>d.classList.toggle('active',di===i));
+  },
+  _hero(m){this._startHero([m]);},
+  _fill(key,list){const r=document.getElementById('row-'+key);if(!r)return;if(!list.length){r.innerHTML=`<div class="state" style="padding:30px">${svg(ICON.alert,'icon lg')}<p>Could not load this section. ${TMDB.available?'':'Check connection or configuration.'}</p></div>`;return;}r.innerHTML=list.map(cardHTML).join('');}
+};
+</script>
+<script>
+/* ============ GENRES VIEW — every genre listed with its movies + infinite
+   scroll that keeps revealing the next genre (or more titles when one genre
+   is focused via a tab) ============ */
+const Genres = {
+  mode:'all', active:null, gIndex:0, page:1, loading:false, done:false, observer:null,
+  async render(){
+    const v=document.getElementById('view-genres');
+    if(!State.genres.length)State.genres=await TMDB.genres();
+    v.innerHTML=`<div class="section-head"><h3><span class="bar"></span>Browse by Genre</h3></div>
+      <div class="genre-tabs" id="genreTabs">
+        <button data-g="all" class="${this.mode==='all'?'active':''}">All genres</button>
+        ${State.genres.map(g=>`<button data-g="${g.id}" class="${this.mode==='focus'&&g.id===this.active?'active':''}">${esc(g.name)}</button>`).join('')}
+      </div>
+      <div id="genreStream"></div>
+      <div id="sentinel"></div>`;
+    v.querySelector('#genreTabs').onclick=e=>{const b=e.target.closest('[data-g]');if(!b)return;if(b.dataset.g==='all')this.showAll();else this.focus(+b.dataset.g);};
+    if(this.mode==='focus'&&this.active)this.focus(this.active);else this.showAll();
+    this._observe();
+  },
+  _setTab(g){document.querySelectorAll('#genreTabs button').forEach(b=>b.classList.toggle('active',b.dataset.g===String(g)));},
+  showAll(){
+    this.mode='all';this.active=null;this.gIndex=0;this.done=false;this.loading=false;
+    this._setTab('all');
+    const s=document.getElementById('genreStream');if(s)s.innerHTML='';
+    window.scrollTo({top:0,behavior:'smooth'});
+    this.loadNextGenre();this.loadNextGenre();
+  },
+  async loadNextGenre(){
+    if(this.loading||this.done||this.mode!=='all')return;this.loading=true;
+    const sen=document.getElementById('sentinel');if(sen)sen.innerHTML='<div class="spinner"></div>';
+    const g=State.genres[this.gIndex];
+    if(!g){this.done=true;this.loading=false;if(sen)sen.innerHTML='<span>You’ve reached the end</span>';return;}
+    const list=await TMDB.byGenre(g.id,1);
+    const stream=document.getElementById('genreStream');if(!stream){this.loading=false;return;}
+    if(list.length){
+      const block=document.createElement('div');block.className='genre-block';
+      block.innerHTML=`<h3><span class="bar"></span>${esc(g.name)}<span class="gcount">${list.length}+ titles</span></h3><div class="grid">${list.map(cardHTML).join('')}</div>`;
+      stream.appendChild(block);
+    }
+    this.gIndex++;
+    this.done=this.gIndex>=State.genres.length;
+    if(sen)sen.innerHTML=this.done?'<span>You’ve reached the end</span>':'';
+    this.loading=false;
+  },
+  focus(gid){
+    this.mode='focus';this.active=gid;this.page=1;this.done=false;this.loading=false;
+    this._setTab(gid);
+    const g=State.genres.find(x=>x.id===gid)||{name:''};
+    const stream=document.getElementById('genreStream');
+    if(stream)stream.innerHTML=`<div class="genre-block"><h3><span class="bar"></span>${esc(g.name)}</h3><div class="grid" id="genreGrid">${skeletons(12)}</div></div>`;
+    window.scrollTo({top:0,behavior:'smooth'});
+    this.loadMoreFocus(true);
+  },
+  async loadMoreFocus(reset){
+    if(this.loading||this.done||this.mode!=='focus')return;this.loading=true;
+    const sen=document.getElementById('sentinel');if(sen)sen.innerHTML='<div class="spinner"></div>';
+    const res=await TMDB.byGenre(this.active,this.page);
+    const grid=document.getElementById('genreGrid');if(!grid){this.loading=false;return;}
+    if(reset)grid.innerHTML='';
+    if(!res.length&&this.page===1){grid.innerHTML=`<div class="state" style="grid-column:1/-1">${svg(ICON.empty,'icon lg')}<h4>Nothing here yet</h4><p>No movies found for this genre right now.</p></div>`;this.done=true;}
+    else{grid.insertAdjacentHTML('beforeend',res.map(cardHTML).join(''));this.page++;if(this.page>20||res.length<20)this.done=true;}
+    if(sen)sen.innerHTML=this.done?'<span>You’ve reached the end</span>':'';
+    this.loading=false;
+  },
+  _tick(){if(this.mode==='all')this.loadNextGenre();else this.loadMoreFocus();},
+  _observe(){
+    if(this.observer)this.observer.disconnect();
+    const sen=document.getElementById('sentinel');if(!sen)return;
+    this.observer=new IntersectionObserver(es=>{if(es[0].isIntersecting&&State.view==='genres')this._tick();},{rootMargin:'500px'});
+    this.observer.observe(sen);
+  }
+};
+</script>
+<script>
+/* ============ 9. MOVIE DETAIL ============ */
+const MovieDetail = {
+  current:null,
+  async open(id){
+    Store.bump('detailViews');
+    const m=document.getElementById('detailModal');
+    m.innerHTML=`<button class="modal-close" onclick="closeOverlay('detailOverlay')">${svg(ICON.close,'icon sm')}</button><div style="padding:60px;text-align:center"><div class="spinner" style="margin:0 auto"></div></div>`;
+    openOverlay('detailOverlay');
+    const d=await TMDB.detail(id);this.current=d;
+    const trailer=this._trailer(d);
+    const saved=State.watchlist.some(w=>w.id===d.id);
+    const genres=(d.genres||[]).map(g=>g.name)||[];
+    const cast=(d.credits&&d.credits.cast||[]).slice(0,8);
+    const sim=(d.similar&&d.similar.results||[]).slice(0,10);
+    m.innerHTML=`<button class="modal-close" onclick="closeOverlay('detailOverlay')">${svg(ICON.close,'icon sm')}</button>
+      <div class="detail-hero"><div class="bg" style="background-image:url('${img(d.backdrop_path,'original')||img(d.poster_path,'w780')}')"></div><div class="ov"></div></div>
+      <div class="detail-body"><div class="detail-top">
+        <div class="pz">${img(d.poster_path)?`<img src="${img(d.poster_path)}" alt="${esc(d.title)}">`:`<div style="display:flex;align-items:center;justify-content:center;height:100%;color:var(--muted);font-size:12px;padding:10px;text-align:center">${esc(d.title)}</div>`}</div>
+        <div class="meta"><h2>${esc(d.title)}</h2>
+          <div class="detail-chips"><span class="chip">${svg(ICON.star,'icon sm')} ${(d.vote_average||0).toFixed(1)} (${d.vote_count||0})</span><span class="chip">${fmtDate(d.release_date)}</span>${d.runtime?`<span class="chip">${d.runtime} min</span>`:''}</div>
+          <div class="detail-chips">${genres.map(g=>`<span class="chip">${esc(g)}</span>`).join('')}</div>
+          <div class="detail-ov">${esc(d.overview||'No overview available.')}</div>
+          <div style="display:flex;gap:10px;flex-wrap:wrap">
+            <button class="btn primary" id="dPlay">${svg(ICON.play,'icon sm')} Play trailer</button>
+            <button class="btn" id="dSave">${svg(ICON.bookmark,'icon sm')} ${saved?'Saved':'Watchlist'}</button></div></div></div>
+        ${cast.length?`<div class="detail-sec"><h4>Cast</h4><div class="cast">${cast.map(c=>`<div class="c">${c.profile_path?`<img src="${img(c.profile_path,'w185')}" alt="${esc(c.name)}">`:`<div class="ph">${esc((c.name||'?')[0])}</div>`}<div class="nm">${esc(c.name)}</div><div class="ch">${esc(c.character||'')}</div></div>`).join('')}</div></div>`:''}
+        ${sim.length?`<div class="detail-sec"><h4>Similar movies</h4><div class="row">${sim.map(cardHTML).join('')}</div></div>`:''}
+      </div>`;
+    m.querySelector('#dPlay').onclick=()=>this._play(d,trailer);
+    m.querySelector('#dSave').onclick=e=>{if(!requireAuth())return;Watchlist.toggle(d.id,null);e.target.closest('button').innerHTML=svg(ICON.bookmark,'icon sm')+' '+(State.watchlist.some(w=>w.id===d.id)?'Saved':'Watchlist');};
+  },
+  _trailer(d){const vids=(d.videos&&d.videos.results)||[];return vids.find(v=>v.site==='YouTube'&&v.type==='Trailer'&&v.official)||vids.find(v=>v.site==='YouTube'&&v.type==='Trailer')||vids.find(v=>v.site==='YouTube');},
+  _play(d,trailer){
+    Store.bump('trailerReq');
+    if(!requireAuth())return;              // guests get the gate, can keep browsing
+    closeOverlay('detailOverlay');
+    Player.open(d.title,trailer);
+  }
+};
+</script>
+<script>
+/* ============ 10. TRAILER PLAYBACK (in-app screen, close & back-to-movies) ============
+   Plays INSIDE the site on a dedicated full-screen stage — never a new tab.
+   Only authorized references (official YouTube trailers from TMDB) are embedded.
+   This is a discovery platform; no full-length / pirated film playback. */
+const Player = {
+  open(title,trailer){
+    const stage=document.getElementById('playerStage');
+    document.getElementById('playerTitle').textContent=title||'Trailer';
+    if(trailer&&trailer.site==='YouTube'&&trailer.key){
+      stage.innerHTML=`<iframe src="https://www.youtube-nocookie.com/embed/${encodeURIComponent(trailer.key)}?autoplay=1&rel=0" title="${esc(title)} trailer" allow="autoplay; encrypted-media; fullscreen" allowfullscreen></iframe>`;
+    }else{
+      stage.innerHTML=`<div class="player-empty">${svg(ICON.film,'icon lg')}<h4 style="color:var(--text);margin:12px 0 6px">No trailer available</h4><p>We couldn’t find an authorized trailer for “${esc(title)}”.</p><button class="btn" style="margin-top:14px" onclick="Player.close()">Back to movies</button></div>`;
+    }
+    document.getElementById('player').classList.add('show');
+    document.body.classList.add('noscroll');
+  },
+  async fromMovie(id){
+    Store.bump('trailerReq');
+    if(!requireAuth())return;
+    const d=await TMDB.detail(id);
+    this.open(d.title,MovieDetail._trailer(d));
+  },
+  close(){
+    document.getElementById('playerStage').innerHTML='';   // stop playback
+    document.getElementById('player').classList.remove('show');
+    if(!document.querySelector('.overlay.show'))document.body.classList.remove('noscroll');
+  }
+};
+document.getElementById('playerClose').onclick=()=>Player.close();
+document.getElementById('playerBack').onclick=()=>Player.close();
+
+/* ============ 11. WATCHLIST ============ */
+const Watchlist = {
+  toggle(id,btn){
+    if(!requireAuth())return;
+    const i=State.watchlist.findIndex(w=>w.id===id);
+    if(i>=0){State.watchlist.splice(i,1);Toast.show('Removed','Taken off your watchlist','info');}
+    else{State.watchlist.push({id,ts:Date.now()});Toast.show('Saved','Added to your watchlist','ok');Store.bump('wlActivity');}
+    this.persist();
+    document.querySelectorAll(`[data-bk="${id}"]`).forEach(b=>b.classList.toggle('saved',i<0));
+    if(State.view==='watchlist')this.render();
+  },
+  persist(){if(State.user){Store.setWatchlist(State.user.id,State.watchlist);Sync.push('watchlist');}},
+  async render(){
+    const v=document.getElementById('view-watchlist');
+    if(!State.user){v.innerHTML=`<div class="state">${svg(ICON.bookmark,'icon lg')}<h4>Sign in to build your watchlist</h4><p>Save movies and sync them across devices.</p><button class="btn primary" onclick="backToAuth('login')">Log in</button></div>`;return;}
+    if(!State.watchlist.length){v.innerHTML=`<div class="section-head"><h3><span class="bar"></span>My Watchlist</h3></div><div class="state">${svg(ICON.bookmark,'icon lg')}<h4>Your watchlist is empty</h4><p>Tap the bookmark on any movie to save it for later.</p><button class="btn primary" onclick="switchView('home')">Discover movies</button></div>`;return;}
+    v.innerHTML=`<div class="section-head"><h3><span class="bar"></span>My Watchlist <span class="chip">${State.watchlist.length}</span></h3></div><div class="grid" id="wlGrid">${skeletons(State.watchlist.length)}</div>`;
+    const items=await Promise.all(State.watchlist.slice().reverse().map(w=>TMDB.detail(w.id)));
+    document.getElementById('wlGrid').innerHTML=items.map(cardHTML).join('');
+  }
+};
+</script>
+<script>
+/* ============ 12. SEARCH & FILTERING ============ */
+const Search = {
+  timer:null, page:1, query:'', total:0, pages:1,
+  init(){
+    const inp=document.getElementById('searchInput');
+    inp.addEventListener('input',()=>{clearTimeout(this.timer);const q=inp.value.trim();document.getElementById('searchClear').style.display=q?'block':'none';this.timer=setTimeout(()=>this.run(q),380);});
+    document.getElementById('searchClear').onclick=()=>{inp.value='';document.getElementById('searchClear').style.display='none';if(State.view==='search')switchView('home');};
+    inp.addEventListener('keydown',e=>{if(e.key==='Enter'){clearTimeout(this.timer);this.run(inp.value.trim());}});
+  },
+  async run(q,page=1){
+    if(!q){return;}
+    this.query=q;this.page=page;
+    switchView('search');
+    const v=document.getElementById('view-search');
+    v.innerHTML=`<div class="section-head"><h3><span class="bar"></span>Search</h3></div><div id="searchMeta" style="color:var(--muted);margin-bottom:14px">Searching “${esc(q)}”…</div><div class="grid" id="searchGrid">${skeletons(10)}</div><div class="pager" id="searchPager"></div>`;
+    const seq=++State.searchSeq;
+    const r=await TMDB.search(q,page);
+    if(seq!==State.searchSeq)return;        // drop stale response
+    this.total=r.total;this.pages=Math.min(r.pages,20);
+    const grid=document.getElementById('searchGrid');if(!grid)return;
+    if(!r.results.length){v.querySelector('#searchGrid').outerHTML=`<div class="state">${svg(ICON.empty,'icon lg')}<h4>No results for “${esc(q)}”</h4><p>Try a different title or check your spelling.</p></div>`;document.getElementById('searchMeta').textContent='0 results';return;}
+    document.getElementById('searchMeta').textContent=`${r.total} result${r.total===1?'':'s'} for “${q}”`;
+    grid.innerHTML=r.results.map(cardHTML).join('');
+    this._pager();
+  },
+  _pager(){
+    const p=document.getElementById('searchPager');if(!p||this.pages<=1){if(p)p.innerHTML='';return;}
+    let h='';const cur=this.page;
+    const add=n=>h+=`<button class="${n===cur?'active':''}" data-p="${n}">${n}</button>`;
+    const start=Math.max(1,cur-2),end=Math.min(this.pages,start+4);
+    if(cur>1)h+=`<button data-p="${cur-1}">‹</button>`;
+    for(let i=start;i<=end;i++)add(i);
+    if(cur<this.pages)h+=`<button data-p="${cur+1}">›</button>`;
+    p.innerHTML=h;
+    p.querySelectorAll('[data-p]').forEach(b=>b.onclick=()=>{this.run(this.query,+b.dataset.p);window.scrollTo({top:0,behavior:'smooth'});});
+  }
+};
+
+/* ============ 13. FEEDBACK / RATINGS / REPORTS (→ admin inbox) ============ */
+const Feedback = {
+  kind:'feedback', rating:0, topic:'Play / trailer button not working',
+  topics:['Play / trailer button not working',"Movie won't load",'Search problem','Account / login issue','Visual / layout bug','Other'],
+  render(){
+    const v=document.getElementById('view-feedback');
+    v.innerHTML=`<div class="section-head"><h3><span class="bar"></span>Feedback, Ratings &amp; Reports</h3></div>
+      <div class="card-box" style="max-width:640px">
+        <p style="color:var(--muted);font-size:14px;margin-bottom:18px">Tell us what you love, rate your experience, or report a problem (e.g. “a play button isn’t working”). Everything here is delivered to the NANCYFLIX admin inbox.</p>
+        <div class="seg" id="fbSeg">
+          <button data-k="feedback" class="active">Feedback</button>
+          <button data-k="rating">Rating</button>
+          <button data-k="report">Report an issue</button></div>
+        <div id="fbStars" style="display:none"><label style="font-size:13px;color:var(--muted);font-weight:600">Your rating</label><div class="stars" id="starRow">${[1,2,3,4,5].map(n=>`<button data-s="${n}" aria-label="${n} stars">${svg(ICON.star,'icon lg')}</button>`).join('')}</div></div>
+        <div id="fbReport" style="display:none"><label style="font-size:13px;color:var(--muted);font-weight:600;display:block;margin-bottom:2px">What isn’t working? <span style="font-weight:400">(tap to pick)</span></label><div class="opt-tiles" id="fbTopics">${this.topics.map(t=>`<button type="button" class="opt-tile${t===this.topic?' on':''}" data-t="${t}">${t}</button>`).join('')}</div></div>
+        <div class="field"><label id="fbLabel">Your message</label><textarea id="fbMsg" placeholder="Share the details…"></textarea></div>
+        <div class="form-msg" id="fbForm"></div>
+        <button class="btn primary" id="fbSend">Send to admin</button>
+      </div>`;
+    v.querySelector('#fbSeg').onclick=e=>{const b=e.target.closest('[data-k]');if(!b)return;this.kind=b.dataset.k;v.querySelectorAll('#fbSeg button').forEach(x=>x.classList.toggle('active',x===b));document.getElementById('fbStars').style.display=this.kind==='rating'?'block':'none';document.getElementById('fbReport').style.display=this.kind==='report'?'block':'none';document.getElementById('fbLabel').textContent=this.kind==='report'?'Describe the issue':'Your message';};
+    v.querySelector('#starRow').onclick=e=>{const b=e.target.closest('[data-s]');if(!b)return;this.rating=+b.dataset.s;v.querySelectorAll('#starRow button').forEach(x=>x.classList.toggle('on',+x.dataset.s<=this.rating));};
+    v.querySelector('#fbTopics').onclick=e=>{const b=e.target.closest('[data-t]');if(!b)return;this.topic=b.dataset.t;v.querySelectorAll('#fbTopics .opt-tile').forEach(x=>x.classList.toggle('on',x===b));};
+    v.querySelector('#fbSend').onclick=()=>this.send();
+  },
+  send(){
+    const msg=document.getElementById('fbMsg').value.trim();
+    const form=document.getElementById('fbForm');
+    if(this.kind==='rating'&&!this.rating){form.className='form-msg show err';form.textContent='Please pick a star rating.';return;}
+    if(!msg&&this.kind!=='rating'){form.className='form-msg show err';form.textContent='Please enter a message.';return;}
+    const entry={id:uid(),type:this.kind,rating:this.kind==='rating'?this.rating:null,topic:this.kind==='report'?this.topic:null,message:msg,from:(State.user&&State.user.email)||(State.guest?'guest':'anonymous'),name:(State.user&&State.user.name)||'Guest',read:false,ts:Date.now()};
+    const inbox=Store.inbox();inbox.unshift(entry);Store.setInbox(inbox);Sync.push('inbox');
+    Store.log('feedback_submitted',this.kind);
+    form.className='form-msg show ok';form.textContent='Thank you — your '+this.kind+' was sent to the admin inbox.';
+    document.getElementById('fbMsg').value='';this.rating=0;document.querySelectorAll('#starRow button').forEach(x=>x.classList.remove('on'));
+    Noti.add('Message received','Thanks for your '+this.kind+'. Our team will review it.','ok');
+  }
+};
+</script>
+<script>
+/* ============ 14. PROFILE MANAGEMENT ============ */
+const Profile = {
+  render(){
+    const v=document.getElementById('view-profile');
+    if(!State.user){v.innerHTML=`<div class="state">${svg(ICON.alert,'icon lg')}<h4>Not signed in</h4><button class="btn primary" onclick="backToAuth('login')">Log in</button></div>`;return;}
+    const u=State.user;
+    v.innerHTML=`<div class="section-head"><h3><span class="bar"></span>My Profile</h3></div>
+      <div class="grid2"><div class="card-box">
+        <div style="display:flex;gap:16px;align-items:center;margin-bottom:20px">
+          <div>${u.avatar?`<img src="${u.avatar}" alt="avatar" style="width:76px;height:76px;border-radius:50%;object-fit:cover;border:2px solid var(--accent)">`:`<div class="ph" style="width:76px;height:76px;border-radius:50%;font-size:26px">${esc((u.name||'U')[0])}</div>`}</div>
+          <div><div style="font-size:20px;font-weight:800">${esc(u.name)} ${u.isAdmin?'<span class="badge admin">ADMIN</span>':''}</div><div style="color:var(--muted);font-size:13px">${esc(u.email)}</div><div style="color:var(--muted);font-size:12px;margin-top:4px">Joined ${fmtDate(u.createdAt)}</div></div></div>
+        <label class="btn sm" style="cursor:pointer;margin-bottom:16px">Change picture<input type="file" id="pfAvatar" accept="image/*" hidden></label>
+        <div class="field"><label>Display name</label><input type="text" id="pfName" value="${esc(u.name)}"></div>
+        <div class="field"><label>Gender</label><select id="pfGender">${['','Female','Male','Non-binary','Prefer not to say'].map(g=>`<option ${g===u.gender?'selected':''}>${g||'Select…'}</option>`).join('')}</select></div>
+        <div class="field"><label>Email (read-only here)</label><input type="email" value="${esc(u.email)}" disabled></div>
+        <div class="form-msg" id="pfMsg"></div>
+        <button class="btn primary" id="pfSave">Save changes</button>
+      </div>
+      <div class="card-box">
+        <h4 style="margin-bottom:14px">Account</h4>
+        <div class="set-row"><div class="lbl"><div class="t">Role</div><div class="d">${u.isAdmin?'Verified administrator':'Member'}</div></div></div>
+        <div class="set-row"><div class="lbl"><div class="t">Password</div><div class="d">${HAS_BACKEND?'Managed by auth provider':'Demo mode (local)'}</div></div><button class="btn sm" id="pfPass">Change</button></div>
+        <div class="set-row"><div class="lbl"><div class="t">Data sync</div><div class="d">${Store.mode==='backend'?'On — cross-device':'Demo — this browser only'}</div></div><span class="badge ${Store.mode==='backend'?'ok':'warn'}">${Store.mode==='backend'?'ACTIVE':'LOCAL'}</span></div>
+        <div class="set-row"><div class="lbl"><div class="t">Sign out</div><div class="d">End this session</div></div><button class="btn sm" onclick="Auth.logout()">Logout</button></div>
+        <div class="set-row" style="border:0"><div class="lbl"><div class="t" style="color:var(--err)">Delete account data</div><div class="d">Removes your profile, watchlist &amp; notifications</div></div><button class="btn sm" style="color:var(--err)" id="pfDel">Delete</button></div>
+      </div></div>`;
+    v.querySelector('#pfAvatar').onchange=e=>readImage(e.target.files[0],data=>{u.avatar=data;this.render();Toast.show('Picture updated','','ok');this._persist();});
+    v.querySelector('#pfSave').onclick=()=>{u.name=document.getElementById('pfName').value.trim()||u.name;u.gender=document.getElementById('pfGender').value;this._persist();Auth.refreshChrome();const m=document.getElementById('pfMsg');m.className='form-msg show ok';m.textContent='Profile saved.';Noti.add('Profile updated','Your changes have been saved.','ok');Store.log('profile_updated');};
+    v.querySelector('#pfPass').onclick=()=>{if(HAS_BACKEND)Toast.show('Password reset','We’ll email you a secure reset link via the auth provider.','info');else Toast.show('Demo mode','Password changes require a configured backend.','warn');};
+    v.querySelector('#pfDel').onclick=async()=>{if(await Confirm.ask('Delete your account data?','This removes your profile, watchlist and notifications on this device. This cannot be undone.',{ok:'Delete',danger:true})){Auth.deleteSelf();}};
+  },
+  _persist(){const users=Store.users();const i=users.findIndex(x=>x.id===State.user.id);if(i>=0){users[i]=State.user;Store.saveUsers(users);}Store.setSession(State.user.id);Sync.push('profile');}
+};
+function readImage(file,cb){if(!file)return;if(file.size>3*1024*1024){Toast.show('Image too large','Please choose an image under 3 MB.','err');return;}const r=new FileReader();r.onload=()=>cb(r.result);r.readAsDataURL(file);}
+</script>
+<script>
+/* ============ 15. THEME ENGINE ============ */
+const THEMES=[['midnight','Midnight Cinema',['#06060a','#12121c','#e11d2e']],['crimson','Crimson Neon',['#0a0205','#1c0509','#ff2d40']],['pureblack','Pure Black',['#000','#0b0b0b','#e11d2e']],['daylight','Daylight',['#eef0f5','#ffffff','#d11325']],['ocean','Deep Ocean',['#03121c','#07263a','#17c3d6']],['cosmic','Cosmic Violet',['#0b0618','#1a0f33','#8b5cf6']],['forest','Forest',['#05140c','#0b2917','#2fbf71']],['silver','Silver Screen',['#111318','#1f232c','#c7ccd6']]];
+const FONTS=[['Inter',"'Inter',system-ui,sans-serif"],['System UI','system-ui,-apple-system,sans-serif'],['Arial','Arial,Helvetica,sans-serif'],['Georgia','Georgia,serif'],['Verdana','Verdana,sans-serif'],['Trebuchet MS','\"Trebuchet MS\",sans-serif'],['Courier New','\"Courier New\",monospace']];
+const Theme={
+  apply(id){State.theme=id;document.documentElement.setAttribute('data-theme',id);State.settings.theme=id;this.save();},
+  font(name){const f=FONTS.find(x=>x[0]===name);if(f)document.documentElement.style.setProperty('--font',f[1]);State.settings.font=name;this.save();},
+  save(){if(State.user){const users=Store.users();const i=users.findIndex(x=>x.id===State.user.id);if(i>=0){users[i].settings=State.settings;Store.saveUsers(users);}Sync.push('settings');}else LS.set('guestSettings',State.settings);}
+};
+
+/* ============ 16. SETTINGS MANAGER ============ */
+const Settings={
+  defaults(){return{theme:'midnight',font:'Inter',inApp:true,sound:true,soundVol:0.5,browserNoti:false,transitions:true,hover:true,splash:true,reduceMotion:false,autoplay:true,defaultCat:'trending',lang:'en'};},
+  openModal(){
+    const s=State.settings;const m=document.getElementById('settingsModal');
+    m.innerHTML=`<button class="modal-close" onclick="closeOverlay('settingsOverlay')">${svg(ICON.close,'icon sm')}</button>
+      <div style="padding:24px 26px 10px"><h3 style="font-size:21px">Settings</h3><p style="color:var(--muted);font-size:13px">Every control below changes real behavior. Items marked “future” need a backend.</p>
+        <input id="setSearch" placeholder="Search settings…" style="width:100%;margin-top:14px;padding:11px 14px;background:var(--bg-2);border:1px solid var(--border);border-radius:10px;color:var(--text)"></div>
+      <div style="padding:6px 26px 26px" id="setBody">
+        <div class="set-group" data-s="theme appearance color"><h4>${svg(ICON.film,'icon sm')} Themes</h4><div class="theme-grid">${THEMES.map(t=>`<div class="theme-opt ${t[0]===s.theme?'active':''}" data-theme-opt="${t[0]}"><div class="sw">${t[2].map(c=>`<i style="background:${c}"></i>`).join('')}</div><div class="nm">${t[1]}</div></div>`).join('')}</div></div>
+        <div class="set-group" data-s="font typography text"><h4>Typography</h4><div class="set-row"><div class="lbl"><div class="t">Font family</div><div class="d">Applies across the app</div></div><select class="mini" id="setFont">${FONTS.map(f=>`<option ${f[0]===s.font?'selected':''}>${f[0]}</option>`).join('')}</select></div></div>
+        <div class="set-group" data-s="animation motion splash hover"><h4>Animation</h4>
+          ${this._sw('Interface transitions','Smooth view & modal animations','transitions',s.transitions)}
+          ${this._sw('Poster hover effects','Scale & reveal on hover','hover',s.hover)}
+          ${this._sw('Splash animation','Show the cinematic intro','splash',s.splash)}
+          ${this._sw('Reduced motion','Minimise animations (also respects your OS setting)','reduceMotion',s.reduceMotion)}</div>
+        <div class="set-group" data-s="notification sound alert"><h4>Notifications</h4>
+          ${this._sw('In-app notifications','Toasts & notification center','inApp',s.inApp)}
+          ${this._sw('Sound effects','Play a soft tone on alerts','sound',s.sound)}
+          <div class="set-row"><div class="lbl"><div class="t">Sound volume</div></div><input type="range" min="0" max="1" step="0.1" value="${s.soundVol}" id="setVol"></div>
+          ${this._sw('Browser notifications','Requires explicit permission','browserNoti',s.browserNoti)}</div>
+        <div class="set-group" data-s="general language category autoplay privacy"><h4>General</h4>
+          <div class="set-row"><div class="lbl"><div class="t">Language</div><div class="d future">Future capability — UI copy is English for now</div></div><select class="mini" id="setLang"><option value="en">English</option><option value="sw">Kiswahili</option><option value="fr">Français</option><option value="es">Español</option></select></div>
+          <div class="set-row"><div class="lbl"><div class="t">Default browse category</div></div><select class="mini" id="setCat">${['trending','popular','top_rated','upcoming'].map(c=>`<option value="${c}" ${c===s.defaultCat?'selected':''}>${c.replace('_',' ')}</option>`).join('')}</select></div>
+          ${this._sw('Trailer autoplay','Auto-start trailers in the player','autoplay',s.autoplay)}
+          <div class="set-row" style="border:0"><div class="lbl"><div class="t">Export my data</div><div class="d">Download your profile, watchlist &amp; settings (JSON)</div></div><button class="btn sm" onclick="Settings.exportData()">Export</button></div></div>
+      </div>`;
+    m.querySelector('[data-s="theme appearance color"]').addEventListener('click',e=>{const o=e.target.closest('[data-theme-opt]');if(o){Theme.apply(o.dataset.themeOpt);m.querySelectorAll('[data-theme-opt]').forEach(x=>x.classList.toggle('active',x===o));}});
+    m.querySelector('#setFont').onchange=e=>Theme.font(e.target.value);
+    m.querySelector('#setVol').oninput=e=>{s.soundVol=+e.target.value;Theme.save();};
+    m.querySelector('#setLang').onchange=e=>{s.lang=e.target.value;Theme.save();};
+    m.querySelector('#setCat').onchange=e=>{s.defaultCat=e.target.value;Theme.save();};
+    m.querySelectorAll('[data-set]').forEach(sw=>sw.onchange=()=>{const k=sw.dataset.set;s[k]=sw.checked;this._applyToggle(k,sw.checked);Theme.save();});
+    m.querySelector('#setSearch').oninput=e=>{const q=e.target.value.toLowerCase();m.querySelectorAll('.set-group').forEach(g=>{g.style.display=(!q||g.dataset.s.includes(q)||g.textContent.toLowerCase().includes(q))?'block':'none';});};
+    openOverlay('settingsOverlay');
+  },
+  _sw(t,d,key,on){return `<div class="set-row"><div class="lbl"><div class="t">${t}</div><div class="d">${d}</div></div><label class="switch"><input type="checkbox" data-set="${key}" ${on?'checked':''}><span class="sl"></span></label></div>`;},
+  _applyToggle(k,v){
+    if(k==='reduceMotion')document.body.classList.toggle('reduce-motion',v);
+    if(k==='hover')document.body.style.setProperty('--motion',v?1:0);
+    if(k==='browserNoti'&&v&&'Notification'in window){Notification.requestPermission().then(p=>{if(p!=='granted'){State.settings.browserNoti=false;Toast.show('Permission needed','Browser notifications were not enabled.','warn');}});}
+  },
+  exportData(){
+    const data={profile:State.user,watchlist:State.watchlist,settings:State.settings,notifications:State.notifications,exportedAt:new Date().toISOString()};
+    const blob=new Blob([JSON.stringify(data,null,2)],{type:'application/json'});
+    const a=document.createElement('a');a.href=URL.createObjectURL(blob);a.download='nancyflix-data.json';a.click();URL.revokeObjectURL(a.href);
+    Toast.show('Export ready','Your data was downloaded.','ok');
+  }
+};
+</script>
+<script>
+/* ============ 17. ANALYTICS & CHARTS (lightweight canvas, no CDN) ============ */
+const Chart={
+  bar(cv,labels,values,color){const ctx=cv.getContext('2d');const w=cv.width=cv.clientWidth*2,h=cv.height=260*2;ctx.scale(1,1);ctx.clearRect(0,0,w,h);
+    const pad=40*2,max=Math.max(1,...values),bw=(w-pad*1.5)/values.length;
+    ctx.fillStyle='#9a9aae';ctx.font='20px Inter';
+    values.forEach((v,i)=>{const bh=(h-pad*1.6)*(v/max);const x=pad+ i*bw;const y=h-pad-bh;
+      const g=ctx.createLinearGradient(0,y,0,h-pad);g.addColorStop(0,color);g.addColorStop(1,color+'33');ctx.fillStyle=g;
+      ctx.fillRect(x,y,bw*0.6,bh);ctx.fillStyle='#9a9aae';ctx.textAlign='center';
+      ctx.fillText(labels[i],x+bw*0.3,h-pad+24);ctx.fillStyle='#f5f5fa';ctx.fillText(v,x+bw*0.3,y-8);});
+  },
+  line(cv,labels,values,color){const ctx=cv.getContext('2d');const w=cv.width=cv.clientWidth*2,h=cv.height=260*2;ctx.clearRect(0,0,w,h);
+    const pad=40*2,max=Math.max(1,...values),stepX=(w-pad*1.5)/Math.max(1,values.length-1);
+    ctx.strokeStyle=color;ctx.lineWidth=5;ctx.beginPath();
+    const pts=values.map((v,i)=>[pad+i*stepX,h-pad-(h-pad*1.6)*(v/max)]);
+    pts.forEach((p,i)=>i?ctx.lineTo(p[0],p[1]):ctx.moveTo(p[0],p[1]));ctx.stroke();
+    const g=ctx.createLinearGradient(0,pad,0,h-pad);g.addColorStop(0,color+'55');g.addColorStop(1,color+'00');ctx.lineTo(pts[pts.length-1][0],h-pad);ctx.lineTo(pad,h-pad);ctx.closePath();ctx.fillStyle=g;ctx.fill();
+    ctx.fillStyle='#9a9aae';ctx.font='20px Inter';ctx.textAlign='center';labels.forEach((l,i)=>ctx.fillText(l,pad+i*stepX,h-pad+24));
+  },
+  donut(cv,parts){const ctx=cv.getContext('2d');const w=cv.width=cv.clientWidth*2,h=cv.height=260*2;ctx.clearRect(0,0,w,h);
+    const cx=w/2,cy=h/2,r=Math.min(w,h)/2-30;const total=parts.reduce((a,p)=>a+p.v,0)||1;let a=-Math.PI/2;
+    parts.forEach(p=>{const ang=p.v/total*Math.PI*2;ctx.beginPath();ctx.moveTo(cx,cy);ctx.arc(cx,cy,r,a,a+ang);ctx.closePath();ctx.fillStyle=p.c;ctx.fill();a+=ang;});
+    ctx.beginPath();ctx.arc(cx,cy,r*0.6,0,Math.PI*2);ctx.fillStyle=getComputedStyle(document.body).getPropertyValue('--surface');ctx.fill();
+    ctx.fillStyle='#f5f5fa';ctx.font='bold 34px Inter';ctx.textAlign='center';ctx.fillText(total,cx,cy+10);
+  }
+};
+
+/* analytics computed from real local data (demo) or backend (if wired) */
+const Analytics={
+  users(){return Store.users();},
+  since(days){const t=Date.now()-days*864e5;return this.users().filter(u=>u.createdAt>=t).length;},
+  today(){const d=new Date();d.setHours(0,0,0,0);return this.users().filter(u=>u.createdAt>=d.getTime()).length;},
+  daily7(){const out=[],lab=[];for(let i=6;i>=0;i--){const s=new Date();s.setHours(0,0,0,0);s.setDate(s.getDate()-i);const e=s.getTime()+864e5;out.push(this.users().filter(u=>u.createdAt>=s.getTime()&&u.createdAt<e).length);lab.push(['Su','Mo','Tu','We','Th','Fr','Sa'][s.getDay()]);}return{lab,out};},
+  growth(){const us=this.users().slice().sort((a,b)=>a.createdAt-b.createdAt);let c=0;const lab=[],out=[];const buckets={};us.forEach(u=>{const k=new Date(u.createdAt).toLocaleDateString(undefined,{month:'short',day:'numeric'});buckets[k]=(buckets[k]||0);});us.forEach(u=>{c++;});const map={};us.forEach(u=>{const k=new Date(u.createdAt).toLocaleDateString(undefined,{month:'short',day:'numeric'});map[k]=(map[k]||0)+1;});let run=0;Object.keys(map).forEach(k=>{run+=map[k];lab.push(k);out.push(run);});if(!lab.length){lab.push('Now');out.push(us.length);}return{lab,out};},
+  gender(){const g={};this.users().forEach(u=>{const k=u.gender||'Unspecified';g[k]=(g[k]||0)+1;});return g;},
+  topGender(){const g=this.gender();let best='—',n=0;Object.entries(g).forEach(([k,v])=>{if(v>n){n=v;best=k;}});const total=this.users().length||1;return{best,n,pct:Math.round(n/total*100)};}
+};
+</script>
+<script>
+/* ============ 18. ADMIN DASHBOARD ============ */
+const Admin={
+  tab:'overview', page:1, perPage:8, q:'', roleFilter:'', sortNewest:true,
+  render(){
+    if(!State.user||!State.user.isAdmin){document.getElementById('view-admin').innerHTML=`<div class="state">${svg(ICON.alert,'icon lg')}<h4>Administrator access only</h4><p>This area is restricted to verified administrators.</p></div>`;return;}
+    const tabs=[['overview','Overview'],['users','User Directory'],['analytics','Analytics'],['inbox','Inbox'],['announce','Announcements'],['audit','Audit & Security'],['config','Site Config']];
+    document.getElementById('view-admin').innerHTML=`<div class="admin-shell"><aside class="admin-side"><div class="admin-brand">${svg(ICON.film,'icon')} Admin Studio <span class="badge admin">ADMIN</span></div>${tabs.map(t=>`<button data-at="${t[0]}" class="${t[0]===this.tab?'active':''}">${t[1]}</button>`).join('')}</aside><div class="admin-main" id="adminMain"></div></div>`;
+    document.querySelector('.admin-side').onclick=e=>{const b=e.target.closest('[data-at]');if(b){this.tab=b.dataset.at;this.page=1;this.render();}};
+    this.renderTab();
+  },
+  renderTab(){
+    const el=document.getElementById('adminMain');
+    if(this.tab==='overview')this.overview(el);
+    else if(this.tab==='users')this.users(el);
+    else if(this.tab==='analytics')this.analytics(el);
+    else if(this.tab==='inbox')this.inbox(el);
+    else if(this.tab==='announce')this.announce(el);
+    else if(this.tab==='audit')this.audit(el);
+    else if(this.tab==='config')this.config(el);
+  },
+  _demoTag(){return Store.mode==='backend'?'':'<span class="ks demo">demo data (local)</span>';},
+  overview(el){
+    const d7=Analytics.daily7();const tg=Analytics.topGender();
+    const kpi=(l,v,s)=>`<div class="kpi"><div class="kl">${l}</div><div class="kv">${v}</div><div class="ks ${s&&s.demo?'demo':''}">${s?(s.t||s):''}</div></div>`;
+    el.innerHTML=`<div class="kpis">
+      ${kpi('Total accounts',Analytics.users().length,{t:this._demoTag()?'measured locally':''})}
+      ${kpi('New today',Analytics.today(),'')}
+      ${kpi('Last 7 days',Analytics.since(7),'')}
+      ${kpi('Last 30 days',Analytics.since(30),'')}
+      ${kpi('Top gender',tg.best,{t:tg.n+' · '+tg.pct+'%'})}
+      ${kpi('Guest sessions',Store.guestCount(),'')}
+      ${kpi('Movie-detail views',Store.val('detailViews'),'')}
+      ${kpi('Trailer requests',Store.val('trailerReq'),'')}
+      ${kpi('Watchlist actions',Store.val('wlActivity'),'')}
+      ${kpi('Catalogue errors',TMDB.errors,{t:TMDB.available?'API reachable':'API unavailable',demo:!TMDB.available})}
+    </div>
+    <div class="grid2"><div class="panel-card"><h4>Registrations — last 7 days ${this._demoTag()}</h4><canvas id="cDaily"></canvas></div>
+      <div class="panel-card"><h4>Gender distribution</h4><canvas id="cGender"></canvas><div id="gLegend" style="margin-top:12px"></div></div></div>`;
+    if(Analytics.users().length)Chart.bar(document.getElementById('cDaily'),d7.lab,d7.out,'#e11d2e');else this._empty('cDaily');
+    this._genderChart();
+  },
+  _empty(id){const c=document.getElementById(id);if(c){const ctx=c.getContext('2d');c.width=c.clientWidth;c.height=160;ctx.fillStyle='#9a9aae';ctx.font='14px Inter';ctx.textAlign='center';ctx.fillText('No data yet',c.width/2,80);}},
+  _genderChart(){const g=Analytics.gender();const colors=['#e11d2e','#8b5cf6','#17c3d6','#2fbf71','#f1c40f'];const parts=Object.entries(g).map(([k,v],i)=>({k,v,c:colors[i%colors.length]}));const cv=document.getElementById('cGender');if(parts.length)Chart.donut(cv,parts);else this._empty('cGender');document.getElementById('gLegend').innerHTML=parts.map(p=>`<div style="display:inline-flex;align-items:center;gap:6px;margin:0 12px 6px 0;font-size:12.5px"><i style="width:12px;height:12px;border-radius:3px;background:${p.c}"></i>${esc(p.k)} (${p.v})</div>`).join('')||'<span style="color:var(--muted)">No data</span>';}
+};
+</script>
+<script>
+/* ---- Admin: user directory ---- */
+Admin.users=function(el){
+  el.innerHTML=`<div class="panel-card"><h4>User Directory <button class="btn sm" onclick="Admin.exportCSV()">Export CSV</button></h4>
+    <div class="toolbar"><input id="uSearch" placeholder="Search name or email…" value="${esc(this.q)}"><select id="uRole"><option value="">All roles</option><option value="admin">Admins</option><option value="member">Members</option></select><select id="uSort"><option value="new">Newest first</option><option value="old">Oldest first</option></select></div>
+    <div style="overflow-x:auto"><table class="utbl"><thead><tr><th>User</th><th>Email</th><th>Gender</th><th>Joined</th><th>Last login</th><th>Role</th><th>Status</th></tr></thead><tbody id="uBody"></tbody></table></div>
+    <div class="pager" id="uPager"></div></div>`;
+  const draw=()=>{
+    let list=Analytics.users().slice();
+    const q=this.q.toLowerCase();
+    if(q)list=list.filter(u=>(u.name||'').toLowerCase().includes(q)||(u.email||'').toLowerCase().includes(q));
+    if(this.roleFilter)list=list.filter(u=>this.roleFilter==='admin'?u.isAdmin:!u.isAdmin);
+    list.sort((a,b)=>this.sortNewest?b.createdAt-a.createdAt:a.createdAt-b.createdAt);
+    const pages=Math.max(1,Math.ceil(list.length/this.perPage));if(this.page>pages)this.page=pages;
+    const slice=list.slice((this.page-1)*this.perPage,this.page*this.perPage);
+    const body=document.getElementById('uBody');
+    if(!slice.length){body.innerHTML=`<tr><td colspan="7"><div class="state" style="padding:30px">${svg(ICON.empty,'icon lg')}<p>No users match your filters.</p></div></td></tr>`;}
+    else body.innerHTML=slice.map(u=>`<tr style="cursor:pointer" onclick='Admin.userDetail("${u.id}")'><td><div class="u">${u.avatar?`<img src="${u.avatar}">`:`<div class="ph">${esc((u.name||'U')[0])}</div>`}<span>${esc(u.name)}</span></div></td><td>${esc(u.email)}</td><td>${esc(u.gender||'—')}</td><td>${fmtDate(u.createdAt)}</td><td>${u.lastLogin?fmtDT(u.lastLogin):'—'}</td><td>${u.isAdmin?'<span class="badge admin">ADMIN</span>':'<span class="badge ok">MEMBER</span>'}</td><td><span class="badge ok">Active</span></td></tr>`).join('');
+    const pg=document.getElementById('uPager');let h='';for(let i=1;i<=pages;i++)h+=`<button class="${i===this.page?'active':''}" data-p="${i}">${i}</button>`;pg.innerHTML=pages>1?h:'';pg.querySelectorAll('[data-p]').forEach(b=>b.onclick=()=>{this.page=+b.dataset.p;draw();});
+  };
+  document.getElementById('uSearch').oninput=e=>{this.q=e.target.value;this.page=1;draw();};
+  document.getElementById('uRole').onchange=e=>{this.roleFilter=e.target.value;this.page=1;draw();};
+  document.getElementById('uSort').onchange=e=>{this.sortNewest=e.target.value==='new';draw();};
+  draw();
+};
+Admin.userDetail=function(id){const u=Analytics.users().find(x=>x.id===id);if(!u)return;const m=document.getElementById('confirmModal');m.innerHTML=`<button class="modal-close" onclick="closeOverlay('confirmOverlay')">${svg(ICON.close,'icon sm')}</button><div style="text-align:center;margin-bottom:16px">${u.avatar?`<img src="${u.avatar}" style="width:72px;height:72px;border-radius:50%;object-fit:cover;margin:0 auto">`:`<div class="ph" style="width:72px;height:72px;border-radius:50%;margin:0 auto;font-size:26px">${esc((u.name||'U')[0])}</div>`}<h3 style="margin-top:10px">${esc(u.name)} ${u.isAdmin?'<span class="badge admin">ADMIN</span>':''}</h3></div><div style="font-size:14px;line-height:2"><div><b>Email:</b> ${esc(u.email)}</div><div><b>Gender:</b> ${esc(u.gender||'—')}</div><div><b>Joined:</b> ${fmtDT(u.createdAt)}</div><div><b>Last login:</b> ${u.lastLogin?fmtDT(u.lastLogin):'—'}</div><div><b>Watchlist items:</b> ${Store.getWatchlist(u.id).length}</div></div>`;openOverlay('confirmOverlay');};
+Admin.exportCSV=function(){
+  const rows=[['Name','Email','Gender','Joined','Last login','Role']].concat(Analytics.users().map(u=>[u.name,u.email,u.gender||'',new Date(u.createdAt).toISOString(),u.lastLogin?new Date(u.lastLogin).toISOString():'',u.isAdmin?'admin':'member']));
+  const csv=rows.map(r=>r.map(c=>'"'+String(c==null?'':c).replace(/"/g,'""')+'"').join(',')).join('\n');
+  const blob=new Blob([csv],{type:'text/csv'});const a=document.createElement('a');a.href=URL.createObjectURL(blob);a.download='nancyflix-users.csv';a.click();URL.revokeObjectURL(a.href);
+  Store.log('csv_export','users');Toast.show('Export ready','User directory exported as CSV.','ok');
+};
+</script>
+<script>
+/* ---- Admin: analytics, inbox, announcements, audit, config ---- */
+Admin.analytics=function(el){
+  const d7=Analytics.daily7(),gr=Analytics.growth();
+  el.innerHTML=`<div class="grid2">
+    <div class="panel-card"><h4>Daily registrations (7d) ${this._demoTag()}</h4><canvas id="aDaily"></canvas></div>
+    <div class="panel-card"><h4>User growth (cumulative)</h4><canvas id="aGrowth"></canvas></div>
+    <div class="panel-card"><h4>Gender distribution</h4><canvas id="aGender"></canvas><div id="gLegend" style="margin-top:12px"></div></div>
+    <div class="panel-card"><h4>Engagement counters</h4>
+      ${this._gbar('Movie-detail views',Store.val('detailViews'))}
+      ${this._gbar('Trailer requests',Store.val('trailerReq'))}
+      ${this._gbar('Watchlist actions',Store.val('wlActivity'))}
+      ${this._gbar('Guest sessions',Store.guestCount())}
+      ${this._gbar('Inbox messages',Store.inbox().length)}</div></div>`;
+  if(Analytics.users().length){Chart.bar(document.getElementById('aDaily'),d7.lab,d7.out,'#e11d2e');Chart.line(document.getElementById('aGrowth'),gr.lab,gr.out,'#8b5cf6');}else{this._empty('aDaily');this._empty('aGrowth');}
+  this._genderChart&&(function(){const g=Analytics.gender();const colors=['#e11d2e','#8b5cf6','#17c3d6','#2fbf71','#f1c40f'];const parts=Object.entries(g).map(([k,v],i)=>({k,v,c:colors[i%colors.length]}));const cv=document.getElementById('aGender');if(parts.length)Chart.donut(cv,parts);document.getElementById('gLegend').innerHTML=parts.map(p=>`<div style="display:inline-flex;align-items:center;gap:6px;margin:0 12px 6px 0;font-size:12.5px"><i style="width:12px;height:12px;border-radius:3px;background:${p.c}"></i>${esc(p.k)} (${p.v})</div>`).join('')||'<span style="color:var(--muted)">No data</span>';})();
+};
+Admin._gbar=function(l,v){const max=Math.max(v,Store.val('detailViews'),Store.val('trailerReq'),Store.guestCount(),1);return `<div class="gbar"><span class="gl">${l}</span><span class="gt"><i style="width:${Math.round(v/max*100)}%"></i></span><span class="gv">${v}</span></div>`;};
+
+Admin.inbox=function(el){
+  const items=Store.inbox();
+  el.innerHTML=`<div class="panel-card"><h4>Inbox — feedback, ratings &amp; reports <span class="chip">${items.filter(i=>!i.read).length} unread</span></h4>
+    ${items.length?items.map(i=>`<div class="inbox-item ${i.read?'':'unread'}"><div class="ih"><span class="badge ${i.type==='report'?'err':i.type==='rating'?'warn':'ok'}">${i.type.toUpperCase()}</span>${i.rating?`<span style="color:#ffd451">${'★'.repeat(i.rating)}${'☆'.repeat(5-i.rating)}</span>`:''}${i.topic?`<span class="chip">${esc(i.topic)}</span>`:''}<span style="color:var(--muted);font-size:12px">${esc(i.name)} · ${esc(i.from)}</span><span style="margin-left:auto;color:var(--muted);font-size:12px">${fmtDT(i.ts)}</span></div><div class="im">${esc(i.message||'(no message)')}</div><div style="margin-top:8px"><button class="btn sm" onclick="Admin.toggleRead('${i.id}')">${i.read?'Mark unread':'Mark read'}</button></div></div>`).join('')
+    :`<div class="state">${svg(ICON.inbox,'icon lg')}<h4>Inbox is empty</h4><p>User feedback, ratings and issue reports will arrive here.</p></div>`}</div>`;
+};
+Admin.toggleRead=function(id){const inbox=Store.inbox();const it=inbox.find(x=>x.id===id);if(it){it.read=!it.read;Store.setInbox(inbox);Sync.push('inbox');this.inbox(document.getElementById('adminMain'));}};
+
+Admin.announce=function(el){
+  const list=Store.announcements();
+  el.innerHTML=`<div class="panel-card"><h4>Publish an announcement</h4><p style="color:var(--muted);font-size:13px;margin-bottom:14px">Your message is delivered to every member’s notification center.</p>
+    <div class="field"><label>Title</label><input id="anTitle" placeholder="e.g. New releases this weekend" style="width:100%;padding:11px;background:var(--bg-2);border:1px solid var(--border);border-radius:10px;color:var(--text)"></div>
+    <div class="field"><label>Message</label><textarea id="anMsg" placeholder="Write your announcement…"></textarea></div>
+    <button class="btn primary" onclick="Admin.publish()">Publish to all users</button></div>
+    <div class="panel-card"><h4>Published announcements</h4>${list.length?list.map(a=>`<div class="inbox-item"><div class="ih"><span class="badge admin">ANNOUNCEMENT</span><b>${esc(a.title||'Announcement')}</b><span style="margin-left:auto;color:var(--muted);font-size:12px">${fmtDT(a.ts)}</span></div><div class="im">${esc(a.message)}</div></div>`).join(''):`<div class="state">${svg(ICON.alert,'icon lg')}<p>No announcements published yet.</p></div>`}</div>`;
+};
+Admin.publish=function(){const t=document.getElementById('anTitle').value.trim();const msg=document.getElementById('anMsg').value.trim();if(!msg){Toast.show('Message required','Please write an announcement.','err');return;}const list=Store.announcements();list.unshift({id:uid(),title:t,message:msg,ts:Date.now(),by:State.user.email});Store.setAnnouncements(list);Sync.push('announcements');Store.log('announcement_published',t);Noti.add('Announcement published','Delivered to all members’ notifications.','ok');Noti.syncAnnouncements();this.announce(document.getElementById('adminMain'));};
+
+Admin.audit=function(el){const log=Store.audit();el.innerHTML=`<div class="panel-card"><h4>Audit &amp; security log <span class="chip">${log.length} events</span></h4><p style="color:var(--muted);font-size:12.5px;margin-bottom:12px">Records registrations, logins, profile updates and admin actions. No passwords, hashes or tokens are ever shown.</p><div style="overflow-x:auto"><table><thead><tr><th>When</th><th>Action</th><th>Actor</th><th>Detail</th></tr></thead><tbody>${log.length?log.map(a=>`<tr><td>${fmtDT(a.ts)}</td><td><span class="chip">${esc(a.action)}</span></td><td>${esc(a.actor)}</td><td>${esc(a.meta)}</td></tr>`).join(''):`<tr><td colspan="4"><div class="state" style="padding:30px">${svg(ICON.empty,'icon lg')}<p>No audit events yet.</p></div></td></tr>`}</tbody></table></div></div>`;};
+
+Admin.config=function(el){el.innerHTML=`<div class="panel-card"><h4>Site configuration</h4>
+  <div class="set-row"><div class="lbl"><div class="t">Data backend</div><div class="d">${Store.mode==='backend'?'Supabase connected — cross-device sync active':'Demo mode — local browser storage only'}</div></div><span class="badge ${Store.mode==='backend'?'ok':'warn'}">${Store.mode.toUpperCase()}</span></div>
+  <div class="set-row"><div class="lbl"><div class="t">TMDB catalogue</div><div class="d">${HAS_TMDB?(CONFIG.TMDB_PROXY?'Server proxy (key kept private)':'Browser key (exposed — dev only)'):'Not configured'}</div></div><span class="badge ${HAS_TMDB?'ok':'warn'}">${HAS_TMDB?'LIVE':'OFF'}</span></div>
+  <div class="set-row"><div class="lbl"><div class="t">Welcome email</div><div class="d">${HAS_BACKEND?'Delivered via backend function':'Not configured — accounts still work, no email sent'}</div></div><span class="badge ${HAS_BACKEND?'ok':'warn'}">${HAS_BACKEND?'ON':'OFF'}</span></div>
+  <div class="set-row" style="border:0"><div class="lbl"><div class="t">Provisioned admins</div><div class="d">${CONFIG.ADMIN_EMAILS.map(esc).join(', ')} — roles verified server-side</div></div></div></div>
+  <div class="panel-card"><h4>Data exports</h4><div style="display:flex;gap:10px;flex-wrap:wrap"><button class="btn" onclick="Admin.exportCSV()">Users CSV</button><button class="btn" onclick="Admin.exportJSON()">Full data JSON</button></div></div>`;};
+Admin.exportJSON=function(){const data={users:Analytics.users().map(u=>({name:u.name,email:u.email,gender:u.gender,createdAt:u.createdAt,role:u.isAdmin?'admin':'member'})),inbox:Store.inbox(),announcements:Store.announcements(),audit:Store.audit(),counters:{detailViews:Store.val('detailViews'),trailerReq:Store.val('trailerReq'),guests:Store.guestCount()}};const blob=new Blob([JSON.stringify(data,null,2)],{type:'application/json'});const a=document.createElement('a');a.href=URL.createObjectURL(blob);a.download='nancyflix-admin-export.json';a.click();URL.revokeObjectURL(a.href);Store.log('data_export','json');Toast.show('Export ready','Admin data exported.','ok');};
+</script>
+<script>
+/* ============ 19. AUTHENTICATION ADAPTER ============
+   DEMO MODE: accounts live in local storage with a hashed (not plaintext) demo
+   password — clearly labelled, single browser. BACKEND MODE: wire these methods
+   to Supabase Auth (see /backend). Admin role is NEVER decided by a frontend
+   email check alone — in backend mode it must come from a protected table. */
+const Auth={
+  async register({name,email,password,gender,avatar}){
+    email=email.toLowerCase().trim();
+    if(Store.mode==='backend'){/* call Supabase signUp + profiles insert; welcome email via Edge Fn */}
+    const users=Store.users();
+    if(users.some(u=>u.email===email))throw new Error('An account with this email already exists.');
+    const user={id:uid(),name,email,gender,avatar:avatar||null,createdAt:Date.now(),lastLogin:Date.now(),
+      pwHash:await demoHash(password),
+      // DEMO role flag. In production the server verifies this against a protected table.
+      isAdmin:CONFIG.ADMIN_EMAILS.includes(email),settings:Settings.defaults()};
+    users.push(user);Store.saveUsers(users);
+    this._enter(user);
+    Store.log('registration',email);
+    Noti.add('Welcome to NANCYFLIX, '+name.split(' ')[0]+'!','Thanks for joining — discover what’s trending now.','ok',{toast:true});
+    this._welcomeEmail(user);
+    return user;
+  },
+  async login({email,password,remember}){
+    email=email.toLowerCase().trim();
+    if(Store.mode==='backend'){/* call Supabase signInWithPassword; role from profiles */}
+    const users=Store.users();const user=users.find(u=>u.email===email);
+    if(!user||user.pwHash!==await demoHash(password))throw new Error('Invalid email or password.');
+    user.lastLogin=Date.now();Store.saveUsers(users);
+    this._enter(user,remember);Store.log('login',email);
+    Toast.show('Welcome back','Signed in as '+user.name,'ok');
+    return user;
+  },
+  _welcomeEmail(user){
+    if(!HAS_BACKEND){Noti.add('Welcome email not sent','Your account is ready, but email delivery isn’t configured yet.','warn',{toast:false});return;}
+    // In backend mode: POST to your Edge Function which calls the email provider.
+    // Status below must reflect the REAL provider response — do not fake success.
+    fetch((CONFIG.SUPABASE_URL||'')+'/functions/v1/welcome-email',{method:'POST',headers:{'Content-Type':'application/json',Authorization:'Bearer '+CONFIG.SUPABASE_ANON_KEY},body:JSON.stringify({email:user.email,name:user.name})})
+      .then(r=>{if(r.ok)Toast.show('Welcome email sent','Check your inbox.','ok');else Toast.show('Welcome email failed','Account created, but the email could not be sent.','warn');})
+      .catch(()=>Toast.show('Welcome email failed','Account created, but the email could not be sent.','warn'));
+  },
+  _enter(user,remember=true){
+    State.user=user;State.guest=false;State.settings=Object.assign(Settings.defaults(),user.settings||{});
+    State.watchlist=Store.getWatchlist(user.id);State.notifications=Store.getNoti(user.id);
+    if(remember)Store.setSession(user.id);else Store.setSession(user.id);
+    Theme.apply(State.settings.theme);Theme.font(State.settings.font);this._applySettings();
+    this.refreshChrome();Sync.pull();Noti.syncAnnouncements();
+    enterApp();
+  },
+  guest(){State.guest=true;State.user=null;State.watchlist=[];State.notifications=[];State.settings=LS.get('guestSettings',Settings.defaults());Theme.apply(State.settings.theme);Theme.font(State.settings.font);this._applySettings();Store.bumpGuest();Store.log('guest_session');this.refreshChrome();enterApp();},
+  async logout(){if(!await Confirm.ask('Are you sure you want to log out?','You can sign back in anytime.',{ok:'Yes, log me out',cancel:'Stay signed in'}))return;if(Store.mode==='backend'){/* supabase.auth.signOut() */}Store.setSession(null);Store.log('logout',State.user?State.user.email:'');State.user=null;State.guest=false;State.notifications=[];State.watchlist=[];Toast.show('Signed out','See you soon.','info');backToAuth('login');},
+  deleteSelf(){const id=State.user.id;let users=Store.users().filter(u=>u.id!==id);Store.saveUsers(users);LS.del(Store.wlKey(id));LS.del(Store.notiKey(id));Store.setSession(null);Store.log('account_deleted',State.user.email);State.user=null;Toast.show('Account removed','Your data was deleted.','info');backToAuth('reg');},
+  refreshChrome(){
+    const av=document.getElementById('topAvatar');const u=State.user;
+    document.getElementById('navAdmin').style.display=(u&&u.isAdmin)?'flex':'none';
+    if(u&&u.avatar){av.outerHTML=`<img id="topAvatar" src="${u.avatar}" alt="profile">`;}
+    else{const label=u?(u.name||'U')[0]:'G';if(av.tagName==='IMG')av.outerHTML=`<span class="ph" id="topAvatar">${esc(label)}</span>`;else av.textContent=label;}
+    Noti.render();
+  },
+  _applySettings(){document.body.classList.toggle('reduce-motion',!!State.settings.reduceMotion);}
+};
+</script>
+<script>
+/* ============ 20. CROSS-DEVICE SYNC ============
+   In BACKEND mode these push/pull to Supabase so watchlist, profile, settings,
+   notifications and the admin inbox stay consistent across every device. In
+   DEMO mode there is no second device to sync with, so we persist locally and
+   label sync as “local only” — we never pretend remote sync happened. */
+const Sync={
+  async push(what){
+    if(Store.mode!=='backend'||!State.user)return;      // demo: already saved locally
+    try{
+      if(what==='watchlist')await sb('/rest/v1/watchlists?on_conflict=user_id',{method:'POST',headers:{Prefer:'resolution=merge-duplicates'},body:JSON.stringify({user_id:State.user.id,items:State.watchlist})});
+      if(what==='profile')await sb('/rest/v1/profiles?id=eq.'+State.user.id,{method:'PATCH',body:JSON.stringify({name:State.user.name,gender:State.user.gender,avatar:State.user.avatar,settings:State.settings})});
+      if(what==='settings')await sb('/rest/v1/profiles?id=eq.'+State.user.id,{method:'PATCH',body:JSON.stringify({settings:State.settings})});
+      if(what==='inbox')await sb('/rest/v1/feedback',{method:'POST',body:JSON.stringify(Store.inbox()[0])});
+      if(what==='announcements')await sb('/rest/v1/announcements',{method:'POST',body:JSON.stringify(Store.announcements()[0])});
+    }catch(e){/* keep local copy; surface quietly */}
+  },
+  async pull(){
+    if(Store.mode!=='backend'||!State.user)return;
+    try{
+      const wl=await sb('/rest/v1/watchlists?user_id=eq.'+State.user.id+'&select=items');
+      if(wl&&wl[0]){State.watchlist=wl[0].items||[];Store.setWatchlist(State.user.id,State.watchlist);}
+      const an=await sb('/rest/v1/announcements?select=*&order=ts.desc');
+      if(an)Store.setAnnouncements(an);
+      Noti.syncAnnouncements();if(State.view==='watchlist')Watchlist.render();
+    }catch(e){}
+  },
+  // periodic refresh so admin announcements reach already-signed-in users
+  start(){setInterval(()=>{if(State.user){if(Store.mode==='backend')this.pull();else Noti.syncAnnouncements();}},20000);}
+};
+
+/* ============ LEGAL / ABOUT DOCUMENT CENTER ============
+   Full, readable policy + about pages rendered into a shared modal. These are
+   realistic template documents for NANCYFLIX by Dev Brian Studios — adapt the
+   contact addresses / jurisdiction to your real entity before going live. */
+const LEGAL_DOCS={};
+const Legal={
+  order:['terms','privacy','cookies','about'],
+  labels:{terms:'Terms of Use',privacy:'Privacy Policy',cookies:'Cookie Preferences',about:'About Dev Brian Studios'},
+  open(key){this.cur=key||'terms';this._paint();openOverlay('legalOverlay');},
+  _paint(){
+    const d=LEGAL_DOCS[this.cur];const m=document.getElementById('legalModal');
+    const tabs=this.order.map(k=>`<button class="${k===this.cur?'active':''}" onclick="Legal.open('${k}')">${this.labels[k]}</button>`).join('');
+    m.innerHTML=`<button class="modal-close" onclick="closeOverlay('legalOverlay')" aria-label="Close"><svg class="icon sm" viewBox="0 0 24 24"><path d="M18 6L6 18M6 6l12 12"/></svg></button>
+      <div class="doc">
+        <div class="doc-hero"><div class="ic">${d.icon}</div><h2>${d.title}</h2><div class="sub"><span>${d.meta}</span><span class="chip">Edition 2026/27</span></div></div>
+        <div class="doc-tabs">${tabs}</div>
+        <div class="doc-body">${d.body}</div>
+      </div>`;
+    document.querySelector('#legalModal .doc-body').scrollTop=0;
+  }
+};
+
+/* ============ 21. ROUTING / VIEW SWITCHING ============ */
+const VIEWS={home:Home,genres:Genres,watchlist:Watchlist,feedback:Feedback,profile:Profile,admin:Admin,search:null};
+function switchView(name){
+  State.view=name;
+  document.querySelectorAll('.view').forEach(v=>v.classList.remove('show'));
+  const v=document.getElementById('view-'+name);if(v)v.classList.add('show');
+  document.querySelectorAll('#mainNav button').forEach(b=>b.classList.toggle('active',b.dataset.view===name));
+  window.scrollTo({top:0,behavior:'smooth'});
+  const mod=VIEWS[name];if(mod&&mod.render)mod.render();
+}
+document.getElementById('mainNav').addEventListener('click',e=>{const b=e.target.closest('[data-view]');if(!b)return;const target=b.dataset.view;if((target==='watchlist'||target==='admin')&&!State.user){if(target==='admin'){Toast.show('Admins only','Sign in with an administrator account.','warn');return;}}switchView(target);});
+document.getElementById('profileBtn').onclick=()=>{if(!State.user){backToAuth('login');return;}switchView('profile');};
+document.getElementById('settingsBtn').onclick=()=>Settings.openModal();
+document.getElementById('notiBtn').onclick=()=>toggleNoti();
+document.getElementById('notiClose').onclick=()=>toggleNoti(false);
+document.getElementById('markAllRead').onclick=()=>Noti.markAll();
+function toggleNoti(force){const p=document.getElementById('notiPanel');const show=force!=null?force:!p.classList.contains('show');p.classList.toggle('show',show);}
+document.getElementById('menuBtn').onclick=()=>toggleNav();
+function toggleNav(force){
+  const nav=document.getElementById('mainNav');const bd=document.getElementById('navBackdrop');
+  const open=force!=null?force:!nav.classList.contains('open');
+  nav.classList.toggle('open',open);bd.classList.toggle('show',open);
+  document.body.classList.toggle('noscroll',open);
+  document.getElementById('menuBtn').setAttribute('aria-expanded',open);
+}
+document.getElementById('navBackdrop').onclick=()=>toggleNav(false);
+document.getElementById('drawerClose').onclick=()=>toggleNav(false);
+// close the drawer whenever a destination is chosen
+document.getElementById('mainNav').addEventListener('click',e=>{if(e.target.closest('[data-view]'))toggleNav(false);});
+// auto-close if the viewport grows back to desktop width
+window.addEventListener('resize',()=>{if(window.innerWidth>900)toggleNav(false);});
+document.addEventListener('keydown',e=>{if(e.key==='Escape')toggleNav(false);});
+document.getElementById('mSearchBtn').onclick=()=>{document.getElementById('searchBox').classList.toggle('mshow');document.getElementById('searchInput').focus();};
+document.getElementById('fabSearch').onclick=()=>{window.scrollTo({top:0,behavior:'smooth'});const box=document.getElementById('searchBox');if(window.innerWidth<=560)box.classList.add('mshow');const inp=document.getElementById('searchInput');inp.focus();inp.select();};
+</script>
+<script>
+/* ============ LEGAL / ABOUT CONTENT ============ */
+LEGAL_DOCS.terms={
+  title:'Terms of Use',
+  meta:'Last updated 12 October 2026 · Effective immediately',
+  icon:'<svg class="icon" viewBox="0 0 24 24"><path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z"/><path d="M14 2v6h6M9 13h6M9 17h6"/></svg>',
+  body:`<p>Welcome to <b>NANCYFLIX</b>, a movie-discovery platform operated by <b>Dev Brian Studios</b> (“we”, “us”, “our”). By creating an account, browsing as a guest, or otherwise using the service, you agree to these Terms of Use. Please read them carefully — they form a binding agreement between you and Dev Brian Studios.</p>
+    <h3><span class="n">1</span>Eligibility &amp; accounts</h3>
+    <ul>
+      <li>You must be at least <b>13 years old</b> (or the minimum digital-consent age in your country) to create an account.</li>
+      <li>You are responsible for keeping your login credentials confidential and for all activity under your account.</li>
+      <li>Provide accurate information at sign-up and keep it current. One person, one account.</li>
+    </ul>
+    <h3><span class="n">2</span>What NANCYFLIX is</h3>
+    <p>NANCYFLIX is a <b>discovery and catalogue experience</b>. We surface trending films, genre collections, ratings, trailers and metadata sourced from third parties. We are <b>not</b> a streaming service and do not host, store, or distribute full-length films or pirated content. “Play” opens an official trailer where available.</p>
+    <h3><span class="n">3</span>Acceptable use</h3>
+    <ul>
+      <li>Don’t misuse, scrape, overload, reverse-engineer, or attempt to breach the service or its APIs.</li>
+      <li>Don’t upload unlawful, hateful, infringing, or malicious content through feedback or profile fields.</li>
+      <li>Don’t impersonate others or attempt to access another member’s account or admin tooling.</li>
+    </ul>
+    <h3><span class="n">4</span>User content &amp; feedback</h3>
+    <p>Feedback, ratings and watchlists you submit remain yours, but you grant Dev Brian Studios a worldwide, royalty-free licence to use them to operate and improve the service. We may remove content that violates these terms.</p>
+    <h3><span class="n">5</span>Intellectual property</h3>
+    <p>The NANCYFLIX name, clapperboard logo, interface and original design are property of Dev Brian Studios. Film posters, artwork, titles and descriptions belong to their respective owners and are provided via <a class="inl" href="https://www.themoviedb.org" target="_blank" rel="noopener noreferrer">TMDB</a> under their terms.</p>
+    <h3><span class="n">6</span>Disclaimers &amp; liability</h3>
+    <p>The service is provided “as is” without warranties of any kind. Catalogue data may be incomplete or inaccurate. To the maximum extent permitted by law, Dev Brian Studios is not liable for indirect or consequential damages arising from your use of the service.</p>
+    <h3><span class="n">7</span>Termination</h3>
+    <p>You may delete your account at any time from <b>Profile → Delete account</b>. We may suspend or terminate access for violations of these terms. Some provisions survive termination (IP, disclaimers, liability).</p>
+    <h3><span class="n">8</span>Changes &amp; contact</h3>
+    <p>We may update these terms; material changes will be announced in-app. Questions? Reach us via the <a class="inl" onclick="closeOverlay('legalOverlay');switchView('feedback')">Feedback</a> page or at <b>legal@devbrianstudios.example</b>.</p>
+    <div class="doc-note">This document is a realistic template for a portfolio project and is not legal advice. Replace the entity name, jurisdiction and contact details with your own before publishing publicly.</div>`
+};
+LEGAL_DOCS.privacy={
+  title:'Privacy Policy',
+  meta:'Last updated 12 October 2026 · GDPR &amp; CCPA aligned',
+  icon:'<svg class="icon" viewBox="0 0 24 24"><path d="M12 2l8 4v6c0 5-3.5 8-8 10-4.5-2-8-5-8-10V6z"/><path d="M9 12l2 2 4-4"/></svg>',
+  body:`<p>Your privacy matters to <b>Dev Brian Studios</b>. This policy explains what we collect when you use <b>NANCYFLIX</b>, why we collect it, and the control you have over it.</p>
+    <div class="stat-row">
+      <div class="st"><div class="k">0</div><div class="l">Ad-trackers or data brokers</div></div>
+      <div class="st"><div class="k">On-device</div><div class="l">Where your watchlist lives by default</div></div>
+      <div class="st"><div class="k">Anytime</div><div class="l">Export or delete your data</div></div>
+    </div>
+    <h3><span class="n">1</span>What we collect</h3>
+    <ul>
+      <li><b>Account data</b> — the name, email, optional avatar and gender you provide at sign-up.</li>
+      <li><b>Activity data</b> — your watchlist, ratings, in-app notifications and feedback messages.</li>
+      <li><b>Technical data</b> — basic device/browser info and locally stored preferences (theme, language, settings).</li>
+    </ul>
+    <h3><span class="n">2</span>How we use it</h3>
+    <p>To authenticate you, remember your watchlist and preferences, respond to feedback, keep the service secure, and improve features. We do <b>not</b> sell your personal data and we do <b>not</b> use third-party advertising trackers.</p>
+    <h3><span class="n">3</span>Where your data lives</h3>
+    <p>In demo mode, your account, watchlist and settings are stored <b>locally in your browser</b> (localStorage) and never leave your device. In backend mode they are stored securely with our provider solely to sync across your own devices.</p>
+    <h3><span class="n">4</span>Third-party services</h3>
+    <p>Film data, posters and trailers are provided by <a class="inl" href="https://www.themoviedb.org" target="_blank" rel="noopener noreferrer">TMDB</a>. When you load trailers, requests may reach the relevant video provider (e.g. YouTube) under their own privacy policies.</p>
+    <h3><span class="n">5</span>Your rights</h3>
+    <ul>
+      <li><b>Access &amp; portability</b> — view your profile and watchlist at any time.</li>
+      <li><b>Rectification</b> — edit your profile from the Profile page.</li>
+      <li><b>Erasure</b> — permanently delete your account and data from <b>Profile → Delete account</b>.</li>
+      <li><b>Objection/restriction</b> — contact us to limit specific processing.</li>
+    </ul>
+    <h3><span class="n">6</span>Data retention &amp; security</h3>
+    <p>We keep data only as long as your account is active. Passwords are never stored in plain text, and audit logs never display passwords, hashes or tokens. No system is perfectly secure, but we apply reasonable safeguards.</p>
+    <h3><span class="n">7</span>Children</h3>
+    <p>NANCYFLIX is not directed to children under 13. If you believe a child has provided personal data, contact us and we will remove it.</p>
+    <h3><span class="n">8</span>Contact</h3>
+    <p>Privacy questions or requests: <b>privacy@devbrianstudios.example</b>, or use the <a class="inl" onclick="closeOverlay('legalOverlay');switchView('feedback')">Feedback</a> page.</p>
+    <div class="doc-note">Template for demonstration purposes. Align retention periods, your legal basis for processing, and your Data Protection contact with your real operations before going live.</div>`
+};
+LEGAL_DOCS.cookies={
+  title:'Cookie Preferences',
+  meta:'Last updated 12 October 2026 · You are in control',
+  icon:'<svg class="icon" viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><circle cx="9" cy="10" r="1"/><circle cx="14" cy="14" r="1"/><circle cx="15" cy="9" r="1"/></svg>',
+  body:`<p>NANCYFLIX keeps cookies to a minimum. We use <b>local browser storage</b> rather than tracking cookies for most things, and we never run third-party advertising cookies.</p>
+    <h3><span class="n">1</span>Categories we use</h3>
+    <ul>
+      <li><b>Strictly necessary</b> (always on) — your session, so you stay signed in and your settings load. The service cannot function without these.</li>
+      <li><b>Preferences</b> — theme, language, motion and autoplay choices, stored on your device.</li>
+      <li><b>Analytics</b> (optional) — anonymous, aggregated usage counts to help us improve. Off by default in demo mode.</li>
+      <li><b>Advertising</b> — <b>none.</b> We do not serve ads or embed ad-tech.</li>
+    </ul>
+    <h3><span class="n">2</span>Manage your choices</h3>
+    <p>Preference and analytics storage can be cleared at any time:</p>
+    <ul>
+      <li>Use your browser’s “Clear site data / cookies” for this site.</li>
+      <li>Adjust motion, autoplay and theme under <a class="inl" onclick="closeOverlay('legalOverlay');Settings.openModal()">Settings</a>.</li>
+      <li>Deleting your account also removes locally stored preferences and watchlist.</li>
+    </ul>
+    <div class="doc-note">Because demo mode stores everything locally, clearing your browser data fully resets NANCYFLIX on this device. A full consent banner with granular toggles can be wired up for a production, cookie-based deployment.</div>`
+};
+LEGAL_DOCS.about={
+  title:'About Dev Brian Studios',
+  meta:'Independent studio · Est. 2024 · Crafting delightful web apps',
+  icon:'<svg class="icon" viewBox="0 0 24 24"><rect x="3" y="5" width="18" height="14" rx="3"/><path d="M7 5l2 4M12 5l2 4M17 5l2 4"/></svg>',
+  body:`<p><b>Dev Brian Studios</b> is an independent software studio building polished, human-centred web experiences. <b>NANCYFLIX</b> is our love letter to cinema — a fast, beautiful way to discover films, follow what’s trending, and keep a personal watchlist, all powered by live TMDB data.</p>
+    <div class="stat-row">
+      <div class="st"><div class="k">2026/27</div><div class="l">Current edition</div></div>
+      <div class="st"><div class="k">19+</div><div class="l">Genres with infinite scroll</div></div>
+      <div class="st"><div class="k">8</div><div class="l">Handcrafted themes</div></div>
+    </div>
+    <h3><span class="n">✦</span>Our mission</h3>
+    <p>“<i>Every story deserves a screen.</i>” We believe discovering your next favourite film should feel as cinematic as the films themselves — smooth, responsive and joyful on any device.</p>
+    <h3><span class="n">✦</span>What makes NANCYFLIX different</h3>
+    <ul>
+      <li><b>Live catalogue</b> — real trending, popular, top-rated and brand-new 2026/27 releases, refreshed from TMDB.</li>
+      <li><b>Genre-first browsing</b> — every genre, stacked with infinite scroll and a focus mode per category.</li>
+      <li><b>Personal &amp; private</b> — watchlists and preferences that respect your data.</li>
+      <li><b>Crafted detail</b> — animated branding, eight themes, reduced-motion support and a fully responsive mobile menu.</li>
+    </ul>
+    <h3><span class="n">✦</span>The tech</h3>
+    <p>NANCYFLIX ships as a single, self-contained web app — no heavy frameworks — with local accounts, an admin studio, and an optional backend for cross-device sync. Movie data courtesy of <a class="inl" href="https://www.themoviedb.org" target="_blank" rel="noopener noreferrer">TMDB</a>.</p>
+    <h3><span class="n">✦</span>Say hello</h3>
+    <p>We’d love your feedback. Drop us a note via the <a class="inl" onclick="closeOverlay('legalOverlay');switchView('feedback')">Feedback</a> page or email <b>hello@devbrianstudios.example</b>.</p>
+    <div class="doc-note">NANCYFLIX uses the TMDB API but is not endorsed or certified by TMDB. © 2026–2027 Dev Brian Studios.</div>`
+};
+</script>
+<script>
+/* ============ password toggles + strength + avatar preview ============ */
+document.querySelectorAll('.toggle[data-pw]').forEach(btn=>btn.onclick=()=>{const i=document.getElementById(btn.dataset.pw);i.type=i.type==='password'?'text':'password';});
+const pwBar=document.getElementById('pwBar'),pwHint=document.getElementById('pwHint');
+document.getElementById('rgPass').addEventListener('input',e=>{const v=e.target.value;let s=0;if(v.length>=8)s++;if(/[A-Z]/.test(v)&&/[a-z]/.test(v))s++;if(/\d/.test(v))s++;if(/[^A-Za-z0-9]/.test(v))s++;const pct=[0,25,55,80,100][s];const col=['#e74c3c','#e74c3c','#f1c40f','#2ecc71','#2ecc71'][s];pwBar.style.width=pct+'%';pwBar.style.background=col;pwHint.textContent=['Too weak','Weak','Fair','Strong','Very strong'][s]||'';});
+let regAvatar=null;
+document.getElementById('rgAvatar').onchange=e=>readImage(e.target.files[0],data=>{regAvatar=data;document.getElementById('avPrev').innerHTML=`<img src="${data}" style="width:100%;height:100%;border-radius:50%;object-fit:cover">`;});
+
+/* ============ auth tabs & form submit ============ */
+function setTab(t){document.getElementById('tabLogin').classList.toggle('active',t==='login');document.getElementById('tabReg').classList.toggle('active',t==='reg');document.getElementById('loginForm').style.display=t==='login'?'block':'none';document.getElementById('regForm').style.display=t==='reg'?'block':'none';authMsg('');}
+document.getElementById('tabLogin').onclick=()=>setTab('login');
+document.getElementById('tabReg').onclick=()=>setTab('reg');
+function authMsg(text,type='err'){const m=document.getElementById('authMsg');if(!text){m.className='form-msg';m.textContent='';return;}m.className='form-msg show '+type;m.textContent=text;}
+document.getElementById('loginForm').addEventListener('submit',async e=>{e.preventDefault();authMsg('');try{await Auth.login({email:liEmail.value,password:liPass.value,remember:liRemember.checked});}catch(err){authMsg(err.message);}});
+document.getElementById('regForm').addEventListener('submit',async e=>{e.preventDefault();authMsg('');const name=rgName.value.trim(),email=rgEmail.value.trim(),pass=rgPass.value;if(!name){authMsg('Please enter your full name.');return;}if(!/^[^@\s]+@[^@\s]+\.[^@\s]+$/.test(email)){authMsg('Please enter a valid email.');return;}if(pass.length<8){authMsg('Password must be at least 8 characters.');return;}try{await Auth.register({name,email,password:pass,gender:rgGender.value,avatar:regAvatar});authMsg('Account created! Welcome to NANCYFLIX.','ok');}catch(err){authMsg(err.message);}});
+document.getElementById('guestBtn').onclick=()=>Auth.guest();
+document.getElementById('forgotBtn').onclick=()=>{if(HAS_BACKEND)Toast.show('Password reset','A reset link will be emailed via your auth provider.','info');else authMsg('Password recovery needs a configured backend. In demo mode, re-register if needed.','info');};
+
+/* ============ app enter / return to auth ============ */
+function enterApp(){document.getElementById('auth').classList.remove('show');document.getElementById('app').classList.add('show');document.body.classList.remove('noscroll');document.getElementById('mSearchBtn').style.display='';document.getElementById('fabSearch').classList.add('show');switchView(State.settings.defaultCat&&false?'home':'home');}
+function backToAuth(tab='login'){document.getElementById('app').classList.remove('show');document.getElementById('fabSearch').classList.remove('show');[...document.querySelectorAll('.overlay.show')].forEach(o=>o.classList.remove('show'));document.getElementById('notiPanel').classList.remove('show');document.getElementById('auth').classList.add('show');document.body.classList.add('noscroll');setTab(tab);document.getElementById('demoNote').style.display=HAS_BACKEND?'none':'block';}
+
+/* ============ 0. SPLASH + INITIALIZATION ============ */
+const SplashAudio={
+  on:true,started:false,el:null,
+  url:'https://files.catbox.moe/1ubw1i.wav',
+  _wantSound(){return LS.get('guestSettings',{}).sound!==false;},
+  init(){
+    this.on=this._wantSound();
+    if(!this.el){this.el=new Audio(this.url);this.el.preload='auto';this.el.volume=0.6;this.el.crossOrigin='anonymous';}
+    const btn=document.getElementById('splashSound');
+    if(btn){this._paintBtn();btn.onclick=()=>this.toggle();}
+  },
+  _paintBtn(){const btn=document.getElementById('splashSound');if(!btn)return;btn.classList.toggle('muted',!this.on);btn.textContent=this.on?'\uD83D\uDD0A':'\uD83D\uDD07';},
+  toggle(){this.on=!this.on;this._paintBtn();if(this.on){this.play();}else{this.stop();}},
+  play(){
+    if(!this.on||!this.el||this.started)return;
+    this.started=true;
+    try{this.el.currentTime=0;}catch(e){}
+    const p=this.el.play();
+    // autoplay may be blocked until a user gesture; allow a retry
+    if(p&&p.catch){p.catch(()=>{this.started=false;});}
+  },
+  stop(){if(!this.el)return;try{this.el.pause();this.el.currentTime=0;}catch(e){}}
+};
+function initParticles(){
+  const box=document.getElementById('parts');let h='';for(let i=0;i<26;i++){const l=Math.random()*100,d=6+Math.random()*8,dl=Math.random()*6;h+=`<i style="left:${l}%;animation-duration:${d}s;animation-delay:-${dl}s"></i>`;}box.innerHTML=h;
+  const ff=document.getElementById('filmFloat');if(ff){const ico=['\uD83C\uDFAC','\uD83C\uDF7F','\u2B50','\uD83C\uDF9E\uFE0F','\uD83C\uDFA5','\uD83C\uDF9F\uFE0F','\uD83D\uDCFD\uFE0F','\uD83C\uDF1F'];let f='';for(let i=0;i<14;i++){const l=Math.random()*96,d=9+Math.random()*7,dl=Math.random()*9,sz=18+Math.random()*20;f+=`<span style="left:${l}%;font-size:${sz}px;animation-duration:${d}s;animation-delay:-${dl}s">${ico[i%ico.length]}</span>`;}ff.innerHTML=f;}
+}
+const SplashRotator={
+  phrases:['\uD83C\uDFAC Thousands of films, one tap away',"\uD83D\uDD25 See what's trending right now",'\u2B50 Rate it. Review it. Remember it.','\uD83C\uDF7F Build your perfect watchlist','\uD83C\uDF9E\uFE0F Fresh 2026 & 2027 premieres','\uD83C\uDFA5 Official trailers in a click'],
+  i:0,timer:null,
+  start(){const el=document.getElementById('splashRot');if(!el)return;this.i=0;el.textContent=this.phrases[0];el.className='rot-line in';this.stop();this.timer=setInterval(()=>this._next(),2000);},
+  _next(){const el=document.getElementById('splashRot');if(!el)return;el.className='rot-line out';setTimeout(()=>{this.i=(this.i+1)%this.phrases.length;el.textContent=this.phrases[this.i];el.className='rot-line in';},400);},
+  stop(){if(this.timer){clearInterval(this.timer);this.timer=null;}}
+};
+function runSplash(){
+  initParticles();
+  SplashRotator.start();
+  SplashAudio.init();
+  const bar=document.getElementById('splashBar');
+  const quick=LS.get('guestSettings',{}).splash===false;
+  const t0=Date.now();
+  let dur=quick?600:6000;        // fallback length until the audio's real duration is known
+  const cap=20000;               // hard safety cap so the splash can never hang
+  if(!quick){
+    SplashAudio.play();
+    const el=SplashAudio.el;
+    if(el){
+      el.addEventListener('loadedmetadata',()=>{if(isFinite(el.duration)&&el.duration>0)dur=Math.min(cap,el.duration*1000+500);},{once:true});
+      el.addEventListener('ended',()=>finishSplash(),{once:true});
+    }
+    // autoplay policies may block audio until a gesture; start on first interaction
+    const kick=()=>{if(!SplashAudio.started)SplashAudio.play();document.removeEventListener('pointerdown',kick);document.removeEventListener('keydown',kick);};
+    document.addEventListener('pointerdown',kick);document.addEventListener('keydown',kick);
+  }
+  const tick=()=>{
+    const el=SplashAudio.el;let p;
+    if(!quick&&el&&el.duration&&isFinite(el.duration)&&!el.paused){p=Math.min(100,el.currentTime/el.duration*100);}
+    else{p=Math.min(100,(Date.now()-t0)/dur*100);}
+    bar.style.width=p+'%';
+    if((Date.now()-t0)<dur&&!splashDone)requestAnimationFrame(tick);else finishSplash();
+  };
+  requestAnimationFrame(tick);
+  // safety: never hang on splash even if something stalls
+  setTimeout(finishSplash,cap+800);
+}
+let splashDone=false;
+function finishSplash(){if(splashDone)return;splashDone=true;SplashRotator.stop();SplashAudio.stop();const s=document.getElementById('splash');s.style.transition='opacity .5s';s.style.opacity=0;setTimeout(()=>{s.style.display='none';resumeSession();},500);}
+document.getElementById('skipSplash').onclick=()=>finishSplash();
+
+function resumeSession(){
+  const sid=Store.session();
+  if(sid){const u=Store.users().find(x=>x.id===sid);if(u){Auth._enter(u);return;}}
+  backToAuth('login');
+}
+
+/* boot */
+(async function boot(){
+  try{State.genres=await TMDB.genres();}catch(e){State.genres=GENRE_FALLBACK;}
+  State.genreMap={};State.genres.forEach(g=>State.genreMap[g.id]=g.name);
+  Search.init();Sync.start();
+  runSplash();
+})();
+</script>
+</body>
+</html>
