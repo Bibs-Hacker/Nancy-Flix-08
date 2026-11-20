@@ -1,14 +1,29 @@
 <!DOCTYPE html>
-<html lang="en" data-theme="midnight">
+<html lang="en" dir="ltr" data-theme="dark" translate="no">
 <head>
 <meta charset="UTF-8" />
-<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover, maximum-scale=5" />
 <meta name="description" content="NANCYFLIX by Dev Brian Studios — Every story deserves a screen. Premium movie discovery." />
 <title>NANCYFLIX — Every Story Deserves A Screen</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Anton&family=Bebas+Neue&display=swap" rel="stylesheet">
 <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='14' fill='%230a0a0f'/%3E%3Crect x='11' y='26' width='42' height='25' rx='3' fill='%23e11d2e'/%3E%3Cg transform='rotate(-9 32 20)'%3E%3Crect x='10' y='14' width='44' height='10' rx='2' fill='%23f5f5fa'/%3E%3Cpath d='M20 14l-5 10M30 14l-5 10M40 14l-5 10M50 14l-5 10' stroke='%230a0a0f' stroke-width='3'/%3E%3C/g%3E%3C/svg%3E" />
+<!-- ===== PWA / installable app ===== -->
+<link rel="manifest" href="manifest.webmanifest" />
+<meta name="application-name" content="NANCYFLIX" />
+<meta name="theme-color" content="#06060a" />
+<meta name="color-scheme" content="dark light" />
+<meta name="mobile-web-app-capable" content="yes" />
+<meta name="apple-mobile-web-app-capable" content="yes" />
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+<meta name="apple-mobile-web-app-title" content="NANCYFLIX" />
+<meta name="format-detection" content="telephone=no" />
+<link rel="apple-touch-icon" href="icons/apple-touch-icon.png" />
+<link rel="icon" type="image/png" sizes="192x192" href="icons/icon-192.png" />
+<link rel="icon" type="image/png" sizes="512x512" href="icons/icon-512.png" />
+<!-- stop Chrome/Edge auto-translating the UI into another language -->
+<meta name="google" content="notranslate" />
 <style>
 :root{
   --bg:#06060a; --bg-2:#0d0d14; --surface:#12121c; --surface-2:#1a1a26;
@@ -511,26 +526,294 @@ tbody tr:hover{background:var(--glass)}
 }
 @media(prefers-reduced-motion:reduce){*{animation-duration:.001ms!important;transition-duration:.001ms!important}}
 body.reduce-motion *{animation-duration:.001ms!important;transition:none!important}
+
+/* =====================================================================
+   v4 — installable PWA shell, language chooser, premium, responsive
+   ===================================================================== */
+:root{--safe-t:env(safe-area-inset-top,0px);--safe-b:env(safe-area-inset-bottom,0px);--gold:#ffcc66}
+html{text-size-adjust:100%;-webkit-text-size-adjust:100%}
+body{min-height:100dvh;overscroll-behavior-y:none}
+#app{min-height:100dvh}
+img,video,iframe{max-width:100%}
+select,input,textarea{font-size:16px} /* stops iOS zoom-on-focus */
+.topbar{padding-top:calc(12px + var(--safe-t))}
+@media(hover:none){button,a,[role=button]{-webkit-tap-highlight-color:transparent}}
+
+/* ---------- language button (topbar) ---------- */
+.lang-btn{display:flex;align-items:center;gap:7px;height:40px;padding:0 11px;border-radius:999px;background:var(--surface);border:1px solid var(--border);color:var(--text);transition:.2s;flex:0 0 auto}
+.lang-btn:hover{transform:translateY(-2px);border-color:var(--accent)}
+.lang-btn .flag{font-size:16px;line-height:1;filter:saturate(1.1)}
+.lang-btn .code{font-size:10.5px;font-weight:800;letter-spacing:.08em;color:var(--muted);text-transform:uppercase}
+.lang-btn svg{width:15px;height:15px;color:var(--muted)}
+[dir=rtl] .lang-btn .code{letter-spacing:0}
+
+/* ---------- full-screen language sheet ---------- */
+#langPanel{position:fixed;inset:0;z-index:1240;display:none;background:radial-gradient(900px 640px at 50% -12%,rgba(225,29,46,.20),transparent 62%),rgba(5,5,9,.96);backdrop-filter:blur(22px);-webkit-backdrop-filter:blur(22px);overflow-y:auto;overscroll-behavior:contain}
+#langPanel.show{display:block;animation:lpFade .28s ease both}
+@keyframes lpFade{from{opacity:0}to{opacity:1}}
+.lp-wrap{max-width:760px;margin:0 auto;padding:calc(26px + var(--safe-t)) 20px calc(26px + var(--safe-b));display:flex;flex-direction:column;min-height:100%}
+.lp-brand{display:flex;align-items:center;gap:10px;margin-bottom:26px}
+.lp-brand svg{width:30px;height:30px;border-radius:9px}
+.lp-brand .t{font-family:'Anton','Bebas Neue',Impact,sans-serif;font-size:19px;letter-spacing:3px}
+.lp-head h2{font-size:clamp(26px,5.4vw,40px);line-height:1.1;font-weight:900;letter-spacing:-.5px}
+.lp-head h2 span{background:linear-gradient(100deg,var(--accent),var(--accent-2),#fff);-webkit-background-clip:text;background-clip:text;color:transparent}
+.lp-head p{color:var(--muted);font-size:14px;margin-top:8px;max-width:52ch}
+.lp-search{position:relative;margin:22px 0 16px}
+.lp-search svg{position:absolute;left:16px;top:50%;transform:translateY(-50%);width:17px;height:17px;color:var(--muted)}
+.lp-search input{width:100%;padding:14px 16px 14px 44px;border-radius:14px;background:rgba(255,255,255,.05);border:1px solid var(--glass-br);color:var(--text);outline:none;transition:.2s}
+.lp-search input:focus{border-color:var(--accent);background:rgba(255,255,255,.07);box-shadow:0 0 0 4px var(--accent-soft)}
+[dir=rtl] .lp-search input{padding:14px 44px 14px 16px}
+.lp-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(220px,1fr));gap:10px}
+.lp-opt{display:flex;align-items:center;gap:13px;width:100%;padding:14px 15px;border-radius:14px;background:rgba(255,255,255,.035);border:1px solid var(--glass-br);color:var(--text);text-align:start;transition:transform .18s,background .2s,border-color .2s;position:relative}
+.lp-opt:hover{transform:translateY(-2px);background:rgba(255,255,255,.07);border-color:rgba(255,255,255,.18)}
+.lp-opt .fl{font-size:24px;line-height:1;width:34px;height:34px;display:grid;place-items:center;border-radius:10px;background:rgba(0,0,0,.35);border:1px solid var(--glass-br);flex:0 0 auto}
+.lp-opt .nm{display:flex;flex-direction:column;gap:2px;min-width:0}
+.lp-opt .nm b{font-size:14.5px;font-weight:700;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.lp-opt .nm small{font-size:11.5px;color:var(--muted);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.lp-opt .tick{margin-inline-start:auto;width:22px;height:22px;border-radius:50%;border:1.5px solid var(--border);display:grid;place-items:center;flex:0 0 auto;transition:.2s}
+.lp-opt .tick svg{width:13px;height:13px;opacity:0;transform:scale(.6);transition:.2s;color:#fff}
+.lp-opt[aria-checked=true]{border-color:var(--accent);background:linear-gradient(120deg,var(--accent-soft),rgba(255,255,255,.04))}
+.lp-opt[aria-checked=true] .tick{background:var(--accent);border-color:var(--accent)}
+.lp-opt[aria-checked=true] .tick svg{opacity:1;transform:none}
+.lp-foot{margin-top:auto;padding-top:22px;display:flex;align-items:center;gap:12px;justify-content:space-between;flex-wrap:wrap;color:var(--muted);font-size:12px}
+.lp-foot .btn{min-width:150px;justify-content:center}
+.lp-empty{grid-column:1/-1;text-align:center;color:var(--muted);font-size:13.5px;padding:26px 0}
+
+/* ---------- splash v2 ---------- */
+#splash{display:flex;flex-direction:column;align-items:center;justify-content:center;gap:0;padding:calc(24px + var(--safe-t)) 20px calc(24px + var(--safe-b));overflow:hidden}
+#splash::before{content:'';position:absolute;inset:0;background:radial-gradient(700px 500px at 50% 38%,rgba(225,29,46,.20),transparent 65%);pointer-events:none}
+.splash-inner{position:relative;display:flex;flex-direction:column;align-items:center;gap:18px;z-index:2;width:100%;max-width:560px}
+.splash-badge{font-size:10px;letter-spacing:.34em;color:var(--muted);text-transform:uppercase;opacity:0;animation:logoReveal .9s .1s both}
+.pv-sec h3{display:flex;align-items:center;gap:10px}
+.pv-sec h3 svg{width:20px;height:20px;flex:0 0 auto;color:#ffcc66}
+.pv-kicker svg{width:13px;height:13px;flex:0 0 auto}
+.pv-faq h3{margin-bottom:12px}
+.lockchip{position:relative;opacity:.55;cursor:not-allowed}
+.lockchip::after{content:"\1F512";position:absolute;top:8px;right:8px;font-size:13px}
+@media(max-width:760px){#app .view{padding-bottom:96px}}
+.splash-ring{position:relative;width:140px;height:140px;display:grid;place-items:center}
+.splash-ring svg.ring{position:absolute;inset:0;width:100%;height:100%;transform:rotate(-90deg)}
+.splash-ring svg.ring circle{fill:none;stroke-width:2.5;stroke-linecap:round}
+.splash-ring .trk{stroke:rgba(255,255,255,.08)}
+.splash-ring .prg{stroke:url(#splashGrad);stroke-dasharray:389.6;stroke-dashoffset:389.6;transition:stroke-dashoffset .18s linear;filter:drop-shadow(0 0 6px rgba(255,59,78,.55))}
+.splash-logo{animation:logoReveal 1s cubic-bezier(.2,.8,.2,1) both}
+.splash-logo svg{width:104px;height:104px;border-radius:24px;box-shadow:0 18px 44px rgba(0,0,0,.6)}
+.splash-word{font-size:clamp(38px,10vw,74px);letter-spacing:clamp(4px,1.6vw,12px)}
+.splash-tag{font-size:clamp(9px,2.1vw,12px);letter-spacing:clamp(2px,1vw,5px)}
+.splash-progress{display:flex;flex-direction:column;align-items:center;gap:9px;width:min(360px,78vw)}
+.splash-track{width:100%;height:3px;border-radius:99px;background:rgba(255,255,255,.09);overflow:hidden}
+.splash-track i{display:block;height:100%;width:0;border-radius:99px;background:linear-gradient(90deg,var(--accent),var(--accent-2),#fff);box-shadow:0 0 12px rgba(255,59,78,.7)}
+.splash-status{display:flex;align-items:center;justify-content:space-between;width:100%;font-size:10.5px;letter-spacing:.2em;text-transform:uppercase;color:var(--muted)}
+.splash-status b{color:var(--text);font-variant-numeric:tabular-nums;letter-spacing:.06em}
+.splash-sound{position:absolute;bottom:calc(24px + var(--safe-b));inset-inline-start:22px;z-index:3;width:46px;height:46px;border-radius:50%;background:var(--glass);border:1px solid var(--border);display:flex;align-items:center;justify-content:center;color:var(--text);transition:.2s;backdrop-filter:blur(8px)}
+.splash-sound:hover{transform:scale(1.08);border-color:var(--accent)}
+.splash-sound.off{color:var(--muted)}
+.splash-sound.on::after{content:'';position:absolute;inset:-4px;border-radius:50%;border:1px solid var(--accent);opacity:.55;animation:fabRing 2.4s ease-out infinite}
+.splash-skip{position:absolute;bottom:calc(26px + var(--safe-b));inset-inline-end:22px;z-index:3;display:flex;align-items:center;gap:7px;padding:10px 15px;border-radius:99px;background:var(--glass);border:1px solid var(--border);color:var(--text);font-size:12.5px;font-weight:600;backdrop-filter:blur(8px);transition:.2s}
+.splash-skip:hover{background:rgba(255,255,255,.1);transform:translateX(2px)}
+[dir=rtl] .splash-skip:hover{transform:translateX(-2px)}
+.splash-skip svg{width:13px;height:13px;opacity:.7}
+@media(max-width:560px){.splash-sound{bottom:calc(18px + var(--safe-b));inset-inline-start:14px;width:42px;height:42px}.splash-skip{bottom:calc(20px + var(--safe-b));inset-inline-end:14px;padding:9px 13px}}
+
+/* ---------- install banner + iOS sheet ---------- */
+#installBanner{position:fixed;z-index:472;left:12px;right:12px;bottom:calc(14px + var(--safe-b));display:none;max-width:440px;margin-inline:auto}
+#installBanner.show{display:block;animation:instIn .45s cubic-bezier(.2,.9,.3,1.2) both}
+@keyframes instIn{from{opacity:0;transform:translateY(26px) scale(.97)}to{opacity:1;transform:none}}
+.inst-card{display:flex;align-items:center;gap:12px;padding:12px 12px 12px 13px;border-radius:18px;background:rgba(16,16,24,.94);border:1px solid var(--glass-br);box-shadow:0 20px 50px rgba(0,0,0,.62);backdrop-filter:blur(18px)}
+.inst-card>img{width:42px;height:42px;border-radius:12px;flex:0 0 auto;box-shadow:0 4px 14px rgba(0,0,0,.5)}
+.inst-tx{min-width:0;flex:1}
+.inst-tx b{display:block;font-size:13.5px;font-weight:700}
+.inst-tx span{display:block;font-size:11.5px;color:var(--muted);line-height:1.35;margin-top:1px}
+.inst-go{padding:9px 15px;border-radius:99px;background:linear-gradient(135deg,var(--accent),var(--accent-2));color:#fff;font-size:12.5px;font-weight:700;flex:0 0 auto}
+.inst-x{width:30px;height:30px;border-radius:50%;display:grid;place-items:center;color:var(--muted);flex:0 0 auto}
+.inst-x:hover{background:var(--glass);color:var(--text)}
+#iosSheet{position:fixed;inset:0;z-index:1260;display:none;align-items:flex-end;justify-content:center;background:rgba(0,0,0,.6);backdrop-filter:blur(6px);padding:0}
+#iosSheet.show{display:flex}
+.ios-card{width:100%;max-width:460px;background:var(--surface);border:1px solid var(--border);border-bottom:0;border-radius:22px 22px 0 0;padding:22px 22px calc(26px + var(--safe-b));box-shadow:0 -20px 60px rgba(0,0,0,.6);animation:iosUp .35s cubic-bezier(.2,.9,.3,1) both}
+@keyframes iosUp{from{transform:translateY(100%)}to{transform:none}}
+.ios-card h3{font-size:18px;font-weight:800;display:flex;align-items:center;gap:9px}
+.ios-card .sub{color:var(--muted);font-size:12.5px;margin:6px 0 18px}
+.ios-steps{display:flex;flex-direction:column;gap:13px;margin-bottom:20px}
+.ios-step{display:flex;gap:12px;align-items:flex-start;font-size:13.5px;line-height:1.45}
+.ios-step .n{width:24px;height:24px;border-radius:50%;background:var(--accent-soft);border:1px solid rgba(225,29,46,.4);color:var(--accent-2);font-size:11.5px;font-weight:800;display:grid;place-items:center;flex:0 0 auto}
+.ios-step svg{width:15px;height:15px;vertical-align:-2px;display:inline-block}
+
+/* ---------- mobile bottom navigation ---------- */
+.bottom-nav{position:fixed;z-index:456;left:0;right:0;bottom:0;display:none;grid-template-columns:repeat(5,1fr);align-items:center;gap:2px;padding:7px 6px calc(7px + var(--safe-b));background:rgba(8,8,13,.92);backdrop-filter:blur(22px);-webkit-backdrop-filter:blur(22px);border-top:1px solid rgba(255,255,255,.075);box-shadow:0 -8px 30px rgba(0,0,0,.45)}
+.bottom-nav button{display:flex;flex-direction:column;align-items:center;gap:3px;padding:6px 2px;border-radius:12px;color:var(--muted);font-size:9.5px;font-weight:700;letter-spacing:.02em;transition:color .2s;position:relative;min-height:48px;justify-content:center}
+.bottom-nav button svg{width:21px;height:21px;transition:transform .2s}
+.bottom-nav button.active{color:var(--text)}
+.bottom-nav button.active svg{transform:translateY(-1px) scale(1.06)}
+.bottom-nav button.active::before{content:'';position:absolute;top:0;width:22px;height:2.5px;border-radius:99px;background:linear-gradient(90deg,var(--accent),var(--accent-2))}
+.bottom-nav .bn-premium{color:var(--gold)}
+.bottom-nav .bn-premium svg{filter:drop-shadow(0 0 6px rgba(255,204,102,.35))}
+@media(max-width:820px){
+  .bottom-nav{display:grid}
+  .view{padding-bottom:calc(96px + var(--safe-b))}
+  .site-footer{padding-bottom:calc(26px + 74px + var(--safe-b))}
+  .fab-search{bottom:calc(80px + var(--safe-b));right:14px;width:50px;height:50px}
+  #installBanner{bottom:calc(74px + var(--safe-b))}
+}
+
+/* ---------- premium ---------- */
+.pv-hero{position:relative;border-radius:22px;overflow:hidden;padding:clamp(24px,4.4vw,56px);background:radial-gradient(900px 420px at 15% -20%,rgba(124,92,255,.35),transparent 62%),radial-gradient(700px 400px at 100% 0%,rgba(225,29,46,.32),transparent 58%),linear-gradient(150deg,#12101f,#08070d 62%);border:1px solid rgba(255,255,255,.09);box-shadow:0 30px 70px rgba(0,0,0,.5)}
+.pv-hero::after{content:'';position:absolute;inset:0;background:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='60' height='60'%3E%3Cpath d='M0 60L60 0' stroke='%23ffffff' stroke-opacity='.03' stroke-width='1'/%3E%3C/svg%3E");pointer-events:none}
+.pv-kicker{display:inline-flex;align-items:center;gap:7px;padding:6px 13px;border-radius:99px;background:rgba(255,204,102,.12);border:1px solid rgba(255,204,102,.35);color:var(--gold);font-size:10.5px;font-weight:800;letter-spacing:.14em;text-transform:uppercase}
+.pv-title{font-size:clamp(30px,5.6vw,58px);font-weight:900;line-height:1.02;letter-spacing:-1.4px;margin:16px 0 12px;max-width:15ch;background:linear-gradient(100deg,#fff 20%,var(--gold) 62%,#ff8fa0 100%);-webkit-background-clip:text;background-clip:text;color:transparent}
+.pv-sub{color:#c9c6da;font-size:clamp(13.5px,1.6vw,16.5px);max-width:52ch;line-height:1.6}
+.pv-plans{display:grid;grid-template-columns:repeat(auto-fit,minmax(230px,1fr));gap:14px;margin-top:26px;max-width:640px;position:relative;z-index:2}
+.pv-plan{position:relative;display:flex;flex-direction:column;gap:4px;padding:18px 18px 16px;border-radius:16px;background:rgba(255,255,255,.045);border:1.5px solid rgba(255,255,255,.1);text-align:start;color:var(--text);transition:.22s;cursor:pointer}
+.pv-plan:hover{transform:translateY(-3px);background:rgba(255,255,255,.075)}
+.pv-plan.sel{border-color:var(--gold);background:linear-gradient(150deg,rgba(255,204,102,.14),rgba(255,255,255,.03));box-shadow:0 0 0 1px rgba(255,204,102,.35),0 16px 40px rgba(0,0,0,.4)}
+.pv-plan .pn{font-size:12px;font-weight:800;letter-spacing:.12em;text-transform:uppercase;color:#cfcbdd}
+.pv-plan .pp{font-size:34px;font-weight:900;letter-spacing:-1.5px;line-height:1.1}
+.pv-plan .pp small{font-size:12.5px;font-weight:600;color:var(--muted);letter-spacing:0}
+.pv-plan .pd{font-size:11.5px;color:var(--muted)}
+.pv-flag{position:absolute;top:-11px;inset-inline-end:12px;padding:4px 10px;border-radius:99px;font-size:9.5px;font-weight:900;letter-spacing:.08em;text-transform:uppercase;background:linear-gradient(135deg,var(--gold),#ffb03a);color:#231600;box-shadow:0 6px 18px rgba(255,176,58,.35)}
+.pv-cta{display:flex;flex-wrap:wrap;gap:10px;margin-top:24px;position:relative;z-index:2}
+.pv-cta .btn{padding:13px 24px;font-size:14.5px;border-radius:12px}
+.pv-cta .btn.gold{background:linear-gradient(135deg,#ffd98a,var(--gold) 45%,#ffb03a);color:#1c1200;border:0;font-weight:800;box-shadow:0 12px 30px rgba(255,176,58,.32)}
+.pv-trust{display:flex;align-items:center;gap:8px;flex-wrap:wrap;margin-top:14px;color:#a9a5bd;font-size:11.5px;position:relative;z-index:2}
+.pv-trust svg{width:13px;height:13px;color:#7ee2a8}
+.pv-sec{margin-top:38px}
+.pv-sec h3{font-size:19px;font-weight:800;margin-bottom:14px;display:flex;align-items:center;gap:9px}
+.pv-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(230px,1fr));gap:12px}
+.pv-feat{padding:17px 17px 15px;border-radius:15px;background:var(--surface);border:1px solid var(--border);transition:.2s}
+.pv-feat:hover{border-color:rgba(255,204,102,.32);transform:translateY(-2px)}
+.pv-feat .ic{width:34px;height:34px;border-radius:10px;display:grid;place-items:center;background:rgba(255,204,102,.1);border:1px solid rgba(255,204,102,.22);color:var(--gold);margin-bottom:11px}
+.pv-feat .ic svg{width:17px;height:17px}
+.pv-feat b{display:block;font-size:13.5px;margin-bottom:4px}
+.pv-feat span{font-size:12px;color:var(--muted);line-height:1.5;display:block}
+.pv-status{display:flex;align-items:center;gap:12px;padding:15px 17px;border-radius:14px;background:linear-gradient(120deg,rgba(126,226,168,.1),rgba(255,255,255,.02));border:1px solid rgba(126,226,168,.3);margin-top:18px;font-size:13px}
+.pv-status .dotok{width:9px;height:9px;border-radius:50%;background:#7ee2a8;box-shadow:0 0 0 4px rgba(126,226,168,.16);flex:0 0 auto}
+.pv-status b{font-weight:800}
+.pv-status span{color:var(--muted);font-size:12px}
+.pv-note{font-size:11.5px;color:var(--muted);margin-top:10px;line-height:1.6}
+.pv-faq details{border:1px solid var(--border);border-radius:12px;background:var(--surface);padding:0 16px;margin-bottom:9px}
+.pv-faq summary{cursor:pointer;padding:14px 0;font-size:13.5px;font-weight:700;list-style:none;display:flex;justify-content:space-between;gap:10px;align-items:center}
+.pv-faq summary::-webkit-details-marker{display:none}
+.pv-faq summary::after{content:'+';font-size:18px;color:var(--muted);font-weight:400}
+.pv-faq details[open] summary::after{content:'−'}
+.pv-faq p{color:var(--muted);font-size:12.5px;line-height:1.65;padding:0 0 14px}
+.pv-badge{display:inline-flex;align-items:center;gap:5px;padding:2px 8px;border-radius:99px;font-size:9px;font-weight:900;letter-spacing:.08em;background:linear-gradient(135deg,#ffd98a,var(--gold));color:#201500;vertical-align:middle}
+.avatar-btn.premium .ph{box-shadow:0 0 0 2px #0b0b12,0 0 0 4px var(--gold),0 0 14px rgba(255,204,102,.55)}
+.theme-opt.locked{opacity:.75}
+.theme-opt.locked .meta::after{content:'🔒';margin-inline-start:6px;font-size:10px}
+.pv-banner{display:none;align-items:center;gap:10px;flex-wrap:wrap;padding:12px 15px;border-radius:13px;background:linear-gradient(110deg,rgba(255,204,102,.12),rgba(225,29,46,.1));border:1px solid rgba(255,204,102,.28);margin-bottom:18px;font-size:12.5px}
+.pv-banner.show{display:flex}
+.pv-banner b{color:var(--gold)}
+
+/* ---------- auth language pill ---------- */
+.auth-card{position:relative}
+.auth-lang{position:absolute;top:14px;inset-inline-end:14px;display:flex;align-items:center;gap:6px;padding:6px 10px;border-radius:99px;background:var(--glass);border:1px solid var(--border);font-size:11px;color:var(--muted);transition:.2s;z-index:2}
+.auth-lang:hover{color:var(--text);border-color:var(--accent)}
+.auth-lang .flag{font-size:14px;line-height:1}
+.auth-lang svg{width:13px;height:13px;opacity:.7}
+.foot-mail{display:inline-block;margin-top:10px;font-size:12px;color:var(--muted);border-bottom:1px dashed rgba(154,154,174,.4);padding-bottom:1px}
+.foot-mail:hover{color:var(--accent-2);border-color:var(--accent-2)}
+.nav button.nav-premium{color:var(--gold)}
+.nav button.nav-premium.active{background:rgba(255,204,102,.12);color:var(--gold)}
+
+/* ---------- responsive polish ---------- */
+.view{padding:24px clamp(14px,2.4vw,30px) 90px}
+.section-head h3{font-size:clamp(16.5px,1.9vw,21px)}
+.grid{grid-template-columns:repeat(auto-fill,minmax(clamp(118px,15vw,168px),1fr));gap:clamp(10px,1.4vw,18px)}
+.row{gap:clamp(9px,1.2vw,16px);scroll-padding-inline:4px;-webkit-overflow-scrolling:touch}
+.row>*{scroll-snap-align:start}
+.modal{max-width:min(920px,94vw)}
+.modal.sm{max-width:min(460px,94vw)}
+@media(max-width:1024px){
+  .search-box input{width:132px}
+  .search-box input:focus{width:170px}
+  .nav button{padding:9px 11px;font-size:13px}
+  .hero{min-height:clamp(280px,46vh,480px)}
+}
+@media(max-width:820px){
+  .topbar{gap:8px}
+  .brand .t{font-size:15px;letter-spacing:2px}
+  .lang-btn{padding:0 9px;gap:5px;height:38px}
+  .lang-btn .code{display:none}
+  .top-right{gap:6px;margin-inline-start:auto}
+  .icon-btn{width:38px;height:38px}
+  .view{padding-top:18px}
+  .hero{border-radius:16px;margin-bottom:26px}
+  .hero .inner{padding:22px 18px}
+  .hero p{-webkit-line-clamp:2;font-size:13.5px}
+  .site-footer{padding:32px 16px 22px}
+  .foot-grid{grid-template-columns:1fr 1fr;gap:22px}
+  .foot-brand{grid-column:1/-1}
+}
+@media(max-width:560px){
+  .brand .t{display:none}
+  .nav .drawer-head .brand .t{display:inline}
+  .lp-grid{grid-template-columns:1fr;gap:8px}
+  .lp-opt{padding:12px 13px}
+  .pv-hero{padding:22px 18px;border-radius:18px}
+  .pv-title{letter-spacing:-.8px}
+  .pv-plans{gap:10px}
+  .pv-plan .pp{font-size:29px}
+  .pv-cta .btn{flex:1 1 100%;justify-content:center}
+  .foot-grid{grid-template-columns:1fr;gap:18px}
+  .foot-bar{flex-direction:column;gap:8px;text-align:center}
+  .splash-ring{width:118px;height:118px}
+  .splash-logo svg{width:88px;height:88px;border-radius:20px}
+  .splash-inner{gap:14px}
+}
+@media(max-height:520px) and (orientation:landscape){
+  .splash-badge,.splash-rotator,.splash-hint{display:none}
+  .splash-ring{width:96px;height:96px}
+  .splash-logo svg{width:70px;height:70px}
+  .splash-word{font-size:34px}
+  .splash-inner{gap:8px}
+}
+@media(max-width:380px){
+  .bottom-nav button{font-size:8.5px}
+  .lang-btn .flag{font-size:15px}
+  .grid{grid-template-columns:repeat(auto-fill,minmax(104px,1fr))}
+}
+/* RTL niceties */
+[dir=rtl] .splash-word{letter-spacing:0}
+[dir=rtl] .hero .ov{background:linear-gradient(270deg,rgba(6,6,10,.95) 10%,rgba(6,6,10,.35) 60%,transparent),linear-gradient(0deg,var(--bg),transparent 55%)}
+[dir=rtl] .fab-search{right:auto;left:14px}
+[dir=rtl] .row{direction:rtl}
+
 </style>
 </head>
 <body class="noscroll">
 <!-- ============ SPLASH ============ -->
-<div id="splash">
+<div id="splash" role="status" aria-label="NANCYFLIX is starting">
   <div class="particles" id="parts"></div>
   <div class="film-float" id="filmFloat"></div>
-  <div class="splash-logo">
-    <svg width="120" height="120" viewBox="0 0 64 64" aria-hidden="true"><defs><linearGradient id="lg" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#ff3b4e"/><stop offset="1" stop-color="#e11d2e"/></linearGradient></defs><rect width="64" height="64" rx="14" fill="#0a0a0f" stroke="#24242f"/><rect x="11" y="26" width="42" height="25" rx="3" fill="url(#lg)"/><g transform="rotate(-9 32 20)"><rect x="10" y="14" width="44" height="10" rx="2" fill="#f5f5fa"/><path d="M20 14l-5 10M30 14l-5 10M40 14l-5 10M50 14l-5 10" stroke="#0a0a0f" stroke-width="3" stroke-linecap="round"/></g></svg>
+  <div class="splash-inner">
+    <div class="splash-badge">Dev Brian Studios · Cinema</div>
+    <div class="splash-ring">
+      <svg class="ring" viewBox="0 0 140 140" aria-hidden="true">
+        <defs><linearGradient id="splashGrad" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#e11d2e"/><stop offset=".6" stop-color="#ff5c6e"/><stop offset="1" stop-color="#ffffff"/></linearGradient></defs>
+        <circle class="trk" cx="70" cy="70" r="62"/>
+        <circle class="prg" id="splashRing" cx="70" cy="70" r="62"/>
+      </svg>
+      <div class="splash-logo">
+        <svg viewBox="0 0 64 64" aria-hidden="true"><defs><linearGradient id="lg" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#ff3b4e"/><stop offset="1" stop-color="#e11d2e"/></linearGradient></defs><rect width="64" height="64" rx="14" fill="#0a0a0f" stroke="#24242f"/><rect x="11" y="26" width="42" height="25" rx="3" fill="url(#lg)"/><g transform="rotate(-9 32 20)"><rect x="10" y="14" width="44" height="10" rx="2" fill="#f5f5fa"/><path d="M20 14l-5 10M30 14l-5 10M40 14l-5 10M50 14l-5 10" stroke="#0a0a0f" stroke-width="3" stroke-linecap="round"/></g></svg>
+      </div>
+    </div>
+    <div class="splash-word">NANCYFLIX</div>
+    <div class="splash-tag">Every Story Deserves A Screen</div>
+    <div class="splash-rotator"><span class="rot-line in" id="splashRot"></span></div>
+    <div class="splash-progress">
+      <div class="splash-track"><i id="splashBar"></i></div>
+      <div class="splash-status"><span id="splashStage">Preparing your cinema</span><b id="splashPct">0%</b></div>
+    </div>
   </div>
-  <div class="splash-word">NANCYFLIX</div>
-  <div class="splash-tag">Every Story Deserves A Screen</div>
-  <div class="splash-rotator"><span class="rot-line" id="splashRot"></span></div>
-  <div class="splash-bar"><i id="splashBar"></i></div>
-  <div class="splash-hint" id="splashHint">Crafted by Dev Brian Studios · Powered by TMDB</div>
+  <button class="splash-sound" id="splashSound" aria-label="Intro sound" aria-pressed="false">
+    <svg class="icon sm" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M11 5L6 9H3v6h3l5 4z"/><path class="w1" d="M15.5 8.5a5 5 0 010 7"/><path class="w2" d="M18.5 5.5a9 9 0 010 13"/></svg>
+  </button>
+  <button class="splash-skip" id="splashSkip">Skip intro <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M9 6l6 6-6 6"/></svg></button>
 </div>
 
 <!-- ============ AUTH ============ -->
 <div id="auth">
   <div class="auth-card">
+    <button class="auth-lang" id="authLang" aria-label="Change language"><span class="flag" id="authLangFlag">🇬🇧</span><span id="authLangName">English</span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="12" cy="12" r="9"/><path d="M3 12h18M12 3c2.5 2.6 2.5 15.4 0 18M12 3c-2.5 2.6-2.5 15.4 0 18"/></svg></button>
     <div class="auth-head">
       <svg width="48" height="48" viewBox="0 0 64 64" style="margin:0 auto"><rect width="64" height="64" rx="14" fill="#12121c" stroke="#24242f"/><rect x="11" y="26" width="42" height="25" rx="3" fill="#e11d2e"/><g transform="rotate(-9 32 20)"><rect x="10" y="14" width="44" height="10" rx="2" fill="#f5f5fa"/><path d="M20 14l-5 10M30 14l-5 10M40 14l-5 10M50 14l-5 10" stroke="#12121c" stroke-width="3" stroke-linecap="round"/></g></svg>
       <h1>NANCYFLIX</h1>
@@ -574,11 +857,13 @@ body.reduce-motion *{animation-duration:.001ms!important;transition:none!importa
       <button data-view="discover"><svg class="icon sm" viewBox="0 0 24 24"><circle cx="11" cy="11" r="7"/><path d="M21 21l-4-4M11 8v6M8 11h6"/></svg><span data-i18n="discover">Discover</span></button>
       <button data-view="watchlist"><svg class="icon sm" viewBox="0 0 24 24"><path d="M19 21l-7-5-7 5V5a2 2 0 012-2h10a2 2 0 012 2z"/></svg><span data-i18n="watchlist">Watchlist</span></button>
       <button data-view="feedback"><svg class="icon sm" viewBox="0 0 24 24"><path d="M21 15a2 2 0 01-2 2H7l-4 4V5a2 2 0 012-2h14a2 2 0 012 2z"/></svg><span data-i18n="feedback">Feedback</span></button>
+      <button data-view="premium" class="nav-premium"><svg class="icon sm" viewBox="0 0 24 24"><path d="M3 8l4.5 3L12 4l4.5 7L21 8l-1.6 10.2a2 2 0 01-2 1.8H6.6a2 2 0 01-2-1.8z"/></svg><span data-i18n="premium">Premium</span></button>
       <button data-view="admin" id="navAdmin" style="display:none"><svg class="icon sm" viewBox="0 0 24 24"><path d="M12 2l8 4v6c0 5-3.5 8-8 10-4.5-2-8-5-8-10V6z"/></svg><span data-i18n="admin">Admin Studio</span></button>
     </nav>
     <div class="top-right">
       <button class="icon-btn" id="mSearchBtn" aria-label="Search" style="display:none"><svg class="icon" viewBox="0 0 24 24"><circle cx="11" cy="11" r="7"/><path d="M21 21l-4-4"/></svg></button>
       <div class="search-box" id="searchBox"><span class="si"><svg class="icon sm" viewBox="0 0 24 24"><circle cx="11" cy="11" r="7"/><path d="M21 21l-4-4"/></svg></span><input type="search" id="searchInput" data-i18n-ph="searchPh" placeholder="Search movies…" aria-label="Search movies"><button class="clr" id="searchClear" aria-label="Clear"><svg class="icon sm" viewBox="0 0 24 24"><path d="M18 6L6 18M6 6l12 12"/></svg></button></div>
+      <button class="lang-btn" id="langBtn" aria-label="Change language" title="Change language"><span class="flag" id="langFlag">🇬🇧</span><span class="code" id="langCode">EN</span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="12" cy="12" r="9"/><path d="M3 12h18M12 3c2.5 2.6 2.5 15.4 0 18M12 3c-2.5 2.6-2.5 15.4 0 18"/></svg></button>
       <button class="icon-btn" id="notiBtn" aria-label="Notifications"><svg class="icon" viewBox="0 0 24 24"><path d="M18 8a6 6 0 00-12 0c0 7-3 9-3 9h18s-3-2-3-9M13.73 21a2 2 0 01-3.46 0"/></svg><span class="dot" id="notiDot">0</span></button>
       <button class="icon-btn" id="settingsBtn" aria-label="Settings"><svg class="icon" viewBox="0 0 24 24"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.6 1.6 0 00.3 1.8l.1.1a2 2 0 11-2.8 2.8l-.1-.1a1.6 1.6 0 00-1.8-.3 1.6 1.6 0 00-1 1.5V21a2 2 0 11-4 0v-.1a1.6 1.6 0 00-1-1.5 1.6 1.6 0 00-1.8.3l-.1.1a2 2 0 11-2.8-2.8l.1-.1a1.6 1.6 0 00.3-1.8 1.6 1.6 0 00-1.5-1H3a2 2 0 110-4h.1a1.6 1.6 0 001.5-1 1.6 1.6 0 00-.3-1.8l-.1-.1a2 2 0 112.8-2.8l.1.1a1.6 1.6 0 001.8.3H9a1.6 1.6 0 001-1.5V3a2 2 0 114 0v.1a1.6 1.6 0 001 1.5 1.6 1.6 0 001.8-.3l.1-.1a2 2 0 112.8 2.8l-.1.1a1.6 1.6 0 00-.3 1.8V9a1.6 1.6 0 001.5 1H21a2 2 0 110 4h-.1a1.6 1.6 0 00-1.5 1z"/></svg></button>
       <button class="avatar-btn icon-btn" id="profileBtn" aria-label="Profile" style="border:0;background:none"><span class="ph" id="topAvatar">G</span></button>
@@ -592,6 +877,7 @@ body.reduce-motion *{animation-duration:.001ms!important;transition:none!importa
     <section id="view-search" class="view"></section>
     <section id="view-watchlist" class="view"></section>
     <section id="view-feedback" class="view"></section>
+    <section id="view-premium" class="view"></section>
     <section id="view-profile" class="view"></section>
     <section id="view-admin" class="view"></section>
   </main>
@@ -601,11 +887,11 @@ body.reduce-motion *{animation-duration:.001ms!important;transition:none!importa
         <div class="brand"><svg width="26" height="26" viewBox="0 0 64 64" aria-hidden="true"><rect width="64" height="64" rx="14" fill="#12121c"/><rect x="11" y="26" width="42" height="25" rx="3" fill="#e11d2e"/><g transform="rotate(-9 32 20)"><rect x="10" y="14" width="44" height="10" rx="2" fill="#f5f5fa"/><path d="M20 14l-5 10M30 14l-5 10M40 14l-5 10M50 14l-5 10" stroke="#12121c" stroke-width="3" stroke-linecap="round"/></g></svg><span class="t">NANCYFLIX</span></div>
         <p data-i18n="footBrandDesc">Every story deserves a screen. Discover trending films, browse by genre, build your watchlist and play official trailers — all powered by live TMDB data.</p>
         <div class="foot-social">
-          <a href="#" onclick="return false" aria-label="X"><svg class="icon sm" viewBox="0 0 24 24"><path d="M4 4l16 16M20 4L4 20"/></svg></a>
-          <a href="#" onclick="return false" aria-label="Instagram"><svg class="icon sm" viewBox="0 0 24 24"><rect x="3" y="3" width="18" height="18" rx="5"/><circle cx="12" cy="12" r="4"/><circle cx="17.5" cy="6.5" r="1"/></svg></a>
-          <a href="#" onclick="return false" aria-label="YouTube"><svg class="icon sm" viewBox="0 0 24 24"><rect x="2" y="5" width="20" height="14" rx="4"/><path d="M10 9l5 3-5 3z" fill="currentColor" stroke="none"/></svg></a>
-          <a href="#" onclick="return false" aria-label="Email"><svg class="icon sm" viewBox="0 0 24 24"><rect x="3" y="5" width="18" height="14" rx="2"/><path d="M3 7l9 6 9-6"/></svg></a>
+          <a href="https://x.com/devbriann" target="_blank" rel="noopener noreferrer" aria-label="X — @devbriann" title="X · @devbriann"><svg class="icon sm" viewBox="0 0 24 24"><path d="M4 4l16 16M20 4L4 20"/></svg></a>
+          <a href="https://instagram.com/_encrypted_.soul" target="_blank" rel="noopener noreferrer" aria-label="Instagram — @_encrypted_.soul" title="Instagram · @_encrypted_.soul"><svg class="icon sm" viewBox="0 0 24 24"><rect x="3" y="3" width="18" height="18" rx="5"/><circle cx="12" cy="12" r="4"/><circle cx="17.5" cy="6.5" r="1"/></svg></a>
+          <a href="mailto:devbriannova@gmail.com" aria-label="Email devbriannova@gmail.com" title="devbriannova@gmail.com"><svg class="icon sm" viewBox="0 0 24 24"><rect x="3" y="5" width="18" height="14" rx="2"/><path d="M3 7l9 6 9-6"/></svg></a>
         </div>
+        <a class="foot-mail" href="mailto:devbriannova@gmail.com">devbriannova@gmail.com</a>
       </div>
       <div class="foot-col">
         <h4 data-i18n="footBrowse">Browse</h4>
@@ -669,6 +955,48 @@ body.reduce-motion *{animation-duration:.001ms!important;transition:none!importa
   <div class="mini-queue" id="miniQueue"></div>
 </div>
 
+<!-- ============ LANGUAGE CHOOSER ============ -->
+<div id="langPanel" role="dialog" aria-modal="true" aria-labelledby="langTitle">
+  <div class="lp-wrap">
+    <div class="lp-brand"><svg viewBox="0 0 64 64" aria-hidden="true"><rect width="64" height="64" rx="14" fill="#0a0a0f" stroke="#24242f"/><rect x="11" y="26" width="42" height="25" rx="3" fill="#e11d2e"/><g transform="rotate(-9 32 20)"><rect x="10" y="14" width="44" height="10" rx="2" fill="#f5f5fa"/><path d="M20 14l-5 10M30 14l-5 10M40 14l-5 10M50 14l-5 10" stroke="#0a0a0f" stroke-width="3" stroke-linecap="round"/></g></svg><span class="t">NANCYFLIX</span></div>
+    <div class="lp-head"><h2 id="langTitle">Choose your <span>language</span></h2><p id="langDesc">Pick the language for the interface and movie details. You can change it any time from the globe button.</p></div>
+    <div class="lp-search"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="11" cy="11" r="7"/><path d="M21 21l-4-4"/></svg><input id="langSearch" type="search" placeholder="Search languages…" autocomplete="off" aria-label="Search languages"></div>
+    <div class="lp-grid" id="langGrid"></div>
+    <div class="lp-foot"><span id="langNote">7 languages · right-to-left supported</span><button class="btn primary" id="langDone">Continue</button></div>
+  </div>
+</div>
+
+<!-- ============ INSTALL / ADD TO HOME SCREEN ============ -->
+<div id="installBanner" role="region" aria-label="Install app">
+  <div class="inst-card">
+    <img src="icons/icon-192.png" alt="" width="42" height="42">
+    <div class="inst-tx"><b id="instTitle">Install NANCYFLIX</b><span id="instDesc">Full-screen app, one tap from your home screen.</span></div>
+    <button class="inst-go" id="instBtn">Install</button>
+    <button class="inst-x" id="instClose" aria-label="Not now"><svg class="icon sm" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M18 6L6 18M6 6l12 12"/></svg></button>
+  </div>
+</div>
+<div id="iosSheet" role="dialog" aria-modal="true" aria-labelledby="iosTitle">
+  <div class="ios-card">
+    <h3 id="iosTitle"><svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3v12M7 10l5 5 5-5M5 21h14"/></svg> Add to Home Screen</h3>
+    <p class="sub">Safari installs NANCYFLIX in three quick steps.</p>
+    <div class="ios-steps">
+      <div class="ios-step"><span class="n">1</span><span>Tap the <b>Share</b> button in Safari's toolbar.</span></div>
+      <div class="ios-step"><span class="n">2</span><span>Scroll the share sheet and tap <b>Add to Home Screen</b>.</span></div>
+      <div class="ios-step"><span class="n">3</span><span>Tap <b>Add</b> — NANCYFLIX opens full screen, like an app.</span></div>
+    </div>
+    <button class="btn primary block" id="iosClose" style="justify-content:center">Got it</button>
+  </div>
+</div>
+
+<!-- ============ MOBILE BOTTOM NAV ============ -->
+<nav class="bottom-nav" id="bottomNav" aria-label="Quick navigation">
+  <button data-bnav="home" class="active"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><path d="M3 12l9-9 9 9M5 10v10h14V10"/></svg><span data-i18n="home">Home</span></button>
+  <button data-bnav="discover"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="7"/><path d="M21 21l-4-4M11 8v6M8 11h6"/></svg><span data-i18n="discover">Discover</span></button>
+  <button data-bnav="watchlist"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><path d="M19 21l-7-5-7 5V5a2 2 0 012-2h10a2 2 0 012 2z"/></svg><span data-i18n="watchlist">Watchlist</span></button>
+  <button data-bnav="premium" class="bn-premium"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><path d="M3 8l4.5 3L12 4l4.5 7L21 8l-1.6 10.2a2 2 0 01-2 1.8H6.6a2 2 0 01-2-1.8z"/></svg><span data-i18n="premium">Premium</span></button>
+  <button data-bnav="profile"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><path d="M20 21v-2a4 4 0 00-4-4H8a4 4 0 00-4 4v2"/><circle cx="12" cy="7" r="4"/></svg><span data-i18n="profile">Profile</span></button>
+</nav>
+
 <!-- overlays -->
 <div class="overlay" id="detailOverlay"><div class="modal" id="detailModal" role="dialog" aria-label="Movie details"></div></div>
 <div class="overlay" id="confirmOverlay"><div class="modal sm" id="confirmModal" style="padding:26px;position:relative"></div></div>
@@ -705,7 +1033,22 @@ const CONFIG = {
   // Supabase (public anon values are safe to expose; service-role is NOT):
   SUPABASE_URL: "",
   SUPABASE_ANON_KEY: "",
-  ADMIN_EMAILS: ["bridah888@gmail.com", "agollanancy@gmail.com"] // display hint only; real role lives server-side
+  ADMIN_EMAILS: ["bridah888@gmail.com", "agollanancy@gmail.com"], // display hint only; real role lives server-side
+  /* ---- Stripe (real money) --------------------------------------------
+     Create two Payment Links in the Stripe Dashboard (Products -> Payment
+     links), then paste them below. Success URL for BOTH links:
+     'https://YOUR-DOMAIN/?checkout=success&plan=monthly&session_id={CHECKOUT_SESSION_ID}'
+     (use plan=yearly on the yearly link). Set VERIFY_ENDPOINT to the
+     serverless function in /api so a paid session is confirmed before
+     Premium unlocks. Full walkthrough: docs/PAYMENTS.md */
+  STRIPE: {
+    LINK_MONTHLY: "",
+    LINK_YEARLY: "",
+    PORTAL_URL: "",
+    VERIFY_ENDPOINT: "/api/stripe-verify",
+    PRICE_MONTHLY: "$4.99",
+    PRICE_YEARLY: "$39.99"
+  }
 };
 const HAS_TMDB = !!(CONFIG.TMDB_PROXY || CONFIG.TMDB_KEY);
 const HAS_BACKEND = !!(CONFIG.SUPABASE_URL && CONFIG.SUPABASE_ANON_KEY);
@@ -797,6 +1140,19 @@ const EXTRA_I18N={
  ar:{continueWatching:'متابعة المشاهدة',clearHistory:'مسح',discover:'اكتشف',discoverTitle:'اكتشف وفلتر',discoverIntro:'امزج الأنواع والسنوات والتقييم واللغة والمدة — ثم رتّب.',filterGenres:'الأنواع',filterYear:'سنة الإصدار',filterRating:'أدنى تقييم',filterLang:'اللغة الأصلية',filterRuntime:'المدة (دقيقة)',filterSort:'ترتيب حسب',anyLang:'أي لغة',from:'من',to:'إلى',apply:'تطبيق الفلاتر',reset:'إعادة ضبط',any:'الكل',sortPopularity:'الأكثر رواجًا',sortRating:'الأعلى تقييمًا',sortNewest:'الأحدث',sortRevenue:'الأعلى إيرادًا',sortTitle:'العنوان أ–ي',share:'مشاركة',shareWatchlist:'مشاركة القائمة',linkCopied:'تم نسخ الرابط',shareLink:'مشاركة الرابط',sharedListTitle:'قائمة مشتركة',sharedListEmpty:'هذه القائمة المشتركة فارغة أو غير صالحة.',addAllWatchlist:'أضف الكل إلى قائمتي',added:'أُضيفت',minimize:'تصغير',expand:'تكبير',next:'التالي',queueTitle:'قائمة انتظار الإعلانات',queuedToast:'تمت الإضافة للقائمة',queueEmpty:'قائمة الانتظار فارغة',noTrailerQueue:'لا يوجد إعلان للإضافة',upNext:'التالي',addQueue:'قائمة الانتظار',noResults:'لا توجد أفلام تطابق هذه الفلاتر.'}
 };
 Object.keys(EXTRA_I18N).forEach(l=>{I18N.dict[l]=Object.assign(I18N.dict[l]||{},EXTRA_I18N[l]);});
+
+/* v4 UI strings: language chooser, install prompts, splash stages, Premium */
+const UI_I18N={
+ en:{langTitle1:'Choose your',langTitle2:'language',langDesc:'Pick the language for the interface and movie details. You can change it any time from the globe button.',langSearch:'Search languages…',langContinue:'Continue',langNote:'7 languages · right-to-left supported',langChanged:'Language updated',langCurrent:'Current',langNoResults:'No language matches your search.',premium:'Premium',installTitle:'Install NANCYFLIX',installDesc:'Full-screen app, one tap from your home screen — works offline.',installBtn:'Install',iosTitle:'Add to Home Screen',iosSub:'Safari installs NANCYFLIX in three quick steps.',ios1:'Tap the Share button in Safari’s toolbar.',ios2:'Scroll the share sheet and tap “Add to Home Screen”.',ios3:'Tap “Add” — NANCYFLIX opens full screen, like an app.',gotIt:'Got it',splashS1:'Preparing your cinema',splashS2:'Warming up the projector',splashS3:'Loading your watchlist',splashS4:'Almost there',pvKicker:'NANCYFLIX PREMIUM',pvTitle:'Cinema without limits',pvSub:'One membership. Every device. Cancel anytime.',pvMonthly:'Monthly',pvYearly:'Yearly',pvPerMonth:'/month',pvPerYear:'/year',pvSave:'Save 40%',pvPopular:'Best value',pvCtaMonth:'Go monthly',pvCtaYear:'Go yearly',pvActive:'Premium active',pvRenews:'Renews',pvManage:'Manage subscription',pvRestore:'Restore purchase',pvFreePlan:'You are on the Free plan',pvCurrent:'Current plan',pvBenefits:'What members get',pvF1:'Unlimited trailer queue',pvF1d:'Free holds 3 trailers. Premium never stops the line-up.',pvF2:'30-title watch history',pvF2d:'Free keeps your last 15. Premium keeps 30.',pvF3:'Exclusive Cinematic theme',pvF3d:'The gold-and-violet “Amazing” look, reserved for members.',pvF4:'Premium profile badge',pvF4d:'A gold ring on your avatar everywhere in the app.',pvTrust:'Secure payment by Stripe · Cancel anytime · No hidden fees',pvSetupT:'Payments are not switched on yet',pvSetupD:'Add your two Stripe Payment Links in CONFIG.STRIPE. Step-by-step instructions are in docs/PAYMENTS.md.',pvFaq:'Questions',pvFaq1q:'Can I cancel whenever I want?',pvFaq1a:'Yes. Open Manage subscription to cancel in one tap — you keep Premium until the end of the period you paid for.',pvFaq2q:'What happens to my watchlist if I cancel?',pvFaq2a:'Nothing is deleted. Your watchlist and history stay on your account; only the premium extras go back to Free limits.',pvFaq3q:'Is my card safe?',pvFaq3a:'Card details never touch NANCYFLIX. Stripe hosts the checkout page and processes the payment, so we only receive confirmation that you paid.',pvPending:'Activating your membership',pvPendingD:'Your payment went through but the confirmation has not reached this device yet. Tap “Check again” in a moment — or email devbriannova@gmail.com with your session ID.',pvCheckAgain:'Check again',pvActivated:'Premium activated',pvActivatedD:'Welcome to NANCYFLIX Premium. Everything is unlocked.',pvNeedKeys:'Stripe keys still needed',pvQueueLimited:'Free plan: 3 trailers in the queue',pvHistoryLimited:'Free plan keeps your last 15 titles',pvThemeLocked:'Cinematic theme is a Premium extra',pvBadge:'PREMIUM',pvCancelNote:'No card stored by NANCYFLIX · cancel anytime',pvSignIn:'Sign in to subscribe',pvLoading:'Checking your payment…',pvCancelled:'Checkout cancelled',pvCancelledD:'No charge was made. You can try again any time.',pvStatusFree:'Free',pvSince:'Member since',pvEmailNote:'Receipt sent to',pvSelected:'Selected',pvOr:'or save with yearly',pvSetupHint:'Owner setup: paste LINK_MONTHLY and LINK_YEARLY in CONFIG.STRIPE.'},
+ sw:{langTitle1:'Chagua',langTitle2:'lugha yako',langDesc:'Chagua lugha ya kiolesura na maelezo ya filamu. Unaweza kubadilisha wakati wowote kupitia kitufe cha globu.',langSearch:'Tafuta lugha…',langContinue:'Endelea',langNote:'Lugha 7 · inasaidia kulia-kushoto',langChanged:'Lugha imebadilishwa',langCurrent:'Ya sasa',langNoResults:'Hakuna lugha inayolingana na utafutaji wako.',premium:'Premium',installTitle:'Sakinisha NANCYFLIX',installDesc:'Programu ya skrini nzima, mbofyo mmoja kutoka skrini yako — inafanya kazi bila mtandao.',installBtn:'Sakinisha',iosTitle:'Ongeza kwenye Skrini ya Nyumbani',iosSub:'Safari husakinisha NANCYFLIX kwa hatua tatu.',ios1:'Gusa kitufe cha Shiriki kwenye pau ya Safari.',ios2:'Sogeza chini na uguse “Ongeza kwenye Skrini ya Nyumbani”.',ios3:'Gusa “Ongeza” — NANCYFLIX hufunguka skrini nzima.',gotIt:'Sawa',splashS1:'Tunatayarisha sinema yako',splashS2:'Tunapasha moto projekta',splashS3:'Tunapakia orodha yako',splashS4:'Karibu kufika',pvKicker:'NANCYFLIX PREMIUM',pvTitle:'Sinema bila kikomo',pvSub:'Uanachama mmoja. Kila kifaa. Ghairi wakati wowote.',pvMonthly:'Kila mwezi',pvYearly:'Kila mwaka',pvPerMonth:'/mwezi',pvPerYear:'/mwaka',pvSave:'Okoa 40%',pvPopular:'Thamani bora',pvCtaMonth:'Chagua mwezi',pvCtaYear:'Chagua mwaka',pvActive:'Premium imewashwa',pvRenews:'Huhuisha',pvManage:'Dhibiti uanachama',pvRestore:'Rejesha ununuzi',pvFreePlan:'Uko kwenye mpango wa Bure',pvCurrent:'Mpango wa sasa',pvBenefits:'Wanachama hupata nini',pvF1:'Foleni ya trela bila kikomo',pvF1d:'Bure hubeba trela 3. Premium haikomi foleni.',pvF2:'Historia ya filamu 30',pvF2d:'Bure huhifadhi 15 za mwisho. Premium huhifadhi 30.',pvF3:'Mandhari ya kipekee ya Cinematic',pvF3d:'Muonekano wa dhahabu na zambarau, kwa wanachama pekee.',pvF4:'Beji ya wasifu wa Premium',pvF4d:'Pete ya dhahabu kwenye picha yako kote.',pvTrust:'Malipo salama kwa Stripe · Ghairi wakati wowote · Hakuna ada za siri',pvSetupT:'Malipo bado hayajawashwa',pvSetupD:'Weka viungo viwili vya Stripe kwenye CONFIG.STRIPE. Maelekezo yamo kwenye docs/PAYMENTS.md.',pvFaq:'Maswali',pvFaq1q:'Naweza kughairi wakati wowote?',pvFaq1a:'Ndiyo. Fungua Dhibiti uanachama kughairi kwa mbofyo mmoja — unaendelea na Premium hadi mwisho wa kipindi ulicholipia.',pvFaq2q:'Orodha yangu itakuwaje nikighairi?',pvFaq2a:'Hakuna kinachofutwa. Orodha na historia zinabaki; ni faida za premium tu zinazorudi kwenye mipaka ya Bure.',pvFaq3q:'Kadi yangu ni salama?',pvFaq3a:'Maelezo ya kadi hayafiki NANCYFLIX. Stripe ndiye anayesimamia ukurasa wa malipo.',pvPending:'Tunawasha uanachama wako',pvPendingD:'Malipo yamekamilika lakini uthibitisho haujafika kwenye kifaa hiki. Gusa “Angalia tena” baada ya muda — au andika devbriannova@gmail.com na kitambulisho cha kipindi.',pvCheckAgain:'Angalia tena',pvActivated:'Premium imewashwa',pvActivatedD:'Karibu NANCYFLIX Premium. Kila kitu kimefunguliwa.',pvNeedKeys:'Funguo za Stripe zinahitajika',pvQueueLimited:'Mpango wa bure: trela 3 kwenye foleni',pvHistoryLimited:'Mpango wa bure huhifadhi filamu 15 za mwisho',pvThemeLocked:'Mandhari ya Cinematic ni faida ya Premium',pvBadge:'PREMIUM',pvCancelNote:'NANCYFLIX haihifadhi kadi · ghairi wakati wowote',pvSignIn:'Ingia ili kujisajili',pvLoading:'Tunakagua malipo yako…',pvCancelled:'Malipo yameghairiwa',pvCancelledD:'Hakuna malipo yaliyofanyika. Unaweza kujaribu tena.',pvStatusFree:'Bure',pvSince:'Mwanachama tangu',pvEmailNote:'Risiti imetumwa kwa',pvSelected:'Imechaguliwa',pvOr:'au okoa kwa mwaka',pvSetupHint:'Mmiliki: weka LINK_MONTHLY na LINK_YEARLY kwenye CONFIG.STRIPE.'},
+ fr:{langTitle1:'Choisissez votre',langTitle2:'langue',langDesc:'Choisissez la langue de l’interface et des fiches films. Vous pouvez la changer à tout moment via le bouton globe.',langSearch:'Rechercher une langue…',langContinue:'Continuer',langNote:'7 langues · droite-à-gauche pris en charge',langChanged:'Langue mise à jour',langCurrent:'Actuelle',langNoResults:'Aucune langue ne correspond à votre recherche.',premium:'Premium',installTitle:'Installer NANCYFLIX',installDesc:'Application plein écran, à un geste de votre écran d’accueil — fonctionne hors ligne.',installBtn:'Installer',iosTitle:'Ajouter à l’écran d’accueil',iosSub:'Safari installe NANCYFLIX en trois étapes.',ios1:'Touchez le bouton Partager dans la barre de Safari.',ios2:'Faites défiler et touchez « Sur l’écran d’accueil ».',ios3:'Touchez « Ajouter » — NANCYFLIX s’ouvre en plein écran.',gotIt:'Compris',splashS1:'Préparation de votre cinéma',splashS2:'Le projecteur chauffe',splashS3:'Chargement de votre liste',splashS4:'Presque prêt',pvKicker:'NANCYFLIX PREMIUM',pvTitle:'Le cinéma sans limites',pvSub:'Un abonnement. Tous vos écrans. Annulable à tout moment.',pvMonthly:'Mensuel',pvYearly:'Annuel',pvPerMonth:'/mois',pvPerYear:'/an',pvSave:'−40 %',pvPopular:'Meilleure offre',pvCtaMonth:'Choisir mensuel',pvCtaYear:'Choisir annuel',pvActive:'Premium actif',pvRenews:'Renouvellement',pvManage:'Gérer l’abonnement',pvRestore:'Restaurer l’achat',pvFreePlan:'Vous êtes en offre gratuite',pvCurrent:'Offre actuelle',pvBenefits:'Ce que les membres obtiennent',pvF1:'File de bandes-annonces illimitée',pvF1d:'Le gratuit garde 3 bandes-annonces. Premium ne s’arrête jamais.',pvF2:'Historique de 30 films',pvF2d:'Le gratuit garde les 15 derniers. Premium en garde 30.',pvF3:'Thème Cinématographique exclusif',pvF3d:'Le look or et violet « Amazing », réservé aux membres.',pvF4:'Badge de profil Premium',pvF4d:'Un anneau doré sur votre avatar dans toute l’app.',pvTrust:'Paiement sécurisé par Stripe · Annulable à tout moment · Sans frais cachés',pvSetupT:'Les paiements ne sont pas encore activés',pvSetupD:'Ajoutez vos deux liens de paiement Stripe dans CONFIG.STRIPE. Les étapes sont dans docs/PAYMENTS.md.',pvFaq:'Questions',pvFaq1q:'Puis-je annuler quand je veux ?',pvFaq1a:'Oui. Ouvrez Gérer l’abonnement pour annuler en un geste — vous gardez Premium jusqu’à la fin de la période payée.',pvFaq2q:'Que devient ma liste si j’annule ?',pvFaq2a:'Rien n’est supprimé. Votre liste et votre historique restent ; seuls les extras premium reviennent aux limites gratuites.',pvFaq3q:'Ma carte est-elle en sécurité ?',pvFaq3a:'Les données de carte ne passent jamais par NANCYFLIX. Stripe héberge la page de paiement et traite la transaction.',pvPending:'Activation de votre abonnement',pvPendingD:'Votre paiement est passé mais la confirmation n’est pas encore arrivée sur cet appareil. Touchez « Vérifier à nouveau » — ou écrivez à devbriannova@gmail.com avec votre identifiant de session.',pvCheckAgain:'Vérifier à nouveau',pvActivated:'Premium activé',pvActivatedD:'Bienvenue dans NANCYFLIX Premium. Tout est débloqué.',pvNeedKeys:'Clés Stripe encore nécessaires',pvQueueLimited:'Offre gratuite : 3 bandes-annonces en file',pvHistoryLimited:'L’offre gratuite garde vos 15 derniers titres',pvThemeLocked:'Le thème Cinématographique est un extra Premium',pvBadge:'PREMIUM',pvCancelNote:'Aucune carte stockée par NANCYFLIX · annulable à tout moment',pvSignIn:'Connectez-vous pour vous abonner',pvLoading:'Vérification du paiement…',pvCancelled:'Paiement annulé',pvCancelledD:'Aucun débit effectué. Vous pouvez réessayer à tout moment.',pvStatusFree:'Gratuit',pvSince:'Membre depuis',pvEmailNote:'Reçu envoyé à',pvSelected:'Sélectionné',pvOr:'ou économisez avec l’annuel',pvSetupHint:'Propriétaire : collez LINK_MONTHLY et LINK_YEARLY dans CONFIG.STRIPE.'},
+ es:{langTitle1:'Elige tu',langTitle2:'idioma',langDesc:'Elige el idioma de la interfaz y de las fichas de películas. Puedes cambiarlo cuando quieras con el botón del globo.',langSearch:'Buscar idiomas…',langContinue:'Continuar',langNote:'7 idiomas · compatible con derecha a izquierda',langChanged:'Idioma actualizado',langCurrent:'Actual',langNoResults:'Ningún idioma coincide con tu búsqueda.',premium:'Premium',installTitle:'Instalar NANCYFLIX',installDesc:'App a pantalla completa, a un toque de tu inicio — funciona sin conexión.',installBtn:'Instalar',iosTitle:'Añadir a pantalla de inicio',iosSub:'Safari instala NANCYFLIX en tres pasos.',ios1:'Toca el botón Compartir en la barra de Safari.',ios2:'Desliza y toca «Añadir a pantalla de inicio».',ios3:'Toca «Añadir» — NANCYFLIX se abre a pantalla completa.',gotIt:'Entendido',splashS1:'Preparando tu cine',splashS2:'Calentando el proyector',splashS3:'Cargando tu lista',splashS4:'Casi listo',pvKicker:'NANCYFLIX PREMIUM',pvTitle:'Cine sin límites',pvSub:'Una suscripción. Todos tus dispositivos. Cancela cuando quieras.',pvMonthly:'Mensual',pvYearly:'Anual',pvPerMonth:'/mes',pvPerYear:'/año',pvSave:'Ahorra 40%',pvPopular:'Mejor valor',pvCtaMonth:'Elegir mensual',pvCtaYear:'Elegir anual',pvActive:'Premium activo',pvRenews:'Se renueva',pvManage:'Gestionar suscripción',pvRestore:'Restaurar compra',pvFreePlan:'Estás en el plan Gratis',pvCurrent:'Plan actual',pvBenefits:'Lo que incluye la membresía',pvF1:'Cola de tráilers ilimitada',pvF1d:'El plan gratis guarda 3 tráilers. Premium no se detiene.',pvF2:'Historial de 30 títulos',pvF2d:'El gratis guarda los últimos 15. Premium guarda 30.',pvF3:'Tema Cinematográfico exclusivo',pvF3d:'El look oro y violeta «Amazing», solo para miembros.',pvF4:'Insignia de perfil Premium',pvF4d:'Un anillo dorado en tu avatar en toda la app.',pvTrust:'Pago seguro con Stripe · Cancela cuando quieras · Sin cargos ocultos',pvSetupT:'Los pagos aún no están activados',pvSetupD:'Añade tus dos enlaces de pago de Stripe en CONFIG.STRIPE. Los pasos están en docs/PAYMENTS.md.',pvFaq:'Preguntas',pvFaq1q:'¿Puedo cancelar cuando quiera?',pvFaq1a:'Sí. Abre Gestionar suscripción para cancelar con un toque — mantienes Premium hasta el final del periodo pagado.',pvFaq2q:'¿Qué pasa con mi lista si cancelo?',pvFaq2a:'No se borra nada. Tu lista e historial siguen ahí; solo los extras premium vuelven a los límites gratuitos.',pvFaq3q:'¿Mi tarjeta está segura?',pvFaq3a:'Los datos de la tarjeta nunca pasan por NANCYFLIX. Stripe aloja el pago y procesa la transacción.',pvPending:'Activando tu membresía',pvPendingD:'Tu pago se realizó pero la confirmación aún no llegó a este dispositivo. Toca «Comprobar de nuevo» en un momento — o escribe a devbriannova@gmail.com con tu ID de sesión.',pvCheckAgain:'Comprobar de nuevo',pvActivated:'Premium activado',pvActivatedD:'Bienvenido a NANCYFLIX Premium. Todo está desbloqueado.',pvNeedKeys:'Faltan las claves de Stripe',pvQueueLimited:'Plan gratis: 3 tráilers en la cola',pvHistoryLimited:'El plan gratis guarda tus últimos 15 títulos',pvThemeLocked:'El tema Cinematográfico es extra Premium',pvBadge:'PREMIUM',pvCancelNote:'NANCYFLIX no guarda tarjetas · cancela cuando quieras',pvSignIn:'Inicia sesión para suscribirte',pvLoading:'Comprobando tu pago…',pvCancelled:'Pago cancelado',pvCancelledD:'No se realizó ningún cargo. Puedes intentarlo de nuevo.',pvStatusFree:'Gratis',pvSince:'Miembro desde',pvEmailNote:'Recibo enviado a',pvSelected:'Seleccionado',pvOr:'o ahorra con el anual',pvSetupHint:'Propietario: pega LINK_MONTHLY y LINK_YEARLY en CONFIG.STRIPE.'},
+ de:{langTitle1:'Wähle deine',langTitle2:'Sprache',langDesc:'Wähle die Sprache für Oberfläche und Filminfos. Du kannst sie jederzeit über den Globus-Button ändern.',langSearch:'Sprachen suchen…',langContinue:'Weiter',langNote:'7 Sprachen · von rechts nach links unterstützt',langChanged:'Sprache aktualisiert',langCurrent:'Aktuell',langNoResults:'Keine Sprache passt zu deiner Suche.',premium:'Premium',installTitle:'NANCYFLIX installieren',installDesc:'Vollbild-App, ein Tipp vom Homescreen — funktioniert offline.',installBtn:'Installieren',iosTitle:'Zum Home-Bildschirm',iosSub:'Safari installiert NANCYFLIX in drei Schritten.',ios1:'Tippe in Safari auf das Teilen-Symbol.',ios2:'Scrolle und tippe auf „Zum Home-Bildschirm“.',ios3:'Tippe auf „Hinzufügen“ — NANCYFLIX öffnet im Vollbild.',gotIt:'Verstanden',splashS1:'Dein Kino wird vorbereitet',splashS2:'Der Projektor läuft warm',splashS3:'Deine Merkliste lädt',splashS4:'Fast geschafft',pvKicker:'NANCYFLIX PREMIUM',pvTitle:'Kino ohne Grenzen',pvSub:'Eine Mitgliedschaft. Alle Geräte. Jederzeit kündbar.',pvMonthly:'Monatlich',pvYearly:'Jährlich',pvPerMonth:'/Monat',pvPerYear:'/Jahr',pvSave:'40 % sparen',pvPopular:'Bester Preis',pvCtaMonth:'Monatlich wählen',pvCtaYear:'Jährlich wählen',pvActive:'Premium aktiv',pvRenews:'Verlängert am',pvManage:'Abo verwalten',pvRestore:'Kauf wiederherstellen',pvFreePlan:'Du bist im Gratis-Plan',pvCurrent:'Aktueller Plan',pvBenefits:'Das bekommen Mitglieder',pvF1:'Unbegrenzte Trailer-Warteschlange',pvF1d:'Gratis hält 3 Trailer. Premium stoppt nie.',pvF2:'30 Titel Verlauf',pvF2d:'Gratis behält die letzten 15. Premium behält 30.',pvF3:'Exklusives Cinematic-Theme',pvF3d:'Der Gold-Violett-Look „Amazing“, nur für Mitglieder.',pvF4:'Premium-Profilabzeichen',pvF4d:'Ein Goldring um deinen Avatar in der ganzen App.',pvTrust:'Sichere Zahlung über Stripe · Jederzeit kündbar · Keine versteckten Kosten',pvSetupT:'Zahlungen sind noch nicht aktiv',pvSetupD:'Trage deine zwei Stripe-Zahlungslinks in CONFIG.STRIPE ein. Die Schritte stehen in docs/PAYMENTS.md.',pvFaq:'Fragen',pvFaq1q:'Kann ich jederzeit kündigen?',pvFaq1a:'Ja. Öffne „Abo verwalten“ und kündige mit einem Tipp — Premium bleibt bis zum Ende der bezahlten Periode.',pvFaq2q:'Was passiert mit meiner Merkliste?',pvFaq2a:'Nichts wird gelöscht. Merkliste und Verlauf bleiben; nur die Premium-Extras fallen auf Gratis-Limits zurück.',pvFaq3q:'Ist meine Karte sicher?',pvFaq3a:'Kartendaten berühren NANCYFLIX nie. Stripe hostet die Zahlungsseite und verarbeitet die Zahlung.',pvPending:'Mitgliedschaft wird aktiviert',pvPendingD:'Die Zahlung war erfolgreich, aber die Bestätigung ist noch nicht angekommen. Tippe gleich auf „Erneut prüfen“ — oder schreibe an devbriannova@gmail.com mit deiner Session-ID.',pvCheckAgain:'Erneut prüfen',pvActivated:'Premium aktiviert',pvActivatedD:'Willkommen bei NANCYFLIX Premium. Alles ist freigeschaltet.',pvNeedKeys:'Stripe-Schlüssel fehlen noch',pvQueueLimited:'Gratis-Plan: 3 Trailer in der Warteschlange',pvHistoryLimited:'Gratis-Plan behält die letzten 15 Titel',pvThemeLocked:'Das Cinematic-Theme ist ein Premium-Extra',pvBadge:'PREMIUM',pvCancelNote:'NANCYFLIX speichert keine Karten · jederzeit kündbar',pvSignIn:'Anmelden zum Abonnieren',pvLoading:'Zahlung wird geprüft…',pvCancelled:'Zahlung abgebrochen',pvCancelledD:'Es wurde nichts belastet. Du kannst es jederzeit erneut versuchen.',pvStatusFree:'Gratis',pvSince:'Mitglied seit',pvEmailNote:'Beleg gesendet an',pvSelected:'Ausgewählt',pvOr:'oder jährlich sparen',pvSetupHint:'Inhaber: LINK_MONTHLY und LINK_YEARLY in CONFIG.STRIPE einfügen.'},
+ pt:{langTitle1:'Escolha seu',langTitle2:'idioma',langDesc:'Escolha o idioma da interface e das fichas de filmes. Você pode mudar a qualquer momento pelo botão do globo.',langSearch:'Buscar idiomas…',langContinue:'Continuar',langNote:'7 idiomas · suporte a direita para esquerda',langChanged:'Idioma atualizado',langCurrent:'Atual',langNoResults:'Nenhum idioma corresponde à sua busca.',premium:'Premium',installTitle:'Instalar NANCYFLIX',installDesc:'App em tela cheia, a um toque da sua tela inicial — funciona offline.',installBtn:'Instalar',iosTitle:'Adicionar à Tela de Início',iosSub:'O Safari instala o NANCYFLIX em três passos.',ios1:'Toque no botão Compartilhar na barra do Safari.',ios2:'Role e toque em “Adicionar à Tela de Início”.',ios3:'Toque em “Adicionar” — o NANCYFLIX abre em tela cheia.',gotIt:'Entendi',splashS1:'Preparando seu cinema',splashS2:'Aquecendo o projetor',splashS3:'Carregando sua lista',splashS4:'Quase lá',pvKicker:'NANCYFLIX PREMIUM',pvTitle:'Cinema sem limites',pvSub:'Uma assinatura. Todos os dispositivos. Cancele quando quiser.',pvMonthly:'Mensal',pvYearly:'Anual',pvPerMonth:'/mês',pvPerYear:'/ano',pvSave:'Economize 40%',pvPopular:'Melhor valor',pvCtaMonth:'Escolher mensal',pvCtaYear:'Escolher anual',pvActive:'Premium ativo',pvRenews:'Renova em',pvManage:'Gerenciar assinatura',pvRestore:'Restaurar compra',pvFreePlan:'Você está no plano Grátis',pvCurrent:'Plano atual',pvBenefits:'O que os membros recebem',pvF1:'Fila de trailers ilimitada',pvF1d:'O grátis mantém 3 trailers. O Premium nunca para.',pvF2:'Histórico de 30 títulos',pvF2d:'O grátis mantém os últimos 15. O Premium mantém 30.',pvF3:'Tema Cinematográfico exclusivo',pvF3d:'O visual ouro e violeta “Amazing”, só para membros.',pvF4:'Selo de perfil Premium',pvF4d:'Um anel dourado no seu avatar em todo o app.',pvTrust:'Pagamento seguro via Stripe · Cancele quando quiser · Sem taxas ocultas',pvSetupT:'Os pagamentos ainda não estão ativos',pvSetupD:'Adicione seus dois links de pagamento Stripe em CONFIG.STRIPE. O passo a passo está em docs/PAYMENTS.md.',pvFaq:'Perguntas',pvFaq1q:'Posso cancelar quando quiser?',pvFaq1a:'Sim. Abra Gerenciar assinatura para cancelar com um toque — você mantém o Premium até o fim do período pago.',pvFaq2q:'O que acontece com minha lista se eu cancelar?',pvFaq2a:'Nada é apagado. Sua lista e histórico continuam; apenas os extras premium voltam aos limites do plano grátis.',pvFaq3q:'Meu cartão está seguro?',pvFaq3a:'Os dados do cartão nunca passam pelo NANCYFLIX. O Stripe hospeda o checkout e processa o pagamento.',pvPending:'Ativando sua assinatura',pvPendingD:'Seu pagamento foi aprovado, mas a confirmação ainda não chegou a este dispositivo. Toque em “Verificar novamente” — ou envie um e-mail para devbriannova@gmail.com com o ID da sessão.',pvCheckAgain:'Verificar novamente',pvActivated:'Premium ativado',pvActivatedD:'Bem-vindo ao NANCYFLIX Premium. Tudo está liberado.',pvNeedKeys:'Ainda faltam as chaves do Stripe',pvQueueLimited:'Plano grátis: 3 trailers na fila',pvHistoryLimited:'O plano grátis mantém seus últimos 15 títulos',pvThemeLocked:'O tema Cinematográfico é um extra Premium',pvBadge:'PREMIUM',pvCancelNote:'O NANCYFLIX não guarda cartões · cancele quando quiser',pvSignIn:'Entre para assinar',pvLoading:'Verificando seu pagamento…',pvCancelled:'Checkout cancelado',pvCancelledD:'Nenhuma cobrança foi feita. Você pode tentar de novo quando quiser.',pvStatusFree:'Grátis',pvSince:'Membro desde',pvEmailNote:'Recibo enviado para',pvSelected:'Selecionado',pvOr:'ou economize no anual',pvSetupHint:'Proprietário: cole LINK_MONTHLY e LINK_YEARLY em CONFIG.STRIPE.'},
+ ar:{langTitle1:'اختر',langTitle2:'لغتك',langDesc:'اختر لغة الواجهة ومعلومات الأفلام. يمكنك تغييرها في أي وقت من زر الكرة الأرضية.',langSearch:'ابحث عن لغة…',langContinue:'متابعة',langNote:'٧ لغات · دعم الكتابة من اليمين إلى اليسار',langChanged:'تم تحديث اللغة',langCurrent:'الحالية',langNoResults:'لا توجد لغة تطابق بحثك.',premium:'بريميوم',installTitle:'تثبيت NANCYFLIX',installDesc:'تطبيق بشاشة كاملة، بنقرة واحدة من شاشتك الرئيسية — يعمل دون إنترنت.',installBtn:'تثبيت',iosTitle:'إضافة إلى الشاشة الرئيسية',iosSub:'يثبّت Safari تطبيق NANCYFLIX في ثلاث خطوات.',ios1:'اضغط زر المشاركة في شريط Safari.',ios2:'مرّر للأسفل واضغط «إضافة إلى الشاشة الرئيسية».',ios3:'اضغط «إضافة» — يفتح NANCYFLIX بشاشة كاملة.',gotIt:'تم',splashS1:'نُجهّز سينماك',splashS2:'نسخّن جهاز العرض',splashS3:'نحمّل قائمتك',splashS4:'اقتربنا',pvKicker:'NANCYFLIX بريميوم',pvTitle:'سينما بلا حدود',pvSub:'عضوية واحدة. كل الأجهزة. إلغاء في أي وقت.',pvMonthly:'شهري',pvYearly:'سنوي',pvPerMonth:'/شهر',pvPerYear:'/سنة',pvSave:'وفّر ٤٠٪',pvPopular:'أفضل قيمة',pvCtaMonth:'اختر الشهري',pvCtaYear:'اختر السنوي',pvActive:'بريميوم مُفعّل',pvRenews:'يتجدد في',pvManage:'إدارة الاشتراك',pvRestore:'استعادة الشراء',pvFreePlan:'أنت على الخطة المجانية',pvCurrent:'الخطة الحالية',pvBenefits:'ماذا تحصل عليه العضوية',pvF1:'قائمة انتظار إعلانات بلا حدود',pvF1d:'المجاني يحتفظ بـ٣ إعلانات. بريميوم لا يتوقف.',pvF2:'سجل مشاهدة ٣٠ عنوانًا',pvF2d:'المجاني يحتفظ بآخر ١٥. بريميوم يحتفظ بـ٣٠.',pvF3:'سمة سينمائية حصرية',pvF3d:'مظهر «Amazing» الذهبي البنفسجي، للأعضاء فقط.',pvF4:'شارة ملف شخصي بريميوم',pvF4d:'حلقة ذهبية حول صورتك في كل التطبيق.',pvTrust:'دفع آمن عبر Stripe · إلغاء في أي وقت · بلا رسوم خفية',pvSetupT:'المدفوعات غير مُفعّلة بعد',pvSetupD:'أضف رابطي الدفع من Stripe في CONFIG.STRIPE. الخطوات في docs/PAYMENTS.md.',pvFaq:'أسئلة',pvFaq1q:'هل يمكنني الإلغاء في أي وقت؟',pvFaq1a:'نعم. افتح «إدارة الاشتراك» وألغِ بنقرة واحدة — يبقى بريميوم حتى نهاية الفترة المدفوعة.',pvFaq2q:'ماذا يحدث لقائمتي إذا ألغيت؟',pvFaq2a:'لا يُحذف شيء. تبقى قائمتك وسجلك؛ فقط مزايا بريميوم تعود لحدود الخطة المجانية.',pvFaq3q:'هل بطاقتي آمنة؟',pvFaq3a:'بيانات البطاقة لا تمر عبر NANCYFLIX. Stripe يستضيف صفحة الدفع ويعالج العملية.',pvPending:'نُفعّل عضويتك',pvPendingD:'تم الدفع لكن التأكيد لم يصل إلى هذا الجهاز بعد. اضغط «تحقق مرة أخرى» بعد قليل — أو راسل devbriannova@gmail.com مع معرّف الجلسة.',pvCheckAgain:'تحقق مرة أخرى',pvActivated:'تم تفعيل بريميوم',pvActivatedD:'مرحبًا بك في NANCYFLIX بريميوم. كل شيء مفتوح.',pvNeedKeys:'مفاتيح Stripe مطلوبة',pvQueueLimited:'الخطة المجانية: ٣ إعلانات في القائمة',pvHistoryLimited:'الخطة المجانية تحتفظ بآخر ١٥ عنوانًا',pvThemeLocked:'السمة السينمائية ميزة بريميوم',pvBadge:'بريميوم',pvCancelNote:'NANCYFLIX لا يحفظ البطاقات · إلغاء في أي وقت',pvSignIn:'سجّل الدخول للاشتراك',pvLoading:'نتحقق من دفعتك…',pvCancelled:'تم إلغاء الدفع',pvCancelledD:'لم يتم خصم أي مبلغ. يمكنك المحاولة لاحقًا.',pvStatusFree:'مجاني',pvSince:'عضو منذ',pvEmailNote:'أُرسل الإيصال إلى',pvSelected:'محدد',pvOr:'أو وفّر مع السنوي',pvSetupHint:'للمالك: الصق LINK_MONTHLY و LINK_YEARLY في CONFIG.STRIPE.'}
+};
+Object.keys(UI_I18N).forEach(l=>{I18N.dict[l]=Object.assign(I18N.dict[l]||{},UI_I18N[l]);});
+
 </script>
 <script>
 /* ============ 3. STORAGE / BACKEND ADAPTER ============
@@ -838,7 +1194,7 @@ const Store = {
   histKey(id){return "hist:"+(id||"guest");},
   getHistory(id){return LS.get(this.histKey(id),[]);},
   setHistory(id,list){LS.set(this.histKey(id),list);},
-  pushHistory(id,snap,played){const key=id||"guest";let h=this.getHistory(key).filter(x=>x&&x.id!==snap.id);h.unshift(Object.assign({},snap,{ts:Date.now(),played:!!(played||(snap&&snap.played))}));h=h.slice(0,30);this.setHistory(key,h);return h;},
+  pushHistory(id,snap,played){const key=id||"guest";let h=this.getHistory(key).filter(x=>x&&x.id!==snap.id);h.unshift(Object.assign({},snap,{ts:Date.now(),played:!!(played||(snap&&snap.played))}));h=h.slice(0,(typeof Premium!=='undefined'&&Premium.isActive())?30:15);this.setHistory(key,h);return h;},
   clearHistory(id){this.setHistory(id||"guest",[]);},
   // ---- notifications per user + broadcast announcements
   notiKey(id){return "noti:"+id;},
@@ -1390,6 +1746,7 @@ const Player = {
   closeMini(){this._hideMini();this.mini=false;if(!document.querySelector('.overlay.show'))document.body.classList.remove('noscroll');},
   async enqueueMovie(id){
     if(!requireAuth())return;
+    if(typeof Premium!=='undefined'&&!Premium.isActive()&&this.queue.length>=3){Premium.upsell('queue');return;}
     try{const d=await TMDB.detail(id);const tr=MovieDetail._trailer(d);
       if(!tr||!tr.key){Toast.show(t('queueTitle'),t('noTrailerQueue'),'warn');return;}
       this.queue.push({title:d.title,key:tr.key,id:d.id});
@@ -1722,7 +2079,9 @@ const THEMES=[
 const FONTS=[['Inter',"'Inter',system-ui,sans-serif"],['System UI','system-ui,-apple-system,sans-serif'],['Arial','Arial,Helvetica,sans-serif'],['Georgia','Georgia,serif'],['Verdana','Verdana,sans-serif'],['Trebuchet MS','\"Trebuchet MS\",sans-serif'],['Courier New','\"Courier New\",monospace']];
 const Theme={
   _norm(id){const ids=THEMES.map(t=>t[0]);if(ids.includes(id))return id;return (id==='daylight'||id==='silver')?'light':(id==='cosmic'?'amazing':(id==='romantic'?'romantic':'dark'));},
-  apply(id){id=this._norm(id);State.theme=id;document.documentElement.setAttribute('data-theme',id);State.settings.theme=id;this.accent(State.settings.accent);this.save();},
+  apply(id){id=this._norm(id);
+    if(id==='amazing'&&typeof Premium!=='undefined'&&!Premium.isActive()){Premium.upsell('theme');return;}
+    State.theme=id;document.documentElement.setAttribute('data-theme',id);State.settings.theme=id;this.accent(State.settings.accent);this.save();},
   font(name){const f=FONTS.find(x=>x[0]===name);if(f)document.documentElement.style.setProperty('--font',f[1]);State.settings.font=name;this.save();},
   accent(hex){
     State.settings.accent=hex||null;const r=document.documentElement;
@@ -1750,7 +2109,7 @@ const Settings={
           <div class="set-row" style="border:0;padding-top:16px"><div class="lbl"><div class="t">${t('accentColor')}</div><div class="d">${t('accentDesc')}</div></div><div class="accent-row" id="accentRow"><button class="acc ${!s.accent?'active':''}" data-acc="" title="${t('themeDefault')}" style="background:linear-gradient(135deg,var(--accent),var(--accent-2))"></button>${['#e11d2e','#ff5d8f','#7c5cff','#17c3d6','#2fbf71','#ffcc66','#ff7849'].map(c=>`<button class="acc ${s.accent===c?'active':''}" data-acc="${c}" style="background:${c}" title="${c}"></button>`).join('')}</div></div></div>
         <div class="set-group" data-s="font typography text"><h4>${t('grpTypography')}</h4><div class="set-row" style="border:0"><div class="lbl"><div class="t">${t('fontFamily')}</div><div class="d">${t('appliesApp')}</div></div><select class="mini" id="setFont">${FONTS.map(f=>`<option ${f[0]===s.font?'selected':''}>${f[0]}</option>`).join('')}</select></div></div>
         <div class="set-group" data-s="language region locale translate country"><h4>${t('grpLang')}</h4>
-          <div class="set-row"><div class="lbl"><div class="t">${t('appLang')}</div><div class="d">${t('appLangDesc')}</div></div><select class="mini" id="setLang">${LANGS.map(l=>`<option value="${l[0]}" ${l[0]===s.lang?'selected':''}>${l[1]}</option>`).join('')}</select></div>
+          <div class="set-row"><div class="lbl"><div class="t">${t('appLang')}</div><div class="d">${t('appLangDesc')}</div></div><button class="btn sm" type="button" id="setLang">${LANG_META[Lang.current()].flag} ${LANGS.find(l=>l[0]===Lang.current())[1]}</button></div>
           <div class="set-row" style="border:0"><div class="lbl"><div class="t">${t('defaultCat')}</div><div class="d">${t('defaultCatDesc')}</div></div><select class="mini" id="setCat">${['trending','popular','top_rated','upcoming'].map(c=>`<option value="${c}" ${c===s.defaultCat?'selected':''}>${t('sec'+({trending:'Trending',popular:'Popular',top_rated:'TopRated',upcoming:'Upcoming'}[c]))}</option>`).join('')}</select></div></div>
         <div class="set-group" data-s="premium professional density quality data saver experience"><h4>${svg(ICON.star,'icon sm')} ${t('grpPremium')}</h4>
           <div class="set-row"><div class="lbl"><div class="t">${t('density')} <span class="pro-tag">PRO</span></div><div class="d">${t('densityDesc')}</div></div><select class="mini" id="setDensity"><option value="comfortable" ${s.density!=='compact'?'selected':''}>${t('comfortable')}</option><option value="compact" ${s.density==='compact'?'selected':''}>${t('compact')}</option></select></div>
@@ -1777,8 +2136,9 @@ const Settings={
       </div>`;
     m.querySelector('[data-s="theme appearance color accent look"]').addEventListener('click',e=>{const o=e.target.closest('[data-theme-opt]');if(o){Theme.apply(o.dataset.themeOpt);m.querySelectorAll('[data-theme-opt]').forEach(x=>x.classList.toggle('active',x===o));return;}const a=e.target.closest('[data-acc]');if(a){Theme.accent(a.dataset.acc||null);m.querySelectorAll('[data-acc]').forEach(x=>x.classList.toggle('active',x===a));}});
     m.querySelector('#setFont').onchange=e=>Theme.font(e.target.value);
+    if(!(typeof Premium!=='undefined'&&Premium.isActive())){m.querySelectorAll('[data-theme-opt]').forEach(el=>{if(el.dataset.themeOpt==='amazing')el.classList.add('lockchip');});}
     (()=>{const nm=m.querySelector('#volNum');const setVol=v=>{v=Math.max(0,Math.min(1,Math.round(v*10)/10));s.soundVol=v;nm.textContent=Math.round(v*100);Theme.save();try{if(s.sound)Sound.ping('info');}catch(err){}};m.querySelector('#volDown').onclick=()=>setVol(s.soundVol-0.1);m.querySelector('#volUp').onclick=()=>setVol(s.soundVol+0.1);})();
-    m.querySelector('#setLang').onchange=e=>{s.lang=e.target.value;Theme.save();I18N.apply();Settings.openModal();};
+    m.querySelector('#setLang').onclick=()=>Lang.open();
     m.querySelector('#setCat').onchange=e=>{s.defaultCat=e.target.value;Theme.save();};
     m.querySelector('#setDensity').onchange=e=>Theme.density(e.target.value);
     m.querySelector('#setPoster').onchange=e=>{s.posterQ=e.target.value;Theme.save();try{switchView(State.view);}catch(err){}};
@@ -2104,8 +2464,11 @@ function switchView(name){
   document.querySelectorAll('.view').forEach(v=>v.classList.remove('show'));
   const v=document.getElementById('view-'+name);if(v)v.classList.add('show');
   document.querySelectorAll('#mainNav button').forEach(b=>b.classList.toggle('active',b.dataset.view===name));
-  window.scrollTo({top:0,behavior:'smooth'});
+  document.querySelectorAll('#bottomNav button').forEach(b=>b.classList.toggle('active',b.dataset.bnav===name));
+  if(name!=='premium')window.scrollTo({top:0,behavior:'smooth'});
+  if(name==='premium'){try{Premium.render();}catch(e){}return;}
   const mod=VIEWS[name];if(mod&&mod.render)mod.render();
+  if(name==='profile'){try{Premium.decorateProfile();}catch(e){}}
 }
 document.getElementById('mainNav').addEventListener('click',e=>{const b=e.target.closest('[data-view]');if(!b)return;const target=b.dataset.view;if((target==='watchlist'||target==='admin')&&!State.user){if(target==='admin'){Toast.show('Admins only','Sign in with an administrator account.','warn');return;}}switchView(target);});
 document.getElementById('profileBtn').onclick=()=>{if(!State.user){backToAuth('login');return;}switchView('profile');};
@@ -2267,31 +2630,430 @@ document.getElementById('regForm').addEventListener('submit',async e=>{e.prevent
 document.getElementById('guestBtn').onclick=()=>Auth.guest();
 document.getElementById('forgotBtn').onclick=()=>{if(HAS_BACKEND)Toast.show('Password reset','A reset link will be emailed via your auth provider.','info');else authMsg('Password recovery needs a configured backend. If you’re signed in, you can change your password from your Profile.','info');};
 
+/* =====================================================================
+   v4 MODULES — language chooser · splash sound · PWA install · Premium
+   ===================================================================== */
+
+/* ---------- 18. LANGUAGE CHOOSER ---------- */
+const LANG_META={
+  en:{native:'English',english:'English',flag:'🇬🇧',region:'United States · United Kingdom'},
+  sw:{native:'Kiswahili',english:'Swahili',flag:'🇹🇿',region:'Tanzania · Kenya'},
+  fr:{native:'Français',english:'French',flag:'🇫🇷',region:'France · Belgique'},
+  es:{native:'Español',english:'Spanish',flag:'🇪🇸',region:'España · Latinoamérica'},
+  de:{native:'Deutsch',english:'German',flag:'🇩🇪',region:'Deutschland · Österreich'},
+  pt:{native:'Português',english:'Portuguese',flag:'🇧🇷',region:'Brasil · Portugal'},
+  ar:{native:'العربية',english:'Arabic',flag:'🇸🇦',region:'السعودية · الخليج',rtl:true}
+};
+const Lang={
+  KEY:'lang', CHOSEN:'langChosen', _q:'', _reopenSettings:false,
+  current(){const c=State.settings&&State.settings.lang;return LANG_META[c]?c:'en';},
+  init(){
+    if(!State.settings||typeof State.settings!=='object')State.settings={};
+    const saved=LS.get(this.KEY,null);
+    const code=LANG_META[saved]?saved:'en';   // English is the deliberate default — never guessed from the browser
+    State.settings.lang=code; LS.set(this.KEY,code);
+    this.applyDom(code); this.paint();
+  },
+  applyDom(code){
+    document.documentElement.setAttribute('lang',code);
+    document.documentElement.setAttribute('dir',LANG_META[code]&&LANG_META[code].rtl?'rtl':'ltr');
+  },
+  set(code,opts){
+    opts=opts||{};
+    if(!LANG_META[code])code='en';
+    State.settings.lang=code; LS.set(this.KEY,code); LS.set(this.CHOSEN,1);
+    if(State.user){
+      State.user.settings=State.settings;
+      try{const users=Store.users();const i=users.findIndex(u=>u.id===State.user.id);if(i>=0){users[i].settings=State.settings;Store.saveUsers(users);}}catch(e){}
+    } else { LS.set('guestSettings',State.settings); }
+    this.applyDom(code); this.paint();
+    try{I18N.apply();}catch(e){}
+    if(document.getElementById('langPanel').classList.contains('show')) this._render(this._q);
+    if(!opts.silent){
+      try{Toast.show(t('langChanged'),LANG_META[code].native+' · '+LANG_META[code].english,'ok',2200);}catch(e){}
+    }
+  },
+  paint(){
+    const m=LANG_META[this.current()];
+    const f=document.getElementById('langFlag'),c=document.getElementById('langCode');
+    if(f)f.textContent=m.flag; if(c)c.textContent=this.current().toUpperCase();
+    const af=document.getElementById('authLangFlag'),an=document.getElementById('authLangName');
+    if(af)af.textContent=m.flag; if(an)an.textContent=m.native;
+  },
+  open(first){
+    const p=document.getElementById('langPanel'); if(!p)return;
+    const so=document.getElementById('settingsOverlay');
+    this._reopenSettings=!!(so&&so.classList.contains('show'));
+    if(this._reopenSettings){try{closeOverlay('settingsOverlay');}catch(e){so.classList.remove('show');}}
+    p.classList.add('show'); document.body.classList.add('noscroll');
+    this._q=''; const inp=document.getElementById('langSearch'); if(inp)inp.value='';
+    try{
+      document.getElementById('langTitle').innerHTML=esc(t('langTitle1'))+' <span>'+esc(t('langTitle2'))+'</span>';
+      document.getElementById('langDesc').textContent=t('langDesc');
+      document.getElementById('langNote').textContent=t('langNote');
+      document.getElementById('langDone').textContent=t('langContinue');
+      if(inp)inp.placeholder=t('langSearch');
+    }catch(e){}
+    this._render('');
+    setTimeout(()=>{if(inp&&!first)inp.focus();},260);
+  },
+  close(){
+    const p=document.getElementById('langPanel'); if(p)p.classList.remove('show');
+    if(!document.querySelector('.overlay.show')) document.body.classList.remove('noscroll');
+    if(this._reopenSettings){this._reopenSettings=false;try{Settings.openModal();}catch(e){}}
+  },
+  _render(q){
+    this._q=q||'';
+    const grid=document.getElementById('langGrid'); if(!grid)return;
+    const cur=this.current();
+    const needle=(q||'').trim().toLowerCase();
+    const items=LANGS.filter(([c])=>{const m=LANG_META[c];return !m||!needle||m.native.toLowerCase().includes(needle)||m.english.toLowerCase().includes(needle)||c.indexOf(needle)===0;});
+    const tick='<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M4 12l5 5L20 6"/></svg>';
+    grid.innerHTML=items.length?items.map(([c])=>{
+      const m=LANG_META[c];
+      return '<button class="lp-opt" role="radio" aria-checked="'+(c===cur)+'" data-lang="'+c+'"><span class="fl">'+m.flag+'</span><span class="nm"><b>'+esc(m.native)+'</b><small>'+esc(m.english)+(c===cur?' · '+esc(t('langCurrent')):'')+'</small></span><span class="tick">'+tick+'</span></button>';
+    }).join(''):'<div class="lp-empty">'+esc(t('langNoResults'))+'</div>';
+    grid.querySelectorAll('[data-lang]').forEach(b=>{b.onclick=()=>{
+      this.set(b.dataset.lang);
+      grid.querySelectorAll('[data-lang]').forEach(x=>x.setAttribute('aria-checked',String(x.dataset.lang===b.dataset.lang)));
+    };});
+  }
+};
+(function(){
+  const $=id=>document.getElementById(id);
+  const on=(id,ev,fn)=>{const el=$(id);if(el)el.addEventListener(ev,fn);};
+  on('langBtn','click',()=>Lang.open());
+  on('authLang','click',()=>Lang.open());
+  on('langDone','click',()=>Lang.close());
+  on('langSearch','input',e=>Lang._render(e.target.value));
+  on('langPanel','click',e=>{if(e.target.id==='langPanel')Lang.close();});
+  document.addEventListener('keydown',e=>{const p=$('langPanel');if(e.key==='Escape'&&p&&p.classList.contains('show'))Lang.close();});
+})();
+
+/* ---------- 19. SPLASH AUDIO (synthesised, never plays late) ---------- */
+const SplashAudio={
+  ctx:null,on:LS.get('splashSound',true),played:false,done:false,
+  init(){
+    const btn=document.getElementById('splashSound');
+    if(btn){btn.onclick=()=>this.toggle();}
+    this.paint();
+    if(this.on) setTimeout(()=>this.play(),180);   // may be blocked by autoplay policy — that is fine
+  },
+  paint(){
+    const b=document.getElementById('splashSound'); if(!b)return;
+    b.classList.toggle('off',!this.on);
+    b.classList.toggle('on',!!this.on);
+    b.setAttribute('aria-pressed',String(!!this.on));
+    b.setAttribute('aria-label',this.on?'Mute intro sound':'Play intro sound');
+    const w1=b.querySelector('.w1'),w2=b.querySelector('.w2');
+    if(w1)w1.style.opacity=this.on?'1':'.25';
+    if(w2)w2.style.opacity=this.on?'1':'.25';
+  },
+  toggle(){
+    this.on=!this.on; LS.set('splashSound',this.on); this.paint();
+    if(this.on){this.played=false;this.play();}
+    else{this._silence();}
+  },
+  _ac(){
+    const AC=window.AudioContext||window.webkitAudioContext; if(!AC)return null;
+    if(!this.ctx){try{this.ctx=new AC();}catch(e){return null;}}
+    return this.ctx;
+  },
+  play(){
+    if(!this.on||this.played||this.done)return;
+    const c=this._ac(); if(!c)return;
+    if(c.state==='suspended'){
+      c.resume().then(()=>{if(c.state==='running')this._sting();}).catch(()=>{});
+      return;
+    }
+    this._sting();
+  },
+  _sting(){
+    const c=this.ctx; if(!c||this.played)return; this.played=true;
+    const t0=c.currentTime+0.02, master=c.createGain();
+    master.gain.value=0.42; master.connect(c.destination);
+    // deep cinematic boom
+    const o=c.createOscillator(),g=c.createGain();
+    o.type='sine'; o.frequency.setValueAtTime(62,t0); o.frequency.exponentialRampToValueAtTime(33,t0+0.85);
+    g.gain.setValueAtTime(0.0001,t0); g.gain.exponentialRampToValueAtTime(0.55,t0+0.06); g.gain.exponentialRampToValueAtTime(0.0001,t0+1.2);
+    o.connect(g); g.connect(master); o.start(t0); o.stop(t0+1.25);
+    // projector riser
+    const len=Math.floor(c.sampleRate*1.05), buf=c.createBuffer(1,len,c.sampleRate), d=buf.getChannelData(0);
+    for(let i=0;i<len;i++){const k=i/len;d[i]=(Math.random()*2-1)*k*k;}
+    const src=c.createBufferSource(); src.buffer=buf;
+    const bp=c.createBiquadFilter(); bp.type='bandpass'; bp.Q.value=1.1;
+    bp.frequency.setValueAtTime(260,t0); bp.frequency.exponentialRampToValueAtTime(5400,t0+1.0);
+    const ng=c.createGain(); ng.gain.setValueAtTime(0.0001,t0); ng.gain.exponentialRampToValueAtTime(0.15,t0+0.88); ng.gain.exponentialRampToValueAtTime(0.0001,t0+1.08);
+    src.connect(bp); bp.connect(ng); ng.connect(master); src.start(t0);
+    // shimmer chord
+    [880,1318.5,1760].forEach((f,i)=>{const oo=c.createOscillator(),gg=c.createGain();oo.type='triangle';oo.frequency.value=f;const st=t0+0.82+i*0.05;
+      gg.gain.setValueAtTime(0.0001,st); gg.gain.exponentialRampToValueAtTime(0.06/(i+1),st+0.03); gg.gain.exponentialRampToValueAtTime(0.0001,st+0.85);
+      oo.connect(gg); gg.connect(master); oo.start(st); oo.stop(st+0.9);});
+  },
+  _silence(){try{if(this.ctx&&this.ctx.state==='running')this.ctx.suspend();}catch(e){}},
+  dispose(){
+    this.done=true; this._silence();
+    const c=this.ctx; this.ctx=null;
+    if(c){try{c.close();}catch(e){}}
+  }
+};
+
+/* ---------- 20. PWA INSTALL ---------- */
+const PWA={
+  deferred:null,
+  standalone:false,
+  init(){
+    try{this.standalone=window.matchMedia('(display-mode: standalone)').matches||window.navigator.standalone===true;}catch(e){}
+    if('serviceWorker' in navigator){
+      window.addEventListener('load',()=>{navigator.serviceWorker.register('sw.js').catch(()=>{});});
+    }
+    window.addEventListener('beforeinstallprompt',e=>{
+      e.preventDefault(); this.deferred=e;
+      setTimeout(()=>this.show(),1200);
+    });
+    window.addEventListener('appinstalled',()=>{
+      this.standalone=true; this.hide(); LS.set('installHidden',1);
+      try{Toast.show(t('installTitle'),'NANCYFLIX is on your home screen.','ok');}catch(e){}
+    });
+    const b=document.getElementById('instBtn'),x=document.getElementById('instClose'),ic=document.getElementById('iosClose');
+    if(b)b.onclick=()=>this.install();
+    if(x)x.onclick=()=>{this.hide();LS.set('installHidden',1);};
+    if(ic)ic.onclick=()=>{document.getElementById('iosSheet').classList.remove('show');LS.set('installHidden',1);};
+    document.getElementById('iosSheet').addEventListener('click',e=>{if(e.target.id==='iosSheet')e.currentTarget.classList.remove('show');});
+    if(!this.standalone&&!LS.get('installHidden')) setTimeout(()=>this.show(),7000);
+  },
+  isiOS(){
+    const ua=navigator.userAgent||'';
+    return /iphone|ipad|ipod/i.test(ua)||(navigator.platform==='MacIntel'&&navigator.maxTouchPoints>1);
+  },
+  show(){
+    if(this.standalone||LS.get('installHidden'))return;
+    if(!this.deferred&&!this.isiOS())return;
+    const el=document.getElementById('installBanner'); if(!el)return;
+    try{
+      document.getElementById('instTitle').textContent=t('installTitle');
+      document.getElementById('instDesc').textContent=t('installDesc');
+      document.getElementById('instBtn').textContent=this.deferred?t('installBtn'):'How to';
+    }catch(e){}
+    el.classList.add('show');
+  },
+  hide(){const el=document.getElementById('installBanner');if(el)el.classList.remove('show');},
+  async install(){
+    if(this.deferred){
+      const d=this.deferred; this.deferred=null;
+      try{d.prompt(); const r=await d.userChoice; if(r&&r.outcome==='accepted')this.hide();}catch(e){}
+      return;
+    }
+    if(this.isiOS()){
+      const sh=document.getElementById('iosSheet');
+      try{
+        document.getElementById('iosTitle').innerHTML=document.getElementById('iosTitle').innerHTML.replace(/<svg[\s\S]*?<\/svg>/,document.getElementById('iosTitle').innerHTML.match(/<svg[\s\S]*?<\/svg>/)?document.getElementById('iosTitle').innerHTML.match(/<svg[\s\S]*?<\/svg>/)[0]:'');
+      }catch(e){}
+      if(sh)sh.classList.add('show');
+      return;
+    }
+    try{Toast.show(t('installTitle'),'Open your browser menu and choose “Install app”.','info',6000);}catch(e){}
+  }
+};
+
+/* ---------- 21. PREMIUM / STRIPE ---------- */
+const PLANS={
+  monthly:{id:'monthly',price:4.99,days:31,link:()=>CONFIG.STRIPE.LINK_MONTHLY,priceLabel:()=>CONFIG.STRIPE.PRICE_MONTHLY||'$4.99'},
+  yearly:{id:'yearly',price:39.99,days:366,link:()=>CONFIG.STRIPE.LINK_YEARLY,priceLabel:()=>CONFIG.STRIPE.PRICE_YEARLY||'$39.99'}
+};
+const FREE_LIMITS={queue:3,history:15};
+const Premium={
+  selected:'yearly', _pending:null,
+  key(){return 'sub:'+((State.user&&State.user.id)||'guest');},
+  get(){const d=LS.get(this.key(),null);return (d&&typeof d==='object')?d:{status:'free'};},
+  isActive(){
+    const d=this.get();
+    if(d.status!=='active')return false;
+    if(!d.expires)return true;
+    const ts=new Date(d.expires).getTime();
+    return isNaN(ts)?true:ts>Date.now();
+  },
+  queueLimit(){return this.isActive()?Infinity:FREE_LIMITS.queue;},
+  historyLimit(){return this.isActive()?30:FREE_LIMITS.history;},
+  planId(){const d=this.get();return d.plan||''},
+  save(d){LS.set(this.key(),d);this.refreshChrome();},
+  refreshChrome(){
+    const on=this.isActive();
+    const av=document.getElementById('profileBtn'); if(av)av.classList.toggle('premium',on);
+    const nv=document.querySelector('.nav button[data-view="premium"] span');
+    if(nv)nv.textContent=on?t('pvActive'):t('premium');
+  },
+  activate(d){
+    const plan=PLANS[d.plan]?d.plan:'monthly';
+    const expires=d.expires||new Date(Date.now()+PLANS[plan].days*864e5).toISOString();
+    this.save({status:'active',plan:plan,expires:expires,customer:d.customer||null,session:d.session||null,ts:Date.now(),source:d.source||'stripe'});
+    this._pending=null; LS.del('pendingCheckout');
+    try{Toast.show(t('pvActivated'),t('pvActivatedD'),'ok',6000);}catch(e){}
+    if(State.view==='premium')this.render();
+  },
+  async checkout(planId){
+    if(!requireAuth())return;
+    const p=PLANS[planId]||PLANS.monthly;
+    const url=(p.link()||'').trim();
+    if(!url){this.setupNotice();return;}
+    let u;
+    try{u=new URL(url);}catch(e){try{Toast.show(t('pvNeedKeys'),'That link is not a valid https://buy.stripe.com URL.','err',7000);}catch(x){}return;}
+    try{
+      u.searchParams.set('client_reference_id',State.user.id);
+      if(State.user.email)u.searchParams.set('prefilled_email',State.user.email);
+      u.searchParams.set('utm_source','nancyflix');
+      u.searchParams.set('utm_medium','app');
+    }catch(e){}
+    window.location.href=u.toString();
+  },
+  async verify(sessionId){
+    const base=(CONFIG.STRIPE.VERIFY_ENDPOINT||'').trim();
+    if(!base)return {ok:false,reason:'not_configured'};
+    try{
+      const r=await fetch(base+(base.indexOf('?')>=0?'&':'?')+'session_id='+encodeURIComponent(sessionId||''),{headers:{Accept:'application/json'}});
+      if(!r.ok)return {ok:false,reason:'http_'+r.status};
+      const j=await r.json();
+      if(!j||!j.active)return {ok:false,reason:(j&&j.reason)||'inactive'};
+      return {ok:true,plan:j.plan,expires:j.expires||j.current_period_end,customer:j.customer};
+    }catch(e){return {ok:false,reason:'network'};}
+  },
+  async handleReturn(){
+    const q=new URLSearchParams(location.search);
+    const state=q.get('checkout');
+    if(!state)return;
+    const sid=q.get('session_id')||'';
+    const clean=()=>{try{const u=new URL(location.href);['checkout','plan','session_id'].forEach(k=>u.searchParams.delete(k));history.replaceState({},'',u.pathname+(u.searchParams.toString()?'?'+u.searchParams.toString():'')+u.hash);}catch(e){}};
+    if(state==='success'){
+      this._pending={session:sid,plan:q.get('plan')||'monthly',ts:Date.now()};
+      LS.set('pendingCheckout',this._pending);
+      try{Toast.show(t('pvLoading'),'','info',5000);}catch(e){}
+      const res=await this.verify(sid);
+      clean();
+      if(res.ok){this.activate({plan:res.plan||this._pending.plan,expires:res.expires,customer:res.customer,session:sid});switchView('premium');}
+      else if(/^cs_[A-Za-z0-9_]{20,}$/.test(sid)&&['not_configured','network','http_404','http_500','http_502','http_503'].indexOf(res.reason)>=0){
+        // Payment page said success but the server checker is not deployed yet:
+        // unlock locally so a paying customer is never locked out, and say so plainly.
+        this.activate({plan:this._pending.plan,source:'client'});
+        try{Toast.show(t('pvActivated'),'Confirmed on this device. Add /api/stripe-verify + STRIPE_SECRET_KEY for server-side proof.','ok',8000);}catch(e){}
+        switchView('premium');
+      }
+      else{switchView('premium');}
+    } else if(state==='cancel'){
+      clean();
+      try{Toast.show(t('pvCancelled'),t('pvCancelledD'),'info',6000);}catch(e){}
+    }
+  },
+  pending(){const p=LS.get('pendingCheckout',null);return (p&&p.session)?p:null;},
+  async recheck(){
+    const p=this.pending(); if(!p){this.render();return;}
+    try{Toast.show(t('pvLoading'),'','info',3000);}catch(e){}
+    const res=await this.verify(p.session);
+    if(res.ok)this.activate({plan:res.plan||p.plan,expires:res.expires,customer:res.customer,session:p.session});
+    else try{Toast.show(t('pvPending'),t('pvPendingD'),'warn',8000);}catch(e){}
+    this.render();
+  },
+  portal(){
+    const u=(CONFIG.STRIPE.PORTAL_URL||'').trim();
+    if(!u){try{Toast.show(t('pvManage'),'Paste your Stripe Customer Portal link in CONFIG.STRIPE.PORTAL_URL.','info',7000);}catch(e){}return;}
+    window.location.href=u;
+  },
+  setupNotice(){
+    const isAdmin=!!(State.user&&(CONFIG.ADMIN_EMAILS||[]).indexOf((State.user.email||'').toLowerCase())>=0);
+    try{Toast.show(t('pvSetupT'),isAdmin?t('pvSetupD'):t('pvSetupHint'),'warn',9000);}catch(e){}
+    switchView('premium');
+  },
+  upsell(reason){
+    if(this.isActive())return false;
+    const msg=reason==='queue'?t('pvQueueLimited'):reason==='history'?t('pvHistoryLimited'):reason==='theme'?t('pvThemeLocked'):t('pvSub');
+    try{Toast.show('NANCYFLIX Premium',msg,'info',3200);}catch(e){}
+    switchView('premium');
+    return false;
+  },
+  price(id){return PLANS[id].priceLabel();},
+  render(){
+    const host=document.getElementById('view-premium'); if(!host)return;
+    const active=this.isActive(), d=this.get(), pid=this.planId();
+    const linksOk=!!((CONFIG.STRIPE.LINK_MONTHLY||'').trim()||(CONFIG.STRIPE.LINK_YEARLY||'').trim());
+    const isAdmin=!!(State.user&&(CONFIG.ADMIN_EMAILS||[]).indexOf((State.user.email||'').toLowerCase())>=0);
+    const pend=this.pending();
+    const sel=this.selected;
+    const fmtD=(x)=>{try{return new Date(x).toLocaleDateString(undefined,{day:'numeric',month:'short',year:'numeric'});}catch(e){return x;}};
+    const check='<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M4 12l5 5L20 6"/></svg>';
+    const feat=(ic,ttl,dd)=>'<div class="pv-feat"><div class="ic">'+ic+'</div><b>'+esc(ttl)+'</b><span>'+esc(dd)+'</span></div>';
+    const star='<svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 2l2.9 6.3 6.9.8-5.1 4.7 1.4 6.8L12 17.3 5.9 20.6l1.4-6.8L2.2 9.1l6.9-.8z"/></svg>';
+    const crown='<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M3 8l4.5 3L12 4l4.5 7L21 8l-1.6 10.2a2 2 0 01-2 1.8H6.6a2 2 0 01-2-1.8z"/></svg>';
+
+    host.innerHTML=''+
+    '<div class="pv-banner '+(isAdmin&&!linksOk?'show':'')+'"><b>'+esc(t('pvNeedKeys'))+'</b><span>'+esc(t('pvSetupHint'))+'</span></div>'+
+    '<section class="pv-hero">'+
+      '<span class="pv-kicker">'+star+' '+esc(t('pvKicker'))+'</span>'+
+      '<h1 class="pv-title">'+esc(t('pvTitle'))+'</h1>'+
+      '<p class="pv-sub">'+esc(t('pvSub'))+'</p>'+
+      (active?
+        '<div class="pv-status"><span class="dotok"></span><div><b>'+esc(t('pvActive'))+'</b><br><span>'+esc(t('pvRenews'))+' '+(d.expires?fmtD(d.expires):'—')+'</span></div></div>'
+        :'<div class="pv-plans">'+
+          ['monthly','yearly'].map(id=>{
+            const p=PLANS[id];
+            return '<button class="pv-plan '+(sel===id?'sel':'')+'" data-plan="'+id+'">'+
+              (id==='yearly'?'<span class="pv-flag">'+esc(t('pvPopular'))+'</span>':'')+
+              '<span class="pn">'+esc(id==='monthly'?t('pvMonthly'):t('pvYearly'))+'</span>'+
+              '<span class="pp">'+priceBase(this.price(id))+'<small>'+esc(id==='monthly'?t('pvPerMonth'):t('pvPerYear'))+'</small></span>'+
+              '<span class="pd">'+(id==='yearly'?esc(t('pvSave')):esc(t('pvCancelNote')))+'</span>'+
+            '</button>';
+          }).join('')+
+        '</div>')+
+      (active?
+        '<div class="pv-cta"><button class="btn gold" id="pvPortal">'+esc(t('pvManage'))+'</button><button class="btn" id="pvRestore">'+esc(t('pvRestore'))+'</button></div>'
+        :'<div class="pv-cta"><button class="btn gold" id="pvGo">'+esc(sel==='yearly'?t('pvCtaYear'):t('pvCtaMonth'))+' · '+esc(this.price(sel))+'</button><button class="btn" id="pvRestore">'+esc(t('pvRestore'))+'</button></div>')+
+      '<div class="pv-trust">'+check+'<span>'+esc(t('pvTrust'))+'</span></div>'+
+      (pend&&!active?'<div class="pv-banner show" style="margin-top:16px;margin-bottom:0"><b>'+esc(t('pvPending'))+'</b><span>'+esc(t('pvPendingD'))+'</span><button class="btn sm" id="pvCheck" style="margin-inline-start:auto">'+esc(t('pvCheckAgain'))+'</button></div>':'')+
+    '</section>'+
+    '<section class="pv-sec"><h3>'+crown+' '+esc(t('pvBenefits'))+'</h3><div class="pv-grid">'+
+      feat('<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><path d="M4 6h16M4 12h16M4 18h10"/></svg>',t('pvF1'),t('pvF1d'))+
+      feat('<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/></svg>',t('pvF2'),t('pvF2d'))+
+      feat('<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><path d="M12 3l2.5 5.5L20 9l-4 4 1 6-5-2.8L7 19l1-6-4-4 5.5-.5z"/></svg>',t('pvF3'),t('pvF3d'))+
+      feat('<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><circle cx="12" cy="8" r="4"/><path d="M4 21v-1a6 6 0 016-6h4a6 6 0 016 6v1"/></svg>',t('pvF4'),t('pvF4d'))+
+    '</div></section>'+
+    '<section class="pv-sec pv-faq"><h3>'+esc(t('pvFaq'))+'</h3>'+
+      [['pvFaq1q','pvFaq1a'],['pvFaq2q','pvFaq2a'],['pvFaq3q','pvFaq3a']].map((p,i)=>'<details '+(i===0?'open':'')+'><summary>'+esc(t(p[0]))+'</summary><p>'+esc(t(p[1]))+'</p></details>').join('')+
+    '</section>'+
+    '<p class="pv-note">'+esc(t('pvCancelNote'))+(isAdmin?'<br>'+esc(t('pvSetupHint')):'')+'</p>';
+
+    host.querySelectorAll('[data-plan]').forEach(b=>{b.onclick=()=>{this.selected=b.dataset.plan;this.render();};});
+    const go=host.querySelector('#pvGo'); if(go)go.onclick=()=>this.checkout(this.selected);
+    const po=host.querySelector('#pvPortal'); if(po)po.onclick=()=>this.portal();
+    const rs=host.querySelector('#pvRestore'); if(rs)rs.onclick=()=>{if(this.isActive()){this.render();return;}this.recheck();};
+    const ck=host.querySelector('#pvCheck'); if(ck)ck.onclick=()=>this.recheck();
+    this.refreshChrome();
+  },
+  decorateProfile(){
+    if(!State.user)return;
+    const v=document.getElementById('view-profile'); if(!v)return;
+    if(v.querySelector('.pv-profile-cta'))return;
+    const active=this.isActive();
+    const el=document.createElement('div');
+    el.className='pv-profile-cta';
+    el.style.cssText='display:flex;align-items:center;gap:12px;flex-wrap:wrap;padding:16px 18px;border-radius:14px;margin:0 0 18px;border:1px solid '+(active?'rgba(255,204,102,.4)':'var(--border)')+';background:'+(active?'linear-gradient(120deg,rgba(255,204,102,.12),rgba(255,255,255,.02))':'var(--surface)')+'}';
+    el.innerHTML='<div style="flex:1;min-width:180px"><b style="font-size:14px">'+(active?'✨ '+esc(t('pvActive')):esc(t('pvFreePlan')))+'</b><div style="font-size:12px;color:var(--muted);margin-top:2px">'+esc(active?(t('pvRenews')+' '+(this.get().expires?new Date(this.get().expires).toLocaleDateString():'—')):t('pvBenefits'))+'</div></div>'+
+      '<button class="btn '+(active?'':'gold')+' sm" style="'+(active?'':'background:linear-gradient(135deg,#ffd98a,#ffcc66);color:#1c1200;border:0;font-weight:800')+'">'+(active?esc(t('pvManage')):esc(t('premium')))+'</button>';
+    el.querySelector('button').onclick=()=>{if(active)this.portal();else switchView('premium');};
+    v.insertBefore(el,v.firstChild);
+  }
+};
+function priceBase(p){return String(p||'').replace(/\s*\/\s*(mo|month|yr|year|an|mês)$/i,'');}
+
+/* ---------- 22. APP CHROME WIRING ---------- */
+(function(){const bn=document.getElementById('bottomNav');if(!bn)return;bn.addEventListener('click',e=>{
+  const b=e.target.closest('[data-bnav]'); if(!b)return;
+  if((b.dataset.bnav==='watchlist'||b.dataset.bnav==='premium'||b.dataset.bnav==='profile')&&!State.user){backToAuth('login');return;}
+  switchView(b.dataset.bnav);
+});})();
 /* ============ app enter / return to auth ============ */
-function enterApp(){document.getElementById('auth').classList.remove('show');document.getElementById('app').classList.add('show');document.body.classList.remove('noscroll');document.getElementById('mSearchBtn').style.display='';document.getElementById('fabSearch').classList.add('show');switchView(State.settings.defaultCat&&false?'home':'home');setTimeout(()=>{try{handleHash();}catch(e){}},300);}
+function enterApp(){document.getElementById('auth').classList.remove('show');try{Lang.paint();Premium.refreshChrome();}catch(e){}document.getElementById('app').classList.add('show');document.body.classList.remove('noscroll');document.getElementById('mSearchBtn').style.display='';document.getElementById('fabSearch').classList.add('show');switchView(State.settings.defaultCat&&false?'home':'home');setTimeout(()=>{try{handleHash();}catch(e){}},300);}
 function backToAuth(tab='login'){document.getElementById('app').classList.remove('show');document.getElementById('fabSearch').classList.remove('show');[...document.querySelectorAll('.overlay.show')].forEach(o=>o.classList.remove('show'));document.getElementById('notiPanel').classList.remove('show');document.getElementById('auth').classList.add('show');document.body.classList.add('noscroll');setTab(tab);document.getElementById('demoNote').style.display=HAS_BACKEND?'none':'block';}
 
 /* ============ 0. SPLASH + INITIALIZATION ============ */
-const SplashAudio={
-  on:true,started:false,el:null,
-  url:'https://files.catbox.moe/1ubw1i.wav',
-  _wantSound(){return LS.get('guestSettings',{}).sound!==false;},
-  init(){
-    this.on=true;                 // intro audio autoplays by default
-    if(!this.el){this.el=new Audio(this.url);this.el.preload='auto';this.el.volume=0.6;this.el.crossOrigin='anonymous';}
-  },
-  _paintBtn(){},
-  toggle(){this.on=!this.on;this._paintBtn();if(this.on){this.play();}else{this.stop();}},
-  play(){
-    if(!this.on||!this.el||this.started)return;
-    this.started=true;
-    try{this.el.currentTime=0;}catch(e){}
-    const p=this.el.play();
-    // autoplay may be blocked until a user gesture; allow a retry
-    if(p&&p.catch){p.catch(()=>{this.started=false;});}
-  },
-  stop(){if(!this.el)return;try{this.el.pause();this.el.currentTime=0;}catch(e){}}
-};
+
 function initParticles(){
   const box=document.getElementById('parts');let h='';for(let i=0;i<26;i++){const l=Math.random()*100,d=6+Math.random()*8,dl=Math.random()*6;h+=`<i style="left:${l}%;animation-duration:${d}s;animation-delay:-${dl}s"></i>`;}box.innerHTML=h;
   const ff=document.getElementById('filmFloat');if(ff){const ico=['\uD83C\uDFAC','\uD83C\uDF7F','\u2B50','\uD83C\uDF9E\uFE0F','\uD83C\uDFA5','\uD83C\uDF9F\uFE0F','\uD83D\uDCFD\uFE0F','\uD83C\uDF1F'];let f='';for(let i=0;i<14;i++){const l=Math.random()*96,d=9+Math.random()*7,dl=Math.random()*9,sz=18+Math.random()*20;f+=`<span style="left:${l}%;font-size:${sz}px;animation-duration:${d}s;animation-delay:-${dl}s">${ico[i%ico.length]}</span>`;}ff.innerHTML=f;}
@@ -2304,38 +3066,51 @@ const SplashRotator={
   stop(){if(this.timer){clearInterval(this.timer);this.timer=null;}}
 };
 function runSplash(){
-  initParticles();
-  SplashRotator.start();
-  SplashAudio.init();
+  try{initParticles();}catch(e){}
+  try{SplashRotator.start();}catch(e){}
+  try{SplashAudio.init();}catch(e){}
+  const quick=(LS.get('guestSettings',{}).splash===false);
+  const dur=quick?700:3200;
+  const t0=performance.now();
   const bar=document.getElementById('splashBar');
-  const quick=LS.get('guestSettings',{}).splash===false;
-  const t0=Date.now();
-  let dur=quick?600:6000;        // fallback length until the audio's real duration is known
-  const cap=20000;               // hard safety cap so the splash can never hang
-  if(!quick){
-    SplashAudio.play();
-    const el=SplashAudio.el;
-    if(el){
-      el.addEventListener('loadedmetadata',()=>{if(isFinite(el.duration)&&el.duration>0)dur=Math.min(cap,el.duration*1000+500);},{once:true});
-      el.addEventListener('ended',()=>finishSplash(),{once:true});
-    }
-    // autoplay policies may block audio until a gesture; start on first interaction
-    const kick=()=>{if(!SplashAudio.started)SplashAudio.play();document.removeEventListener('pointerdown',kick);document.removeEventListener('keydown',kick);};
-    document.addEventListener('pointerdown',kick);document.addEventListener('keydown',kick);
-  }
-  const tick=()=>{
-    const el=SplashAudio.el;let p;
-    if(!quick&&el&&el.duration&&isFinite(el.duration)&&!el.paused){p=Math.min(100,el.currentTime/el.duration*100);}
-    else{p=Math.min(100,(Date.now()-t0)/dur*100);}
-    bar.style.width=p+'%';
-    if((Date.now()-t0)<dur&&!splashDone)requestAnimationFrame(tick);else finishSplash();
+  const ring=document.getElementById('splashRing');
+  const pct=document.getElementById('splashPct');
+  const stage=document.getElementById('splashStage');
+  const CIRC=389.6;
+  const stages=[[0,'splashS1'],[0.34,'splashS2'],[0.62,'splashS3'],[0.86,'splashS4']];
+  let lastStage='';
+  const ease=x=>1-Math.pow(1-x,3);
+  const tick=now=>{
+    const raw=Math.min(1,(now-t0)/dur), pr=ease(raw);
+    if(bar)bar.style.width=(pr*100).toFixed(1)+'%';
+    if(ring)ring.style.strokeDashoffset=(CIRC*(1-pr)).toFixed(2);
+    if(pct)pct.textContent=Math.round(pr*100)+'%';
+    let key=stages[0][1];
+    for(let i=0;i<stages.length;i++){if(raw>=stages[i][0])key=stages[i][1];}
+    if(key!==lastStage){lastStage=key;if(stage)stage.textContent=t(key);}
+    if(raw<1&&!splashDone)requestAnimationFrame(tick);else finishSplash();
   };
   requestAnimationFrame(tick);
-  // safety: never hang on splash even if something stalls
-  setTimeout(finishSplash,cap+800);
+  const skip=document.getElementById('splashSkip');
+  if(skip)skip.onclick=()=>finishSplash();
+  setTimeout(finishSplash,dur+3000);
 }
 let splashDone=false;
-function finishSplash(){if(splashDone)return;splashDone=true;SplashRotator.stop();SplashAudio.stop();const s=document.getElementById('splash');s.style.transition='opacity .5s';s.style.opacity=0;setTimeout(()=>{s.style.display='none';resumeSession();},500);}
+function finishSplash(){
+  if(splashDone)return;
+  splashDone=true;
+  try{SplashRotator.stop();}catch(e){}
+  try{SplashAudio.dispose();}catch(e){}
+  const sp=document.getElementById('splash');
+  if(!sp){resumeSession();return;}
+  sp.style.transition='opacity .45s ease, transform .45s ease';
+  sp.style.opacity='0'; sp.style.transform='scale(1.03)';
+  setTimeout(()=>{
+    sp.style.display='none';
+    resumeSession();
+    if(!LS.get('langChosen')) setTimeout(()=>{try{Lang.open(true);}catch(e){}},320);
+  },470);
+}
 
 function resumeSession(){
   const sid=Store.session();
@@ -2348,9 +3123,13 @@ function resumeSession(){
   try{State.genres=await TMDB.genres();}catch(e){State.genres=GENRE_FALLBACK;}
   State.genreMap={};State.genres.forEach(g=>State.genreMap[g.id]=g.name);
   Search.init();Sync.start();
+  try{Lang.init();}catch(e){}
+  try{PWA.init();}catch(e){}
   window.addEventListener('offline',()=>Toast.show('Offline mode','You can keep browsing cached movies and posters. Trailers and playback need a connection.','warn'));
   window.addEventListener('online',()=>Toast.show('Back online','Live data restored.','ok'));
+  try{Premium.refreshChrome();}catch(e){}
   runSplash();
+  setTimeout(()=>{try{Premium.handleReturn();}catch(e){}},1200);
 })();
 </script>
 </body>

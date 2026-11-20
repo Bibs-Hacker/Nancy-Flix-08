@@ -1,0 +1,26 @@
+{
+  "id": "/",
+  "name": "NANCYFLIX — Dev Brian Studios",
+  "short_name": "NANCYFLIX",
+  "description": "Discover movies, watch official trailers, build a watchlist and rate what you love. By Dev Brian Studios.",
+  "start_url": "./?utm_source=pwa",
+  "scope": "./",
+  "display": "standalone",
+  "display_override": ["standalone", "minimal-ui", "browser"],
+  "orientation": "any",
+  "background_color": "#06060a",
+  "theme_color": "#06060a",
+  "lang": "en",
+  "dir": "ltr",
+  "categories": ["entertainment", "video", "lifestyle"],
+  "icons": [
+    { "src": "icons/icon-192.png", "sizes": "192x192", "type": "image/png", "purpose": "any" },
+    { "src": "icons/icon-512.png", "sizes": "512x512", "type": "image/png", "purpose": "any" },
+    { "src": "icons/maskable-512.png", "sizes": "512x512", "type": "image/png", "purpose": "maskable" },
+    { "src": "icons/apple-touch-icon.png", "sizes": "180x180", "type": "image/png", "purpose": "any" }
+  ],
+  "shortcuts": [
+    { "name": "Discover", "url": "./#discover", "icons": [{ "src": "icons/icon-192.png", "sizes": "192x192" }] },
+    { "name": "Premium", "url": "./#premium", "icons": [{ "src": "icons/icon-192.png", "sizes": "192x192" }] }
+  ]
+}
