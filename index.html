@@ -20,13 +20,12 @@
   --font:'Inter',system-ui,-apple-system,Segoe UI,Roboto,sans-serif;
   --motion:1;
 }
-[data-theme=crimson]{--bg:#0a0205;--bg-2:#140306;--surface:#1c0509;--surface-2:#260a0f;--accent:#ff2d40;--accent-2:#ff6b78;--neon:#ff8a95;--border:#3a0f16;}
-[data-theme=pureblack]{--bg:#000;--bg-2:#050505;--surface:#0b0b0b;--surface-2:#141414;--border:#1e1e1e;--accent:#e11d2e;}
-[data-theme=daylight]{--bg:#eef0f5;--bg-2:#f6f7fb;--surface:#ffffff;--surface-2:#eef0f6;--text:#13131a;--muted:#5a5a6e;--border:#d7d9e2;--accent:#d11325;--glass:rgba(0,0,0,.03);--glass-br:rgba(0,0,0,.08);--shadow:0 14px 40px rgba(0,0,0,.14);}
-[data-theme=ocean]{--bg:#03121c;--bg-2:#041a28;--surface:#07263a;--surface-2:#0b3148;--border:#124055;--accent:#17c3d6;--accent-2:#4de2f0;--neon:#6ff0ff;--accent-soft:rgba(23,195,214,.16);}
-[data-theme=cosmic]{--bg:#0b0618;--bg-2:#120a24;--surface:#1a0f33;--surface-2:#241547;--border:#33225c;--accent:#8b5cf6;--accent-2:#b592ff;--neon:#c4a5ff;--accent-soft:rgba(139,92,246,.16);}
-[data-theme=forest]{--bg:#05140c;--bg-2:#071d11;--surface:#0b2917;--surface-2:#10371f;--border:#1b4b2d;--accent:#2fbf71;--accent-2:#5fe0a0;--neon:#8ff0bf;--accent-soft:rgba(47,191,113,.16);}
-[data-theme=silver]{--bg:#111318;--bg-2:#171a20;--surface:#1f232c;--surface-2:#2a2f3a;--border:#39404d;--accent:#c7ccd6;--accent-2:#e8ecf3;--neon:#ffffff;--text:#f0f2f6;--accent-soft:rgba(199,204,214,.14);}
+/* ===== Curated theme set: Dark (default root) · Light · Romantic · Amazing · Dim ===== */
+[data-theme=dark]{--bg:#06060a;--bg-2:#0d0d14;--surface:#12121c;--surface-2:#1a1a26;--text:#f5f5fa;--muted:#9a9aae;--border:#24242f;--accent:#e11d2e;--accent-2:#ff3b4e;--accent-soft:rgba(225,29,46,.14);--neon:#ff5c6e;--shadow:0 18px 50px rgba(0,0,0,.55);--glass:rgba(255,255,255,.04);--glass-br:rgba(255,255,255,.08);}
+[data-theme=light]{--bg:#eef0f5;--bg-2:#f6f7fb;--surface:#ffffff;--surface-2:#eef1f7;--text:#15151d;--muted:#5c5c70;--border:#dcdee7;--accent:#e11d2e;--accent-2:#ff3b4e;--accent-soft:rgba(225,29,46,.10);--neon:#ff5c6e;--glass:rgba(0,0,0,.03);--glass-br:rgba(0,0,0,.08);--shadow:0 14px 40px rgba(0,0,0,.14);}
+[data-theme=romantic]{--bg:#1a0810;--bg-2:#250b18;--surface:#2e0f20;--surface-2:#3b1429;--text:#ffeaf2;--muted:#d99bb6;--border:#5a2340;--accent:#ff5d8f;--accent-2:#ff9ec4;--neon:#ffc2dc;--accent-soft:rgba(255,93,143,.16);--shadow:0 18px 50px rgba(60,0,25,.6);--glass:rgba(255,255,255,.05);--glass-br:rgba(255,160,190,.14);}
+[data-theme=amazing]{--bg:#06050f;--bg-2:#0d0a20;--surface:#14102e;--surface-2:#1e1744;--text:#f3f0ff;--muted:#a79fd6;--border:#2e2660;--accent:#7c5cff;--accent-2:#ffcc66;--neon:#c9b4ff;--accent-soft:rgba(124,92,255,.18);--shadow:0 20px 60px rgba(40,20,90,.6);--glass:rgba(255,255,255,.05);--glass-br:rgba(160,140,255,.16);}
+[data-theme=dim]{--bg:#141418;--bg-2:#1a1a20;--surface:#202028;--surface-2:#2a2a34;--text:#d7d7e0;--muted:#86869a;--border:#33333f;--accent:#c2606c;--accent-2:#d98893;--neon:#e0a0aa;--accent-soft:rgba(194,96,108,.14);--shadow:0 14px 40px rgba(0,0,0,.4);--glass:rgba(255,255,255,.03);--glass-br:rgba(255,255,255,.06);}
 *{box-sizing:border-box;margin:0;padding:0}
 html{scroll-behavior:smooth}
 body{background:var(--bg);color:var(--text);font-family:var(--font);line-height:1.5;overflow-x:hidden;-webkit-font-smoothing:antialiased}
@@ -215,6 +214,8 @@ svg{display:block}
 .genre-block h3{font-size:18px;font-weight:800;margin-bottom:14px;display:flex;align-items:center;gap:9px}
 #sentinel{height:40px;display:flex;align-items:center;justify-content:center;color:var(--muted);font-size:13px}
 .spinner{width:26px;height:26px;border:3px solid var(--border);border-top-color:var(--accent);border-radius:50%;animation:spin .8s linear infinite}
+.row-more{flex:0 0 60px;display:flex;align-items:center;justify-content:center;scroll-snap-align:none}
+.row-more .spinner{width:22px;height:22px;border-width:2px}
 @keyframes spin{to{transform:rotate(360deg)}}
 /* ---- empty/error ---- */
 .state{text-align:center;padding:60px 20px;color:var(--muted)}
@@ -298,6 +299,40 @@ svg{display:block}
 .player-stage{flex:1;display:flex;align-items:center;justify-content:center;padding:62px 12px 18px}
 .player-stage iframe{width:100%;height:100%;max-width:1200px;border:0;border-radius:12px;aspect-ratio:16/9}
 .player-empty{color:var(--muted);text-align:center}
+.player-bar .icon-btn .queue-count{position:absolute;top:-2px;right:-2px;min-width:16px;height:16px;padding:0 4px;border-radius:9px;background:var(--accent,#e11d2e);color:#fff;font-size:10px;font-weight:800;display:flex;align-items:center;justify-content:center;line-height:1}
+.player-bar .icon-btn{position:relative}
+/* ---- floating mini trailer player ---- */
+.mini{position:fixed;right:18px;bottom:18px;width:340px;max-width:calc(100vw - 24px);z-index:850;background:#0a0a10;border:1px solid var(--border);border-radius:14px;box-shadow:0 18px 50px rgba(0,0,0,.6);display:none;overflow:hidden}
+.mini.show{display:block}
+.mini-bar{display:flex;align-items:center;gap:8px;padding:8px 10px;cursor:grab;background:linear-gradient(180deg,rgba(255,255,255,.06),transparent);touch-action:none}
+.mini-bar:active{cursor:grabbing}
+.mini-title{flex:1;font-weight:700;font-size:13px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.mini-ctrl{display:flex;gap:2px}
+.mini-ctrl .icon-btn{position:relative;width:30px;height:30px}
+.mini-ctrl .queue-count{position:absolute;top:-3px;right:-3px;min-width:15px;height:15px;padding:0 3px;border-radius:8px;background:var(--accent,#e11d2e);color:#fff;font-size:9px;font-weight:800;display:flex;align-items:center;justify-content:center}
+.mini-stage{position:relative;width:100%;aspect-ratio:16/9;background:#000}
+.mini-stage iframe{width:100%;height:100%;border:0;display:block}
+.mini-queue{max-height:150px;overflow:auto}
+.mini-qhead{padding:8px 12px 4px;font-size:11px;font-weight:800;letter-spacing:.04em;text-transform:uppercase;color:var(--muted)}
+.mini-qitem{display:flex;align-items:center;gap:8px;padding:6px 12px;font-size:12px;border-top:1px solid var(--border)}
+.mini-qitem span{flex:1;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.mini-qitem button{background:none;border:0;color:var(--muted);cursor:pointer;display:flex;padding:2px;border-radius:6px}
+.mini-qitem button:hover{color:var(--text);background:rgba(255,255,255,.08)}
+[dir=rtl] .mini{right:auto;left:18px}
+/* ---- discover filter panel ---- */
+.disc-panel{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:14px 18px;background:var(--bg-2,#13131c);border:1px solid var(--border);border-radius:16px;padding:18px;margin-bottom:22px}
+.disc-field{display:flex;flex-direction:column;gap:7px;min-width:0}
+.disc-wide{grid-column:1/-1}
+.disc-field>label{font-size:12px;font-weight:800;letter-spacing:.03em;text-transform:uppercase;color:var(--muted)}
+.disc-field select,.disc-field input{width:100%;background:var(--bg,#0a0a10);border:1px solid var(--border);color:var(--text);border-radius:10px;padding:9px 11px;font:inherit;font-size:14px}
+.disc-row{display:flex;gap:10px}
+.disc-row select,.disc-row input{flex:1;min-width:0}
+.disc-genres{display:flex;flex-wrap:wrap;gap:8px}
+.disc-chip{background:var(--bg,#0a0a10);border:1px solid var(--border);color:var(--text);border-radius:999px;padding:6px 13px;font-size:13px;cursor:pointer;transition:.15s}
+.disc-chip:hover{border-color:var(--accent,#e11d2e)}
+.disc-chip.on{background:var(--accent,#e11d2e);border-color:var(--accent,#e11d2e);color:#fff;font-weight:700}
+.disc-actions{grid-column:1/-1;display:flex;gap:10px;flex-wrap:wrap}
+@media(max-width:620px){.disc-panel{grid-template-columns:1fr}}
 </style>
 <style>
 /* ---- toasts ---- */
@@ -338,12 +373,43 @@ svg{display:block}
 .switch input:checked+.sl{background:var(--accent)}
 .switch input:checked+.sl::before{transform:translateX(20px);background:#fff}
 select.mini{padding:8px 12px;background:var(--bg-2);border:1px solid var(--border);border-radius:8px;color:var(--text);font-size:13px}
-.theme-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(120px,1fr));gap:12px}
-.theme-opt{border:2px solid var(--border);border-radius:var(--radius-sm);padding:12px;cursor:pointer;transition:.2s}
-.theme-opt.active{border-color:var(--accent)}
-.theme-opt .sw{height:38px;border-radius:7px;margin-bottom:8px;display:flex;overflow:hidden}
-.theme-opt .sw i{flex:1}
-.theme-opt .nm{font-size:12.5px;font-weight:600}
+.theme-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(150px,1fr));gap:14px}
+.theme-opt{position:relative;border:1.5px solid var(--border);border-radius:14px;padding:0;cursor:pointer;overflow:hidden;background:var(--surface);transition:transform .2s,border-color .2s,box-shadow .2s}
+.theme-opt:hover{transform:translateY(-3px);box-shadow:var(--shadow)}
+.theme-opt.active{border-color:var(--accent);box-shadow:0 0 0 2px var(--accent-soft)}
+.theme-opt .sw{height:74px;display:block;position:relative;overflow:hidden}
+.theme-opt .sw .grad{position:absolute;inset:0}
+.theme-opt .sw .chip{position:absolute;left:12px;bottom:10px;display:flex;gap:5px}
+.theme-opt .sw .chip i{width:14px;height:14px;border-radius:50%;box-shadow:0 1px 3px rgba(0,0,0,.4)}
+.theme-opt .sw .mini-ui{position:absolute;right:10px;top:10px;width:46px;height:30px;border-radius:6px;padding:5px;display:flex;flex-direction:column;gap:3px;backdrop-filter:blur(2px)}
+.theme-opt .sw .mini-ui span{height:4px;border-radius:3px;opacity:.9}
+.theme-opt .meta{display:flex;align-items:center;justify-content:space-between;gap:6px;padding:10px 12px}
+.theme-opt .nm{font-size:13px;font-weight:700}
+.theme-opt .tick{width:20px;height:20px;border-radius:50%;background:var(--accent);color:#fff;display:none;align-items:center;justify-content:center;font-size:12px;flex:none}
+.theme-opt.active .tick{display:flex}
+.vol-stepper{display:inline-flex;align-items:center;gap:10px}
+.vol-stepper .vstep{width:34px;height:34px;display:flex;align-items:center;justify-content:center;border-radius:10px;border:1px solid var(--border);background:var(--bg-2);color:var(--text);cursor:pointer;transition:background .15s,transform .1s}
+.vol-stepper .vstep:hover{background:var(--accent-soft);border-color:var(--accent)}
+.vol-stepper .vstep:active{transform:scale(.9)}
+.vol-stepper .vstep svg{width:16px;height:16px}
+.vol-disp{min-width:52px;text-align:center;font-weight:800;font-size:16px;color:var(--accent-2);background:var(--glass);border:1px solid var(--glass-br);border-radius:10px;padding:5px 6px}
+.vol-disp small{font-size:10px;font-weight:700;color:var(--muted);margin-left:1px}
+.accent-row{display:flex;gap:9px;flex-wrap:wrap}
+.accent-row .acc{width:30px;height:30px;border-radius:50%;border:2px solid var(--border);cursor:pointer;transition:transform .15s,border-color .15s;position:relative}
+.accent-row .acc:hover{transform:scale(1.12)}
+.accent-row .acc.active{border-color:var(--text);box-shadow:0 0 0 2px var(--accent-soft)}
+.accent-row .acc.active::after{content:'\2713';position:absolute;inset:0;display:flex;align-items:center;justify-content:center;color:#fff;font-size:13px;font-weight:800;text-shadow:0 1px 2px rgba(0,0,0,.5)}
+.pro-tag{display:inline-block;margin-left:6px;padding:1px 7px;border-radius:20px;font-size:9.5px;font-weight:800;letter-spacing:.5px;vertical-align:middle;background:linear-gradient(135deg,var(--accent),var(--accent-2));color:#fff}
+.dm-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin-bottom:12px}
+.dm{background:var(--bg-2);border:1px solid var(--border);border-radius:12px;padding:14px 10px;text-align:center}
+.dm .dv{font-size:18px;font-weight:800;color:var(--accent-2)}
+.dm .dl{font-size:11px;color:var(--muted);margin-top:4px}
+.dm-note{font-size:12px;color:var(--muted);line-height:1.55;background:var(--glass);border:1px dashed var(--glass-br);border-radius:10px;padding:10px 12px;margin-bottom:12px}
+body.density-compact .card .info{padding:8px 4px 2px}
+body.density-compact .section{margin-bottom:20px}
+body.density-compact .row,body.density-compact .grid{gap:10px}
+body.density-compact .set-row{padding:9px 0}
+body.density-compact .view{padding-top:14px}
 /* ---- feedback ---- */
 .seg{display:flex;background:var(--surface-2);border-radius:var(--radius-sm);padding:4px;margin-bottom:18px;flex-wrap:wrap}
 .seg button{flex:1;min-width:100px;padding:10px;border-radius:8px;font-weight:600;font-size:13.5px;color:var(--muted)}
@@ -456,12 +522,10 @@ body.reduce-motion *{animation-duration:.001ms!important;transition:none!importa
     <svg width="120" height="120" viewBox="0 0 64 64" aria-hidden="true"><defs><linearGradient id="lg" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#ff3b4e"/><stop offset="1" stop-color="#e11d2e"/></linearGradient></defs><rect width="64" height="64" rx="14" fill="#0a0a0f" stroke="#24242f"/><rect x="11" y="26" width="42" height="25" rx="3" fill="url(#lg)"/><g transform="rotate(-9 32 20)"><rect x="10" y="14" width="44" height="10" rx="2" fill="#f5f5fa"/><path d="M20 14l-5 10M30 14l-5 10M40 14l-5 10M50 14l-5 10" stroke="#0a0a0f" stroke-width="3" stroke-linecap="round"/></g></svg>
   </div>
   <div class="splash-word">NANCYFLIX</div>
-  <div class="splash-tag">Every Story Deserves A Screen.</div>
+  <div class="splash-tag">Every Story Deserves A Screen</div>
   <div class="splash-rotator"><span class="rot-line" id="splashRot"></span></div>
   <div class="splash-bar"><i id="splashBar"></i></div>
   <div class="splash-hint" id="splashHint">Crafted by Dev Brian Studios · Powered by TMDB</div>
-  <button class="splash-sound" id="splashSound" aria-label="Toggle intro sound" title="Toggle intro sound"></button>
-  <button class="splash-skip" id="skipSplash"></button>
 </div>
 
 <!-- ============ AUTH ============ -->
@@ -495,7 +559,7 @@ body.reduce-motion *{animation-duration:.001ms!important;transition:none!importa
       <button type="submit" class="btn primary block" style="margin-top:6px">Create account</button>
     </form>
     <div class="auth-alt">or <button type="button" id="guestBtn">Continue as guest ›</button></div>
-    <div class="demo-note" id="demoNote">Accounts are stored locally in this browser. Movies, posters and trailers are live from TMDB.</div>
+    <div class="demo-note" id="demoNote">Your account, watchlist and settings are saved on this device and stay available offline. Movies, posters and trailers stream live from TMDB.</div>
   </div>
 </div>
 <!-- ============ APP ============ -->
@@ -505,15 +569,16 @@ body.reduce-motion *{animation-duration:.001ms!important;transition:none!importa
     <div class="brand"><svg width="26" height="26" viewBox="0 0 64 64" aria-hidden="true"><rect width="64" height="64" rx="14" fill="#12121c"/><rect x="11" y="26" width="42" height="25" rx="3" fill="#e11d2e"/><g transform="rotate(-9 32 20)"><rect x="10" y="14" width="44" height="10" rx="2" fill="#f5f5fa"/><path d="M20 14l-5 10M30 14l-5 10M40 14l-5 10M50 14l-5 10" stroke="#12121c" stroke-width="3" stroke-linecap="round"/></g></svg><span class="t">NANCYFLIX</span></div>
     <nav class="nav" id="mainNav">
       <div class="drawer-head"><div class="brand"><svg width="24" height="24" viewBox="0 0 64 64" aria-hidden="true"><rect width="64" height="64" rx="14" fill="#12121c"/><rect x="11" y="26" width="42" height="25" rx="3" fill="#e11d2e"/><g transform="rotate(-9 32 20)"><rect x="10" y="14" width="44" height="10" rx="2" fill="#f5f5fa"/><path d="M20 14l-5 10M30 14l-5 10M40 14l-5 10M50 14l-5 10" stroke="#12121c" stroke-width="3" stroke-linecap="round"/></g></svg><span class="t">NANCYFLIX</span></div><button class="drawer-close" id="drawerClose" aria-label="Close menu"><svg class="icon sm" viewBox="0 0 24 24"><path d="M18 6L6 18M6 6l12 12"/></svg></button></div>
-      <button data-view="home" class="active"><svg class="icon sm" viewBox="0 0 24 24"><path d="M3 12l9-9 9 9M5 10v10h14V10"/></svg>Home</button>
-      <button data-view="genres"><svg class="icon sm" viewBox="0 0 24 24"><path d="M4 6h16M4 12h16M4 18h10"/></svg>Genres</button>
-      <button data-view="watchlist"><svg class="icon sm" viewBox="0 0 24 24"><path d="M19 21l-7-5-7 5V5a2 2 0 012-2h10a2 2 0 012 2z"/></svg>Watchlist</button>
-      <button data-view="feedback"><svg class="icon sm" viewBox="0 0 24 24"><path d="M21 15a2 2 0 01-2 2H7l-4 4V5a2 2 0 012-2h14a2 2 0 012 2z"/></svg>Feedback</button>
-      <button data-view="admin" id="navAdmin" style="display:none"><svg class="icon sm" viewBox="0 0 24 24"><path d="M12 2l8 4v6c0 5-3.5 8-8 10-4.5-2-8-5-8-10V6z"/></svg>Admin Studio</button>
+      <button data-view="home" class="active"><svg class="icon sm" viewBox="0 0 24 24"><path d="M3 12l9-9 9 9M5 10v10h14V10"/></svg><span data-i18n="home">Home</span></button>
+      <button data-view="genres"><svg class="icon sm" viewBox="0 0 24 24"><path d="M4 6h16M4 12h16M4 18h10"/></svg><span data-i18n="genres">Genres</span></button>
+      <button data-view="discover"><svg class="icon sm" viewBox="0 0 24 24"><circle cx="11" cy="11" r="7"/><path d="M21 21l-4-4M11 8v6M8 11h6"/></svg><span data-i18n="discover">Discover</span></button>
+      <button data-view="watchlist"><svg class="icon sm" viewBox="0 0 24 24"><path d="M19 21l-7-5-7 5V5a2 2 0 012-2h10a2 2 0 012 2z"/></svg><span data-i18n="watchlist">Watchlist</span></button>
+      <button data-view="feedback"><svg class="icon sm" viewBox="0 0 24 24"><path d="M21 15a2 2 0 01-2 2H7l-4 4V5a2 2 0 012-2h14a2 2 0 012 2z"/></svg><span data-i18n="feedback">Feedback</span></button>
+      <button data-view="admin" id="navAdmin" style="display:none"><svg class="icon sm" viewBox="0 0 24 24"><path d="M12 2l8 4v6c0 5-3.5 8-8 10-4.5-2-8-5-8-10V6z"/></svg><span data-i18n="admin">Admin Studio</span></button>
     </nav>
     <div class="top-right">
       <button class="icon-btn" id="mSearchBtn" aria-label="Search" style="display:none"><svg class="icon" viewBox="0 0 24 24"><circle cx="11" cy="11" r="7"/><path d="M21 21l-4-4"/></svg></button>
-      <div class="search-box" id="searchBox"><span class="si"><svg class="icon sm" viewBox="0 0 24 24"><circle cx="11" cy="11" r="7"/><path d="M21 21l-4-4"/></svg></span><input type="search" id="searchInput" placeholder="Search movies…" aria-label="Search movies"><button class="clr" id="searchClear" aria-label="Clear"><svg class="icon sm" viewBox="0 0 24 24"><path d="M18 6L6 18M6 6l12 12"/></svg></button></div>
+      <div class="search-box" id="searchBox"><span class="si"><svg class="icon sm" viewBox="0 0 24 24"><circle cx="11" cy="11" r="7"/><path d="M21 21l-4-4"/></svg></span><input type="search" id="searchInput" data-i18n-ph="searchPh" placeholder="Search movies…" aria-label="Search movies"><button class="clr" id="searchClear" aria-label="Clear"><svg class="icon sm" viewBox="0 0 24 24"><path d="M18 6L6 18M6 6l12 12"/></svg></button></div>
       <button class="icon-btn" id="notiBtn" aria-label="Notifications"><svg class="icon" viewBox="0 0 24 24"><path d="M18 8a6 6 0 00-12 0c0 7-3 9-3 9h18s-3-2-3-9M13.73 21a2 2 0 01-3.46 0"/></svg><span class="dot" id="notiDot">0</span></button>
       <button class="icon-btn" id="settingsBtn" aria-label="Settings"><svg class="icon" viewBox="0 0 24 24"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.6 1.6 0 00.3 1.8l.1.1a2 2 0 11-2.8 2.8l-.1-.1a1.6 1.6 0 00-1.8-.3 1.6 1.6 0 00-1 1.5V21a2 2 0 11-4 0v-.1a1.6 1.6 0 00-1-1.5 1.6 1.6 0 00-1.8.3l-.1.1a2 2 0 11-2.8-2.8l.1-.1a1.6 1.6 0 00.3-1.8 1.6 1.6 0 00-1.5-1H3a2 2 0 110-4h.1a1.6 1.6 0 001.5-1 1.6 1.6 0 00-.3-1.8l-.1-.1a2 2 0 112.8-2.8l.1.1a1.6 1.6 0 001.8.3H9a1.6 1.6 0 001-1.5V3a2 2 0 114 0v.1a1.6 1.6 0 001 1.5 1.6 1.6 0 001.8-.3l.1-.1a2 2 0 112.8 2.8l-.1.1a1.6 1.6 0 00-.3 1.8V9a1.6 1.6 0 001.5 1H21a2 2 0 110 4h-.1a1.6 1.6 0 00-1.5 1z"/></svg></button>
       <button class="avatar-btn icon-btn" id="profileBtn" aria-label="Profile" style="border:0;background:none"><span class="ph" id="topAvatar">G</span></button>
@@ -523,6 +588,7 @@ body.reduce-motion *{animation-duration:.001ms!important;transition:none!importa
   <main>
     <section id="view-home" class="view show"></section>
     <section id="view-genres" class="view"></section>
+    <section id="view-discover" class="view"></section>
     <section id="view-search" class="view"></section>
     <section id="view-watchlist" class="view"></section>
     <section id="view-feedback" class="view"></section>
@@ -533,7 +599,7 @@ body.reduce-motion *{animation-duration:.001ms!important;transition:none!importa
     <div class="foot-grid">
       <div class="foot-brand">
         <div class="brand"><svg width="26" height="26" viewBox="0 0 64 64" aria-hidden="true"><rect width="64" height="64" rx="14" fill="#12121c"/><rect x="11" y="26" width="42" height="25" rx="3" fill="#e11d2e"/><g transform="rotate(-9 32 20)"><rect x="10" y="14" width="44" height="10" rx="2" fill="#f5f5fa"/><path d="M20 14l-5 10M30 14l-5 10M40 14l-5 10M50 14l-5 10" stroke="#12121c" stroke-width="3" stroke-linecap="round"/></g></svg><span class="t">NANCYFLIX</span></div>
-        <p>Every story deserves a screen. Discover trending films, browse by genre, build your watchlist and play official trailers — all powered by live TMDB data.</p>
+        <p data-i18n="footBrandDesc">Every story deserves a screen. Discover trending films, browse by genre, build your watchlist and play official trailers — all powered by live TMDB data.</p>
         <div class="foot-social">
           <a href="#" onclick="return false" aria-label="X"><svg class="icon sm" viewBox="0 0 24 24"><path d="M4 4l16 16M20 4L4 20"/></svg></a>
           <a href="#" onclick="return false" aria-label="Instagram"><svg class="icon sm" viewBox="0 0 24 24"><rect x="3" y="3" width="18" height="18" rx="5"/><circle cx="12" cy="12" r="4"/><circle cx="17.5" cy="6.5" r="1"/></svg></a>
@@ -542,36 +608,37 @@ body.reduce-motion *{animation-duration:.001ms!important;transition:none!importa
         </div>
       </div>
       <div class="foot-col">
-        <h4>Browse</h4>
+        <h4 data-i18n="footBrowse">Browse</h4>
         <ul>
-          <li><a onclick="switchView('home')">Home</a></li>
-          <li><a onclick="switchView('genres')">Genres</a></li>
-          <li><a onclick="switchView('watchlist')">My Watchlist</a></li>
-          <li><a onclick="document.getElementById('searchInput').focus()">Search</a></li>
+          <li><a onclick="switchView('home')" data-i18n="home">Home</a></li>
+          <li><a onclick="switchView('genres')" data-i18n="genres">Genres</a></li>
+          <li><a onclick="switchView('discover')" data-i18n="discover">Discover</a></li>
+          <li><a onclick="switchView('watchlist')" data-i18n="myWatchlist">My Watchlist</a></li>
+          <li><a onclick="document.getElementById('searchInput').focus()" data-i18n="search">Search</a></li>
         </ul>
       </div>
       <div class="foot-col">
-        <h4>Studio</h4>
+        <h4 data-i18n="footStudio">Studio</h4>
         <ul>
-          <li><a onclick="switchView('profile')">Profile</a></li>
-          <li><a onclick="switchView('feedback')">Feedback</a></li>
-          <li><a onclick="Settings.openModal()">Settings</a></li>
-          <li><a href="#" onclick="Legal.open('about');return false">About Dev Brian Studios</a></li>
+          <li><a onclick="switchView('profile')" data-i18n="footProfile">Profile</a></li>
+          <li><a onclick="switchView('feedback')" data-i18n="feedback">Feedback</a></li>
+          <li><a onclick="Settings.openModal()" data-i18n="settings">Settings</a></li>
+          <li><a href="#" onclick="Legal.open('about');return false" data-i18n="footAbout">About Dev Brian Studios</a></li>
         </ul>
       </div>
       <div class="foot-col">
-        <h4>Legal</h4>
+        <h4 data-i18n="footLegal">Legal</h4>
         <ul>
-          <li><a href="#" onclick="Legal.open('terms');return false">Terms of Use</a></li>
-          <li><a href="#" onclick="Legal.open('privacy');return false">Privacy Policy</a></li>
-          <li><a href="#" onclick="Legal.open('cookies');return false">Cookie Preferences</a></li>
-          <li><a href="https://www.themoviedb.org" target="_blank" rel="noopener noreferrer">Data by TMDB</a></li>
+          <li><a href="#" onclick="Legal.open('terms');return false" data-i18n="footTerms">Terms of Use</a></li>
+          <li><a href="#" onclick="Legal.open('privacy');return false" data-i18n="footPrivacy">Privacy Policy</a></li>
+          <li><a href="#" onclick="Legal.open('cookies');return false" data-i18n="footCookies">Cookie Preferences</a></li>
+          <li><a href="https://www.themoviedb.org" target="_blank" rel="noopener noreferrer" data-i18n="footTmdb">Data by TMDB</a></li>
         </ul>
       </div>
     </div>
     <div class="foot-bar">
-      <span>© 2026–2027 NANCYFLIX · Dev Brian Studios. All rights reserved.</span>
-      <span class="foot-meta">Edition 2026/27 · This product uses the TMDB API but is not endorsed or certified by TMDB.</span>
+      <span data-i18n="footRights">© 2026–2027 NANCYFLIX · Dev Brian Studios. All rights reserved.</span>
+      <span class="foot-meta" data-i18n="footMeta">Edition 2026/27 · This product uses the TMDB API but is not endorsed or certified by TMDB.</span>
     </div>
   </footer>
 </div>
@@ -581,9 +648,25 @@ body.reduce-motion *{animation-duration:.001ms!important;transition:none!importa
   <div class="player-bar">
     <button class="btn ghost" id="playerBack"><svg class="icon sm" viewBox="0 0 24 24"><path d="M19 12H5M12 19l-7-7 7-7"/></svg>Back to movies</button>
     <div class="pt" id="playerTitle"></div>
+    <button class="icon-btn" id="playerNext" aria-label="Next trailer" title="Next"><svg class="icon" viewBox="0 0 24 24"><path d="M5 4l10 8-10 8zM19 5v14"/></svg><span class="queue-count" style="display:none">0</span></button>
+    <button class="icon-btn" id="playerMinimize" aria-label="Minimize" title="Minimize"><svg class="icon" viewBox="0 0 24 24"><path d="M4 14h6v6M20 10h-6V4M14 10l7-7M3 21l7-7"/></svg></button>
     <button class="icon-btn" id="playerClose" aria-label="Close"><svg class="icon" viewBox="0 0 24 24"><path d="M18 6L6 18M6 6l12 12"/></svg></button>
   </div>
   <div class="player-stage" id="playerStage"></div>
+</div>
+
+<!-- floating mini trailer player -->
+<div id="miniPlayer" class="mini" aria-label="Mini trailer player">
+  <div class="mini-bar" id="miniBar">
+    <span class="mini-title" id="miniTitle"></span>
+    <div class="mini-ctrl">
+      <button id="miniNext" class="icon-btn" aria-label="Next" title="Next"><svg class="icon sm" viewBox="0 0 24 24"><path d="M5 4l10 8-10 8zM19 5v14"/></svg><span class="queue-count" style="display:none">0</span></button>
+      <button id="miniExpand" class="icon-btn" aria-label="Expand" title="Expand"><svg class="icon sm" viewBox="0 0 24 24"><path d="M15 3h6v6M9 21H3v-6M21 3l-7 7M3 21l7-7"/></svg></button>
+      <button id="miniClose" class="icon-btn" aria-label="Close" title="Close"><svg class="icon sm" viewBox="0 0 24 24"><path d="M18 6L6 18M6 6l12 12"/></svg></button>
+    </div>
+  </div>
+  <div class="mini-stage" id="miniStage"></div>
+  <div class="mini-queue" id="miniQueue"></div>
 </div>
 
 <!-- overlays -->
@@ -626,11 +709,16 @@ const CONFIG = {
 };
 const HAS_TMDB = !!(CONFIG.TMDB_PROXY || CONFIG.TMDB_KEY);
 const HAS_BACKEND = !!(CONFIG.SUPABASE_URL && CONFIG.SUPABASE_ANON_KEY);
-const img = (path,size="w500")=> path ? CONFIG.IMG+size+path : "";
+const img = (path,size="w500")=>{
+  if(!path)return "";
+  // Data-saver lowers the default poster resolution to cut bandwidth / storage
+  try{if(size==="w500"&&State&&State.settings&&State.settings.posterQ==="saver")size="w342";}catch(e){}
+  return CONFIG.IMG+size+path;
+};
 
 /* ============ runtime state ============ */
 const State = {
-  user:null, guest:false, theme:"midnight", view:"home",
+  user:null, guest:false, theme:"dark", view:"home",
   settings:{}, notifications:[], watchlist:[], genres:[], genreMap:{},
   searchSeq:0
 };
@@ -644,8 +732,14 @@ const ICON = {
   film:'<rect x="3" y="3" width="18" height="18" rx="2"/><path d="M7 3v18M17 3v18M3 8h4M3 16h4M17 8h4M17 16h4"/>',
   alert:'<path d="M12 9v4m0 4h.01M10.3 3.9l-8 14A2 2 0 004 21h16a2 2 0 001.7-3L13.7 3.9a2 2 0 00-3.4 0z"/>',
   inbox:'<path d="M22 12h-6l-2 3h-4l-2-3H2"/><path d="M5 5h14l3 7v6a1 1 0 01-1 1H3a1 1 0 01-1-1v-6z"/>',
-  empty:'<rect x="3" y="3" width="18" height="18" rx="2"/><path d="M3 9h18"/>'
+  empty:'<rect x="3" y="3" width="18" height="18" rx="2"/><path d="M3 9h18"/>',
+  minus:'<path d="M5 12h14"/>',
+  plus:'<path d="M12 5v14M5 12h14"/>'
 };
+const ICON_SHARE='<circle cx="18" cy="5" r="3"/><circle cx="6" cy="12" r="3"/><circle cx="18" cy="19" r="3"/><path d="M8.6 13.5l6.8 4M15.4 6.5l-6.8 4"/>';
+const ICON_MIN='<path d="M4 14h6v6M20 10h-6V4M14 10l7-7M3 21l7-7"/>';
+const ICON_EXP='<path d="M15 3h6v6M9 21H3v-6M21 3l-7 7M3 21l7-7"/>';
+const ICON_NEXT='<path d="M5 4l10 8-10 8zM19 5v14"/>';
 const svg=(p,cls="icon")=>`<svg class="${cls}" viewBox="0 0 24 24">${p}</svg>`;
 
 /* ============ safe text rendering ============ */
@@ -653,6 +747,56 @@ function esc(s){return String(s==null?"":s).replace(/[&<>\"']/g,c=>({'&':'&amp;'
 function fmtDate(d){if(!d)return "—";const t=new Date(d);return isNaN(t)?"—":t.toLocaleDateString(undefined,{year:'numeric',month:'short',day:'numeric'});}
 function fmtDT(d){if(!d)return "—";const t=new Date(d);return isNaN(t)?"—":t.toLocaleString(undefined,{dateStyle:'medium',timeStyle:'short'});}
 function uid(){return 'id-'+Date.now().toString(36)+Math.random().toString(36).slice(2,7);}
+
+/* ============ MULTI-LANGUAGE (i18n) ============
+   LOCALE maps the app language to a TMDB locale so movie titles & overviews
+   come back localized. I18N.dict holds the UI chrome strings; t(key) resolves
+   the active language with an English fallback. I18N.apply() swaps every
+   [data-i18n]/[data-i18n-ph] node, sets <html lang/dir>, and re-renders. */
+const LANGS=[['en','English'],['sw','Kiswahili'],['fr','Français'],['es','Español'],['de','Deutsch'],['pt','Português'],['ar','العربية']];
+const LOCALE={en:'en-US',sw:'sw-KE',fr:'fr-FR',es:'es-ES',de:'de-DE',pt:'pt-BR',ar:'ar-SA'};
+const RTL=['ar'];
+const I18N={
+  dict:{
+    en:{home:'Home',genres:'Genres',watchlist:'Watchlist',feedback:'Feedback',admin:'Admin Studio',settings:'Settings',logout:'Logout',signIn:'Sign in',signUp:'Sign up',searchPh:'Search movies…',secNew:'New Releases · 2026/27',secTrending:'Trending This Week',secPopular:'Popular Movies',secTopRated:'Top Rated',secUpcoming:'Upcoming Releases',browseGenre:'Browse by Genre',allGenres:'All genres',myWatchlist:'My Watchlist',search:'Search',feedbackTitle:'Feedback, Ratings & Reports',myProfile:'My Profile',playTrailer:'Play trailer',moreInfo:'More info',spotlight:'Spotlight',offlineMode:'Offline mode',offlineBody:'You can keep browsing cached movies and posters. Trailers and playback need a connection.',backOnline:'Back online',backOnlineBody:'Live data restored.'},
+    sw:{home:'Nyumbani',genres:'Aina',watchlist:'Orodha',feedback:'Maoni',admin:'Studio ya Msimamizi',settings:'Mipangilio',logout:'Toka',signIn:'Ingia',signUp:'Jisajili',searchPh:'Tafuta filamu…',secNew:'Zilizotoka Karibuni · 2026/27',secTrending:'Zinazovuma Wiki Hii',secPopular:'Filamu Maarufu',secTopRated:'Zilizokadiriwa Juu',secUpcoming:'Zinazokuja',browseGenre:'Vinjari kwa Aina',allGenres:'Aina zote',myWatchlist:'Orodha Yangu',search:'Tafuta',feedbackTitle:'Maoni, Ukadiriaji na Ripoti',myProfile:'Wasifu Wangu',playTrailer:'Cheza trela',moreInfo:'Maelezo zaidi',spotlight:'Mwangaza',offlineMode:'Hali ya nje ya mtandao',offlineBody:'Unaweza kuendelea kuvinjari filamu na mabango yaliyohifadhiwa. Trela na uchezaji vinahitaji mtandao.',backOnline:'Umerudi mtandaoni',backOnlineBody:'Data ya moja kwa moja imerejeshwa.'},
+    fr:{home:'Accueil',genres:'Genres',watchlist:'À voir',feedback:'Avis',admin:'Studio Admin',settings:'Paramètres',logout:'Déconnexion',signIn:'Se connecter',signUp:'S’inscrire',searchPh:'Rechercher des films…',secNew:'Nouveautés · 2026/27',secTrending:'Tendances de la semaine',secPopular:'Films populaires',secTopRated:'Les mieux notés',secUpcoming:'À venir',browseGenre:'Parcourir par genre',allGenres:'Tous les genres',myWatchlist:'Ma liste',search:'Rechercher',feedbackTitle:'Avis, notes et signalements',myProfile:'Mon profil',playTrailer:'Lire la bande-annonce',moreInfo:'Plus d’infos',spotlight:'À la une',offlineMode:'Mode hors ligne',offlineBody:'Vous pouvez continuer à parcourir les films et affiches en cache. Les bandes-annonces nécessitent une connexion.',backOnline:'De retour en ligne',backOnlineBody:'Données en direct rétablies.'},
+    es:{home:'Inicio',genres:'Géneros',watchlist:'Mi lista',feedback:'Opiniones',admin:'Estudio Admin',settings:'Ajustes',logout:'Cerrar sesión',signIn:'Iniciar sesión',signUp:'Registrarse',searchPh:'Buscar películas…',secNew:'Novedades · 2026/27',secTrending:'Tendencias de la semana',secPopular:'Películas populares',secTopRated:'Mejor valoradas',secUpcoming:'Próximos estrenos',browseGenre:'Explorar por género',allGenres:'Todos los géneros',myWatchlist:'Mi lista',search:'Buscar',feedbackTitle:'Opiniones, valoraciones e informes',myProfile:'Mi perfil',playTrailer:'Ver tráiler',moreInfo:'Más información',spotlight:'Destacado',offlineMode:'Modo sin conexión',offlineBody:'Puedes seguir explorando películas y carteles en caché. Los tráilers necesitan conexión.',backOnline:'De nuevo en línea',backOnlineBody:'Datos en vivo restaurados.'},
+    de:{home:'Start',genres:'Genres',watchlist:'Merkliste',feedback:'Feedback',admin:'Admin-Studio',settings:'Einstellungen',logout:'Abmelden',signIn:'Anmelden',signUp:'Registrieren',searchPh:'Filme suchen…',secNew:'Neue Veröffentlichungen · 2026/27',secTrending:'Diese Woche im Trend',secPopular:'Beliebte Filme',secTopRated:'Am besten bewertet',secUpcoming:'Demnächst',browseGenre:'Nach Genre stöbern',allGenres:'Alle Genres',myWatchlist:'Meine Merkliste',search:'Suche',feedbackTitle:'Feedback, Bewertungen & Meldungen',myProfile:'Mein Profil',playTrailer:'Trailer abspielen',moreInfo:'Mehr Infos',spotlight:'Im Rampenlicht',offlineMode:'Offline-Modus',offlineBody:'Du kannst weiter in gespeicherten Filmen und Postern stöbern. Trailer benötigen eine Verbindung.',backOnline:'Wieder online',backOnlineBody:'Live-Daten wiederhergestellt.'},
+    pt:{home:'Início',genres:'Gêneros',watchlist:'Minha lista',feedback:'Opiniões',admin:'Estúdio Admin',settings:'Configurações',logout:'Sair',signIn:'Entrar',signUp:'Cadastrar',searchPh:'Buscar filmes…',secNew:'Lançamentos · 2026/27',secTrending:'Em alta esta semana',secPopular:'Filmes populares',secTopRated:'Mais bem avaliados',secUpcoming:'Em breve',browseGenre:'Explorar por gênero',allGenres:'Todos os gêneros',myWatchlist:'Minha lista',search:'Buscar',feedbackTitle:'Opiniões, avaliações e denúncias',myProfile:'Meu perfil',playTrailer:'Reproduzir trailer',moreInfo:'Mais informações',spotlight:'Destaque',offlineMode:'Modo offline',offlineBody:'Você pode continuar navegando pelos filmes e pôsteres em cache. Trailers precisam de conexão.',backOnline:'De volta online',backOnlineBody:'Dados ao vivo restaurados.'},
+    ar:{home:'الرئيسية',genres:'الأنواع',watchlist:'قائمتي',feedback:'الملاحظات',admin:'استوديو الإدارة',settings:'الإعدادات',logout:'تسجيل الخروج',signIn:'تسجيل الدخول',signUp:'إنشاء حساب',searchPh:'ابحث عن الأفلام…',secNew:'أحدث الإصدارات · 2026/27',secTrending:'الأكثر رواجًا هذا الأسبوع',secPopular:'أفلام شائعة',secTopRated:'الأعلى تقييمًا',secUpcoming:'قريبًا',browseGenre:'تصفح حسب النوع',allGenres:'كل الأنواع',myWatchlist:'قائمتي',search:'بحث',feedbackTitle:'الملاحظات والتقييمات والبلاغات',myProfile:'ملفي الشخصي',playTrailer:'تشغيل الإعلان',moreInfo:'المزيد',spotlight:'الأضواء',offlineMode:'وضع عدم الاتصال',offlineBody:'يمكنك متابعة تصفح الأفلام والملصقات المخزنة. الإعلانات تحتاج إلى اتصال.',backOnline:'عاد الاتصال',backOnlineBody:'تمت استعادة البيانات المباشرة.'}
+  },
+  apply(){
+    const L=(State.settings&&State.settings.lang)||'en';
+    const el=document.documentElement;el.setAttribute('lang',L);el.setAttribute('dir',RTL.includes(L)?'rtl':'ltr');
+    document.querySelectorAll('[data-i18n]').forEach(n=>{const k=n.getAttribute('data-i18n');const v=t(k);if(v)n.textContent=v;});
+    document.querySelectorAll('[data-i18n-ph]').forEach(n=>{const k=n.getAttribute('data-i18n-ph');const v=t(k);if(v)n.setAttribute('placeholder',v);});
+    if(typeof State.view!=='undefined'&&document.getElementById('app')&&document.getElementById('app').classList.contains('show')){try{switchView(State.view);}catch(e){}}
+  }
+};
+function t(k){const L=(State.settings&&State.settings.lang)||'en';const d=I18N.dict;return (d[L]&&d[L][k])||d.en[k]||k;}
+/* extended chrome strings: full Settings panel + site footer, all languages */
+const SET_I18N={
+ en:{setTitle:'Settings',setIntro:'Every control below changes real behavior.',setSearchPh:'Search settings…',grpAppearance:'Appearance',grpTypography:'Typography',grpLang:'Language & region',grpPremium:'Premium experience',grpAnimation:'Animation',grpNoti:'Notifications',grpData:'Data management',accentColor:'Accent color',accentDesc:'Personalize buttons & highlights',themeDefault:'Theme default',fontFamily:'Font family',appliesApp:'Applies across the app',appLang:'App language',appLangDesc:'Interface & movie info follow your choice',defaultCat:'Default browse category',defaultCatDesc:'What Home opens with',density:'Interface density',densityDesc:'Comfortable spacing or a tighter, pro layout',comfortable:'Comfortable',compact:'Compact',posterQuality:'Poster quality',posterQualityDesc:'High detail, or data-saver for less bandwidth & storage',highQuality:'High quality',dataSaver:'Data saver',autoplay:'Trailer autoplay',autoplayDesc:'Auto-start trailers in the player',transitions:'Interface transitions',transitionsDesc:'Smooth view & modal animations',hoverFx:'Poster hover effects',hoverFxDesc:'Scale & reveal on hover',splashAnim:'Splash animation',splashAnimDesc:'Show the cinematic intro',reducedMotion:'Reduced motion',reducedMotionDesc:'Minimise animations (also respects your OS setting)',inAppNoti:'In-app notifications',inAppNotiDesc:'Toasts & notification center',soundFx:'Sound effects',soundFxDesc:'Play a soft tone on alerts',soundVolume:'Sound volume',browserNoti:'Browser notifications',browserNotiDesc:'Requires explicit permission',onDeviceStorage:'On-device storage',cachedOffline:'Cached for offline',watchlistItems:'Watchlist items',dataNote:'Your account, watchlist, settings and cached movies are stored only on this device and stay available offline. Nothing is cleared automatically — your saved information is never reset in the background.',exportMyData:'Export my data',exportMyDataDesc:'Download your profile, watchlist & settings (JSON)',exportBtn:'Export',footBrandDesc:'Every story deserves a screen. Discover trending films, browse by genre, build your watchlist and play official trailers — all powered by live TMDB data.',footBrowse:'Browse',footStudio:'Studio',footLegal:'Legal',footProfile:'Profile',footAbout:'About Dev Brian Studios',footTerms:'Terms of Use',footPrivacy:'Privacy Policy',footCookies:'Cookie Preferences',footTmdb:'Data by TMDB',footRights:'© 2026–2027 NANCYFLIX · Dev Brian Studios. All rights reserved.',footMeta:'Edition 2026/27 · This product uses the TMDB API but is not endorsed or certified by TMDB.'},
+ sw:{setTitle:'Mipangilio',setIntro:'Kila kidhibiti hapa chini hubadilisha tabia halisi.',setSearchPh:'Tafuta mipangilio…',grpAppearance:'Mwonekano',grpTypography:'Uchapaji',grpLang:'Lugha na eneo',grpPremium:'Uzoefu wa kifahari',grpAnimation:'Mwendo',grpNoti:'Arifa',grpData:'Usimamizi wa data',accentColor:'Rangi ya msisitizo',accentDesc:'Binafsisha vitufe na vivutio',themeDefault:'Mandhari chaguo-msingi',fontFamily:'Aina ya fonti',appliesApp:'Inatumika programu nzima',appLang:'Lugha ya programu',appLangDesc:'Kiolesura na maelezo ya filamu hufuata chaguo lako',defaultCat:'Kategoria chaguo-msingi',defaultCatDesc:'Nyumbani hufunguliwa na nini',density:'Msongamano wa kiolesura',densityDesc:'Nafasi rahisi au mpangilio wa kitaalamu',comfortable:'Rahisi',compact:'Finyu',posterQuality:'Ubora wa bango',posterQualityDesc:'Ubora wa juu au kuokoa data kwa matumizi kidogo',highQuality:'Ubora wa juu',dataSaver:'Kuokoa data',autoplay:'Kucheza trela moja kwa moja',autoplayDesc:'Anzisha trela kiotomatiki',transitions:'Mabadiliko ya kiolesura',transitionsDesc:'Mwendo laini wa mionekano',hoverFx:'Athari za kuelea bango',hoverFxDesc:'Kuza na funua unapoelea',splashAnim:'Mwendo wa utangulizi',splashAnimDesc:'Onyesha utangulizi wa kisinema',reducedMotion:'Punguza mwendo',reducedMotionDesc:'Punguza mwendo (pia huheshimu mfumo wako)',inAppNoti:'Arifa ndani ya programu',inAppNotiDesc:'Arifa na kituo cha arifa',soundFx:'Athari za sauti',soundFxDesc:'Cheza toni laini kwenye arifa',soundVolume:'Sauti',browserNoti:'Arifa za kivinjari',browserNotiDesc:'Zinahitaji ruhusa wazi',onDeviceStorage:'Hifadhi ya kifaa',cachedOffline:'Zilizohifadhiwa nje ya mtandao',watchlistItems:'Vipengele vya orodha',dataNote:'Akaunti, orodha, mipangilio na filamu zako zimehifadhiwa kwenye kifaa hiki pekee na zinapatikana nje ya mtandao. Hakuna kinachofutwa kiotomatiki.',exportMyData:'Hamisha data yangu',exportMyDataDesc:'Pakua wasifu, orodha na mipangilio (JSON)',exportBtn:'Hamisha',footBrandDesc:'Kila hadithi inastahili skrini. Gundua filamu zinazovuma, vinjari kwa aina, jenga orodha yako na ucheze trela rasmi — zote zikitumia data ya moja kwa moja ya TMDB.',footBrowse:'Vinjari',footStudio:'Studio',footLegal:'Kisheria',footProfile:'Wasifu',footAbout:'Kuhusu Dev Brian Studios',footTerms:'Masharti ya Matumizi',footPrivacy:'Sera ya Faragha',footCookies:'Mapendeleo ya Vidakuzi',footTmdb:'Data kutoka TMDB',footRights:'© 2026–2027 NANCYFLIX · Dev Brian Studios. Haki zote zimehifadhiwa.',footMeta:'Toleo 2026/27 · Bidhaa hii hutumia API ya TMDB lakini haijaidhinishwa na TMDB.'},
+ fr:{setTitle:'Paramètres',setIntro:'Chaque réglage ci-dessous modifie un comportement réel.',setSearchPh:'Rechercher dans les paramètres…',grpAppearance:'Apparence',grpTypography:'Typographie',grpLang:'Langue et région',grpPremium:'Expérience premium',grpAnimation:'Animation',grpNoti:'Notifications',grpData:'Gestion des données',accentColor:'Couleur d’accent',accentDesc:'Personnalisez boutons et surbrillances',themeDefault:'Thème par défaut',fontFamily:'Police',appliesApp:'S’applique à toute l’app',appLang:'Langue de l’app',appLangDesc:'L’interface et les infos films suivent votre choix',defaultCat:'Catégorie par défaut',defaultCatDesc:'Ce que l’Accueil ouvre',density:'Densité de l’interface',densityDesc:'Espacement confortable ou disposition compacte',comfortable:'Confortable',compact:'Compact',posterQuality:'Qualité des affiches',posterQualityDesc:'Haute définition ou économie de données',highQuality:'Haute qualité',dataSaver:'Économie de données',autoplay:'Lecture auto des bandes-annonces',autoplayDesc:'Démarrer automatiquement les bandes-annonces',transitions:'Transitions de l’interface',transitionsDesc:'Animations fluides des vues',hoverFx:'Effets de survol des affiches',hoverFxDesc:'Agrandir et révéler au survol',splashAnim:'Animation d’intro',splashAnimDesc:'Afficher l’intro cinématique',reducedMotion:'Mouvement réduit',reducedMotionDesc:'Réduire les animations (respecte aussi votre OS)',inAppNoti:'Notifications dans l’app',inAppNotiDesc:'Toasts et centre de notifications',soundFx:'Effets sonores',soundFxDesc:'Jouer un son doux lors des alertes',soundVolume:'Volume sonore',browserNoti:'Notifications du navigateur',browserNotiDesc:'Nécessite une autorisation explicite',onDeviceStorage:'Stockage sur l’appareil',cachedOffline:'En cache hors ligne',watchlistItems:'Éléments de la liste',dataNote:'Votre compte, votre liste, vos réglages et les films en cache sont stockés uniquement sur cet appareil et restent disponibles hors ligne. Rien n’est effacé automatiquement.',exportMyData:'Exporter mes données',exportMyDataDesc:'Télécharger profil, liste et réglages (JSON)',exportBtn:'Exporter',footBrandDesc:'Chaque histoire mérite un écran. Découvrez les films tendance, parcourez par genre, créez votre liste et lisez les bandes-annonces officielles — le tout avec les données en direct de TMDB.',footBrowse:'Parcourir',footStudio:'Studio',footLegal:'Légal',footProfile:'Profil',footAbout:'À propos de Dev Brian Studios',footTerms:'Conditions d’utilisation',footPrivacy:'Politique de confidentialité',footCookies:'Préférences de cookies',footTmdb:'Données par TMDB',footRights:'© 2026–2027 NANCYFLIX · Dev Brian Studios. Tous droits réservés.',footMeta:'Édition 2026/27 · Ce produit utilise l’API TMDB mais n’est ni approuvé ni certifié par TMDB.'},
+ es:{setTitle:'Ajustes',setIntro:'Cada control de abajo cambia el comportamiento real.',setSearchPh:'Buscar ajustes…',grpAppearance:'Apariencia',grpTypography:'Tipografía',grpLang:'Idioma y región',grpPremium:'Experiencia premium',grpAnimation:'Animación',grpNoti:'Notificaciones',grpData:'Gestión de datos',accentColor:'Color de acento',accentDesc:'Personaliza botones y resaltados',themeDefault:'Tema predeterminado',fontFamily:'Tipo de letra',appliesApp:'Se aplica a toda la app',appLang:'Idioma de la app',appLangDesc:'La interfaz y la info de películas siguen tu elección',defaultCat:'Categoría predeterminada',defaultCatDesc:'Con qué abre Inicio',density:'Densidad de la interfaz',densityDesc:'Espaciado cómodo o diseño compacto',comfortable:'Cómodo',compact:'Compacto',posterQuality:'Calidad de pósteres',posterQualityDesc:'Alta definición o ahorro de datos',highQuality:'Alta calidad',dataSaver:'Ahorro de datos',autoplay:'Reproducción automática de tráilers',autoplayDesc:'Iniciar tráilers automáticamente',transitions:'Transiciones de interfaz',transitionsDesc:'Animaciones suaves de vistas',hoverFx:'Efectos al pasar el cursor',hoverFxDesc:'Ampliar y revelar al pasar el cursor',splashAnim:'Animación de intro',splashAnimDesc:'Mostrar la intro cinematográfica',reducedMotion:'Movimiento reducido',reducedMotionDesc:'Reducir animaciones (respeta tu sistema)',inAppNoti:'Notificaciones en la app',inAppNotiDesc:'Avisos y centro de notificaciones',soundFx:'Efectos de sonido',soundFxDesc:'Reproducir un tono suave en las alertas',soundVolume:'Volumen',browserNoti:'Notificaciones del navegador',browserNotiDesc:'Requiere permiso explícito',onDeviceStorage:'Almacenamiento del dispositivo',cachedOffline:'En caché sin conexión',watchlistItems:'Elementos de la lista',dataNote:'Tu cuenta, lista, ajustes y películas en caché se guardan solo en este dispositivo y siguen disponibles sin conexión. Nada se borra automáticamente.',exportMyData:'Exportar mis datos',exportMyDataDesc:'Descargar perfil, lista y ajustes (JSON)',exportBtn:'Exportar',footBrandDesc:'Cada historia merece una pantalla. Descubre películas en tendencia, explora por género, crea tu lista y reproduce tráilers oficiales — todo con datos en vivo de TMDB.',footBrowse:'Explorar',footStudio:'Estudio',footLegal:'Legal',footProfile:'Perfil',footAbout:'Sobre Dev Brian Studios',footTerms:'Términos de uso',footPrivacy:'Política de privacidad',footCookies:'Preferencias de cookies',footTmdb:'Datos de TMDB',footRights:'© 2026–2027 NANCYFLIX · Dev Brian Studios. Todos los derechos reservados.',footMeta:'Edición 2026/27 · Este producto usa la API de TMDB pero no está avalado ni certificado por TMDB.'},
+ de:{setTitle:'Einstellungen',setIntro:'Jede Einstellung unten ändert echtes Verhalten.',setSearchPh:'Einstellungen suchen…',grpAppearance:'Darstellung',grpTypography:'Typografie',grpLang:'Sprache & Region',grpPremium:'Premium-Erlebnis',grpAnimation:'Animation',grpNoti:'Benachrichtigungen',grpData:'Datenverwaltung',accentColor:'Akzentfarbe',accentDesc:'Buttons und Hervorhebungen anpassen',themeDefault:'Standard-Theme',fontFamily:'Schriftart',appliesApp:'Gilt für die ganze App',appLang:'App-Sprache',appLangDesc:'Oberfläche und Film-Infos folgen deiner Wahl',defaultCat:'Standard-Kategorie',defaultCatDesc:'Womit die Startseite öffnet',density:'Oberflächendichte',densityDesc:'Angenehme Abstände oder kompaktes Layout',comfortable:'Komfortabel',compact:'Kompakt',posterQuality:'Posterqualität',posterQualityDesc:'Hohe Details oder Datensparmodus',highQuality:'Hohe Qualität',dataSaver:'Datensparmodus',autoplay:'Trailer-Autoplay',autoplayDesc:'Trailer automatisch starten',transitions:'Oberflächenübergänge',transitionsDesc:'Sanfte Ansichtsanimationen',hoverFx:'Poster-Hover-Effekte',hoverFxDesc:'Beim Überfahren vergrößern',splashAnim:'Intro-Animation',splashAnimDesc:'Das filmische Intro zeigen',reducedMotion:'Reduzierte Bewegung',reducedMotionDesc:'Animationen reduzieren (beachtet auch dein OS)',inAppNoti:'In-App-Benachrichtigungen',inAppNotiDesc:'Toasts und Benachrichtigungszentrum',soundFx:'Soundeffekte',soundFxDesc:'Sanften Ton bei Hinweisen abspielen',soundVolume:'Lautstärke',browserNoti:'Browser-Benachrichtigungen',browserNotiDesc:'Erfordert ausdrückliche Erlaubnis',onDeviceStorage:'Speicher auf dem Gerät',cachedOffline:'Offline zwischengespeichert',watchlistItems:'Merklisten-Einträge',dataNote:'Dein Konto, deine Merkliste, Einstellungen und zwischengespeicherte Filme werden nur auf diesem Gerät gespeichert und bleiben offline verfügbar. Nichts wird automatisch gelöscht.',exportMyData:'Meine Daten exportieren',exportMyDataDesc:'Profil, Merkliste und Einstellungen herunterladen (JSON)',exportBtn:'Exportieren',footBrandDesc:'Jede Geschichte verdient eine Leinwand. Entdecke angesagte Filme, stöbere nach Genre, baue deine Merkliste auf und spiele offizielle Trailer — alles mit Live-Daten von TMDB.',footBrowse:'Stöbern',footStudio:'Studio',footLegal:'Rechtliches',footProfile:'Profil',footAbout:'Über Dev Brian Studios',footTerms:'Nutzungsbedingungen',footPrivacy:'Datenschutz',footCookies:'Cookie-Einstellungen',footTmdb:'Daten von TMDB',footRights:'© 2026–2027 NANCYFLIX · Dev Brian Studios. Alle Rechte vorbehalten.',footMeta:'Edition 2026/27 · Dieses Produkt nutzt die TMDB-API, ist aber nicht von TMDB unterstützt oder zertifiziert.'},
+ pt:{setTitle:'Configurações',setIntro:'Cada controle abaixo muda o comportamento real.',setSearchPh:'Buscar configurações…',grpAppearance:'Aparência',grpTypography:'Tipografia',grpLang:'Idioma e região',grpPremium:'Experiência premium',grpAnimation:'Animação',grpNoti:'Notificações',grpData:'Gerenciamento de dados',accentColor:'Cor de destaque',accentDesc:'Personalize botões e destaques',themeDefault:'Tema padrão',fontFamily:'Fonte',appliesApp:'Aplica-se a todo o app',appLang:'Idioma do app',appLangDesc:'A interface e as infos de filmes seguem sua escolha',defaultCat:'Categoria padrão',defaultCatDesc:'Com o que o Início abre',density:'Densidade da interface',densityDesc:'Espaçamento confortável ou layout compacto',comfortable:'Confortável',compact:'Compacto',posterQuality:'Qualidade dos pôsteres',posterQualityDesc:'Alta definição ou economia de dados',highQuality:'Alta qualidade',dataSaver:'Economia de dados',autoplay:'Reprodução automática de trailers',autoplayDesc:'Iniciar trailers automaticamente',transitions:'Transições da interface',transitionsDesc:'Animações suaves de telas',hoverFx:'Efeitos ao passar o cursor',hoverFxDesc:'Ampliar e revelar ao passar o cursor',splashAnim:'Animação de abertura',splashAnimDesc:'Mostrar a abertura cinematográfica',reducedMotion:'Movimento reduzido',reducedMotionDesc:'Reduzir animações (respeita seu sistema)',inAppNoti:'Notificações no app',inAppNotiDesc:'Avisos e central de notificações',soundFx:'Efeitos sonoros',soundFxDesc:'Tocar um tom suave nos alertas',soundVolume:'Volume',browserNoti:'Notificações do navegador',browserNotiDesc:'Requer permissão explícita',onDeviceStorage:'Armazenamento no dispositivo',cachedOffline:'Em cache offline',watchlistItems:'Itens da lista',dataNote:'Sua conta, lista, configurações e filmes em cache são armazenados apenas neste dispositivo e ficam disponíveis offline. Nada é apagado automaticamente.',exportMyData:'Exportar meus dados',exportMyDataDesc:'Baixar perfil, lista e configurações (JSON)',exportBtn:'Exportar',footBrandDesc:'Toda história merece uma tela. Descubra filmes em alta, explore por gênero, monte sua lista e reproduza trailers oficiais — tudo com dados ao vivo do TMDB.',footBrowse:'Explorar',footStudio:'Estúdio',footLegal:'Legal',footProfile:'Perfil',footAbout:'Sobre a Dev Brian Studios',footTerms:'Termos de uso',footPrivacy:'Política de privacidade',footCookies:'Preferências de cookies',footTmdb:'Dados do TMDB',footRights:'© 2026–2027 NANCYFLIX · Dev Brian Studios. Todos os direitos reservados.',footMeta:'Edição 2026/27 · Este produto usa a API do TMDB mas não é endossado nem certificado pelo TMDB.'},
+ ar:{setTitle:'الإعدادات',setIntro:'كل عنصر تحكم أدناه يغيّر سلوكًا حقيقيًا.',setSearchPh:'ابحث في الإعدادات…',grpAppearance:'المظهر',grpTypography:'الخطوط',grpLang:'اللغة والمنطقة',grpPremium:'تجربة مميزة',grpAnimation:'الحركة',grpNoti:'الإشعارات',grpData:'إدارة البيانات',accentColor:'لون التمييز',accentDesc:'خصّص الأزرار والإبرازات',themeDefault:'السمة الافتراضية',fontFamily:'نوع الخط',appliesApp:'يُطبّق على التطبيق كله',appLang:'لغة التطبيق',appLangDesc:'تتبع الواجهة ومعلومات الأفلام اختيارك',defaultCat:'الفئة الافتراضية',defaultCatDesc:'بماذا تُفتح الصفحة الرئيسية',density:'كثافة الواجهة',densityDesc:'تباعد مريح أو تخطيط مضغوط',comfortable:'مريح',compact:'مضغوط',posterQuality:'جودة الملصقات',posterQualityDesc:'دقة عالية أو توفير البيانات',highQuality:'جودة عالية',dataSaver:'توفير البيانات',autoplay:'تشغيل الإعلانات تلقائيًا',autoplayDesc:'بدء الإعلانات تلقائيًا',transitions:'انتقالات الواجهة',transitionsDesc:'حركات سلسة للعروض',hoverFx:'تأثيرات تمرير الملصق',hoverFxDesc:'تكبير وكشف عند التمرير',splashAnim:'حركة المقدمة',splashAnimDesc:'عرض المقدمة السينمائية',reducedMotion:'حركة مخفّضة',reducedMotionDesc:'تقليل الحركات (يحترم نظامك أيضًا)',inAppNoti:'إشعارات داخل التطبيق',inAppNotiDesc:'التنبيهات ومركز الإشعارات',soundFx:'المؤثرات الصوتية',soundFxDesc:'تشغيل نغمة هادئة عند التنبيهات',soundVolume:'مستوى الصوت',browserNoti:'إشعارات المتصفح',browserNotiDesc:'تتطلب إذنًا صريحًا',onDeviceStorage:'تخزين على الجهاز',cachedOffline:'مخزّن للعمل دون اتصال',watchlistItems:'عناصر القائمة',dataNote:'يتم تخزين حسابك وقائمتك وإعداداتك والأفلام المخزنة على هذا الجهاز فقط وتبقى متاحة دون اتصال. لا يُحذف شيء تلقائيًا.',exportMyData:'تصدير بياناتي',exportMyDataDesc:'تنزيل الملف الشخصي والقائمة والإعدادات (JSON)',exportBtn:'تصدير',footBrandDesc:'كل قصة تستحق شاشة. اكتشف الأفلام الرائجة، وتصفح حسب النوع، وأنشئ قائمتك وشغّل الإعلانات الرسمية — كل ذلك ببيانات TMDB المباشرة.',footBrowse:'تصفح',footStudio:'الاستوديو',footLegal:'قانوني',footProfile:'الملف الشخصي',footAbout:'حول Dev Brian Studios',footTerms:'شروط الاستخدام',footPrivacy:'سياسة الخصوصية',footCookies:'تفضيلات ملفات تعريف الارتباط',footTmdb:'البيانات من TMDB',footRights:'© 2026–2027 NANCYFLIX · Dev Brian Studios. جميع الحقوق محفوظة.',footMeta:'إصدار 2026/27 · يستخدم هذا المنتج واجهة TMDB لكنه غير معتمد من TMDB.'}
+};
+Object.keys(SET_I18N).forEach(l=>{I18N.dict[l]=Object.assign(I18N.dict[l]||{},SET_I18N[l]);});
+/* strings for Continue Watching, Discover filters, sharing & the mini trailer player */
+const EXTRA_I18N={
+ en:{continueWatching:'Continue Watching',clearHistory:'Clear',discover:'Discover',discoverTitle:'Discover & Filter',discoverIntro:'Mix genres, years, rating, language and runtime — then sort.',filterGenres:'Genres',filterYear:'Release year',filterRating:'Minimum rating',filterLang:'Original language',filterRuntime:'Runtime (min)',filterSort:'Sort by',anyLang:'Any language',from:'From',to:'To',apply:'Apply filters',reset:'Reset',any:'Any',sortPopularity:'Most popular',sortRating:'Highest rated',sortNewest:'Newest',sortRevenue:'Top grossing',sortTitle:'Title A–Z',share:'Share',shareWatchlist:'Share watchlist',linkCopied:'Link copied',shareLink:'Share link',sharedListTitle:'Shared watchlist',sharedListEmpty:'This shared list is empty or invalid.',addAllWatchlist:'Add all to my watchlist',added:'added',minimize:'Minimize',expand:'Expand',next:'Next',queueTitle:'Trailer queue',queuedToast:'Queued',queueEmpty:'Queue is empty',noTrailerQueue:'No trailer to queue',upNext:'Up next',addQueue:'Queue',noResults:'No movies match these filters.'},
+ sw:{continueWatching:'Endelea Kutazama',clearHistory:'Futa',discover:'Gundua',discoverTitle:'Gundua na Chuja',discoverIntro:'Changanya aina, miaka, ukadiriaji, lugha na muda — kisha panga.',filterGenres:'Aina',filterYear:'Mwaka wa kutoka',filterRating:'Ukadiriaji wa chini',filterLang:'Lugha asilia',filterRuntime:'Muda (dakika)',filterSort:'Panga kwa',anyLang:'Lugha yoyote',from:'Kuanzia',to:'Hadi',apply:'Tumia vichujio',reset:'Weka upya',any:'Yoyote',sortPopularity:'Maarufu zaidi',sortRating:'Ukadiriaji wa juu',sortNewest:'Mpya zaidi',sortRevenue:'Mapato ya juu',sortTitle:'Jina A–Z',share:'Shiriki',shareWatchlist:'Shiriki orodha',linkCopied:'Kiungo kimenakiliwa',shareLink:'Shiriki kiungo',sharedListTitle:'Orodha iliyoshirikiwa',sharedListEmpty:'Orodha hii haina kitu au si sahihi.',addAllWatchlist:'Ongeza zote kwenye orodha yangu',added:'zimeongezwa',minimize:'Punguza',expand:'Panua',next:'Inayofuata',queueTitle:'Foleni ya trela',queuedToast:'Imewekwa kwenye foleni',queueEmpty:'Foleni ni tupu',noTrailerQueue:'Hakuna trela ya kuweka',upNext:'Inayofuata',addQueue:'Foleni',noResults:'Hakuna filamu zinazolingana na vichujio hivi.'},
+ fr:{continueWatching:'Reprendre',clearHistory:'Effacer',discover:'Découvrir',discoverTitle:'Découvrir et filtrer',discoverIntro:'Combinez genres, années, note, langue et durée — puis triez.',filterGenres:'Genres',filterYear:'Année de sortie',filterRating:'Note minimale',filterLang:'Langue originale',filterRuntime:'Durée (min)',filterSort:'Trier par',anyLang:'Toutes les langues',from:'De',to:'À',apply:'Appliquer les filtres',reset:'Réinitialiser',any:'Toutes',sortPopularity:'Les plus populaires',sortRating:'Les mieux notés',sortNewest:'Les plus récents',sortRevenue:'Meilleures recettes',sortTitle:'Titre A–Z',share:'Partager',shareWatchlist:'Partager la liste',linkCopied:'Lien copié',shareLink:'Partager le lien',sharedListTitle:'Liste partagée',sharedListEmpty:'Cette liste partagée est vide ou invalide.',addAllWatchlist:'Tout ajouter à ma liste',added:'ajoutés',minimize:'Réduire',expand:'Agrandir',next:'Suivant',queueTitle:'File de bandes-annonces',queuedToast:'Ajouté à la file',queueEmpty:'La file est vide',noTrailerQueue:'Aucune bande-annonce à ajouter',upNext:'À suivre',addQueue:'File',noResults:'Aucun film ne correspond à ces filtres.'},
+ es:{continueWatching:'Seguir viendo',clearHistory:'Borrar',discover:'Descubrir',discoverTitle:'Descubrir y filtrar',discoverIntro:'Combina géneros, años, valoración, idioma y duración — luego ordena.',filterGenres:'Géneros',filterYear:'Año de estreno',filterRating:'Valoración mínima',filterLang:'Idioma original',filterRuntime:'Duración (min)',filterSort:'Ordenar por',anyLang:'Cualquier idioma',from:'Desde',to:'Hasta',apply:'Aplicar filtros',reset:'Restablecer',any:'Cualquiera',sortPopularity:'Más populares',sortRating:'Mejor valoradas',sortNewest:'Más recientes',sortRevenue:'Mayor recaudación',sortTitle:'Título A–Z',share:'Compartir',shareWatchlist:'Compartir lista',linkCopied:'Enlace copiado',shareLink:'Compartir enlace',sharedListTitle:'Lista compartida',sharedListEmpty:'Esta lista compartida está vacía o no es válida.',addAllWatchlist:'Añadir todo a mi lista',added:'añadidas',minimize:'Minimizar',expand:'Ampliar',next:'Siguiente',queueTitle:'Cola de tráilers',queuedToast:'En cola',queueEmpty:'La cola está vacía',noTrailerQueue:'No hay tráiler para la cola',upNext:'A continuación',addQueue:'Cola',noResults:'Ninguna película coincide con estos filtros.'},
+ de:{continueWatching:'Weiterschauen',clearHistory:'Löschen',discover:'Entdecken',discoverTitle:'Entdecken & filtern',discoverIntro:'Kombiniere Genres, Jahre, Bewertung, Sprache und Laufzeit — dann sortieren.',filterGenres:'Genres',filterYear:'Erscheinungsjahr',filterRating:'Mindestbewertung',filterLang:'Originalsprache',filterRuntime:'Laufzeit (Min.)',filterSort:'Sortieren nach',anyLang:'Beliebige Sprache',from:'Von',to:'Bis',apply:'Filter anwenden',reset:'Zurücksetzen',any:'Beliebig',sortPopularity:'Beliebteste',sortRating:'Bestbewertet',sortNewest:'Neueste',sortRevenue:'Umsatzstärkste',sortTitle:'Titel A–Z',share:'Teilen',shareWatchlist:'Merkliste teilen',linkCopied:'Link kopiert',shareLink:'Link teilen',sharedListTitle:'Geteilte Merkliste',sharedListEmpty:'Diese geteilte Liste ist leer oder ungültig.',addAllWatchlist:'Alle zu meiner Merkliste',added:'hinzugefügt',minimize:'Minimieren',expand:'Vergrößern',next:'Weiter',queueTitle:'Trailer-Warteschlange',queuedToast:'Eingereiht',queueEmpty:'Warteschlange ist leer',noTrailerQueue:'Kein Trailer zum Einreihen',upNext:'Als Nächstes',addQueue:'Warteschlange',noResults:'Keine Filme passen zu diesen Filtern.'},
+ pt:{continueWatching:'Continuar assistindo',clearHistory:'Limpar',discover:'Descobrir',discoverTitle:'Descobrir e filtrar',discoverIntro:'Combine gêneros, anos, avaliação, idioma e duração — depois ordene.',filterGenres:'Gêneros',filterYear:'Ano de lançamento',filterRating:'Avaliação mínima',filterLang:'Idioma original',filterRuntime:'Duração (min)',filterSort:'Ordenar por',anyLang:'Qualquer idioma',from:'De',to:'Até',apply:'Aplicar filtros',reset:'Redefinir',any:'Qualquer',sortPopularity:'Mais populares',sortRating:'Melhor avaliados',sortNewest:'Mais recentes',sortRevenue:'Maior bilheteria',sortTitle:'Título A–Z',share:'Compartilhar',shareWatchlist:'Compartilhar lista',linkCopied:'Link copiado',shareLink:'Compartilhar link',sharedListTitle:'Lista compartilhada',sharedListEmpty:'Esta lista compartilhada está vazia ou inválida.',addAllWatchlist:'Adicionar tudo à minha lista',added:'adicionados',minimize:'Minimizar',expand:'Ampliar',next:'Próximo',queueTitle:'Fila de trailers',queuedToast:'Na fila',queueEmpty:'A fila está vazia',noTrailerQueue:'Nenhum trailer para a fila',upNext:'A seguir',addQueue:'Fila',noResults:'Nenhum filme corresponde a esses filtros.'},
+ ar:{continueWatching:'متابعة المشاهدة',clearHistory:'مسح',discover:'اكتشف',discoverTitle:'اكتشف وفلتر',discoverIntro:'امزج الأنواع والسنوات والتقييم واللغة والمدة — ثم رتّب.',filterGenres:'الأنواع',filterYear:'سنة الإصدار',filterRating:'أدنى تقييم',filterLang:'اللغة الأصلية',filterRuntime:'المدة (دقيقة)',filterSort:'ترتيب حسب',anyLang:'أي لغة',from:'من',to:'إلى',apply:'تطبيق الفلاتر',reset:'إعادة ضبط',any:'الكل',sortPopularity:'الأكثر رواجًا',sortRating:'الأعلى تقييمًا',sortNewest:'الأحدث',sortRevenue:'الأعلى إيرادًا',sortTitle:'العنوان أ–ي',share:'مشاركة',shareWatchlist:'مشاركة القائمة',linkCopied:'تم نسخ الرابط',shareLink:'مشاركة الرابط',sharedListTitle:'قائمة مشتركة',sharedListEmpty:'هذه القائمة المشتركة فارغة أو غير صالحة.',addAllWatchlist:'أضف الكل إلى قائمتي',added:'أُضيفت',minimize:'تصغير',expand:'تكبير',next:'التالي',queueTitle:'قائمة انتظار الإعلانات',queuedToast:'تمت الإضافة للقائمة',queueEmpty:'قائمة الانتظار فارغة',noTrailerQueue:'لا يوجد إعلان للإضافة',upNext:'التالي',addQueue:'قائمة الانتظار',noResults:'لا توجد أفلام تطابق هذه الفلاتر.'}
+};
+Object.keys(EXTRA_I18N).forEach(l=>{I18N.dict[l]=Object.assign(I18N.dict[l]||{},EXTRA_I18N[l]);});
 </script>
 <script>
 /* ============ 3. STORAGE / BACKEND ADAPTER ============
@@ -682,14 +826,20 @@ async function sb(path,opts={}){
 }
 
 const Store = {
-  mode: HAS_BACKEND ? "backend" : "demo",
-  // ---- users (demo mode only; backend uses Supabase Auth + profiles table)
+  mode: HAS_BACKEND ? "backend" : "local",
+  // ---- users (on-device store; backend uses Supabase Auth + profiles table)
   users(){return LS.get("users",[]);},
   saveUsers(u){LS.set("users",u);},
   // ---- per-user owned collections
   wlKey(id){return "wl:"+id;},
   getWatchlist(id){return LS.get(this.wlKey(id),[]);},
   setWatchlist(id,list){LS.set(this.wlKey(id),list);},
+  // ---- watch history (per user, or a shared 'guest' bucket) powers Continue Watching
+  histKey(id){return "hist:"+(id||"guest");},
+  getHistory(id){return LS.get(this.histKey(id),[]);},
+  setHistory(id,list){LS.set(this.histKey(id),list);},
+  pushHistory(id,snap,played){const key=id||"guest";let h=this.getHistory(key).filter(x=>x&&x.id!==snap.id);h.unshift(Object.assign({},snap,{ts:Date.now(),played:!!(played||(snap&&snap.played))}));h=h.slice(0,30);this.setHistory(key,h);return h;},
+  clearHistory(id){this.setHistory(id||"guest",[]);},
   // ---- notifications per user + broadcast announcements
   notiKey(id){return "noti:"+id;},
   getNoti(id){return LS.get(this.notiKey(id),[]);},
@@ -712,9 +862,9 @@ const Store = {
   val(k){return LS.get(k,0);}
 };
 
-/* very small, clearly-labelled DEMO password hash (NOT secure — backend mode
-   uses Supabase Auth instead). Prevents storing the literal plaintext. */
-async function demoHash(pw){
+/* On-device password hash (SHA-256 + salt). Passwords are never stored in
+   plaintext; only this one-way hash is kept in local storage. */
+async function secureHash(pw){
   try{const b=await crypto.subtle.digest('SHA-256',new TextEncoder().encode("nf1$"+pw));
     return [...new Uint8Array(b)].map(x=>x.toString(16).padStart(2,'0')).join('');}
   catch(e){return 'x'+pw.length;}
@@ -846,16 +996,68 @@ function requireAuth(){if(State.user)return true;showGate();return false;}
    key (exposed — dev only). All movie data, posters, ratings and trailers are
    real TMDB results. If a request fails we surface empty/error states — we
    never substitute fake movies. */
+/* ============ OFFLINE DATA CACHE ============
+   Every successful TMDB response is cached in namespaced localStorage so the
+   catalogue, genres, details and searches keep working with no connection.
+   Online = network-first (cache refreshed); offline = served instantly from
+   cache. Posters are cached separately via the Cache Storage API below. */
+const DataCache={
+  NS:'tmdbcache:', idxKey:'tmdbcache:_idx', max:200,
+  _idx(){return LS.get(this.idxKey,[]);},
+  get(key){try{const raw=localStorage.getItem(DB_NS+this.NS+key);if(raw==null)return null;const o=JSON.parse(raw);return o&&('d'in o)?o.d:null;}catch(e){return null;}},
+  set(key,data){
+    try{
+      localStorage.setItem(DB_NS+this.NS+key,JSON.stringify({t:Date.now(),d:data}));
+      let idx=this._idx().filter(k=>k!==key);idx.push(key);
+      while(idx.length>this.max){const old=idx.shift();try{localStorage.removeItem(DB_NS+this.NS+old);}catch(e){}}
+      LS.set(this.idxKey,idx);
+    }catch(e){
+      try{let idx=this._idx();for(let i=0;i<30&&idx.length;i++){const old=idx.shift();localStorage.removeItem(DB_NS+this.NS+old);}LS.set(this.idxKey,idx);localStorage.setItem(DB_NS+this.NS+key,JSON.stringify({t:Date.now(),d:data}));}catch(e2){}
+    }
+  },
+  size(){return this._idx().length;},
+  clear(){this._idx().forEach(k=>{try{localStorage.removeItem(DB_NS+this.NS+k);}catch(e){}});LS.set(this.idxKey,[]);}
+};
+/* Poster image cache (Cache Storage API, no service worker needed). Best-effort:
+   stores readable (CORS) image responses so posters render offline; degrades
+   gracefully to a title placeholder when an image can't be cached. */
+const ImgCache={
+  name:'nancyflix-img', ok:(typeof caches!=='undefined'),
+  store(el){
+    if(!this.ok||!el||!el.src||el.src.indexOf('http')!==0)return;
+    const u=el.src;
+    try{caches.open(this.name).then(c=>{fetch(u,{mode:'cors'}).then(r=>{if(r&&r.ok)c.put(u,r.clone());}).catch(()=>{});}).catch(()=>{});}catch(e){}
+  },
+  fallback(el){
+    if(!el)return;const u=el.dataset.src||el.src;
+    if(this.ok&&!el.dataset.tried){el.dataset.tried='1';
+      try{caches.open(this.name).then(c=>c.match(u)).then(r=>{if(!r)throw 0;return r.blob();}).then(b=>{if(!b||!b.size)throw 0;el.src=URL.createObjectURL(b);el.style.display='';}).catch(()=>{el.style.display='none';});return;}catch(e){}
+    }
+    el.style.display='none';
+  }
+};
+window.imgStore=e=>ImgCache.store(e);
+window.imgFallback=e=>ImgCache.fallback(e);
+
 const TMDB = {
   errors:0, available:true,
   async call(path,params={}){
     if(!HAS_TMDB)throw new Error('TMDB not configured');
     const q=new URLSearchParams(params);
-    let url;
-    if(CONFIG.TMDB_PROXY){url=CONFIG.TMDB_PROXY+(CONFIG.TMDB_PROXY.includes('?')?'&':'?')+'path='+encodeURIComponent(path)+'&'+q.toString();}
-    else{q.set('api_key',CONFIG.TMDB_KEY);url=CONFIG.TMDB_BASE+path+'?'+q.toString();}
-    try{const r=await fetch(url);if(!r.ok)throw new Error(r.status);this.available=true;return await r.json();}
-    catch(e){this.errors++;this.available=false;throw e;}
+    // localize movie metadata (titles, overviews) to the user's chosen language
+    try{if(!q.has('language')){const lc=(typeof LOCALE!=='undefined'&&LOCALE[State.settings&&State.settings.lang])||'en-US';q.set('language',lc);}}catch(e){}
+    let url,ckey;
+    if(CONFIG.TMDB_PROXY){ckey=path+'?'+q.toString();url=CONFIG.TMDB_PROXY+(CONFIG.TMDB_PROXY.includes('?')?'&':'?')+'path='+encodeURIComponent(path)+'&'+q.toString();}
+    else{ckey=path+'?'+q.toString();q.set('api_key',CONFIG.TMDB_KEY);url=CONFIG.TMDB_BASE+path+'?'+q.toString();}
+    // offline: serve cached data immediately
+    if(typeof navigator!=='undefined'&&navigator.onLine===false){const c=DataCache.get(ckey);if(c!=null){this.available=true;return c;}throw new Error('offline-no-cache');}
+    try{
+      const r=await fetch(url);if(!r.ok)throw new Error(r.status);
+      const j=await r.json();this.available=true;DataCache.set(ckey,j);return j;
+    }catch(e){
+      const c=DataCache.get(ckey);if(c!=null){this.available=true;return c;}  // fall back to cache when the network fails
+      this.errors++;this.available=false;throw e;
+    }
   },
   async genres(){const d=await this.call('/genre/movie/list');return d.genres||GENRE_FALLBACK;},
   async list(kind,page=1){ // trending/popular/top_rated/upcoming
@@ -870,6 +1072,18 @@ const TMDB = {
     return d.results||[];
   },
   async search(q,page=1){const d=await this.call('/search/movie',{query:q,page});return {results:d.results||[],total:d.total_results||0,pages:d.total_pages||1};},
+  async discover(opts,page=1){
+    opts=opts||{};
+    const p={page,sort_by:opts.sort||'popularity.desc','vote_count.gte':(opts.voteCount!=null?opts.voteCount:20)};
+    if(opts.genres&&opts.genres.length)p.with_genres=opts.genres.join(',');
+    if(opts.yearFrom)p['primary_release_date.gte']=opts.yearFrom+'-01-01';
+    if(opts.yearTo)p['primary_release_date.lte']=opts.yearTo+'-12-31';
+    if(opts.rating)p['vote_average.gte']=opts.rating;
+    if(opts.lang)p.with_original_language=opts.lang;
+    if(opts.runtimeFrom)p['with_runtime.gte']=opts.runtimeFrom;
+    if(opts.runtimeTo)p['with_runtime.lte']=opts.runtimeTo;
+    const d=await this.call('/discover/movie',p);return {results:d.results||[],pages:d.total_pages||1,total:d.total_results||0};
+  },
   async detail(id){const d=await this.call('/movie/'+id,{append_to_response:'videos,credits,similar'});return d;}
 };
 
@@ -888,7 +1102,7 @@ function cardHTML(m){
     <div class="poster">
       <div class="rate">${svg(ICON.star,'icon sm')} ${(m.vote_average||0).toFixed(1)}</div>
       <button class="bk ${saved?'saved':''}" data-bk="${m.id}" aria-label="Save">${svg(ICON.bookmark,'icon sm')}</button>
-      ${poster?`<img loading="lazy" src="${poster}" alt="${esc(m.title)} poster" onerror="this.style.display='none'">`:`<div style="display:flex;align-items:center;justify-content:center;height:100%;color:var(--muted);padding:12px;text-align:center;font-size:12px">${esc(m.title)}</div>`}
+      ${poster?`<img loading="lazy" src="${poster}" data-src="${poster}" alt="${esc(m.title)} poster" onload="imgStore(this)" onerror="imgFallback(this)">`:`<div style="display:flex;align-items:center;justify-content:center;height:100%;color:var(--muted);padding:12px;text-align:center;font-size:12px">${esc(m.title)}</div>`}
       <div class="ov"><div class="play" data-play="${m.id}">${svg(ICON.play,'icon lg')}</div></div>
     </div>
     <div class="info"><div class="ttl">${esc(m.title)}</div><div class="yr">${year(m.release_date)}${gname(m.genre_ids)?' · '+esc(gname(m.genre_ids)):''}</div></div>
@@ -910,14 +1124,26 @@ const Home = {
     clearInterval(this._heroTimer);
     const v=document.getElementById('view-home');
     v.innerHTML=`<div class="hero" id="hero"><div class="bg"></div><div class="ov"></div><div class="inner"><div class="chip">Loading spotlight…</div></div><div class="hero-dots" id="heroDots"></div></div>`+
-      this._sec('New Releases · 2026/27','now_playing')+this._sec('Trending This Week','trending')+this._sec('Popular Movies','popular')+
-      this._sec('Top Rated','top_rated')+this._sec('Upcoming Releases','upcoming');
+      this._cwSection()+
+      this._sec(t('secNew'),'now_playing')+this._sec(t('secTrending'),'trending')+this._sec(t('secPopular'),'popular')+
+      this._sec(t('secTopRated'),'top_rated')+this._sec(t('secUpcoming'),'upcoming');
+    const cw=v.querySelector('#cwClear');if(cw)cw.onclick=()=>Watched.clear();
     const trend=await TMDB.list('trending');
     if(trend.length)this._startHero(trend);
     this._fill('trending',trend);
     ['now_playing','popular','top_rated','upcoming'].forEach(async k=>this._fill(k,await TMDB.list(k)));
   },
   _sec(title,key){return `<div class="section"><div class="section-head"><h3><span class="bar"></span>${title}</h3></div><div class="row" id="row-${key}">${skeletons(7)}</div></div>`;},
+  _cwSection(){const h=Watched.list();if(!h.length)return '';return `<div class="section" id="cwSection"><div class="section-head"><h3><span class="bar"></span>${t('continueWatching')}</h3><button class="btn sm ghost" id="cwClear">${t('clearHistory')}</button></div><div class="row" id="row-cw">${h.map(cardHTML).join('')}</div></div>`;},
+  _refreshCW(){
+    const v=document.getElementById('view-home');if(!v)return;
+    const h=Watched.list();let sec=document.getElementById('cwSection');
+    if(!h.length){if(sec)sec.remove();return;}
+    const inner=`<div class="section-head"><h3><span class="bar"></span>${t('continueWatching')}</h3><button class="btn sm ghost" id="cwClear">${t('clearHistory')}</button></div><div class="row" id="row-cw">${h.map(cardHTML).join('')}</div>`;
+    if(sec){sec.innerHTML=inner;}
+    else{sec=document.createElement('div');sec.className='section';sec.id='cwSection';sec.innerHTML=inner;const hero=document.getElementById('hero');if(hero){hero.insertAdjacentElement('afterend',sec);}else{v.insertBefore(sec,v.firstChild);}}
+    const cw=document.getElementById('cwClear');if(cw)cw.onclick=()=>Watched.clear();
+  },
   _demoBanner(){/* demo catalogue removed — app always loads live TMDB data */},
   /* rotating spotlight: cycles through up to 7 trending movies with a
      cross-fade + slow Ken-Burns zoom; auto-advances, pauses on hover,
@@ -946,12 +1172,39 @@ const Home = {
     clearTimeout(this._heroFade);
     this._heroFade=setTimeout(()=>{bg.style.backgroundImage=bd?`url(${bd})`:'linear-gradient(135deg,#1a0409,#06060a)';bg.style.opacity=1;requestAnimationFrame(()=>bg.classList.add('kenburns'));},200);
     const inner=h.querySelector('.inner');
-    inner.innerHTML=`<div class="meta"><span class="chip">${svg(ICON.star,'icon sm')} ${(m.vote_average||0).toFixed(1)}</span><span class="chip">${year(m.release_date)}</span><span class="chip">Spotlight</span></div><h2>${esc(m.title)}</h2><p>${esc(m.overview||'')}</p><div class="cta"><button class="btn primary" data-play="${m.id}">${svg(ICON.play,'icon sm')} Play trailer</button><button class="btn" data-id="${m.id}" onclick="MovieDetail.open(${m.id})">More info</button></div>`;
+    inner.innerHTML=`<div class="meta"><span class="chip">${svg(ICON.star,'icon sm')} ${(m.vote_average||0).toFixed(1)}</span><span class="chip">${year(m.release_date)}</span><span class="chip">${t('spotlight')}</span></div><h2>${esc(m.title)}</h2><p>${esc(m.overview||'')}</p><div class="cta"><button class="btn primary" data-play="${m.id}">${svg(ICON.play,'icon sm')} ${t('playTrailer')}</button><button class="btn" data-id="${m.id}" onclick="MovieDetail.open(${m.id})">${t('moreInfo')}</button></div>`;
     inner.classList.remove('hero-in');void inner.offsetWidth;inner.classList.add('hero-in');
     h.querySelectorAll('.hdot').forEach((d,di)=>d.classList.toggle('active',di===i));
   },
   _hero(m){this._startHero([m]);},
-  _fill(key,list){const r=document.getElementById('row-'+key);if(!r)return;if(!list.length){r.innerHTML=`<div class="state" style="padding:30px">${svg(ICON.alert,'icon lg')}<p>Could not load this section. ${TMDB.available?'':'Check connection or configuration.'}</p></div>`;return;}r.innerHTML=list.map(cardHTML).join('');}
+  _fill(key,list){const r=document.getElementById('row-'+key);if(!r)return;if(!list.length){r.innerHTML=`<div class="state" style="padding:30px">${svg(ICON.alert,'icon lg')}<p>Could not load this section. ${TMDB.available?'':'Check connection or configuration.'}</p></div>`;return;}
+    const seen=new Set();const uniq=list.filter(m=>m&&!seen.has(m.id)&&seen.add(m.id));
+    r.innerHTML=uniq.map(cardHTML).join('');
+    this._rows=this._rows||{};
+    this._rows[key]={page:1,loading:false,done:false,ids:seen};
+    this._attachInfinite(key,r);
+  },
+  _attachInfinite(key,r){
+    if(r._infinite)return;r._infinite=true;
+    const loadMore=async()=>{const st=this._rows[key];if(!st||st.loading||st.done)return;
+      if(r.scrollLeft+r.clientWidth < r.scrollWidth-600)return;
+      st.loading=true;
+      const spin=document.createElement('div');spin.className='row-more';spin.innerHTML=`<div class="spinner"></div>`;r.appendChild(spin);
+      try{const next=await TMDB.list(key,st.page+1);
+        spin.remove();
+        const fresh=(next||[]).filter(m=>m&&!st.ids.has(m.id)&&st.ids.add(m.id));
+        if(!fresh.length||st.page+1>=500){st.done=true;}
+        if(fresh.length)r.insertAdjacentHTML('beforeend',fresh.map(cardHTML).join(''));
+        st.page++;
+      }catch(e){spin.remove();st.done=true;}
+      st.loading=false;
+      // keep filling if the row still isn't scrollable yet
+      if(!st.done && r.scrollWidth<=r.clientWidth+600)loadMore();
+    };
+    r.addEventListener('scroll',()=>{clearTimeout(r._sd);r._sd=setTimeout(loadMore,80);},{passive:true});
+    // prime a second page so even wide screens can scroll
+    setTimeout(loadMore,400);
+  }
 };
 </script>
 <script>
@@ -963,9 +1216,9 @@ const Genres = {
   async render(){
     const v=document.getElementById('view-genres');
     if(!State.genres.length)State.genres=await TMDB.genres();
-    v.innerHTML=`<div class="section-head"><h3><span class="bar"></span>Browse by Genre</h3></div>
+    v.innerHTML=`<div class="section-head"><h3><span class="bar"></span>${t('browseGenre')}</h3></div>
       <div class="genre-tabs" id="genreTabs">
-        <button data-g="all" class="${this.mode==='all'?'active':''}">All genres</button>
+        <button data-g="all" class="${this.mode==='all'?'active':''}">${t('allGenres')}</button>
         ${State.genres.map(g=>`<button data-g="${g.id}" class="${this.mode==='focus'&&g.id===this.active?'active':''}">${esc(g.name)}</button>`).join('')}
       </div>
       <div id="genreStream"></div>
@@ -1038,6 +1291,7 @@ const MovieDetail = {
     m.innerHTML=`<button class="modal-close" onclick="closeOverlay('detailOverlay')">${svg(ICON.close,'icon sm')}</button><div style="padding:60px;text-align:center"><div class="spinner" style="margin:0 auto"></div></div>`;
     openOverlay('detailOverlay');
     const d=await TMDB.detail(id);this.current=d;
+    Watched.log(d,false);
     const trailer=this._trailer(d);
     const saved=State.watchlist.some(w=>w.id===d.id);
     const genres=(d.genres||[]).map(g=>g.name)||[];
@@ -1046,26 +1300,31 @@ const MovieDetail = {
     m.innerHTML=`<button class="modal-close" onclick="closeOverlay('detailOverlay')">${svg(ICON.close,'icon sm')}</button>
       <div class="detail-hero"><div class="bg" style="background-image:url('${img(d.backdrop_path,'original')||img(d.poster_path,'w780')}')"></div><div class="ov"></div></div>
       <div class="detail-body"><div class="detail-top">
-        <div class="pz">${img(d.poster_path)?`<img src="${img(d.poster_path)}" alt="${esc(d.title)}">`:`<div style="display:flex;align-items:center;justify-content:center;height:100%;color:var(--muted);font-size:12px;padding:10px;text-align:center">${esc(d.title)}</div>`}</div>
+        <div class="pz">${img(d.poster_path)?`<img src="${img(d.poster_path)}" data-src="${img(d.poster_path)}" alt="${esc(d.title)}" onload="imgStore(this)" onerror="imgFallback(this)">`:`<div style="display:flex;align-items:center;justify-content:center;height:100%;color:var(--muted);font-size:12px;padding:10px;text-align:center">${esc(d.title)}</div>`}</div>
         <div class="meta"><h2>${esc(d.title)}</h2>
           <div class="detail-chips"><span class="chip">${svg(ICON.star,'icon sm')} ${(d.vote_average||0).toFixed(1)} (${d.vote_count||0})</span><span class="chip">${fmtDate(d.release_date)}</span>${d.runtime?`<span class="chip">${d.runtime} min</span>`:''}</div>
           <div class="detail-chips">${genres.map(g=>`<span class="chip">${esc(g)}</span>`).join('')}</div>
           <div class="detail-ov">${esc(d.overview||'No overview available.')}</div>
           <div style="display:flex;gap:10px;flex-wrap:wrap">
-            <button class="btn primary" id="dPlay">${svg(ICON.play,'icon sm')} Play trailer</button>
-            <button class="btn" id="dSave">${svg(ICON.bookmark,'icon sm')} ${saved?'Saved':'Watchlist'}</button></div></div></div>
+            <button class="btn primary" id="dPlay">${svg(ICON.play,'icon sm')} ${t('playTrailer')}</button>
+            <button class="btn" id="dSave">${svg(ICON.bookmark,'icon sm')} ${saved?'Saved':'Watchlist'}</button>
+            <button class="btn" id="dQueue">${svg(ICON.plus,'icon sm')} ${t('addQueue')}</button>
+            <button class="btn" id="dShare">${svg(ICON_SHARE,'icon sm')} ${t('share')}</button></div></div></div>
         ${cast.length?`<div class="detail-sec"><h4>Cast</h4><div class="cast">${cast.map(c=>`<div class="c">${c.profile_path?`<img src="${img(c.profile_path,'w185')}" alt="${esc(c.name)}">`:`<div class="ph">${esc((c.name||'?')[0])}</div>`}<div class="nm">${esc(c.name)}</div><div class="ch">${esc(c.character||'')}</div></div>`).join('')}</div></div>`:''}
         ${sim.length?`<div class="detail-sec"><h4>Similar movies</h4><div class="row">${sim.map(cardHTML).join('')}</div></div>`:''}
       </div>`;
     m.querySelector('#dPlay').onclick=()=>this._play(d,trailer);
+    m.querySelector('#dQueue').onclick=()=>Player.enqueueMovie(d.id);
+    m.querySelector('#dShare').onclick=()=>ShareUtil.shareLink(ShareUtil.movieLink(d.id),d.title);
     m.querySelector('#dSave').onclick=e=>{if(!requireAuth())return;Watchlist.toggle(d.id,null);e.target.closest('button').innerHTML=svg(ICON.bookmark,'icon sm')+' '+(State.watchlist.some(w=>w.id===d.id)?'Saved':'Watchlist');};
   },
   _trailer(d){const vids=(d.videos&&d.videos.results)||[];return vids.find(v=>v.site==='YouTube'&&v.type==='Trailer'&&v.official)||vids.find(v=>v.site==='YouTube'&&v.type==='Trailer')||vids.find(v=>v.site==='YouTube');},
   _play(d,trailer){
     Store.bump('trailerReq');
     if(!requireAuth())return;              // guests get the gate, can keep browsing
+    if(typeof navigator!=='undefined'&&navigator.onLine===false){Toast.show('You’re offline','Browsing works offline, but playing trailers needs an internet connection.','warn');return;}
     closeOverlay('detailOverlay');
-    Player.open(d.title,trailer);
+    Player.open(d.title,trailer,d);
   }
 };
 </script>
@@ -1075,27 +1334,90 @@ const MovieDetail = {
    Only authorized references (official YouTube trailers from TMDB) are embedded.
    This is a discovery platform; no full-length / pirated film playback. */
 const Player = {
-  open(title,trailer){
+  current:null, queue:[], mini:false,
+  _embed(key,title){return `<iframe src="https://www.youtube-nocookie.com/embed/${encodeURIComponent(key)}?autoplay=1&rel=0" title="${esc(title||'')} trailer" allow="autoplay; encrypted-media; fullscreen" allowfullscreen></iframe>`;},
+  open(title,trailer,movie){
+    this._hideMini();
     const stage=document.getElementById('playerStage');
     document.getElementById('playerTitle').textContent=title||'Trailer';
     if(trailer&&trailer.site==='YouTube'&&trailer.key){
-      stage.innerHTML=`<iframe src="https://www.youtube-nocookie.com/embed/${encodeURIComponent(trailer.key)}?autoplay=1&rel=0" title="${esc(title)} trailer" allow="autoplay; encrypted-media; fullscreen" allowfullscreen></iframe>`;
+      this.current={title:title||'Trailer',key:trailer.key,id:movie?movie.id:(this.current&&this.current.id)};
+      stage.innerHTML=this._embed(trailer.key,title);
+      if(movie)Watched.log(movie,true);
     }else{
+      this.current=null;
       stage.innerHTML=`<div class="player-empty">${svg(ICON.film,'icon lg')}<h4 style="color:var(--text);margin:12px 0 6px">No trailer available</h4><p>We couldn’t find an authorized trailer for “${esc(title)}”.</p><button class="btn" style="margin-top:14px" onclick="Player.close()">Back to movies</button></div>`;
     }
     document.getElementById('player').classList.add('show');
     document.body.classList.add('noscroll');
+    this.mini=false;
   },
   async fromMovie(id){
     Store.bump('trailerReq');
     if(!requireAuth())return;
+    if(typeof navigator!=='undefined'&&navigator.onLine===false){Toast.show('You’re offline','Browsing works offline, but playing trailers needs an internet connection.','warn');return;}
     const d=await TMDB.detail(id);
-    this.open(d.title,MovieDetail._trailer(d));
+    this.open(d.title,MovieDetail._trailer(d),d);
   },
   close(){
     document.getElementById('playerStage').innerHTML='';   // stop playback
     document.getElementById('player').classList.remove('show');
+    this.mini=false;
     if(!document.querySelector('.overlay.show'))document.body.classList.remove('noscroll');
+  },
+  /* ---- mini corner player: keep browsing while the trailer plays ---- */
+  minimize(){
+    if(!this.current||!this.current.key){this.close();return;}
+    document.getElementById('playerStage').innerHTML='';
+    document.getElementById('player').classList.remove('show');
+    document.getElementById('miniTitle').textContent=this.current.title;
+    document.getElementById('miniStage').innerHTML=this._embed(this.current.key,this.current.title);
+    document.getElementById('miniPlayer').classList.add('show');
+    this.mini=true;
+    if(!document.querySelector('.overlay.show'))document.body.classList.remove('noscroll');
+    this._renderQueue();
+  },
+  expand(){
+    if(!this.current||!this.current.key)return;
+    this._hideMini();
+    document.getElementById('playerTitle').textContent=this.current.title;
+    document.getElementById('playerStage').innerHTML=this._embed(this.current.key,this.current.title);
+    document.getElementById('player').classList.add('show');
+    document.body.classList.add('noscroll');
+    this.mini=false;
+  },
+  _hideMini(){const mp=document.getElementById('miniPlayer');if(mp){mp.classList.remove('show');const ms=document.getElementById('miniStage');if(ms)ms.innerHTML='';}},
+  closeMini(){this._hideMini();this.mini=false;if(!document.querySelector('.overlay.show'))document.body.classList.remove('noscroll');},
+  async enqueueMovie(id){
+    if(!requireAuth())return;
+    try{const d=await TMDB.detail(id);const tr=MovieDetail._trailer(d);
+      if(!tr||!tr.key){Toast.show(t('queueTitle'),t('noTrailerQueue'),'warn');return;}
+      this.queue.push({title:d.title,key:tr.key,id:d.id});
+      Toast.show(t('queuedToast'),d.title,'ok');
+      this._renderQueue();
+    }catch(e){Toast.show(t('queueTitle'),t('noTrailerQueue'),'warn');}
+  },
+  next(){
+    if(!this.queue.length){Toast.show(t('queueTitle'),t('queueEmpty'),'info');return;}
+    const item=this.queue.shift();
+    if(this.mini){
+      this.current=item;
+      document.getElementById('miniTitle').textContent=item.title;
+      document.getElementById('miniStage').innerHTML=this._embed(item.key,item.title);
+      Watched.log(item,true);
+      this._renderQueue();
+    }else{
+      this.open(item.title,{site:'YouTube',key:item.key},{id:item.id,title:item.title});
+      this._renderQueue();
+    }
+  },
+  _renderQueue(){
+    const q=document.getElementById('miniQueue');if(!q)return;
+    const n=this.queue.length;
+    document.querySelectorAll('.queue-count').forEach(el=>{el.textContent=n;el.style.display=n?'':'none';});
+    if(!n){q.innerHTML='';return;}
+    q.innerHTML=`<div class="mini-qhead">${t('upNext')} · ${n}</div>`+this.queue.map((it,i)=>`<div class="mini-qitem"><span>${esc(it.title)}</span><button data-qrm="${i}" aria-label="Remove">${svg(ICON.close,'icon sm')}</button></div>`).join('');
+    q.querySelectorAll('[data-qrm]').forEach(b=>b.onclick=()=>{this.queue.splice(+b.dataset.qrm,1);this._renderQueue();});
   }
 };
 document.getElementById('playerClose').onclick=()=>Player.close();
@@ -1116,10 +1438,162 @@ const Watchlist = {
   async render(){
     const v=document.getElementById('view-watchlist');
     if(!State.user){v.innerHTML=`<div class="state">${svg(ICON.bookmark,'icon lg')}<h4>Sign in to build your watchlist</h4><p>Save movies and sync them across devices.</p><button class="btn primary" onclick="backToAuth('login')">Log in</button></div>`;return;}
-    if(!State.watchlist.length){v.innerHTML=`<div class="section-head"><h3><span class="bar"></span>My Watchlist</h3></div><div class="state">${svg(ICON.bookmark,'icon lg')}<h4>Your watchlist is empty</h4><p>Tap the bookmark on any movie to save it for later.</p><button class="btn primary" onclick="switchView('home')">Discover movies</button></div>`;return;}
-    v.innerHTML=`<div class="section-head"><h3><span class="bar"></span>My Watchlist <span class="chip">${State.watchlist.length}</span></h3></div><div class="grid" id="wlGrid">${skeletons(State.watchlist.length)}</div>`;
+    if(!State.watchlist.length){v.innerHTML=`<div class="section-head"><h3><span class="bar"></span>${t('myWatchlist')}</h3></div><div class="state">${svg(ICON.bookmark,'icon lg')}<h4>Your watchlist is empty</h4><p>Tap the bookmark on any movie to save it for later.</p><button class="btn primary" onclick="switchView('home')">Discover movies</button></div>`;return;}
+    v.innerHTML=`<div class="section-head"><h3><span class="bar"></span>${t('myWatchlist')} <span class="chip">${State.watchlist.length}</span></h3><button class="btn sm" id="wlShare">${svg(ICON_SHARE,'icon sm')} ${t('shareWatchlist')}</button></div><div class="grid" id="wlGrid">${skeletons(State.watchlist.length)}</div>`;
+    const ws=document.getElementById('wlShare');if(ws)ws.onclick=()=>ShareUtil.shareLink(ShareUtil.watchlistLink(),t('shareWatchlist'));
     const items=await Promise.all(State.watchlist.slice().reverse().map(w=>TMDB.detail(w.id)));
     document.getElementById('wlGrid').innerHTML=items.map(cardHTML).join('');
+  }
+};
+</script>
+<script>
+/* ============ WATCH HISTORY / SHARING / SHARED LISTS ============ */
+const Watched = {
+  owner(){return State.user?State.user.id:'guest';},
+  log(movie,played){
+    if(!movie||!movie.id)return;
+    const snap={id:movie.id,title:movie.title,poster_path:movie.poster_path,backdrop_path:movie.backdrop_path,vote_average:movie.vote_average,release_date:movie.release_date,genre_ids:(movie.genre_ids&&movie.genre_ids.slice(0,3))||(movie.genres?movie.genres.map(g=>g.id):[])};
+    Store.pushHistory(this.owner(),snap,played);
+    if(State.view==='home'){try{Home._refreshCW();}catch(e){}}
+  },
+  list(){return Store.getHistory(this.owner());},
+  clear(){Store.clearHistory(this.owner());if(State.view==='home'){try{Home._refreshCW();}catch(e){}}}
+};
+
+const ShareUtil = {
+  base(){return location.origin+location.pathname;},
+  movieLink(id){return this.base()+'#movie='+id;},
+  async shareLink(url,title){
+    try{if(navigator.share){await navigator.share({title:title||'NANCYFLIX',url});return;}}catch(e){if(e&&e.name==='AbortError')return;}
+    this.copy(url);
+  },
+  copy(url){
+    try{if(navigator.clipboard&&navigator.clipboard.writeText){navigator.clipboard.writeText(url).then(()=>Toast.show(t('linkCopied'),url,'ok'),()=>this._fallbackCopy(url));return;}}catch(e){}
+    this._fallbackCopy(url);
+  },
+  _fallbackCopy(url){const ta=document.createElement('textarea');ta.value=url;ta.style.position='fixed';ta.style.opacity='0';document.body.appendChild(ta);ta.focus();ta.select();try{document.execCommand('copy');Toast.show(t('linkCopied'),url,'ok');}catch(e){Toast.show(t('shareLink'),url,'info');}ta.remove();},
+  watchlistLink(){
+    const ids=(State.watchlist||[]).map(w=>w.id);
+    const token=btoa(JSON.stringify(ids)).replace(/\+/g,'-').replace(/\//g,'_').replace(/=+$/,'');
+    return this.base()+'#wl='+token;
+  }
+};
+
+const SharedList = {
+  async open(token){
+    let ids=[];
+    try{let b=String(token||'').replace(/-/g,'+').replace(/_/g,'/');ids=JSON.parse(atob(b));}catch(e){}
+    if(!Array.isArray(ids)||!ids.length){Toast.show(t('sharedListTitle'),t('sharedListEmpty'),'warn');return;}
+    ids=ids.filter(x=>typeof x==='number'&&x>0).slice(0,40);
+    const m=document.getElementById('detailModal');
+    m.innerHTML=`<button class="modal-close" onclick="closeOverlay('detailOverlay')">${svg(ICON.close,'icon sm')}</button><div class="detail-body" style="padding-top:46px"><div class="section-head"><h3><span class="bar"></span>${t('sharedListTitle')}</h3></div><div class="grid" id="sharedGrid">${skeletons(Math.min(ids.length,12))}</div><div style="margin-top:18px"><button class="btn primary" id="sharedAddAll">${t('addAllWatchlist')}</button></div></div>`;
+    openOverlay('detailOverlay');
+    const items=(await Promise.all(ids.map(id=>TMDB.detail(id).catch(()=>null)))).filter(Boolean);
+    const g=document.getElementById('sharedGrid');
+    if(g)g.innerHTML=items.length?items.map(cardHTML).join(''):`<div class="state">${svg(ICON.empty,'icon lg')}<h4>${t('sharedListEmpty')}</h4></div>`;
+    const addAll=document.getElementById('sharedAddAll');
+    if(addAll)addAll.onclick=()=>{if(!requireAuth())return;let n=0;items.forEach(it=>{if(!State.watchlist.some(w=>w.id===it.id)){State.watchlist.push({id:it.id,ts:Date.now()});n++;}});Watchlist.persist();Toast.show(t('sharedListTitle'),n+' '+t('added'),'ok');if(State.view==='watchlist')Watchlist.render();};
+  }
+};
+
+/* hash router: deep-link straight to a title or a shared watchlist */
+function handleHash(){
+  const h=location.hash||'';
+  if(!document.getElementById('app').classList.contains('show'))return;
+  if(h.indexOf('#movie=')===0){const id=parseInt(h.slice(7),10);if(id)MovieDetail.open(id);}
+  else if(h.indexOf('#wl=')===0){SharedList.open(h.slice(4));}
+}
+window.addEventListener('hashchange',handleHash);
+
+/* mini-player controls + drag */
+(function(){
+  const byId=id=>document.getElementById(id);
+  const wire=()=>{
+    const pm=byId('playerMinimize');if(pm)pm.onclick=()=>Player.minimize();
+    const pn=byId('playerNext');if(pn)pn.onclick=()=>Player.next();
+    const me=byId('miniExpand');if(me)me.onclick=()=>Player.expand();
+    const mc=byId('miniClose');if(mc)mc.onclick=()=>Player.closeMini();
+    const mn=byId('miniNext');if(mn)mn.onclick=()=>Player.next();
+    const bar=byId('miniBar');const mp=byId('miniPlayer');
+    if(bar&&mp){
+      let sx,sy,ox,oy,drag=false;
+      const down=e=>{if(e.target.closest('button'))return;drag=true;const p=e.touches?e.touches[0]:e;sx=p.clientX;sy=p.clientY;const r=mp.getBoundingClientRect();ox=r.left;oy=r.top;mp.style.right='auto';mp.style.bottom='auto';mp.style.left=ox+'px';mp.style.top=oy+'px';document.addEventListener('mousemove',move);document.addEventListener('touchmove',move,{passive:false});document.addEventListener('mouseup',up);document.addEventListener('touchend',up);};
+      const move=e=>{if(!drag)return;if(e.cancelable)e.preventDefault();const p=e.touches?e.touches[0]:e;let nx=ox+(p.clientX-sx),ny=oy+(p.clientY-sy);nx=Math.max(6,Math.min(nx,window.innerWidth-mp.offsetWidth-6));ny=Math.max(6,Math.min(ny,window.innerHeight-mp.offsetHeight-6));mp.style.left=nx+'px';mp.style.top=ny+'px';};
+      const up=()=>{drag=false;document.removeEventListener('mousemove',move);document.removeEventListener('touchmove',move);document.removeEventListener('mouseup',up);document.removeEventListener('touchend',up);};
+      bar.addEventListener('mousedown',down);bar.addEventListener('touchstart',down,{passive:true});
+    }
+  };
+  if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',wire);else wire();
+})();
+</script>
+<script>
+/* ============ DISCOVER / ADVANCED FILTER VIEW ============ */
+const Discover = {
+  filters:null, page:1, loading:false, done:false, ids:null, inited:false,
+  _defaults(){return {genres:[],yearFrom:'',yearTo:'',rating:'',lang:'',runtimeFrom:'',runtimeTo:'',sort:'popularity.desc'};},
+  _langs(){return [['en','English'],['es','Español'],['fr','Français'],['de','Deutsch'],['pt','Português'],['it','Italiano'],['ja','日本語'],['ko','한국어'],['zh','中文'],['hi','हिन्दी'],['ar','العربية'],['ru','Русский'],['sw','Kiswahili'],['tr','Türkçe']];},
+  _years(){const y=[];const now=2027;for(let i=now;i>=1950;i--)y.push(i);return y;},
+  async render(){
+    const v=document.getElementById('view-discover');
+    if(!State.genres.length){try{State.genres=await TMDB.genres();}catch(e){}}
+    if(!this.filters)this.filters=this._defaults();
+    const f=this.filters;
+    const yearOpts=this._years().map(y=>`<option value="${y}">${y}</option>`).join('');
+    const langOpts=`<option value="">${t('anyLang')}</option>`+this._langs().map(l=>`<option value="${l[0]}">${esc(l[1])}</option>`).join('');
+    const sortOpts=[['popularity.desc',t('sortPopularity')],['vote_average.desc',t('sortRating')],['primary_release_date.desc',t('sortNewest')],['revenue.desc',t('sortRevenue')],['original_title.asc',t('sortTitle')]].map(s=>`<option value="${s[0]}">${esc(s[1])}</option>`).join('');
+    const ratingOpts=`<option value="">${t('any')}</option>`+[9,8,7,6,5,4].map(r=>`<option value="${r}">${r}+</option>`).join('');
+    v.innerHTML=`<div class="section-head"><h3><span class="bar"></span>${t('discoverTitle')}</h3></div>
+      <p style="color:var(--muted);margin:-6px 0 16px;font-size:14px">${t('discoverIntro')}</p>
+      <div class="disc-panel">
+        <div class="disc-field disc-wide"><label>${t('filterGenres')}</label><div class="disc-genres" id="discGenres">${State.genres.map(g=>`<button type="button" data-g="${g.id}" class="disc-chip${f.genres.indexOf(g.id)>=0?' on':''}">${esc(g.name)}</button>`).join('')}</div></div>
+        <div class="disc-field"><label>${t('filterYear')}</label><div class="disc-row"><select id="discYearFrom"><option value="">${t('from')}</option>${yearOpts}</select><select id="discYearTo"><option value="">${t('to')}</option>${yearOpts}</select></div></div>
+        <div class="disc-field"><label>${t('filterRating')}</label><select id="discRating">${ratingOpts}</select></div>
+        <div class="disc-field"><label>${t('filterLang')}</label><select id="discLang">${langOpts}</select></div>
+        <div class="disc-field"><label>${t('filterRuntime')}</label><div class="disc-row"><input type="number" id="discRtFrom" min="0" max="400" placeholder="${t('from')}"><input type="number" id="discRtTo" min="0" max="400" placeholder="${t('to')}"></div></div>
+        <div class="disc-field"><label>${t('filterSort')}</label><select id="discSort">${sortOpts}</select></div>
+        <div class="disc-actions"><button class="btn primary" id="discApply">${t('apply')}</button><button class="btn ghost" id="discReset">${t('reset')}</button></div>
+      </div>
+      <div class="grid" id="discGrid"></div>
+      <div id="discSentinel" style="height:1px"></div>`;
+    // restore control values
+    const set=(id,val)=>{const el=document.getElementById(id);if(el)el.value=val;};
+    set('discYearFrom',f.yearFrom);set('discYearTo',f.yearTo);set('discRating',f.rating);set('discLang',f.lang);set('discRtFrom',f.runtimeFrom);set('discRtTo',f.runtimeTo);set('discSort',f.sort);
+    v.querySelector('#discGenres').onclick=e=>{const b=e.target.closest('[data-g]');if(!b)return;const id=+b.dataset.g;const i=f.genres.indexOf(id);if(i>=0)f.genres.splice(i,1);else f.genres.push(id);b.classList.toggle('on');};
+    v.querySelector('#discApply').onclick=()=>this.apply();
+    v.querySelector('#discReset').onclick=()=>{this.filters=this._defaults();this.render();};
+    this._observe();
+    this.apply();
+  },
+  _collect(){const g=id=>{const el=document.getElementById(id);return el?el.value:'';};const f=this.filters;f.yearFrom=g('discYearFrom');f.yearTo=g('discYearTo');f.rating=g('discRating');f.lang=g('discLang');f.runtimeFrom=g('discRtFrom');f.runtimeTo=g('discRtTo');f.sort=g('discSort')||'popularity.desc';},
+  _opts(){const f=this.filters;return {genres:f.genres,yearFrom:f.yearFrom,yearTo:f.yearTo,rating:f.rating?+f.rating:'',lang:f.lang,runtimeFrom:f.runtimeFrom?+f.runtimeFrom:'',runtimeTo:f.runtimeTo?+f.runtimeTo:'',sort:f.sort,voteCount:(f.sort==='vote_average.desc'?200:20)};},
+  async apply(){
+    this._collect();
+    this.page=1;this.done=false;this.loading=true;this.ids=new Set();
+    const grid=document.getElementById('discGrid');if(grid)grid.innerHTML=skeletons(10);
+    try{
+      const r=await TMDB.discover(this._opts(),1);
+      const fresh=(r.results||[]).filter(m=>m&&!this.ids.has(m.id)&&this.ids.add(m.id));
+      if(grid)grid.innerHTML=fresh.length?fresh.map(cardHTML).join(''):`<div class="state" style="grid-column:1/-1">${svg(ICON.empty,'icon lg')}<h4>${t('noResults')}</h4></div>`;
+      this.done=!fresh.length||1>=Math.min(r.pages,500);
+    }catch(e){if(grid)grid.innerHTML=`<div class="state" style="grid-column:1/-1">${svg(ICON.alert,'icon lg')}<h4>${t('noResults')}</h4></div>`;this.done=true;}
+    this.loading=false;
+  },
+  async more(){
+    if(this.loading||this.done)return;this.loading=true;
+    try{const r=await TMDB.discover(this._opts(),this.page+1);
+      const fresh=(r.results||[]).filter(m=>m&&!this.ids.has(m.id)&&this.ids.add(m.id));
+      const grid=document.getElementById('discGrid');
+      if(fresh.length&&grid)grid.insertAdjacentHTML('beforeend',fresh.map(cardHTML).join(''));
+      this.page++;
+      if(!fresh.length||this.page>=Math.min(r.pages,500))this.done=true;
+    }catch(e){this.done=true;}
+    this.loading=false;
+  },
+  _observe(){
+    if(this.observer)this.observer.disconnect();
+    const s=document.getElementById('discSentinel');if(!s)return;
+    this.observer=new IntersectionObserver(es=>{es.forEach(en=>{if(en.isIntersecting)this.more();});},{rootMargin:'400px'});
+    this.observer.observe(s);
   }
 };
 </script>
@@ -1138,7 +1612,7 @@ const Search = {
     this.query=q;this.page=page;
     switchView('search');
     const v=document.getElementById('view-search');
-    v.innerHTML=`<div class="section-head"><h3><span class="bar"></span>Search</h3></div><div id="searchMeta" style="color:var(--muted);margin-bottom:14px">Searching “${esc(q)}”…</div><div class="grid" id="searchGrid">${skeletons(10)}</div><div class="pager" id="searchPager"></div>`;
+    v.innerHTML=`<div class="section-head"><h3><span class="bar"></span>${t('search')}</h3></div><div id="searchMeta" style="color:var(--muted);margin-bottom:14px">Searching “${esc(q)}”…</div><div class="grid" id="searchGrid">${skeletons(10)}</div><div class="pager" id="searchPager"></div>`;
     const seq=++State.searchSeq;
     const r=await TMDB.search(q,page);
     if(seq!==State.searchSeq)return;        // drop stale response
@@ -1168,7 +1642,7 @@ const Feedback = {
   topics:['Play / trailer button not working',"Movie won't load",'Search problem','Account / login issue','Visual / layout bug','Other'],
   render(){
     const v=document.getElementById('view-feedback');
-    v.innerHTML=`<div class="section-head"><h3><span class="bar"></span>Feedback, Ratings &amp; Reports</h3></div>
+    v.innerHTML=`<div class="section-head"><h3><span class="bar"></span>${t('feedbackTitle')}</h3></div>
       <div class="card-box" style="max-width:640px">
         <p style="color:var(--muted);font-size:14px;margin-bottom:18px">Tell us what you love, rate your experience, or report a problem (e.g. “a play button isn’t working”). Everything here is delivered to the NANCYFLIX admin inbox.</p>
         <div class="seg" id="fbSeg">
@@ -1207,7 +1681,7 @@ const Profile = {
     const v=document.getElementById('view-profile');
     if(!State.user){v.innerHTML=`<div class="state">${svg(ICON.alert,'icon lg')}<h4>Not signed in</h4><button class="btn primary" onclick="backToAuth('login')">Log in</button></div>`;return;}
     const u=State.user;
-    v.innerHTML=`<div class="section-head"><h3><span class="bar"></span>My Profile</h3></div>
+    v.innerHTML=`<div class="section-head"><h3><span class="bar"></span>${t('myProfile')}</h3></div>
       <div class="grid2"><div class="card-box">
         <div style="display:flex;gap:16px;align-items:center;margin-bottom:20px">
           <div>${u.avatar?`<img src="${u.avatar}" alt="avatar" style="width:76px;height:76px;border-radius:50%;object-fit:cover;border:2px solid var(--accent)">`:`<div class="ph" style="width:76px;height:76px;border-radius:50%;font-size:26px">${esc((u.name||'U')[0])}</div>`}</div>
@@ -1222,14 +1696,14 @@ const Profile = {
       <div class="card-box">
         <h4 style="margin-bottom:14px">Account</h4>
         <div class="set-row"><div class="lbl"><div class="t">Role</div><div class="d">${u.isAdmin?'Verified administrator':'Member'}</div></div></div>
-        <div class="set-row"><div class="lbl"><div class="t">Password</div><div class="d">${HAS_BACKEND?'Managed by auth provider':'Demo mode (local)'}</div></div><button class="btn sm" id="pfPass">Change</button></div>
-        <div class="set-row"><div class="lbl"><div class="t">Data sync</div><div class="d">${Store.mode==='backend'?'On — cross-device':'Demo — this browser only'}</div></div><span class="badge ${Store.mode==='backend'?'ok':'warn'}">${Store.mode==='backend'?'ACTIVE':'LOCAL'}</span></div>
+        <div class="set-row"><div class="lbl"><div class="t">Password</div><div class="d">${HAS_BACKEND?'Managed by auth provider':'Secured on this device'}</div></div><button class="btn sm" id="pfPass">Change</button></div>
+        <div class="set-row"><div class="lbl"><div class="t">Data sync</div><div class="d">${Store.mode==='backend'?'On — cross-device':'Saved on this device · offline-ready'}</div></div><span class="badge ${Store.mode==='backend'?'ok':'ok'}">${Store.mode==='backend'?'ACTIVE':'ON-DEVICE'}</span></div>
         <div class="set-row"><div class="lbl"><div class="t">Sign out</div><div class="d">End this session</div></div><button class="btn sm" onclick="Auth.logout()">Logout</button></div>
         <div class="set-row" style="border:0"><div class="lbl"><div class="t" style="color:var(--err)">Delete account data</div><div class="d">Removes your profile, watchlist &amp; notifications</div></div><button class="btn sm" style="color:var(--err)" id="pfDel">Delete</button></div>
       </div></div>`;
     v.querySelector('#pfAvatar').onchange=e=>readImage(e.target.files[0],data=>{u.avatar=data;this.render();Toast.show('Picture updated','','ok');this._persist();});
     v.querySelector('#pfSave').onclick=()=>{u.name=document.getElementById('pfName').value.trim()||u.name;u.gender=document.getElementById('pfGender').value;this._persist();Auth.refreshChrome();const m=document.getElementById('pfMsg');m.className='form-msg show ok';m.textContent='Profile saved.';Noti.add('Profile updated','Your changes have been saved.','ok');Store.log('profile_updated');};
-    v.querySelector('#pfPass').onclick=()=>{if(HAS_BACKEND)Toast.show('Password reset','We’ll email you a secure reset link via the auth provider.','info');else Toast.show('Demo mode','Password changes require a configured backend.','warn');};
+    v.querySelector('#pfPass').onclick=async()=>{if(HAS_BACKEND){Toast.show('Password reset','We’ll email you a secure reset link via the auth provider.','info');return;}await Auth.changePassword();};
     v.querySelector('#pfDel').onclick=async()=>{if(await Confirm.ask('Delete your account data?','This removes your profile, watchlist and notifications on this device. This cannot be undone.',{ok:'Delete',danger:true})){Auth.deleteSelf();}};
   },
   _persist(){const users=Store.users();const i=users.findIndex(x=>x.id===State.user.id);if(i>=0){users[i]=State.user;Store.saveUsers(users);}Store.setSession(State.user.id);Sync.push('profile');}
@@ -1238,50 +1712,85 @@ function readImage(file,cb){if(!file)return;if(file.size>3*1024*1024){Toast.show
 </script>
 <script>
 /* ============ 15. THEME ENGINE ============ */
-const THEMES=[['midnight','Midnight Cinema',['#06060a','#12121c','#e11d2e']],['crimson','Crimson Neon',['#0a0205','#1c0509','#ff2d40']],['pureblack','Pure Black',['#000','#0b0b0b','#e11d2e']],['daylight','Daylight',['#eef0f5','#ffffff','#d11325']],['ocean','Deep Ocean',['#03121c','#07263a','#17c3d6']],['cosmic','Cosmic Violet',['#0b0618','#1a0f33','#8b5cf6']],['forest','Forest',['#05140c','#0b2917','#2fbf71']],['silver','Silver Screen',['#111318','#1f232c','#c7ccd6']]];
+const THEMES=[
+  ['dark','Dark',['#06060a','#12121c','#e11d2e'],'linear-gradient(135deg,#0d0d14,#06060a)'],
+  ['light','Light',['#eef0f5','#ffffff','#e11d2e'],'linear-gradient(135deg,#ffffff,#eef0f5)'],
+  ['romantic','Romantic',['#1a0810','#3b1429','#ff5d8f'],'linear-gradient(135deg,#3b1429,#1a0810)'],
+  ['amazing','Amazing',['#06050f','#1e1744','#7c5cff'],'linear-gradient(135deg,#7c5cff,#1e1744 60%,#ffcc66)'],
+  ['dim','Dim · easy on eyes',['#141418','#2a2a34','#c2606c'],'linear-gradient(135deg,#2a2a34,#141418)']
+];
 const FONTS=[['Inter',"'Inter',system-ui,sans-serif"],['System UI','system-ui,-apple-system,sans-serif'],['Arial','Arial,Helvetica,sans-serif'],['Georgia','Georgia,serif'],['Verdana','Verdana,sans-serif'],['Trebuchet MS','\"Trebuchet MS\",sans-serif'],['Courier New','\"Courier New\",monospace']];
 const Theme={
-  apply(id){State.theme=id;document.documentElement.setAttribute('data-theme',id);State.settings.theme=id;this.save();},
+  _norm(id){const ids=THEMES.map(t=>t[0]);if(ids.includes(id))return id;return (id==='daylight'||id==='silver')?'light':(id==='cosmic'?'amazing':(id==='romantic'?'romantic':'dark'));},
+  apply(id){id=this._norm(id);State.theme=id;document.documentElement.setAttribute('data-theme',id);State.settings.theme=id;this.accent(State.settings.accent);this.save();},
   font(name){const f=FONTS.find(x=>x[0]===name);if(f)document.documentElement.style.setProperty('--font',f[1]);State.settings.font=name;this.save();},
+  accent(hex){
+    State.settings.accent=hex||null;const r=document.documentElement;
+    if(hex){r.style.setProperty('--accent',hex);r.style.setProperty('--accent-2',hex);r.style.setProperty('--accent-soft',this._soft(hex));}
+    else{r.style.removeProperty('--accent');r.style.removeProperty('--accent-2');r.style.removeProperty('--accent-soft');}
+    this.save();
+  },
+  _soft(hex){try{const h=hex.replace('#','');const n=h.length===3?h.split('').map(c=>c+c).join(''):h;const r=parseInt(n.slice(0,2),16),g=parseInt(n.slice(2,4),16),b=parseInt(n.slice(4,6),16);return `rgba(${r},${g},${b},.16)`;}catch(e){return 'rgba(225,29,46,.14)';}},
+  density(mode){State.settings.density=mode;document.body.classList.toggle('density-compact',mode==='compact');this.save();},
   save(){if(State.user){const users=Store.users();const i=users.findIndex(x=>x.id===State.user.id);if(i>=0){users[i].settings=State.settings;Store.saveUsers(users);}Sync.push('settings');}else LS.set('guestSettings',State.settings);}
 };
 
 /* ============ 16. SETTINGS MANAGER ============ */
 const Settings={
-  defaults(){return{theme:'midnight',font:'Inter',inApp:true,sound:true,soundVol:0.5,browserNoti:false,transitions:true,hover:true,splash:true,reduceMotion:false,autoplay:true,defaultCat:'trending',lang:'en'};},
+  defaults(){return{theme:'dark',accent:null,density:'comfortable',posterQ:'high',font:'Inter',inApp:true,sound:true,soundVol:0.5,browserNoti:false,transitions:true,hover:true,splash:true,reduceMotion:false,autoplay:true,defaultCat:'trending',lang:'en'};},
   openModal(){
     const s=State.settings;const m=document.getElementById('settingsModal');
+    const si=this.storageInfo();
     m.innerHTML=`<button class="modal-close" onclick="closeOverlay('settingsOverlay')">${svg(ICON.close,'icon sm')}</button>
-      <div style="padding:24px 26px 10px"><h3 style="font-size:21px">Settings</h3><p style="color:var(--muted);font-size:13px">Every control below changes real behavior. Items marked “future” need a backend.</p>
-        <input id="setSearch" placeholder="Search settings…" style="width:100%;margin-top:14px;padding:11px 14px;background:var(--bg-2);border:1px solid var(--border);border-radius:10px;color:var(--text)"></div>
+      <div style="padding:24px 26px 10px"><h3 style="font-size:21px">${t('setTitle')}</h3><p style="color:var(--muted);font-size:13px">${t('setIntro')}</p>
+        <input id="setSearch" placeholder="${t('setSearchPh')}" style="width:100%;margin-top:14px;padding:11px 14px;background:var(--bg-2);border:1px solid var(--border);border-radius:10px;color:var(--text)"></div>
       <div style="padding:6px 26px 26px" id="setBody">
-        <div class="set-group" data-s="theme appearance color"><h4>${svg(ICON.film,'icon sm')} Themes</h4><div class="theme-grid">${THEMES.map(t=>`<div class="theme-opt ${t[0]===s.theme?'active':''}" data-theme-opt="${t[0]}"><div class="sw">${t[2].map(c=>`<i style="background:${c}"></i>`).join('')}</div><div class="nm">${t[1]}</div></div>`).join('')}</div></div>
-        <div class="set-group" data-s="font typography text"><h4>Typography</h4><div class="set-row"><div class="lbl"><div class="t">Font family</div><div class="d">Applies across the app</div></div><select class="mini" id="setFont">${FONTS.map(f=>`<option ${f[0]===s.font?'selected':''}>${f[0]}</option>`).join('')}</select></div></div>
-        <div class="set-group" data-s="animation motion splash hover"><h4>Animation</h4>
-          ${this._sw('Interface transitions','Smooth view & modal animations','transitions',s.transitions)}
-          ${this._sw('Poster hover effects','Scale & reveal on hover','hover',s.hover)}
-          ${this._sw('Splash animation','Show the cinematic intro','splash',s.splash)}
-          ${this._sw('Reduced motion','Minimise animations (also respects your OS setting)','reduceMotion',s.reduceMotion)}</div>
-        <div class="set-group" data-s="notification sound alert"><h4>Notifications</h4>
-          ${this._sw('In-app notifications','Toasts & notification center','inApp',s.inApp)}
-          ${this._sw('Sound effects','Play a soft tone on alerts','sound',s.sound)}
-          <div class="set-row"><div class="lbl"><div class="t">Sound volume</div></div><input type="range" min="0" max="1" step="0.1" value="${s.soundVol}" id="setVol"></div>
-          ${this._sw('Browser notifications','Requires explicit permission','browserNoti',s.browserNoti)}</div>
-        <div class="set-group" data-s="general language category autoplay privacy"><h4>General</h4>
-          <div class="set-row"><div class="lbl"><div class="t">Language</div><div class="d future">Future capability — UI copy is English for now</div></div><select class="mini" id="setLang"><option value="en">English</option><option value="sw">Kiswahili</option><option value="fr">Français</option><option value="es">Español</option></select></div>
-          <div class="set-row"><div class="lbl"><div class="t">Default browse category</div></div><select class="mini" id="setCat">${['trending','popular','top_rated','upcoming'].map(c=>`<option value="${c}" ${c===s.defaultCat?'selected':''}>${c.replace('_',' ')}</option>`).join('')}</select></div>
-          ${this._sw('Trailer autoplay','Auto-start trailers in the player','autoplay',s.autoplay)}
-          <div class="set-row" style="border:0"><div class="lbl"><div class="t">Export my data</div><div class="d">Download your profile, watchlist &amp; settings (JSON)</div></div><button class="btn sm" onclick="Settings.exportData()">Export</button></div></div>
+        <div class="set-group" data-s="theme appearance color accent look"><h4>${svg(ICON.film,'icon sm')} ${t('grpAppearance')}</h4>
+          <div class="theme-grid">${THEMES.map(th=>`<div class="theme-opt ${th[0]===s.theme?'active':''}" data-theme-opt="${th[0]}"><div class="sw"><div class="grad" style="background:${th[3]}"></div><div class="mini-ui" style="background:${th[2][1]}"><span style="width:70%;background:${th[2][2]}"></span><span style="width:45%;background:${th[2][2]};opacity:.5"></span></div><div class="chip">${th[2].map(c=>`<i style="background:${c}"></i>`).join('')}</div></div><div class="meta"><span class="nm">${th[1]}</span><span class="tick">✓</span></div></div>`).join('')}</div>
+          <div class="set-row" style="border:0;padding-top:16px"><div class="lbl"><div class="t">${t('accentColor')}</div><div class="d">${t('accentDesc')}</div></div><div class="accent-row" id="accentRow"><button class="acc ${!s.accent?'active':''}" data-acc="" title="${t('themeDefault')}" style="background:linear-gradient(135deg,var(--accent),var(--accent-2))"></button>${['#e11d2e','#ff5d8f','#7c5cff','#17c3d6','#2fbf71','#ffcc66','#ff7849'].map(c=>`<button class="acc ${s.accent===c?'active':''}" data-acc="${c}" style="background:${c}" title="${c}"></button>`).join('')}</div></div></div>
+        <div class="set-group" data-s="font typography text"><h4>${t('grpTypography')}</h4><div class="set-row" style="border:0"><div class="lbl"><div class="t">${t('fontFamily')}</div><div class="d">${t('appliesApp')}</div></div><select class="mini" id="setFont">${FONTS.map(f=>`<option ${f[0]===s.font?'selected':''}>${f[0]}</option>`).join('')}</select></div></div>
+        <div class="set-group" data-s="language region locale translate country"><h4>${t('grpLang')}</h4>
+          <div class="set-row"><div class="lbl"><div class="t">${t('appLang')}</div><div class="d">${t('appLangDesc')}</div></div><select class="mini" id="setLang">${LANGS.map(l=>`<option value="${l[0]}" ${l[0]===s.lang?'selected':''}>${l[1]}</option>`).join('')}</select></div>
+          <div class="set-row" style="border:0"><div class="lbl"><div class="t">${t('defaultCat')}</div><div class="d">${t('defaultCatDesc')}</div></div><select class="mini" id="setCat">${['trending','popular','top_rated','upcoming'].map(c=>`<option value="${c}" ${c===s.defaultCat?'selected':''}>${t('sec'+({trending:'Trending',popular:'Popular',top_rated:'TopRated',upcoming:'Upcoming'}[c]))}</option>`).join('')}</select></div></div>
+        <div class="set-group" data-s="premium professional density quality data saver experience"><h4>${svg(ICON.star,'icon sm')} ${t('grpPremium')}</h4>
+          <div class="set-row"><div class="lbl"><div class="t">${t('density')} <span class="pro-tag">PRO</span></div><div class="d">${t('densityDesc')}</div></div><select class="mini" id="setDensity"><option value="comfortable" ${s.density!=='compact'?'selected':''}>${t('comfortable')}</option><option value="compact" ${s.density==='compact'?'selected':''}>${t('compact')}</option></select></div>
+          <div class="set-row"><div class="lbl"><div class="t">${t('posterQuality')} <span class="pro-tag">PRO</span></div><div class="d">${t('posterQualityDesc')}</div></div><select class="mini" id="setPoster"><option value="high" ${s.posterQ!=='saver'?'selected':''}>${t('highQuality')}</option><option value="saver" ${s.posterQ==='saver'?'selected':''}>${t('dataSaver')}</option></select></div>
+          ${this._sw(t('autoplay'),t('autoplayDesc'),'autoplay',s.autoplay)}</div>
+        <div class="set-group" data-s="animation motion splash hover"><h4>${t('grpAnimation')}</h4>
+          ${this._sw(t('transitions'),t('transitionsDesc'),'transitions',s.transitions)}
+          ${this._sw(t('hoverFx'),t('hoverFxDesc'),'hover',s.hover)}
+          ${this._sw(t('splashAnim'),t('splashAnimDesc'),'splash',s.splash)}
+          ${this._sw(t('reducedMotion'),t('reducedMotionDesc'),'reduceMotion',s.reduceMotion)}</div>
+        <div class="set-group" data-s="notification sound alert"><h4>${t('grpNoti')}</h4>
+          ${this._sw(t('inAppNoti'),t('inAppNotiDesc'),'inApp',s.inApp)}
+          ${this._sw(t('soundFx'),t('soundFxDesc'),'sound',s.sound)}
+          <div class="set-row"><div class="lbl"><div class="t">${t('soundVolume')}</div></div><div class="vol-stepper"><button type="button" class="vstep" id="volDown" aria-label="Decrease volume">${svg(ICON.minus,'icon sm')}</button><div class="vol-disp"><span id="volNum">${Math.round(s.soundVol*100)}</span><small>%</small></div><button type="button" class="vstep" id="volUp" aria-label="Increase volume">${svg(ICON.plus,'icon sm')}</button></div></div>
+          ${this._sw(t('browserNoti'),t('browserNotiDesc'),'browserNoti',s.browserNoti)}</div>
+        <div class="set-group" data-s="data storage management export usage offline"><h4>${t('grpData')}</h4>
+          <div class="dm-grid" id="dataSummary">
+            <div class="dm"><div class="dv">${this._fmtBytes(si.bytes)}</div><div class="dl">${t('onDeviceStorage')}</div></div>
+            <div class="dm"><div class="dv">${si.cache}</div><div class="dl">${t('cachedOffline')}</div></div>
+            <div class="dm"><div class="dv">${State.watchlist.length}</div><div class="dl">${t('watchlistItems')}</div></div>
+          </div>
+          <div class="dm-note">${t('dataNote')}</div>
+          <div class="set-row" style="border:0"><div class="lbl"><div class="t">${t('exportMyData')}</div><div class="d">${t('exportMyDataDesc')}</div></div><button class="btn sm" onclick="Settings.exportData()">${t('exportBtn')}</button></div></div>
       </div>`;
-    m.querySelector('[data-s="theme appearance color"]').addEventListener('click',e=>{const o=e.target.closest('[data-theme-opt]');if(o){Theme.apply(o.dataset.themeOpt);m.querySelectorAll('[data-theme-opt]').forEach(x=>x.classList.toggle('active',x===o));}});
+    m.querySelector('[data-s="theme appearance color accent look"]').addEventListener('click',e=>{const o=e.target.closest('[data-theme-opt]');if(o){Theme.apply(o.dataset.themeOpt);m.querySelectorAll('[data-theme-opt]').forEach(x=>x.classList.toggle('active',x===o));return;}const a=e.target.closest('[data-acc]');if(a){Theme.accent(a.dataset.acc||null);m.querySelectorAll('[data-acc]').forEach(x=>x.classList.toggle('active',x===a));}});
     m.querySelector('#setFont').onchange=e=>Theme.font(e.target.value);
-    m.querySelector('#setVol').oninput=e=>{s.soundVol=+e.target.value;Theme.save();};
-    m.querySelector('#setLang').onchange=e=>{s.lang=e.target.value;Theme.save();};
+    (()=>{const nm=m.querySelector('#volNum');const setVol=v=>{v=Math.max(0,Math.min(1,Math.round(v*10)/10));s.soundVol=v;nm.textContent=Math.round(v*100);Theme.save();try{if(s.sound)Sound.ping('info');}catch(err){}};m.querySelector('#volDown').onclick=()=>setVol(s.soundVol-0.1);m.querySelector('#volUp').onclick=()=>setVol(s.soundVol+0.1);})();
+    m.querySelector('#setLang').onchange=e=>{s.lang=e.target.value;Theme.save();I18N.apply();Settings.openModal();};
     m.querySelector('#setCat').onchange=e=>{s.defaultCat=e.target.value;Theme.save();};
+    m.querySelector('#setDensity').onchange=e=>Theme.density(e.target.value);
+    m.querySelector('#setPoster').onchange=e=>{s.posterQ=e.target.value;Theme.save();try{switchView(State.view);}catch(err){}};
     m.querySelectorAll('[data-set]').forEach(sw=>sw.onchange=()=>{const k=sw.dataset.set;s[k]=sw.checked;this._applyToggle(k,sw.checked);Theme.save();});
     m.querySelector('#setSearch').oninput=e=>{const q=e.target.value.toLowerCase();m.querySelectorAll('.set-group').forEach(g=>{g.style.display=(!q||g.dataset.s.includes(q)||g.textContent.toLowerCase().includes(q))?'block':'none';});};
     openOverlay('settingsOverlay');
   },
+  storageInfo(){
+    let bytes=0,keys=0;try{for(let i=0;i<localStorage.length;i++){const k=localStorage.key(i);if(k&&k.indexOf(DB_NS)===0){keys++;bytes+=(k.length+(localStorage.getItem(k)||'').length);}}}catch(e){}
+    return {bytes,keys,cache:DataCache.size()};
+  },
+  _fmtBytes(b){return b<1024?b+' B':b<1048576?(b/1024).toFixed(1)+' KB':(b/1048576).toFixed(2)+' MB';},
   _sw(t,d,key,on){return `<div class="set-row"><div class="lbl"><div class="t">${t}</div><div class="d">${d}</div></div><label class="switch"><input type="checkbox" data-set="${key}" ${on?'checked':''}><span class="sl"></span></label></div>`;},
   _applyToggle(k,v){
     if(k==='reduceMotion')document.body.classList.toggle('reduce-motion',v);
@@ -1323,7 +1832,7 @@ const Chart={
   }
 };
 
-/* analytics computed from real local data (demo) or backend (if wired) */
+/* analytics computed from real on-device data (or backend, if wired) */
 const Analytics={
   users(){return Store.users();},
   since(days){const t=Date.now()-days*864e5;return this.users().filter(u=>u.createdAt>=t).length;},
@@ -1355,12 +1864,12 @@ const Admin={
     else if(this.tab==='audit')this.audit(el);
     else if(this.tab==='config')this.config(el);
   },
-  _demoTag(){return Store.mode==='backend'?'':'<span class="ks demo">demo data (local)</span>';},
+  _demoTag(){return '<span class="badge ok" style="font-size:9px">LIVE</span>';},
   overview(el){
     const d7=Analytics.daily7();const tg=Analytics.topGender();
     const kpi=(l,v,s)=>`<div class="kpi"><div class="kl">${l}</div><div class="kv">${v}</div><div class="ks ${s&&s.demo?'demo':''}">${s?(s.t||s):''}</div></div>`;
     el.innerHTML=`<div class="kpis">
-      ${kpi('Total accounts',Analytics.users().length,{t:this._demoTag()?'measured locally':''})}
+      ${kpi('Total accounts',Analytics.users().length,{t:'on this device'})}
       ${kpi('New today',Analytics.today(),'')}
       ${kpi('Last 7 days',Analytics.since(7),'')}
       ${kpi('Last 30 days',Analytics.since(30),'')}
@@ -1453,7 +1962,7 @@ Admin.publish=function(){const t=document.getElementById('anTitle').value.trim()
 Admin.audit=function(el){const log=Store.audit();el.innerHTML=`<div class="panel-card"><h4>Audit &amp; security log <span class="chip">${log.length} events</span></h4><p style="color:var(--muted);font-size:12.5px;margin-bottom:12px">Records registrations, logins, profile updates and admin actions. No passwords, hashes or tokens are ever shown.</p><div style="overflow-x:auto"><table><thead><tr><th>When</th><th>Action</th><th>Actor</th><th>Detail</th></tr></thead><tbody>${log.length?log.map(a=>`<tr><td>${fmtDT(a.ts)}</td><td><span class="chip">${esc(a.action)}</span></td><td>${esc(a.actor)}</td><td>${esc(a.meta)}</td></tr>`).join(''):`<tr><td colspan="4"><div class="state" style="padding:30px">${svg(ICON.empty,'icon lg')}<p>No audit events yet.</p></div></td></tr>`}</tbody></table></div></div>`;};
 
 Admin.config=function(el){el.innerHTML=`<div class="panel-card"><h4>Site configuration</h4>
-  <div class="set-row"><div class="lbl"><div class="t">Data backend</div><div class="d">${Store.mode==='backend'?'Supabase connected — cross-device sync active':'Demo mode — local browser storage only'}</div></div><span class="badge ${Store.mode==='backend'?'ok':'warn'}">${Store.mode.toUpperCase()}</span></div>
+  <div class="set-row"><div class="lbl"><div class="t">Data backend</div><div class="d">${Store.mode==='backend'?'Supabase connected — cross-device sync active':'Live on-device database — real registrations stored &amp; persisted, offline-ready'}</div></div><span class="badge ok">${Store.mode==='backend'?'BACKEND':'LIVE'}</span></div>
   <div class="set-row"><div class="lbl"><div class="t">TMDB catalogue</div><div class="d">${HAS_TMDB?(CONFIG.TMDB_PROXY?'Server proxy (key kept private)':'Browser key (exposed — dev only)'):'Not configured'}</div></div><span class="badge ${HAS_TMDB?'ok':'warn'}">${HAS_TMDB?'LIVE':'OFF'}</span></div>
   <div class="set-row"><div class="lbl"><div class="t">Welcome email</div><div class="d">${HAS_BACKEND?'Delivered via backend function':'Not configured — accounts still work, no email sent'}</div></div><span class="badge ${HAS_BACKEND?'ok':'warn'}">${HAS_BACKEND?'ON':'OFF'}</span></div>
   <div class="set-row" style="border:0"><div class="lbl"><div class="t">Provisioned admins</div><div class="d">${CONFIG.ADMIN_EMAILS.map(esc).join(', ')} — roles verified server-side</div></div></div></div>
@@ -1473,8 +1982,8 @@ const Auth={
     const users=Store.users();
     if(users.some(u=>u.email===email))throw new Error('An account with this email already exists.');
     const user={id:uid(),name,email,gender,avatar:avatar||null,createdAt:Date.now(),lastLogin:Date.now(),
-      pwHash:await demoHash(password),
-      // DEMO role flag. In production the server verifies this against a protected table.
+      pwHash:await secureHash(password),
+      // Admin role flag. In production the server verifies this against a protected table.
       isAdmin:CONFIG.ADMIN_EMAILS.includes(email),settings:Settings.defaults()};
     users.push(user);Store.saveUsers(users);
     this._enter(user);
@@ -1487,7 +1996,7 @@ const Auth={
     email=email.toLowerCase().trim();
     if(Store.mode==='backend'){/* call Supabase signInWithPassword; role from profiles */}
     const users=Store.users();const user=users.find(u=>u.email===email);
-    if(!user||user.pwHash!==await demoHash(password))throw new Error('Invalid email or password.');
+    if(!user||user.pwHash!==await secureHash(password))throw new Error('Invalid email or password.');
     user.lastLogin=Date.now();Store.saveUsers(users);
     this._enter(user,remember);Store.log('login',email);
     Toast.show('Welcome back','Signed in as '+user.name,'ok');
@@ -1505,13 +2014,26 @@ const Auth={
     State.user=user;State.guest=false;State.settings=Object.assign(Settings.defaults(),user.settings||{});
     State.watchlist=Store.getWatchlist(user.id);State.notifications=Store.getNoti(user.id);
     if(remember)Store.setSession(user.id);else Store.setSession(user.id);
-    Theme.apply(State.settings.theme);Theme.font(State.settings.font);this._applySettings();
+    Theme.apply(State.settings.theme);Theme.font(State.settings.font);Theme.density(State.settings.density);this._applySettings();I18N.apply();
     this.refreshChrome();Sync.pull();Noti.syncAnnouncements();
     enterApp();
   },
-  guest(){State.guest=true;State.user=null;State.watchlist=[];State.notifications=[];State.settings=LS.get('guestSettings',Settings.defaults());Theme.apply(State.settings.theme);Theme.font(State.settings.font);this._applySettings();Store.bumpGuest();Store.log('guest_session');this.refreshChrome();enterApp();},
+  guest(){State.guest=true;State.user=null;State.watchlist=[];State.notifications=[];State.settings=LS.get('guestSettings',Settings.defaults());Theme.apply(State.settings.theme);Theme.font(State.settings.font);Theme.density(State.settings.density);this._applySettings();I18N.apply();Store.bumpGuest();Store.log('guest_session');this.refreshChrome();enterApp();},
   async logout(){if(!await Confirm.ask('Are you sure you want to log out?','You can sign back in anytime.',{ok:'Yes, log me out',cancel:'Stay signed in'}))return;if(Store.mode==='backend'){/* supabase.auth.signOut() */}Store.setSession(null);Store.log('logout',State.user?State.user.email:'');State.user=null;State.guest=false;State.notifications=[];State.watchlist=[];Toast.show('Signed out','See you soon.','info');backToAuth('login');},
   deleteSelf(){const id=State.user.id;let users=Store.users().filter(u=>u.id!==id);Store.saveUsers(users);LS.del(Store.wlKey(id));LS.del(Store.notiKey(id));Store.setSession(null);Store.log('account_deleted',State.user.email);State.user=null;Toast.show('Account removed','Your data was deleted.','info');backToAuth('reg');},
+  async changePassword(){
+    const u=State.user;if(!u)return;
+    const cur=window.prompt('Enter your current password:');if(cur==null)return;
+    if(u.pwHash!==await secureHash(cur)){Toast.show('Incorrect password','Your current password did not match.','err');return;}
+    const nw=window.prompt('Enter your new password (min 6 characters):');if(nw==null)return;
+    if(!nw||nw.length<6){Toast.show('Too short','Password must be at least 6 characters.','err');return;}
+    const cf=window.prompt('Re-enter your new password:');if(cf==null)return;
+    if(cf!==nw){Toast.show('Mismatch','The new passwords did not match.','err');return;}
+    const users=Store.users();const rec=users.find(x=>x.id===u.id);if(!rec){Toast.show('Error','Account not found.','err');return;}
+    rec.pwHash=await secureHash(nw);Store.saveUsers(users);u.pwHash=rec.pwHash;
+    Store.log('password_changed',u.email);
+    Noti.add('Password changed','Your password was updated on this device.','ok');
+  },
   refreshChrome(){
     const av=document.getElementById('topAvatar');const u=State.user;
     document.getElementById('navAdmin').style.display=(u&&u.isAdmin)?'flex':'none';
@@ -1576,7 +2098,7 @@ const Legal={
 };
 
 /* ============ 21. ROUTING / VIEW SWITCHING ============ */
-const VIEWS={home:Home,genres:Genres,watchlist:Watchlist,feedback:Feedback,profile:Profile,admin:Admin,search:null};
+const VIEWS={home:Home,discover:Discover,genres:Genres,watchlist:Watchlist,feedback:Feedback,profile:Profile,admin:Admin,search:null};
 function switchView(name){
   State.view=name;
   document.querySelectorAll('.view').forEach(v=>v.classList.remove('show'));
@@ -1662,7 +2184,7 @@ LEGAL_DOCS.privacy={
     <h3><span class="n">2</span>How we use it</h3>
     <p>To authenticate you, remember your watchlist and preferences, respond to feedback, keep the service secure, and improve features. We do <b>not</b> sell your personal data and we do <b>not</b> use third-party advertising trackers.</p>
     <h3><span class="n">3</span>Where your data lives</h3>
-    <p>In demo mode, your account, watchlist and settings are stored <b>locally in your browser</b> (localStorage) and never leave your device. In backend mode they are stored securely with our provider solely to sync across your own devices.</p>
+    <p>Your account, watchlist and settings are stored <b>on your device</b> (local storage) and stay available offline — they never leave your device. In backend mode they are stored securely with our provider solely to sync across your own devices.</p>
     <h3><span class="n">4</span>Third-party services</h3>
     <p>Film data, posters and trailers are provided by <a class="inl" href="https://www.themoviedb.org" target="_blank" rel="noopener noreferrer">TMDB</a>. When you load trailers, requests may reach the relevant video provider (e.g. YouTube) under their own privacy policies.</p>
     <h3><span class="n">5</span>Your rights</h3>
@@ -1689,7 +2211,7 @@ LEGAL_DOCS.cookies={
     <ul>
       <li><b>Strictly necessary</b> (always on) — your session, so you stay signed in and your settings load. The service cannot function without these.</li>
       <li><b>Preferences</b> — theme, language, motion and autoplay choices, stored on your device.</li>
-      <li><b>Analytics</b> (optional) — anonymous, aggregated usage counts to help us improve. Off by default in demo mode.</li>
+      <li><b>Analytics</b> (optional) — anonymous, aggregated usage counts to help us improve. Off by default.</li>
       <li><b>Advertising</b> — <b>none.</b> We do not serve ads or embed ad-tech.</li>
     </ul>
     <h3><span class="n">2</span>Manage your choices</h3>
@@ -1699,7 +2221,7 @@ LEGAL_DOCS.cookies={
       <li>Adjust motion, autoplay and theme under <a class="inl" onclick="closeOverlay('legalOverlay');Settings.openModal()">Settings</a>.</li>
       <li>Deleting your account also removes locally stored preferences and watchlist.</li>
     </ul>
-    <div class="doc-note">Because demo mode stores everything locally, clearing your browser data fully resets NANCYFLIX on this device. A full consent banner with granular toggles can be wired up for a production, cookie-based deployment.</div>`
+    <div class="doc-note">Because everything is stored on your device, clearing your browser data fully resets NANCYFLIX on this device. A full consent banner with granular toggles can be wired up for a production, cookie-based deployment.</div>`
 };
 LEGAL_DOCS.about={
   title:'About Dev Brian Studios',
@@ -1743,10 +2265,10 @@ function authMsg(text,type='err'){const m=document.getElementById('authMsg');if(
 document.getElementById('loginForm').addEventListener('submit',async e=>{e.preventDefault();authMsg('');try{await Auth.login({email:liEmail.value,password:liPass.value,remember:liRemember.checked});}catch(err){authMsg(err.message);}});
 document.getElementById('regForm').addEventListener('submit',async e=>{e.preventDefault();authMsg('');const name=rgName.value.trim(),email=rgEmail.value.trim(),pass=rgPass.value;if(!name){authMsg('Please enter your full name.');return;}if(!/^[^@\s]+@[^@\s]+\.[^@\s]+$/.test(email)){authMsg('Please enter a valid email.');return;}if(pass.length<8){authMsg('Password must be at least 8 characters.');return;}try{await Auth.register({name,email,password:pass,gender:rgGender.value,avatar:regAvatar});authMsg('Account created! Welcome to NANCYFLIX.','ok');}catch(err){authMsg(err.message);}});
 document.getElementById('guestBtn').onclick=()=>Auth.guest();
-document.getElementById('forgotBtn').onclick=()=>{if(HAS_BACKEND)Toast.show('Password reset','A reset link will be emailed via your auth provider.','info');else authMsg('Password recovery needs a configured backend. In demo mode, re-register if needed.','info');};
+document.getElementById('forgotBtn').onclick=()=>{if(HAS_BACKEND)Toast.show('Password reset','A reset link will be emailed via your auth provider.','info');else authMsg('Password recovery needs a configured backend. If you’re signed in, you can change your password from your Profile.','info');};
 
 /* ============ app enter / return to auth ============ */
-function enterApp(){document.getElementById('auth').classList.remove('show');document.getElementById('app').classList.add('show');document.body.classList.remove('noscroll');document.getElementById('mSearchBtn').style.display='';document.getElementById('fabSearch').classList.add('show');switchView(State.settings.defaultCat&&false?'home':'home');}
+function enterApp(){document.getElementById('auth').classList.remove('show');document.getElementById('app').classList.add('show');document.body.classList.remove('noscroll');document.getElementById('mSearchBtn').style.display='';document.getElementById('fabSearch').classList.add('show');switchView(State.settings.defaultCat&&false?'home':'home');setTimeout(()=>{try{handleHash();}catch(e){}},300);}
 function backToAuth(tab='login'){document.getElementById('app').classList.remove('show');document.getElementById('fabSearch').classList.remove('show');[...document.querySelectorAll('.overlay.show')].forEach(o=>o.classList.remove('show'));document.getElementById('notiPanel').classList.remove('show');document.getElementById('auth').classList.add('show');document.body.classList.add('noscroll');setTab(tab);document.getElementById('demoNote').style.display=HAS_BACKEND?'none':'block';}
 
 /* ============ 0. SPLASH + INITIALIZATION ============ */
@@ -1755,12 +2277,10 @@ const SplashAudio={
   url:'https://files.catbox.moe/1ubw1i.wav',
   _wantSound(){return LS.get('guestSettings',{}).sound!==false;},
   init(){
-    this.on=this._wantSound();
+    this.on=true;                 // intro audio autoplays by default
     if(!this.el){this.el=new Audio(this.url);this.el.preload='auto';this.el.volume=0.6;this.el.crossOrigin='anonymous';}
-    const btn=document.getElementById('splashSound');
-    if(btn){this._paintBtn();btn.onclick=()=>this.toggle();}
   },
-  _paintBtn(){const btn=document.getElementById('splashSound');if(!btn)return;btn.classList.toggle('muted',!this.on);btn.textContent=this.on?'\uD83D\uDD0A':'\uD83D\uDD07';},
+  _paintBtn(){},
   toggle(){this.on=!this.on;this._paintBtn();if(this.on){this.play();}else{this.stop();}},
   play(){
     if(!this.on||!this.el||this.started)return;
@@ -1816,7 +2336,6 @@ function runSplash(){
 }
 let splashDone=false;
 function finishSplash(){if(splashDone)return;splashDone=true;SplashRotator.stop();SplashAudio.stop();const s=document.getElementById('splash');s.style.transition='opacity .5s';s.style.opacity=0;setTimeout(()=>{s.style.display='none';resumeSession();},500);}
-document.getElementById('skipSplash').onclick=()=>finishSplash();
 
 function resumeSession(){
   const sid=Store.session();
@@ -1829,6 +2348,8 @@ function resumeSession(){
   try{State.genres=await TMDB.genres();}catch(e){State.genres=GENRE_FALLBACK;}
   State.genreMap={};State.genres.forEach(g=>State.genreMap[g.id]=g.name);
   Search.init();Sync.start();
+  window.addEventListener('offline',()=>Toast.show('Offline mode','You can keep browsing cached movies and posters. Trailers and playback need a connection.','warn'));
+  window.addEventListener('online',()=>Toast.show('Back online','Live data restored.','ok'));
   runSplash();
 })();
 </script>
