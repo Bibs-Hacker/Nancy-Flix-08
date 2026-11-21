@@ -1129,32 +1129,210 @@ select,input,textarea{font-size:16px} /* stops iOS zoom-on-focus */
 [data-theme=light] .nf-tbl td{border-color:rgba(20,20,30,.08)}
 @media(max-width:600px){.ch-grid.nf7{grid-template-columns:repeat(auto-fill,minmax(150px,1fr))}.ch.nf7 .nm{font-size:12.5px}}
 </style>
+<style id="nf8-css">
+/* ================= NANCYFLIX v8 ================= */
+/* --- search: single field, action inside the right end --- */
+.search-box input{padding-right:78px!important}
+.search-box .clr{right:44px;display:none;align-items:center;justify-content:center;width:26px;height:26px;border-radius:50%;z-index:2}
+.search-box .clr:hover{background:rgba(255,255,255,.08);color:var(--text)}
+.search-go{position:absolute;right:7px;top:50%;transform:translateY(-50%);width:32px;height:32px;border-radius:50%;display:grid;place-items:center;color:#fff;background:linear-gradient(135deg,var(--accent),var(--accent-2));box-shadow:0 4px 12px rgba(225,29,46,.35);z-index:2;border:0}
+.search-go:hover{filter:brightness(1.08)}
+.search-go svg{width:15px;height:15px}
+[dir=rtl] .search-go{right:auto;left:7px}[dir=rtl] .search-box .clr{right:auto;left:44px}
+
+/* --- flags --- */
+.nf8-flag{width:22px;height:15px;display:inline-block;border-radius:3px;overflow:hidden;box-shadow:0 0 0 1px rgba(255,255,255,.16);vertical-align:-2px;flex:0 0 auto}
+.lang-btn .nf8-flag{width:20px;height:14px}
+.lp-opt .fl .nf8-flag{width:34px;height:23px;border-radius:4px}
+.auth-lang .nf8-flag{width:21px;height:14px}
+.set-row .btn .nf8-flag{width:18px;height:12px;margin-inline-end:5px}
+
+/* --- cinematic splash --- */
+.nf8-splash{position:fixed;inset:0;z-index:1000;display:flex!important;flex-direction:column;align-items:center;justify-content:center;gap:0;background:#050508;overflow:hidden;padding:0!important}
+.nf8-splash::before{content:'';position:absolute;inset:0;background:radial-gradient(900px 620px at 50% 45%,rgba(225,29,46,.20),transparent 62%),linear-gradient(180deg,#08080d 0%,#050508 60%,#030304 100%);pointer-events:none}
+.nf8-grain{position:absolute;inset:-50%;opacity:.20;pointer-events:none;background-image:repeating-linear-gradient(0deg,rgba(255,255,255,.07) 0 1px,transparent 1px 3px),repeating-linear-gradient(90deg,rgba(255,255,255,.05) 0 1px,transparent 1px 4px);animation:nf8grain 1.2s steps(2) infinite}
+@keyframes nf8grain{0%{transform:translate(0,0)}50%{transform:translate(-6px,4px)}100%{transform:translate(4px,-5px)}}
+.nf8-beam{position:absolute;left:50%;top:-30%;width:46vw;height:150vh;transform:translateX(-50%) rotate(8deg);background:linear-gradient(90deg,transparent,rgba(255,255,255,.045),transparent);filter:blur(18px);pointer-events:none;animation:nf8beam 7s ease-in-out infinite}
+@keyframes nf8beam{0%,100%{opacity:.5;transform:translateX(-50%) rotate(8deg)}50%{opacity:1;transform:translateX(-46%) rotate(4deg)}}
+.nf8-splash .nf8-iris{position:absolute;width:min(74vw,560px);aspect-ratio:1;display:grid;place-items:center;opacity:.85;animation:nf8iris 5.6s cubic-bezier(.2,.8,.2,1) both}
+.nf8-splash .nf8-iris span{position:absolute;border-radius:50%;border:1px solid rgba(255,255,255,.10)}
+.nf8-splash .nf8-iris .r1{inset:0;border-color:rgba(225,29,46,.30);animation:nf8spin 26s linear infinite}
+.nf8-splash .nf8-iris .r2{inset:9%;border-style:dashed;border-color:rgba(255,204,102,.20);animation:nf8spin 18s linear infinite reverse}
+.nf8-splash .nf8-iris .r3{inset:20%;border-color:rgba(255,255,255,.08)}
+.nf8-splash .nf8-iris i{position:absolute;width:1px;height:52%;top:0;left:calc(50% - .5px);transform-origin:50% 100%;transform:rotate(var(--a));background:linear-gradient(180deg,rgba(225,29,46,.55),transparent 42%)}
+.nf8-splash .nf8-iris b{width:9px;height:9px;border-radius:50%;background:#ff3b4e;box-shadow:0 0 0 6px rgba(225,29,46,.12),0 0 36px 8px rgba(225,29,46,.45);animation:nf8pulse 2s ease-in-out infinite}
+@keyframes nf8spin{to{transform:rotate(360deg)}}
+@keyframes nf8pulse{0%,100%{opacity:.65;transform:scale(.9)}50%{opacity:1;transform:scale(1.15)}}
+@keyframes nf8iris{from{opacity:0;transform:scale(.86)}to{opacity:.85;transform:scale(1)}}
+.nf8-splash .nf8-core{position:relative;z-index:3;display:flex;flex-direction:column;align-items:center;text-align:center;padding:0 22px}
+.nf8-kicker{font-size:9.5px;letter-spacing:.52em;text-indent:.52em;color:#8d8d9c;font-weight:800;animation:nf8up .9s .15s both}
+.nf8-word{font-family:'Anton','Bebas Neue',Impact,'Arial Narrow Bold',system-ui,sans-serif;font-size:clamp(48px,11.5vw,112px);line-height:.94;letter-spacing:clamp(5px,1.5vw,14px);text-indent:clamp(5px,1.5vw,14px);color:#fff;margin-top:12px;text-shadow:0 24px 70px rgba(225,29,46,.28);animation:nf8word 1.2s .20s cubic-bezier(.2,.85,.2,1) both}
+.nf8-line{width:min(300px,62vw);height:1px;background:rgba(255,255,255,.10);margin:18px 0 13px;overflow:hidden;animation:nf8up .9s .55s both}
+.nf8-line i{display:block;height:100%;width:46%;background:linear-gradient(90deg,transparent,var(--accent),#ffcc66,transparent);animation:nf8scan 2.6s 1s ease-in-out infinite}
+@keyframes nf8scan{0%{transform:translateX(-120%)}60%,100%{transform:translateX(320%)}}
+.nf8-tag{font-size:9.5px;letter-spacing:.36em;text-indent:.36em;color:#a6a6b4;font-weight:700;animation:nf8up .9s .62s both}
+.nf8-stage{margin-top:26px;font-size:11px;letter-spacing:.18em;text-transform:uppercase;color:#727284;animation:nf8up .9s .8s both;min-height:15px}
+@keyframes nf8up{from{opacity:0;transform:translateY(14px)}to{opacity:1;transform:none}}
+@keyframes nf8word{from{opacity:0;letter-spacing:.02em;filter:blur(14px);transform:scale(1.06)}to{opacity:1;filter:blur(0);transform:none}}
+.nf8-splash .nf8-bottom{position:absolute;z-index:3;bottom:calc(38px + var(--safe-b));left:50%;transform:translateX(-50%);width:min(420px,72vw);display:flex;flex-direction:column;gap:9px;animation:nf8up .8s 1s both}
+.nf8-meter{height:2px;background:rgba(255,255,255,.10);overflow:hidden}
+.nf8-meter i{display:block;height:100%;width:0;background:linear-gradient(90deg,var(--accent),#ffcc66);box-shadow:0 0 16px rgba(255,59,78,.6);transition:width .2s linear}
+.nf8-pct{display:flex;align-items:center;justify-content:space-between;font-size:9px;letter-spacing:.22em;color:#666676;text-transform:uppercase}
+.nf8-pct span{color:#c9c9d4;font-variant-numeric:tabular-nums;font-weight:800}
+.nf8-pct em{font-style:normal}
+.nf8-sound{position:absolute;z-index:4;bottom:calc(30px + var(--safe-b));inset-inline-start:22px;width:42px;height:42px;border-radius:50%;border:1px solid rgba(255,255,255,.14);background:rgba(255,255,255,.04);backdrop-filter:blur(10px);display:grid;place-items:center;color:#cfcfda;transition:.2s}
+.nf8-sound svg{width:17px;height:17px}
+.nf8-sound.on{color:#fff;border-color:rgba(225,29,46,.55)}
+.nf8-sound.on::after{content:'';position:absolute;inset:-5px;border-radius:50%;border:1px solid rgba(225,29,46,.35);animation:nf8ring 2.6s ease-out infinite}
+.nf8-sound.off{color:#66667a}
+.nf8-sound.off .w1,.nf8-sound.off .w2{display:none}
+@keyframes nf8ring{0%{opacity:.7;transform:scale(.92)}100%{opacity:0;transform:scale(1.25)}}
+.nf8-skip{position:absolute;z-index:4;bottom:calc(34px + var(--safe-b));inset-inline-end:22px;display:inline-flex;align-items:center;gap:7px;padding:9px 14px;border-radius:99px;border:1px solid rgba(255,255,255,.13);background:rgba(255,255,255,.04);color:#b8b8c6;font-size:11px;font-weight:700;letter-spacing:.06em;backdrop-filter:blur(10px);transition:.2s}
+.nf8-skip svg{width:12px;height:12px}
+.nf8-skip:hover{color:#fff;border-color:rgba(255,255,255,.3)}
+@media(max-width:560px){.nf8-sound{bottom:calc(84px + var(--safe-b));inset-inline-start:16px;width:38px;height:38px}.nf8-skip{bottom:calc(84px + var(--safe-b));inset-inline-end:16px}.nf8-splash .nf8-bottom{bottom:calc(30px + var(--safe-b));width:80vw}.nf8-splash .nf8-iris{width:86vw}}
+
+/* --- genre error card --- */
+.nf8-genre-error{grid-column:1/-1;padding:22px;border:1px dashed rgba(225,29,46,.4);background:rgba(225,29,46,.05);border-radius:14px;text-align:center;color:var(--muted);font-size:12.5px}
+.nf8-genre-error b{display:block;color:var(--text);font-size:14px;margin-bottom:4px}
+.nf8-genre-error p{margin:0 0 12px}
+.nf8-genre-empty p{padding:10px 2px 22px;color:var(--muted);font-size:12.5px}
+
+/* --- toast banners --- */
+#toasts.nf8-pos-top-right{top:calc(74px + var(--safe-t));bottom:auto;right:20px;align-items:flex-end}
+#toasts.nf8-pos-top-center{top:calc(74px + var(--safe-t));bottom:auto;left:50%;right:auto;transform:translateX(-50%);align-items:center}
+#toasts.nf8-pos-bottom-left{bottom:22px;right:auto;left:20px;align-items:flex-start}
+#toasts.nf8-pos-bottom-right{bottom:22px;right:20px;align-items:flex-end}
+.toast.nf8-banner{position:relative;width:min(420px,calc(100vw - 32px));padding:15px 42px 15px 15px;gap:13px;background:linear-gradient(120deg,rgba(28,28,40,.98),rgba(16,16,24,.98));border:1px solid rgba(255,255,255,.13);border-left:3px solid var(--accent);border-radius:14px;box-shadow:0 22px 60px rgba(0,0,0,.6);backdrop-filter:blur(20px);animation:nf8toast .38s cubic-bezier(.2,.9,.3,1.05) both}
+.toast.nf8-banner.ok{border-left-color:#2fbf71}.toast.nf8-banner.err{border-left-color:#ff4d5e}.toast.nf8-banner.warn{border-left-color:#ffcc66}
+.toast.nf8-banner .nf8-tic{width:34px;height:34px;border-radius:10px;display:grid;place-items:center;background:rgba(225,29,46,.14);color:#ff6b7a;flex:0 0 auto}
+.toast.nf8-banner.ok .nf8-tic{background:rgba(47,191,113,.13);color:#5fe0a0}
+.toast.nf8-banner.warn .nf8-tic{background:rgba(255,204,102,.13);color:#ffcc66}
+.toast.nf8-banner .nf8-tic svg{width:17px;height:17px}
+.toast.nf8-banner .tt{font-size:13.5px;font-weight:800;letter-spacing:.01em}
+.toast.nf8-banner .tm{font-size:12px;line-height:1.5;margin-top:2px;color:var(--muted)}
+.toast.nf8-banner .nf8-x{position:absolute;top:9px;right:9px;width:24px;height:24px;border-radius:7px;display:grid;place-items:center;color:#7d7d90;background:transparent}
+.toast.nf8-banner .nf8-x:hover{background:rgba(255,255,255,.07);color:#fff}
+.toast.nf8-banner .nf8-act{margin-top:9px;display:inline-flex;align-items:center;gap:6px;padding:7px 12px;border-radius:8px;background:rgba(255,255,255,.08);border:1px solid rgba(255,255,255,.12);font-size:11.5px;font-weight:800;color:#fff}
+.toast.nf8-banner .nf8-bar{position:absolute;left:0;bottom:0;height:2px;background:linear-gradient(90deg,var(--accent),#ffcc66);animation:nf8tbar linear forwards}
+@keyframes nf8toast{from{opacity:0;transform:translateY(-14px) scale(.98)}to{opacity:1;transform:none}}
+@keyframes nf8tbar{from{width:100%}to{width:0}}
+[data-theme=light] .toast.nf8-banner{background:rgba(255,255,255,.98);border-color:rgba(20,20,30,.14)}
+
+/* --- TV / league logos --- */
+.nf8-logo{width:30px;height:30px;border-radius:8px;flex:0 0 auto;display:grid;place-items:center;overflow:hidden;background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.10)}
+.nf8-logo img{width:100%;height:100%;object-fit:contain;padding:3px}
+.nf8-logo span{font-size:9px;font-weight:900;letter-spacing:.02em;color:var(--muted)}
+.ch.nf7 .nf8-logo{width:26px;height:26px;border-radius:7px}
+.fx-lg .nf8-logo{width:26px;height:26px;border-radius:7px;margin-inline-end:2px}
+.fx-lg{display:flex;align-items:center;gap:8px;flex-wrap:wrap}
+
+/* --- sports next-up rail --- */
+.nf8-sports{margin:0 0 22px;padding:16px;border:1px solid var(--border);border-radius:16px;background:linear-gradient(160deg,rgba(225,29,46,.07),transparent 55%),var(--surface)}
+.nf8-sports-head{display:flex;align-items:center;gap:10px;margin-bottom:12px}
+.nf8-sports-head .ic{width:32px;height:32px;border-radius:9px;background:linear-gradient(135deg,#e11d2e,#7a0b16);display:grid;place-items:center;color:#fff}
+.nf8-sports-head h3{font-size:14.5px;margin:0;letter-spacing:.01em}
+.nf8-sports-head p{margin:2px 0 0;font-size:11px;color:var(--muted)}
+.nf8-sports-head .live{margin-inline-start:auto;display:inline-flex;align-items:center;gap:5px;font-size:8.5px;font-weight:900;letter-spacing:.12em;color:#ff6b7a}
+.nf8-sports-head .live i{width:5px;height:5px;border-radius:50%;background:#ff4455;box-shadow:0 0 0 3px rgba(255,68,85,.15)}
+.nf8-rail{display:flex;gap:10px;overflow-x:auto;padding:2px 2px 8px;scrollbar-width:thin;scroll-snap-type:x mandatory}
+.nf8-game{flex:0 0 218px;scroll-snap-align:start;text-align:start;padding:12px;border-radius:12px;border:1px solid var(--border);background:var(--bg-2);transition:.18s;position:relative}
+.nf8-game:hover{border-color:rgba(225,29,46,.55);transform:translateY(-2px)}
+.nf8-game .lg{display:flex;align-items:center;gap:7px;font-size:9px;font-weight:900;letter-spacing:.09em;text-transform:uppercase;color:var(--muted);margin-bottom:9px}
+.nf8-game .lg .nf8-logo{width:18px;height:18px;border-radius:5px}
+.nf8-game .tm{font-size:12.5px;font-weight:800;color:var(--text);line-height:1.35;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden;min-height:34px}
+.nf8-game .tm em{font-style:normal;color:var(--muted);font-weight:600;font-size:10.5px;padding:0 3px}
+.nf8-game .mt{display:flex;align-items:center;justify-content:space-between;gap:6px;margin-top:9px;font-size:10px;color:var(--muted)}
+.nf8-game .mt b{color:#ffcc66;font-size:9.5px;letter-spacing:.06em;text-transform:uppercase}
+.nf8-game .watch{display:inline-flex;align-items:center;gap:4px;font-size:9.5px;font-weight:900;color:#fff;background:#e11d2e;padding:4px 8px;border-radius:5px;margin-top:9px}
+.nf8-game .watch svg{width:10px;height:10px}
+.nf8-empty{padding:14px;border:1px dashed var(--border);border-radius:10px;color:var(--muted);font-size:12px}
+[data-theme=light] .nf8-game{background:#fff}
+
+/* --- match / stream extras --- */
+.nf8-official{display:flex;flex-wrap:wrap;gap:7px;margin-top:10px}
+.nf8-official a{display:inline-flex;align-items:center;gap:6px;padding:7px 10px;border-radius:8px;border:1px solid var(--border);background:var(--bg-2);font-size:11.5px;font-weight:700;color:var(--text)}
+.nf8-official a:hover{border-color:rgba(225,29,46,.5)}
+.nf8-official a svg{width:12px;height:12px;color:#ffcc66}
+.nf8-streambox{margin-top:14px;padding:12px;border-radius:10px;border:1px solid rgba(225,29,46,.35);background:rgba(225,29,46,.06)}
+.nf8-streambox b{font-size:12.5px;display:block;margin-bottom:3px}
+.nf8-streambox p{font-size:11px;color:var(--muted);margin:0 0 9px;line-height:1.5}
+
+/* --- focus timer --- */
+.nf8-focus-btn{display:inline-flex}
+#nf8Focus{position:fixed;inset:0;z-index:1280;display:none;align-items:center;justify-content:center;padding:18px;background:rgba(3,3,7,.82);backdrop-filter:blur(14px)}
+#nf8Focus.show{display:flex}
+.nf8-focus-card{width:min(720px,100%);max-height:92vh;overflow:auto;border-radius:22px;border:1px solid rgba(255,255,255,.12);background:radial-gradient(800px 300px at 20% 0%,rgba(225,29,46,.12),transparent 60%),#0d0d14;box-shadow:0 30px 90px rgba(0,0,0,.7);padding:22px}
+.nf8-focus-top{display:flex;align-items:flex-start;gap:12px;margin-bottom:6px}
+.nf8-focus-top .ic{width:40px;height:40px;border-radius:12px;background:linear-gradient(135deg,#e11d2e,#7a0b16);display:grid;place-items:center;color:#fff;flex:0 0 auto}
+.nf8-focus-top h3{font-size:19px;margin:0}
+.nf8-focus-top p{margin:3px 0 0;font-size:12px;color:#9a9aad;line-height:1.5}
+.nf8-focus-x{margin-inline-start:auto;width:32px;height:32px;border-radius:9px;display:grid;place-items:center;color:#8d8da0}
+.nf8-focus-x:hover{background:rgba(255,255,255,.06);color:#fff}
+.nf8-focus-clock{display:flex;align-items:flex-end;justify-content:center;gap:10px;margin:16px 0 6px;font-variant-numeric:tabular-nums}
+.nf8-focus-clock b{font-size:clamp(50px,11vw,76px);line-height:.9;font-weight:800;letter-spacing:-.02em;color:#fff}
+.nf8-focus-clock span{font-size:10px;letter-spacing:.24em;color:#77778a;padding-bottom:10px;text-transform:uppercase}
+.nf8-focus-state{text-align:center;font-size:10px;letter-spacing:.2em;text-transform:uppercase;color:#ff8d99;font-weight:800;margin-bottom:15px}
+.nf8-chips{display:flex;flex-wrap:wrap;gap:7px;justify-content:center;margin-bottom:18px}
+.nf8-chip{padding:7px 13px;border-radius:99px;border:1px solid rgba(255,255,255,.13);background:rgba(255,255,255,.03);font-size:11.5px;font-weight:700;color:#c5c5d2}
+.nf8-chip.on{background:#e11d2e;border-color:#e11d2e;color:#fff}
+.nf8-focus-label{font-size:9px;letter-spacing:.2em;text-transform:uppercase;color:#6f6f82;margin:0 0 9px}
+.nf8-sounds{display:grid;grid-template-columns:repeat(auto-fill,minmax(150px,1fr));gap:8px;margin-bottom:18px}
+.nf8-snd{display:flex;align-items:center;gap:9px;padding:9px 10px;border-radius:10px;border:1px solid rgba(255,255,255,.10);background:rgba(255,255,255,.025);text-align:start;transition:.18s}
+.nf8-snd .dot{width:28px;height:28px;border-radius:8px;display:grid;place-items:center;background:rgba(255,255,255,.05);color:#9a9aad;flex:0 0 auto}
+.nf8-snd .dot svg{width:14px;height:14px}
+.nf8-snd .nm{font-size:11.5px;font-weight:700;color:#cfcfda;line-height:1.2}
+.nf8-snd .nm small{display:block;font-size:9px;color:#717184;font-weight:500;margin-top:1px}
+.nf8-snd .bars{margin-inline-start:auto;display:flex;gap:2px;align-items:flex-end;height:12px;opacity:0}
+.nf8-snd .bars i{width:2px;background:#ff5c6e;border-radius:2px;animation:nf8eq .9s ease-in-out infinite}
+.nf8-snd .bars i:nth-child(2){animation-delay:.15s}.nf8-snd .bars i:nth-child(3){animation-delay:.3s}
+.nf8-snd.on{border-color:rgba(225,29,46,.55);background:rgba(225,29,46,.10)}
+.nf8-snd.on .dot{background:#e11d2e;color:#fff}
+.nf8-snd.on .bars{opacity:1}
+@keyframes nf8eq{0%,100%{height:3px}50%{height:11px}}
+.nf8-focus-actions{display:flex;gap:8px;flex-wrap:wrap;align-items:center;border-top:1px solid rgba(255,255,255,.08);padding-top:15px}
+.nf8-focus-actions .btn{flex:0 0 auto}
+.nf8-vol{display:flex;align-items:center;gap:8px;margin-inline-start:auto;font-size:10px;color:#8d8da0}
+.nf8-vol input{width:100px;accent-color:#e11d2e}
+.nf8-focus-note{margin:12px 0 0;font-size:10px;color:#66667a;line-height:1.55}
+@media(max-width:560px){.nf8-focus-card{padding:17px;border-radius:18px}.nf8-sounds{grid-template-columns:1fr 1fr}.nf8-vol{margin-inline-start:0;width:100%;justify-content:flex-end}}
+
+/* --- update banner --- */
+#nf8Update{position:fixed;z-index:1320;top:calc(10px + var(--safe-t));left:50%;transform:translateX(-50%) translateY(-160%);width:min(560px,calc(100vw - 24px));display:flex;align-items:center;gap:10px;padding:10px 10px 10px 14px;border-radius:14px;background:linear-gradient(120deg,#1b1b26,#101018);border:1px solid rgba(255,204,102,.4);box-shadow:0 18px 55px rgba(0,0,0,.6);transition:transform .4s cubic-bezier(.2,.9,.3,1.05)}
+#nf8Update.show{transform:translateX(-50%) translateY(0)}
+#nf8Update .ic{width:30px;height:30px;border-radius:9px;background:rgba(255,204,102,.14);display:grid;place-items:center;color:#ffcc66;flex:0 0 auto}
+#nf8Update .tx{flex:1;min-width:0}
+#nf8Update b{display:block;font-size:12.5px}
+#nf8Update span{display:block;font-size:10.5px;color:#9a9aad;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+#nf8Update .go{padding:7px 12px;border-radius:8px;background:#ffcc66;color:#141418;font-size:11px;font-weight:900;flex:0 0 auto}
+#nf8Update .x{width:26px;height:26px;border-radius:7px;display:grid;place-items:center;color:#77778a;flex:0 0 auto}
+</style>
 </head>
 <body class="noscroll">
 <!-- ============ SPLASH ============ -->
-<div id="splash" role="status" aria-label="NANCYFLIX is starting">
-  <div class="particles" id="parts"></div>
-  <div class="film-float" id="filmFloat"></div>
-  <div class="splash-inner">
-    <div class="splash-badge">Dev Brian Studios · Cinema</div>
-    <div class="splash-ring">
-      <svg class="ring" viewBox="0 0 140 140" aria-hidden="true">
-        <defs><linearGradient id="splashGrad" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#e11d2e"/><stop offset=".6" stop-color="#ff5c6e"/><stop offset="1" stop-color="#ffffff"/></linearGradient></defs>
-        <circle class="trk" cx="70" cy="70" r="62"/>
-        <circle class="prg" id="splashRing" cx="70" cy="70" r="62"/>
-      </svg>
-      <div class="splash-logo">
-        <svg viewBox="0 0 64 64" aria-hidden="true"><defs><linearGradient id="lg" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#ff3b4e"/><stop offset="1" stop-color="#e11d2e"/></linearGradient></defs><rect width="64" height="64" rx="14" fill="#0a0a0f" stroke="#24242f"/><rect x="11" y="26" width="42" height="25" rx="3" fill="url(#lg)"/><g transform="rotate(-9 32 20)"><rect x="10" y="14" width="44" height="10" rx="2" fill="#f5f5fa"/><path d="M20 14l-5 10M30 14l-5 10M40 14l-5 10M50 14l-5 10" stroke="#0a0a0f" stroke-width="3" stroke-linecap="round"/></g></svg>
-      </div>
-    </div>
-    <div class="splash-word">NANCYFLIX</div>
-    <div class="splash-tag">Every Story Deserves A Screen</div>
-    <div class="splash-rotator"><span class="rot-line in" id="splashRot"></span></div>
-    <div class="splash-progress">
-      <div class="splash-track"><i id="splashBar"></i></div>
-      <div class="splash-status"><span id="splashStage">Preparing your cinema</span><b id="splashPct">0%</b></div>
-    </div>
+<div id="splash" class="nf8-splash" role="status" aria-label="NANCYFLIX is starting">
+  <div class="nf8-grain" aria-hidden="true"></div>
+  <div class="nf8-beam" aria-hidden="true"></div>
+  <div class="nf8-iris" aria-hidden="true">
+    <span class="r1"></span><span class="r2"></span><span class="r3"></span>
+    <i style="--a:0deg"></i><i style="--a:45deg"></i><i style="--a:90deg"></i><i style="--a:135deg"></i>
+    <b></b>
   </div>
+  <div class="nf8-core">
+    <div class="nf8-kicker">DEV BRIAN STUDIOS</div>
+    <div class="nf8-word">NANCYFLIX</div>
+    <div class="nf8-line"><i></i></div>
+    <div class="nf8-tag">EVERY STORY DESERVES A SCREEN</div>
+    <div class="nf8-stage" id="splashStage">Preparing your cinema</div>
+  </div>
+  <div class="nf8-bottom">
+    <div class="nf8-meter"><i id="splashBar"></i></div>
+    <div class="nf8-pct"><span id="splashPct">0%</span><em>LOADING</em></div>
+  </div>
+  <button class="nf8-sound on" id="splashSound" type="button" aria-label="Mute intro sound" aria-pressed="true">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M4 9v6h4l5 4V5L8 9z"/><path class="w1" d="M16.5 8.5a5 5 0 010 7"/><path class="w2" d="M19 6a8.5 8.5 0 010 12"/></svg>
+  </button>
+  <button class="nf8-skip" id="splashSkip" type="button">Skip intro <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M5 12h14M13 6l6 6-6 6"/></svg></button>
 </div>
 
 <!-- ============ AUTH ============ -->
@@ -1208,8 +1386,8 @@ select,input,textarea{font-size:16px} /* stops iOS zoom-on-focus */
       <button data-view="admin" id="navAdmin" style="display:none"><svg class="icon sm" viewBox="0 0 24 24"><path d="M12 2l8 4v6c0 5-3.5 8-8 10-4.5-2-8-5-8-10V6z"/></svg><span data-i18n="admin">Admin Studio</span></button>
     </nav>
     <div class="top-right">
-      <button class="icon-btn" id="mSearchBtn" aria-label="Search" style="display:none"><svg class="icon" viewBox="0 0 24 24"><circle cx="11" cy="11" r="7"/><path d="M21 21l-4-4"/></svg></button>
-      <div class="search-box" id="searchBox"><span class="si"><svg class="icon sm" viewBox="0 0 24 24"><circle cx="11" cy="11" r="7"/><path d="M21 21l-4-4"/></svg></span><input type="search" id="searchInput" data-i18n-ph="searchPh" placeholder="Search movies…" aria-label="Search movies"><button class="clr" id="searchClear" aria-label="Clear"><svg class="icon sm" viewBox="0 0 24 24"><path d="M18 6L6 18M6 6l12 12"/></svg></button></div>
+      <div class="search-box" id="searchBox"><input type="search" id="searchInput" data-i18n-ph="searchPh" placeholder="Search movies…" aria-label="Search movies"><button class="clr" id="searchClear" aria-label="Clear search" type="button"><svg class="icon sm" viewBox="0 0 24 24"><path d="M18 6L6 18M6 6l12 12"/></svg></button><button class="search-go" id="searchGo" aria-label="Search" type="button"><svg class="icon sm" viewBox="0 0 24 24"><circle cx="11" cy="11" r="7"/><path d="M21 21l-4-4"/></svg></button></div>
+      <button class="icon-btn nf8-focus-btn" id="focusBtn" aria-label="Focus timer" title="Focus and sleep timer"><svg class="icon" viewBox="0 0 24 24"><path d="M21 12.8A9 9 0 1111.2 3 7 7 0 0021 12.8z"/></svg></button>
       <button class="lang-btn" id="langBtn" aria-label="Change language" title="Change language"><span class="flag" id="langFlag">🇬🇧</span><span class="code" id="langCode">EN</span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="12" cy="12" r="9"/><path d="M3 12h18M12 3c2.5 2.6 2.5 15.4 0 18M12 3c-2.5 2.6-2.5 15.4 0 18"/></svg></button>
       <button class="icon-btn" id="notiBtn" aria-label="Notifications"><svg class="icon" viewBox="0 0 24 24"><path d="M18 8a6 6 0 00-12 0c0 7-3 9-3 9h18s-3-2-3-9M13.73 21a2 2 0 01-3.46 0"/></svg><span class="dot" id="notiDot">0</span></button>
       <button class="icon-btn" id="settingsBtn" aria-label="Settings"><svg class="icon" viewBox="0 0 24 24"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.6 1.6 0 00.3 1.8l.1.1a2 2 0 11-2.8 2.8l-.1-.1a1.6 1.6 0 00-1.8-.3 1.6 1.6 0 00-1 1.5V21a2 2 0 11-4 0v-.1a1.6 1.6 0 00-1-1.5 1.6 1.6 0 00-1.8.3l-.1.1a2 2 0 11-2.8-2.8l.1-.1a1.6 1.6 0 00.3-1.8 1.6 1.6 0 00-1.5-1H3a2 2 0 110-4h.1a1.6 1.6 0 001.5-1 1.6 1.6 0 00-.3-1.8l-.1-.1a2 2 0 112.8-2.8l.1.1a1.6 1.6 0 001.8.3H9a1.6 1.6 0 001-1.5V3a2 2 0 114 0v.1a1.6 1.6 0 001 1.5 1.6 1.6 0 001.8-.3l.1-.1a2 2 0 112.8 2.8l-.1.1a1.6 1.6 0 00-.3 1.8V9a1.6 1.6 0 001.5 1H21a2 2 0 110 4h-.1a1.6 1.6 0 00-1.5 1z"/></svg></button>
@@ -1304,7 +1482,7 @@ select,input,textarea{font-size:16px} /* stops iOS zoom-on-focus */
     <div class="lp-head"><h2 id="langTitle">Choose your <span>language</span></h2><p id="langDesc">Pick the language for the interface and movie details. You can change it any time from the globe button.</p></div>
     <div class="lp-search"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="11" cy="11" r="7"/><path d="M21 21l-4-4"/></svg><input id="langSearch" type="search" placeholder="Search languages…" autocomplete="off" aria-label="Search languages"></div>
     <div class="lp-grid" id="langGrid"></div>
-    <div class="lp-foot"><span id="langNote">7 languages · right-to-left supported</span><button class="btn primary" id="langDone">Continue</button></div>
+    <div class="lp-foot"><span id="langNote">10 languages · right-to-left supported</span><button class="btn primary" id="langDone">Continue</button></div>
   </div>
 </div>
 
@@ -1345,7 +1523,6 @@ select,input,textarea{font-size:16px} /* stops iOS zoom-on-focus */
 <div class="overlay" id="gateOverlay"><div class="modal sm" id="gateModal" style="padding:30px;text-align:center;position:relative"></div></div>
 <div class="overlay" id="settingsOverlay"><div class="modal" id="settingsModal" style="position:relative"></div></div>
 <div class="overlay" id="legalOverlay"><div class="modal" id="legalModal" style="position:relative"></div></div>
-<button class="fab-search" id="fabSearch" aria-label="Quick search" title="Search movies"><svg class="icon lg" viewBox="0 0 24 24"><circle cx="11" cy="11" r="7"/><path d="M21 21l-4-4"/></svg><span class="fab-ring"></span></button>
 
 <!-- notification panel -->
 <aside class="panel" id="notiPanel" aria-label="Notifications">
@@ -1368,8 +1545,8 @@ select,input,textarea{font-size:16px} /* stops iOS zoom-on-focus */
 const CONFIG = {
   // TMDB: a browser-side key is VISIBLE to visitors. For production prefer the
   // server proxy (set TMDB_PROXY to your deployed function and leave KEY blank).
-  TMDB_KEY: "6e4e4f6d237e1219957cc8a97eae1cb1", // v3 key wired in (NOTE: visible to visitors in a public deploy)
-  TMDB_PROXY: "",                     // e.g. https://yourapp.vercel.app/api/tmdb  (preferred)
+  TMDB_KEY: "",                       // v8: never shipped in the page — the key lives only in Vercel
+  TMDB_PROXY: "/api/tmdb",            // server proxy: TMDB_V3_KEY stays private on Vercel
   TMDB_BASE: "https://api.themoviedb.org/3",
   IMG: "https://image.tmdb.org/t/p/",
   // Supabase (public anon values are safe to expose; service-role is NOT):
@@ -1445,8 +1622,8 @@ function uid(){return 'id-'+Date.now().toString(36)+Math.random().toString(36).s
    come back localized. I18N.dict holds the UI chrome strings; t(key) resolves
    the active language with an English fallback. I18N.apply() swaps every
    [data-i18n]/[data-i18n-ph] node, sets <html lang/dir>, and re-renders. */
-const LANGS=[['en','English'],['sw','Kiswahili'],['fr','Français'],['es','Español'],['de','Deutsch'],['pt','Português'],['ar','العربية']];
-const LOCALE={en:'en-US',sw:'sw-KE',fr:'fr-FR',es:'es-ES',de:'de-DE',pt:'pt-BR',ar:'ar-SA'};
+const LANGS=[['en','English'],['sw','Kiswahili'],['fr','Français'],['es','Español'],['de','Deutsch'],['pt','Português'],['ar','العربية'],['it','Italiano'],['zh','中文'],['ja','日本語']];
+const LOCALE={en:'en-US',sw:'sw-KE',fr:'fr-FR',es:'es-ES',de:'de-DE',pt:'pt-BR',ar:'ar-SA',it:'it-IT',zh:'zh-CN',ja:'ja-JP'};
 const RTL=['ar'];
 const I18N={
   dict:{
@@ -1492,13 +1669,13 @@ Object.keys(EXTRA_I18N).forEach(l=>{I18N.dict[l]=Object.assign(I18N.dict[l]||{},
 
 /* v4 UI strings: language chooser, install prompts, splash stages, Premium */
 const UI_I18N={
- en:{langTitle1:'Choose your',langTitle2:'language',langDesc:'Pick the language for the interface and movie details. You can change it any time from the globe button.',langSearch:'Search languages…',langContinue:'Continue',langNote:'7 languages · right-to-left supported',langChanged:'Language updated',langCurrent:'Current',langNoResults:'No language matches your search.',premium:'Premium',installTitle:'Install NANCYFLIX',installDesc:'Full-screen app, one tap from your home screen — works offline.',installBtn:'Install',iosTitle:'Add to Home Screen',iosSub:'Safari installs NANCYFLIX in three quick steps.',ios1:'Tap the Share button in Safari’s toolbar.',ios2:'Scroll the share sheet and tap “Add to Home Screen”.',ios3:'Tap “Add” — NANCYFLIX opens full screen, like an app.',gotIt:'Got it',splashS1:'Preparing your cinema',splashS2:'Warming up the projector',splashS3:'Loading your watchlist',splashS4:'Almost there',pvKicker:'NANCYFLIX PREMIUM',pvTitle:'Cinema without limits',pvSub:'One membership. Every device. Cancel anytime.',pvMonthly:'Monthly',pvYearly:'Yearly',pvPerMonth:'/month',pvPerYear:'/year',pvSave:'Save 40%',pvPopular:'Best value',pvCtaMonth:'Go monthly',pvCtaYear:'Go yearly',pvActive:'Premium active',pvRenews:'Renews',pvManage:'Manage subscription',pvRestore:'Restore purchase',pvFreePlan:'You are on the Free plan',pvCurrent:'Current plan',pvBenefits:'What members get',pvF1:'Unlimited trailer queue',pvF1d:'Free holds 3 trailers. Premium never stops the line-up.',pvF2:'30-title watch history',pvF2d:'Free keeps your last 15. Premium keeps 30.',pvF3:'Exclusive Cinematic theme',pvF3d:'The gold-and-violet “Amazing” look, reserved for members.',pvF4:'Premium profile badge',pvF4d:'A gold ring on your avatar everywhere in the app.',pvTrust:'Secure payment by Stripe · Cancel anytime · No hidden fees',pvSetupT:'Payments are not switched on yet',pvSetupD:'Add your two Stripe Payment Links in CONFIG.STRIPE. Step-by-step instructions are in docs/PAYMENTS.md.',pvFaq:'Questions',pvFaq1q:'Can I cancel whenever I want?',pvFaq1a:'Yes. Open Manage subscription to cancel in one tap — you keep Premium until the end of the period you paid for.',pvFaq2q:'What happens to my watchlist if I cancel?',pvFaq2a:'Nothing is deleted. Your watchlist and history stay on your account; only the premium extras go back to Free limits.',pvFaq3q:'Is my card safe?',pvFaq3a:'Card details never touch NANCYFLIX. Stripe hosts the checkout page and processes the payment, so we only receive confirmation that you paid.',pvPending:'Activating your membership',pvPendingD:'Your payment went through but the confirmation has not reached this device yet. Tap “Check again” in a moment — or email devbriannova@gmail.com with your session ID.',pvCheckAgain:'Check again',pvActivated:'Premium activated',pvActivatedD:'Welcome to NANCYFLIX Premium. Everything is unlocked.',pvNeedKeys:'Stripe keys still needed',pvQueueLimited:'Free plan: 3 trailers in the queue',pvHistoryLimited:'Free plan keeps your last 15 titles',pvThemeLocked:'Cinematic theme is a Premium extra',pvBadge:'PREMIUM',pvCancelNote:'No card stored by NANCYFLIX · cancel anytime',pvSignIn:'Sign in to subscribe',pvLoading:'Checking your payment…',pvCancelled:'Checkout cancelled',pvCancelledD:'No charge was made. You can try again any time.',pvStatusFree:'Free',pvSince:'Member since',pvEmailNote:'Receipt sent to',pvSelected:'Selected',pvOr:'or save with yearly',pvSetupHint:'Owner setup: paste LINK_MONTHLY and LINK_YEARLY in CONFIG.STRIPE.'},
+ en:{langTitle1:'Choose your',langTitle2:'language',langDesc:'Pick the language for the interface and movie details. You can change it any time from the globe button.',langSearch:'Search languages…',langContinue:'Continue',langNote:'10 languages · right-to-left supported',langChanged:'Language updated',langCurrent:'Current',langNoResults:'No language matches your search.',premium:'Premium',installTitle:'Install NANCYFLIX',installDesc:'Full-screen app, one tap from your home screen — works offline.',installBtn:'Install',iosTitle:'Add to Home Screen',iosSub:'Safari installs NANCYFLIX in three quick steps.',ios1:'Tap the Share button in Safari’s toolbar.',ios2:'Scroll the share sheet and tap “Add to Home Screen”.',ios3:'Tap “Add” — NANCYFLIX opens full screen, like an app.',gotIt:'Got it',splashS1:'Preparing your cinema',splashS2:'Warming up the projector',splashS3:'Loading your watchlist',splashS4:'Almost there',pvKicker:'NANCYFLIX PREMIUM',pvTitle:'Cinema without limits',pvSub:'One membership. Every device. Cancel anytime.',pvMonthly:'Monthly',pvYearly:'Yearly',pvPerMonth:'/month',pvPerYear:'/year',pvSave:'Save 40%',pvPopular:'Best value',pvCtaMonth:'Go monthly',pvCtaYear:'Go yearly',pvActive:'Premium active',pvRenews:'Renews',pvManage:'Manage subscription',pvRestore:'Restore purchase',pvFreePlan:'You are on the Free plan',pvCurrent:'Current plan',pvBenefits:'What members get',pvF1:'Unlimited trailer queue',pvF1d:'Free holds 3 trailers. Premium never stops the line-up.',pvF2:'30-title watch history',pvF2d:'Free keeps your last 15. Premium keeps 30.',pvF3:'Exclusive Cinematic theme',pvF3d:'The gold-and-violet “Amazing” look, reserved for members.',pvF4:'Premium profile badge',pvF4d:'A gold ring on your avatar everywhere in the app.',pvTrust:'Secure payment by Stripe · Cancel anytime · No hidden fees',pvSetupT:'Payments are not switched on yet',pvSetupD:'Add your two Stripe Payment Links in CONFIG.STRIPE. Step-by-step instructions are in docs/PAYMENTS.md.',pvFaq:'Questions',pvFaq1q:'Can I cancel whenever I want?',pvFaq1a:'Yes. Open Manage subscription to cancel in one tap — you keep Premium until the end of the period you paid for.',pvFaq2q:'What happens to my watchlist if I cancel?',pvFaq2a:'Nothing is deleted. Your watchlist and history stay on your account; only the premium extras go back to Free limits.',pvFaq3q:'Is my card safe?',pvFaq3a:'Card details never touch NANCYFLIX. Stripe hosts the checkout page and processes the payment, so we only receive confirmation that you paid.',pvPending:'Activating your membership',pvPendingD:'Your payment went through but the confirmation has not reached this device yet. Tap “Check again” in a moment — or email devbriannova@gmail.com with your session ID.',pvCheckAgain:'Check again',pvActivated:'Premium activated',pvActivatedD:'Welcome to NANCYFLIX Premium. Everything is unlocked.',pvNeedKeys:'Stripe keys still needed',pvQueueLimited:'Free plan: 3 trailers in the queue',pvHistoryLimited:'Free plan keeps your last 15 titles',pvThemeLocked:'Cinematic theme is a Premium extra',pvBadge:'PREMIUM',pvCancelNote:'No card stored by NANCYFLIX · cancel anytime',pvSignIn:'Sign in to subscribe',pvLoading:'Checking your payment…',pvCancelled:'Checkout cancelled',pvCancelledD:'No charge was made. You can try again any time.',pvStatusFree:'Free',pvSince:'Member since',pvEmailNote:'Receipt sent to',pvSelected:'Selected',pvOr:'or save with yearly',pvSetupHint:'Owner setup: paste LINK_MONTHLY and LINK_YEARLY in CONFIG.STRIPE.'},
  sw:{langTitle1:'Chagua',langTitle2:'lugha yako',langDesc:'Chagua lugha ya kiolesura na maelezo ya filamu. Unaweza kubadilisha wakati wowote kupitia kitufe cha globu.',langSearch:'Tafuta lugha…',langContinue:'Endelea',langNote:'Lugha 7 · inasaidia kulia-kushoto',langChanged:'Lugha imebadilishwa',langCurrent:'Ya sasa',langNoResults:'Hakuna lugha inayolingana na utafutaji wako.',premium:'Premium',installTitle:'Sakinisha NANCYFLIX',installDesc:'Programu ya skrini nzima, mbofyo mmoja kutoka skrini yako — inafanya kazi bila mtandao.',installBtn:'Sakinisha',iosTitle:'Ongeza kwenye Skrini ya Nyumbani',iosSub:'Safari husakinisha NANCYFLIX kwa hatua tatu.',ios1:'Gusa kitufe cha Shiriki kwenye pau ya Safari.',ios2:'Sogeza chini na uguse “Ongeza kwenye Skrini ya Nyumbani”.',ios3:'Gusa “Ongeza” — NANCYFLIX hufunguka skrini nzima.',gotIt:'Sawa',splashS1:'Tunatayarisha sinema yako',splashS2:'Tunapasha moto projekta',splashS3:'Tunapakia orodha yako',splashS4:'Karibu kufika',pvKicker:'NANCYFLIX PREMIUM',pvTitle:'Sinema bila kikomo',pvSub:'Uanachama mmoja. Kila kifaa. Ghairi wakati wowote.',pvMonthly:'Kila mwezi',pvYearly:'Kila mwaka',pvPerMonth:'/mwezi',pvPerYear:'/mwaka',pvSave:'Okoa 40%',pvPopular:'Thamani bora',pvCtaMonth:'Chagua mwezi',pvCtaYear:'Chagua mwaka',pvActive:'Premium imewashwa',pvRenews:'Huhuisha',pvManage:'Dhibiti uanachama',pvRestore:'Rejesha ununuzi',pvFreePlan:'Uko kwenye mpango wa Bure',pvCurrent:'Mpango wa sasa',pvBenefits:'Wanachama hupata nini',pvF1:'Foleni ya trela bila kikomo',pvF1d:'Bure hubeba trela 3. Premium haikomi foleni.',pvF2:'Historia ya filamu 30',pvF2d:'Bure huhifadhi 15 za mwisho. Premium huhifadhi 30.',pvF3:'Mandhari ya kipekee ya Cinematic',pvF3d:'Muonekano wa dhahabu na zambarau, kwa wanachama pekee.',pvF4:'Beji ya wasifu wa Premium',pvF4d:'Pete ya dhahabu kwenye picha yako kote.',pvTrust:'Malipo salama kwa Stripe · Ghairi wakati wowote · Hakuna ada za siri',pvSetupT:'Malipo bado hayajawashwa',pvSetupD:'Weka viungo viwili vya Stripe kwenye CONFIG.STRIPE. Maelekezo yamo kwenye docs/PAYMENTS.md.',pvFaq:'Maswali',pvFaq1q:'Naweza kughairi wakati wowote?',pvFaq1a:'Ndiyo. Fungua Dhibiti uanachama kughairi kwa mbofyo mmoja — unaendelea na Premium hadi mwisho wa kipindi ulicholipia.',pvFaq2q:'Orodha yangu itakuwaje nikighairi?',pvFaq2a:'Hakuna kinachofutwa. Orodha na historia zinabaki; ni faida za premium tu zinazorudi kwenye mipaka ya Bure.',pvFaq3q:'Kadi yangu ni salama?',pvFaq3a:'Maelezo ya kadi hayafiki NANCYFLIX. Stripe ndiye anayesimamia ukurasa wa malipo.',pvPending:'Tunawasha uanachama wako',pvPendingD:'Malipo yamekamilika lakini uthibitisho haujafika kwenye kifaa hiki. Gusa “Angalia tena” baada ya muda — au andika devbriannova@gmail.com na kitambulisho cha kipindi.',pvCheckAgain:'Angalia tena',pvActivated:'Premium imewashwa',pvActivatedD:'Karibu NANCYFLIX Premium. Kila kitu kimefunguliwa.',pvNeedKeys:'Funguo za Stripe zinahitajika',pvQueueLimited:'Mpango wa bure: trela 3 kwenye foleni',pvHistoryLimited:'Mpango wa bure huhifadhi filamu 15 za mwisho',pvThemeLocked:'Mandhari ya Cinematic ni faida ya Premium',pvBadge:'PREMIUM',pvCancelNote:'NANCYFLIX haihifadhi kadi · ghairi wakati wowote',pvSignIn:'Ingia ili kujisajili',pvLoading:'Tunakagua malipo yako…',pvCancelled:'Malipo yameghairiwa',pvCancelledD:'Hakuna malipo yaliyofanyika. Unaweza kujaribu tena.',pvStatusFree:'Bure',pvSince:'Mwanachama tangu',pvEmailNote:'Risiti imetumwa kwa',pvSelected:'Imechaguliwa',pvOr:'au okoa kwa mwaka',pvSetupHint:'Mmiliki: weka LINK_MONTHLY na LINK_YEARLY kwenye CONFIG.STRIPE.'},
  fr:{langTitle1:'Choisissez votre',langTitle2:'langue',langDesc:'Choisissez la langue de l’interface et des fiches films. Vous pouvez la changer à tout moment via le bouton globe.',langSearch:'Rechercher une langue…',langContinue:'Continuer',langNote:'7 langues · droite-à-gauche pris en charge',langChanged:'Langue mise à jour',langCurrent:'Actuelle',langNoResults:'Aucune langue ne correspond à votre recherche.',premium:'Premium',installTitle:'Installer NANCYFLIX',installDesc:'Application plein écran, à un geste de votre écran d’accueil — fonctionne hors ligne.',installBtn:'Installer',iosTitle:'Ajouter à l’écran d’accueil',iosSub:'Safari installe NANCYFLIX en trois étapes.',ios1:'Touchez le bouton Partager dans la barre de Safari.',ios2:'Faites défiler et touchez « Sur l’écran d’accueil ».',ios3:'Touchez « Ajouter » — NANCYFLIX s’ouvre en plein écran.',gotIt:'Compris',splashS1:'Préparation de votre cinéma',splashS2:'Le projecteur chauffe',splashS3:'Chargement de votre liste',splashS4:'Presque prêt',pvKicker:'NANCYFLIX PREMIUM',pvTitle:'Le cinéma sans limites',pvSub:'Un abonnement. Tous vos écrans. Annulable à tout moment.',pvMonthly:'Mensuel',pvYearly:'Annuel',pvPerMonth:'/mois',pvPerYear:'/an',pvSave:'−40 %',pvPopular:'Meilleure offre',pvCtaMonth:'Choisir mensuel',pvCtaYear:'Choisir annuel',pvActive:'Premium actif',pvRenews:'Renouvellement',pvManage:'Gérer l’abonnement',pvRestore:'Restaurer l’achat',pvFreePlan:'Vous êtes en offre gratuite',pvCurrent:'Offre actuelle',pvBenefits:'Ce que les membres obtiennent',pvF1:'File de bandes-annonces illimitée',pvF1d:'Le gratuit garde 3 bandes-annonces. Premium ne s’arrête jamais.',pvF2:'Historique de 30 films',pvF2d:'Le gratuit garde les 15 derniers. Premium en garde 30.',pvF3:'Thème Cinématographique exclusif',pvF3d:'Le look or et violet « Amazing », réservé aux membres.',pvF4:'Badge de profil Premium',pvF4d:'Un anneau doré sur votre avatar dans toute l’app.',pvTrust:'Paiement sécurisé par Stripe · Annulable à tout moment · Sans frais cachés',pvSetupT:'Les paiements ne sont pas encore activés',pvSetupD:'Ajoutez vos deux liens de paiement Stripe dans CONFIG.STRIPE. Les étapes sont dans docs/PAYMENTS.md.',pvFaq:'Questions',pvFaq1q:'Puis-je annuler quand je veux ?',pvFaq1a:'Oui. Ouvrez Gérer l’abonnement pour annuler en un geste — vous gardez Premium jusqu’à la fin de la période payée.',pvFaq2q:'Que devient ma liste si j’annule ?',pvFaq2a:'Rien n’est supprimé. Votre liste et votre historique restent ; seuls les extras premium reviennent aux limites gratuites.',pvFaq3q:'Ma carte est-elle en sécurité ?',pvFaq3a:'Les données de carte ne passent jamais par NANCYFLIX. Stripe héberge la page de paiement et traite la transaction.',pvPending:'Activation de votre abonnement',pvPendingD:'Votre paiement est passé mais la confirmation n’est pas encore arrivée sur cet appareil. Touchez « Vérifier à nouveau » — ou écrivez à devbriannova@gmail.com avec votre identifiant de session.',pvCheckAgain:'Vérifier à nouveau',pvActivated:'Premium activé',pvActivatedD:'Bienvenue dans NANCYFLIX Premium. Tout est débloqué.',pvNeedKeys:'Clés Stripe encore nécessaires',pvQueueLimited:'Offre gratuite : 3 bandes-annonces en file',pvHistoryLimited:'L’offre gratuite garde vos 15 derniers titres',pvThemeLocked:'Le thème Cinématographique est un extra Premium',pvBadge:'PREMIUM',pvCancelNote:'Aucune carte stockée par NANCYFLIX · annulable à tout moment',pvSignIn:'Connectez-vous pour vous abonner',pvLoading:'Vérification du paiement…',pvCancelled:'Paiement annulé',pvCancelledD:'Aucun débit effectué. Vous pouvez réessayer à tout moment.',pvStatusFree:'Gratuit',pvSince:'Membre depuis',pvEmailNote:'Reçu envoyé à',pvSelected:'Sélectionné',pvOr:'ou économisez avec l’annuel',pvSetupHint:'Propriétaire : collez LINK_MONTHLY et LINK_YEARLY dans CONFIG.STRIPE.'},
  es:{langTitle1:'Elige tu',langTitle2:'idioma',langDesc:'Elige el idioma de la interfaz y de las fichas de películas. Puedes cambiarlo cuando quieras con el botón del globo.',langSearch:'Buscar idiomas…',langContinue:'Continuar',langNote:'7 idiomas · compatible con derecha a izquierda',langChanged:'Idioma actualizado',langCurrent:'Actual',langNoResults:'Ningún idioma coincide con tu búsqueda.',premium:'Premium',installTitle:'Instalar NANCYFLIX',installDesc:'App a pantalla completa, a un toque de tu inicio — funciona sin conexión.',installBtn:'Instalar',iosTitle:'Añadir a pantalla de inicio',iosSub:'Safari instala NANCYFLIX en tres pasos.',ios1:'Toca el botón Compartir en la barra de Safari.',ios2:'Desliza y toca «Añadir a pantalla de inicio».',ios3:'Toca «Añadir» — NANCYFLIX se abre a pantalla completa.',gotIt:'Entendido',splashS1:'Preparando tu cine',splashS2:'Calentando el proyector',splashS3:'Cargando tu lista',splashS4:'Casi listo',pvKicker:'NANCYFLIX PREMIUM',pvTitle:'Cine sin límites',pvSub:'Una suscripción. Todos tus dispositivos. Cancela cuando quieras.',pvMonthly:'Mensual',pvYearly:'Anual',pvPerMonth:'/mes',pvPerYear:'/año',pvSave:'Ahorra 40%',pvPopular:'Mejor valor',pvCtaMonth:'Elegir mensual',pvCtaYear:'Elegir anual',pvActive:'Premium activo',pvRenews:'Se renueva',pvManage:'Gestionar suscripción',pvRestore:'Restaurar compra',pvFreePlan:'Estás en el plan Gratis',pvCurrent:'Plan actual',pvBenefits:'Lo que incluye la membresía',pvF1:'Cola de tráilers ilimitada',pvF1d:'El plan gratis guarda 3 tráilers. Premium no se detiene.',pvF2:'Historial de 30 títulos',pvF2d:'El gratis guarda los últimos 15. Premium guarda 30.',pvF3:'Tema Cinematográfico exclusivo',pvF3d:'El look oro y violeta «Amazing», solo para miembros.',pvF4:'Insignia de perfil Premium',pvF4d:'Un anillo dorado en tu avatar en toda la app.',pvTrust:'Pago seguro con Stripe · Cancela cuando quieras · Sin cargos ocultos',pvSetupT:'Los pagos aún no están activados',pvSetupD:'Añade tus dos enlaces de pago de Stripe en CONFIG.STRIPE. Los pasos están en docs/PAYMENTS.md.',pvFaq:'Preguntas',pvFaq1q:'¿Puedo cancelar cuando quiera?',pvFaq1a:'Sí. Abre Gestionar suscripción para cancelar con un toque — mantienes Premium hasta el final del periodo pagado.',pvFaq2q:'¿Qué pasa con mi lista si cancelo?',pvFaq2a:'No se borra nada. Tu lista e historial siguen ahí; solo los extras premium vuelven a los límites gratuitos.',pvFaq3q:'¿Mi tarjeta está segura?',pvFaq3a:'Los datos de la tarjeta nunca pasan por NANCYFLIX. Stripe aloja el pago y procesa la transacción.',pvPending:'Activando tu membresía',pvPendingD:'Tu pago se realizó pero la confirmación aún no llegó a este dispositivo. Toca «Comprobar de nuevo» en un momento — o escribe a devbriannova@gmail.com con tu ID de sesión.',pvCheckAgain:'Comprobar de nuevo',pvActivated:'Premium activado',pvActivatedD:'Bienvenido a NANCYFLIX Premium. Todo está desbloqueado.',pvNeedKeys:'Faltan las claves de Stripe',pvQueueLimited:'Plan gratis: 3 tráilers en la cola',pvHistoryLimited:'El plan gratis guarda tus últimos 15 títulos',pvThemeLocked:'El tema Cinematográfico es extra Premium',pvBadge:'PREMIUM',pvCancelNote:'NANCYFLIX no guarda tarjetas · cancela cuando quieras',pvSignIn:'Inicia sesión para suscribirte',pvLoading:'Comprobando tu pago…',pvCancelled:'Pago cancelado',pvCancelledD:'No se realizó ningún cargo. Puedes intentarlo de nuevo.',pvStatusFree:'Gratis',pvSince:'Miembro desde',pvEmailNote:'Recibo enviado a',pvSelected:'Seleccionado',pvOr:'o ahorra con el anual',pvSetupHint:'Propietario: pega LINK_MONTHLY y LINK_YEARLY en CONFIG.STRIPE.'},
  de:{langTitle1:'Wähle deine',langTitle2:'Sprache',langDesc:'Wähle die Sprache für Oberfläche und Filminfos. Du kannst sie jederzeit über den Globus-Button ändern.',langSearch:'Sprachen suchen…',langContinue:'Weiter',langNote:'7 Sprachen · von rechts nach links unterstützt',langChanged:'Sprache aktualisiert',langCurrent:'Aktuell',langNoResults:'Keine Sprache passt zu deiner Suche.',premium:'Premium',installTitle:'NANCYFLIX installieren',installDesc:'Vollbild-App, ein Tipp vom Homescreen — funktioniert offline.',installBtn:'Installieren',iosTitle:'Zum Home-Bildschirm',iosSub:'Safari installiert NANCYFLIX in drei Schritten.',ios1:'Tippe in Safari auf das Teilen-Symbol.',ios2:'Scrolle und tippe auf „Zum Home-Bildschirm“.',ios3:'Tippe auf „Hinzufügen“ — NANCYFLIX öffnet im Vollbild.',gotIt:'Verstanden',splashS1:'Dein Kino wird vorbereitet',splashS2:'Der Projektor läuft warm',splashS3:'Deine Merkliste lädt',splashS4:'Fast geschafft',pvKicker:'NANCYFLIX PREMIUM',pvTitle:'Kino ohne Grenzen',pvSub:'Eine Mitgliedschaft. Alle Geräte. Jederzeit kündbar.',pvMonthly:'Monatlich',pvYearly:'Jährlich',pvPerMonth:'/Monat',pvPerYear:'/Jahr',pvSave:'40 % sparen',pvPopular:'Bester Preis',pvCtaMonth:'Monatlich wählen',pvCtaYear:'Jährlich wählen',pvActive:'Premium aktiv',pvRenews:'Verlängert am',pvManage:'Abo verwalten',pvRestore:'Kauf wiederherstellen',pvFreePlan:'Du bist im Gratis-Plan',pvCurrent:'Aktueller Plan',pvBenefits:'Das bekommen Mitglieder',pvF1:'Unbegrenzte Trailer-Warteschlange',pvF1d:'Gratis hält 3 Trailer. Premium stoppt nie.',pvF2:'30 Titel Verlauf',pvF2d:'Gratis behält die letzten 15. Premium behält 30.',pvF3:'Exklusives Cinematic-Theme',pvF3d:'Der Gold-Violett-Look „Amazing“, nur für Mitglieder.',pvF4:'Premium-Profilabzeichen',pvF4d:'Ein Goldring um deinen Avatar in der ganzen App.',pvTrust:'Sichere Zahlung über Stripe · Jederzeit kündbar · Keine versteckten Kosten',pvSetupT:'Zahlungen sind noch nicht aktiv',pvSetupD:'Trage deine zwei Stripe-Zahlungslinks in CONFIG.STRIPE ein. Die Schritte stehen in docs/PAYMENTS.md.',pvFaq:'Fragen',pvFaq1q:'Kann ich jederzeit kündigen?',pvFaq1a:'Ja. Öffne „Abo verwalten“ und kündige mit einem Tipp — Premium bleibt bis zum Ende der bezahlten Periode.',pvFaq2q:'Was passiert mit meiner Merkliste?',pvFaq2a:'Nichts wird gelöscht. Merkliste und Verlauf bleiben; nur die Premium-Extras fallen auf Gratis-Limits zurück.',pvFaq3q:'Ist meine Karte sicher?',pvFaq3a:'Kartendaten berühren NANCYFLIX nie. Stripe hostet die Zahlungsseite und verarbeitet die Zahlung.',pvPending:'Mitgliedschaft wird aktiviert',pvPendingD:'Die Zahlung war erfolgreich, aber die Bestätigung ist noch nicht angekommen. Tippe gleich auf „Erneut prüfen“ — oder schreibe an devbriannova@gmail.com mit deiner Session-ID.',pvCheckAgain:'Erneut prüfen',pvActivated:'Premium aktiviert',pvActivatedD:'Willkommen bei NANCYFLIX Premium. Alles ist freigeschaltet.',pvNeedKeys:'Stripe-Schlüssel fehlen noch',pvQueueLimited:'Gratis-Plan: 3 Trailer in der Warteschlange',pvHistoryLimited:'Gratis-Plan behält die letzten 15 Titel',pvThemeLocked:'Das Cinematic-Theme ist ein Premium-Extra',pvBadge:'PREMIUM',pvCancelNote:'NANCYFLIX speichert keine Karten · jederzeit kündbar',pvSignIn:'Anmelden zum Abonnieren',pvLoading:'Zahlung wird geprüft…',pvCancelled:'Zahlung abgebrochen',pvCancelledD:'Es wurde nichts belastet. Du kannst es jederzeit erneut versuchen.',pvStatusFree:'Gratis',pvSince:'Mitglied seit',pvEmailNote:'Beleg gesendet an',pvSelected:'Ausgewählt',pvOr:'oder jährlich sparen',pvSetupHint:'Inhaber: LINK_MONTHLY und LINK_YEARLY in CONFIG.STRIPE einfügen.'},
- pt:{langTitle1:'Escolha seu',langTitle2:'idioma',langDesc:'Escolha o idioma da interface e das fichas de filmes. Você pode mudar a qualquer momento pelo botão do globo.',langSearch:'Buscar idiomas…',langContinue:'Continuar',langNote:'7 idiomas · suporte a direita para esquerda',langChanged:'Idioma atualizado',langCurrent:'Atual',langNoResults:'Nenhum idioma corresponde à sua busca.',premium:'Premium',installTitle:'Instalar NANCYFLIX',installDesc:'App em tela cheia, a um toque da sua tela inicial — funciona offline.',installBtn:'Instalar',iosTitle:'Adicionar à Tela de Início',iosSub:'O Safari instala o NANCYFLIX em três passos.',ios1:'Toque no botão Compartilhar na barra do Safari.',ios2:'Role e toque em “Adicionar à Tela de Início”.',ios3:'Toque em “Adicionar” — o NANCYFLIX abre em tela cheia.',gotIt:'Entendi',splashS1:'Preparando seu cinema',splashS2:'Aquecendo o projetor',splashS3:'Carregando sua lista',splashS4:'Quase lá',pvKicker:'NANCYFLIX PREMIUM',pvTitle:'Cinema sem limites',pvSub:'Uma assinatura. Todos os dispositivos. Cancele quando quiser.',pvMonthly:'Mensal',pvYearly:'Anual',pvPerMonth:'/mês',pvPerYear:'/ano',pvSave:'Economize 40%',pvPopular:'Melhor valor',pvCtaMonth:'Escolher mensal',pvCtaYear:'Escolher anual',pvActive:'Premium ativo',pvRenews:'Renova em',pvManage:'Gerenciar assinatura',pvRestore:'Restaurar compra',pvFreePlan:'Você está no plano Grátis',pvCurrent:'Plano atual',pvBenefits:'O que os membros recebem',pvF1:'Fila de trailers ilimitada',pvF1d:'O grátis mantém 3 trailers. O Premium nunca para.',pvF2:'Histórico de 30 títulos',pvF2d:'O grátis mantém os últimos 15. O Premium mantém 30.',pvF3:'Tema Cinematográfico exclusivo',pvF3d:'O visual ouro e violeta “Amazing”, só para membros.',pvF4:'Selo de perfil Premium',pvF4d:'Um anel dourado no seu avatar em todo o app.',pvTrust:'Pagamento seguro via Stripe · Cancele quando quiser · Sem taxas ocultas',pvSetupT:'Os pagamentos ainda não estão ativos',pvSetupD:'Adicione seus dois links de pagamento Stripe em CONFIG.STRIPE. O passo a passo está em docs/PAYMENTS.md.',pvFaq:'Perguntas',pvFaq1q:'Posso cancelar quando quiser?',pvFaq1a:'Sim. Abra Gerenciar assinatura para cancelar com um toque — você mantém o Premium até o fim do período pago.',pvFaq2q:'O que acontece com minha lista se eu cancelar?',pvFaq2a:'Nada é apagado. Sua lista e histórico continuam; apenas os extras premium voltam aos limites do plano grátis.',pvFaq3q:'Meu cartão está seguro?',pvFaq3a:'Os dados do cartão nunca passam pelo NANCYFLIX. O Stripe hospeda o checkout e processa o pagamento.',pvPending:'Ativando sua assinatura',pvPendingD:'Seu pagamento foi aprovado, mas a confirmação ainda não chegou a este dispositivo. Toque em “Verificar novamente” — ou envie um e-mail para devbriannova@gmail.com com o ID da sessão.',pvCheckAgain:'Verificar novamente',pvActivated:'Premium ativado',pvActivatedD:'Bem-vindo ao NANCYFLIX Premium. Tudo está liberado.',pvNeedKeys:'Ainda faltam as chaves do Stripe',pvQueueLimited:'Plano grátis: 3 trailers na fila',pvHistoryLimited:'O plano grátis mantém seus últimos 15 títulos',pvThemeLocked:'O tema Cinematográfico é um extra Premium',pvBadge:'PREMIUM',pvCancelNote:'O NANCYFLIX não guarda cartões · cancele quando quiser',pvSignIn:'Entre para assinar',pvLoading:'Verificando seu pagamento…',pvCancelled:'Checkout cancelado',pvCancelledD:'Nenhuma cobrança foi feita. Você pode tentar de novo quando quiser.',pvStatusFree:'Grátis',pvSince:'Membro desde',pvEmailNote:'Recibo enviado para',pvSelected:'Selecionado',pvOr:'ou economize no anual',pvSetupHint:'Proprietário: cole LINK_MONTHLY e LINK_YEARLY em CONFIG.STRIPE.'},
- ar:{langTitle1:'اختر',langTitle2:'لغتك',langDesc:'اختر لغة الواجهة ومعلومات الأفلام. يمكنك تغييرها في أي وقت من زر الكرة الأرضية.',langSearch:'ابحث عن لغة…',langContinue:'متابعة',langNote:'٧ لغات · دعم الكتابة من اليمين إلى اليسار',langChanged:'تم تحديث اللغة',langCurrent:'الحالية',langNoResults:'لا توجد لغة تطابق بحثك.',premium:'بريميوم',installTitle:'تثبيت NANCYFLIX',installDesc:'تطبيق بشاشة كاملة، بنقرة واحدة من شاشتك الرئيسية — يعمل دون إنترنت.',installBtn:'تثبيت',iosTitle:'إضافة إلى الشاشة الرئيسية',iosSub:'يثبّت Safari تطبيق NANCYFLIX في ثلاث خطوات.',ios1:'اضغط زر المشاركة في شريط Safari.',ios2:'مرّر للأسفل واضغط «إضافة إلى الشاشة الرئيسية».',ios3:'اضغط «إضافة» — يفتح NANCYFLIX بشاشة كاملة.',gotIt:'تم',splashS1:'نُجهّز سينماك',splashS2:'نسخّن جهاز العرض',splashS3:'نحمّل قائمتك',splashS4:'اقتربنا',pvKicker:'NANCYFLIX بريميوم',pvTitle:'سينما بلا حدود',pvSub:'عضوية واحدة. كل الأجهزة. إلغاء في أي وقت.',pvMonthly:'شهري',pvYearly:'سنوي',pvPerMonth:'/شهر',pvPerYear:'/سنة',pvSave:'وفّر ٤٠٪',pvPopular:'أفضل قيمة',pvCtaMonth:'اختر الشهري',pvCtaYear:'اختر السنوي',pvActive:'بريميوم مُفعّل',pvRenews:'يتجدد في',pvManage:'إدارة الاشتراك',pvRestore:'استعادة الشراء',pvFreePlan:'أنت على الخطة المجانية',pvCurrent:'الخطة الحالية',pvBenefits:'ماذا تحصل عليه العضوية',pvF1:'قائمة انتظار إعلانات بلا حدود',pvF1d:'المجاني يحتفظ بـ٣ إعلانات. بريميوم لا يتوقف.',pvF2:'سجل مشاهدة ٣٠ عنوانًا',pvF2d:'المجاني يحتفظ بآخر ١٥. بريميوم يحتفظ بـ٣٠.',pvF3:'سمة سينمائية حصرية',pvF3d:'مظهر «Amazing» الذهبي البنفسجي، للأعضاء فقط.',pvF4:'شارة ملف شخصي بريميوم',pvF4d:'حلقة ذهبية حول صورتك في كل التطبيق.',pvTrust:'دفع آمن عبر Stripe · إلغاء في أي وقت · بلا رسوم خفية',pvSetupT:'المدفوعات غير مُفعّلة بعد',pvSetupD:'أضف رابطي الدفع من Stripe في CONFIG.STRIPE. الخطوات في docs/PAYMENTS.md.',pvFaq:'أسئلة',pvFaq1q:'هل يمكنني الإلغاء في أي وقت؟',pvFaq1a:'نعم. افتح «إدارة الاشتراك» وألغِ بنقرة واحدة — يبقى بريميوم حتى نهاية الفترة المدفوعة.',pvFaq2q:'ماذا يحدث لقائمتي إذا ألغيت؟',pvFaq2a:'لا يُحذف شيء. تبقى قائمتك وسجلك؛ فقط مزايا بريميوم تعود لحدود الخطة المجانية.',pvFaq3q:'هل بطاقتي آمنة؟',pvFaq3a:'بيانات البطاقة لا تمر عبر NANCYFLIX. Stripe يستضيف صفحة الدفع ويعالج العملية.',pvPending:'نُفعّل عضويتك',pvPendingD:'تم الدفع لكن التأكيد لم يصل إلى هذا الجهاز بعد. اضغط «تحقق مرة أخرى» بعد قليل — أو راسل devbriannova@gmail.com مع معرّف الجلسة.',pvCheckAgain:'تحقق مرة أخرى',pvActivated:'تم تفعيل بريميوم',pvActivatedD:'مرحبًا بك في NANCYFLIX بريميوم. كل شيء مفتوح.',pvNeedKeys:'مفاتيح Stripe مطلوبة',pvQueueLimited:'الخطة المجانية: ٣ إعلانات في القائمة',pvHistoryLimited:'الخطة المجانية تحتفظ بآخر ١٥ عنوانًا',pvThemeLocked:'السمة السينمائية ميزة بريميوم',pvBadge:'بريميوم',pvCancelNote:'NANCYFLIX لا يحفظ البطاقات · إلغاء في أي وقت',pvSignIn:'سجّل الدخول للاشتراك',pvLoading:'نتحقق من دفعتك…',pvCancelled:'تم إلغاء الدفع',pvCancelledD:'لم يتم خصم أي مبلغ. يمكنك المحاولة لاحقًا.',pvStatusFree:'مجاني',pvSince:'عضو منذ',pvEmailNote:'أُرسل الإيصال إلى',pvSelected:'محدد',pvOr:'أو وفّر مع السنوي',pvSetupHint:'للمالك: الصق LINK_MONTHLY و LINK_YEARLY في CONFIG.STRIPE.'}
+ pt:{langTitle1:'Escolha seu',langTitle2:'idioma',langDesc:'Escolha o idioma da interface e das fichas de filmes. Você pode mudar a qualquer momento pelo botão do globo.',langSearch:'Buscar idiomas…',langContinue:'Continuar',langNote:'10 idiomas · suporte a direita para esquerda',langChanged:'Idioma atualizado',langCurrent:'Atual',langNoResults:'Nenhum idioma corresponde à sua busca.',premium:'Premium',installTitle:'Instalar NANCYFLIX',installDesc:'App em tela cheia, a um toque da sua tela inicial — funciona offline.',installBtn:'Instalar',iosTitle:'Adicionar à Tela de Início',iosSub:'O Safari instala o NANCYFLIX em três passos.',ios1:'Toque no botão Compartilhar na barra do Safari.',ios2:'Role e toque em “Adicionar à Tela de Início”.',ios3:'Toque em “Adicionar” — o NANCYFLIX abre em tela cheia.',gotIt:'Entendi',splashS1:'Preparando seu cinema',splashS2:'Aquecendo o projetor',splashS3:'Carregando sua lista',splashS4:'Quase lá',pvKicker:'NANCYFLIX PREMIUM',pvTitle:'Cinema sem limites',pvSub:'Uma assinatura. Todos os dispositivos. Cancele quando quiser.',pvMonthly:'Mensal',pvYearly:'Anual',pvPerMonth:'/mês',pvPerYear:'/ano',pvSave:'Economize 40%',pvPopular:'Melhor valor',pvCtaMonth:'Escolher mensal',pvCtaYear:'Escolher anual',pvActive:'Premium ativo',pvRenews:'Renova em',pvManage:'Gerenciar assinatura',pvRestore:'Restaurar compra',pvFreePlan:'Você está no plano Grátis',pvCurrent:'Plano atual',pvBenefits:'O que os membros recebem',pvF1:'Fila de trailers ilimitada',pvF1d:'O grátis mantém 3 trailers. O Premium nunca para.',pvF2:'Histórico de 30 títulos',pvF2d:'O grátis mantém os últimos 15. O Premium mantém 30.',pvF3:'Tema Cinematográfico exclusivo',pvF3d:'O visual ouro e violeta “Amazing”, só para membros.',pvF4:'Selo de perfil Premium',pvF4d:'Um anel dourado no seu avatar em todo o app.',pvTrust:'Pagamento seguro via Stripe · Cancele quando quiser · Sem taxas ocultas',pvSetupT:'Os pagamentos ainda não estão ativos',pvSetupD:'Adicione seus dois links de pagamento Stripe em CONFIG.STRIPE. O passo a passo está em docs/PAYMENTS.md.',pvFaq:'Perguntas',pvFaq1q:'Posso cancelar quando quiser?',pvFaq1a:'Sim. Abra Gerenciar assinatura para cancelar com um toque — você mantém o Premium até o fim do período pago.',pvFaq2q:'O que acontece com minha lista se eu cancelar?',pvFaq2a:'Nada é apagado. Sua lista e histórico continuam; apenas os extras premium voltam aos limites do plano grátis.',pvFaq3q:'Meu cartão está seguro?',pvFaq3a:'Os dados do cartão nunca passam pelo NANCYFLIX. O Stripe hospeda o checkout e processa o pagamento.',pvPending:'Ativando sua assinatura',pvPendingD:'Seu pagamento foi aprovado, mas a confirmação ainda não chegou a este dispositivo. Toque em “Verificar novamente” — ou envie um e-mail para devbriannova@gmail.com com o ID da sessão.',pvCheckAgain:'Verificar novamente',pvActivated:'Premium ativado',pvActivatedD:'Bem-vindo ao NANCYFLIX Premium. Tudo está liberado.',pvNeedKeys:'Ainda faltam as chaves do Stripe',pvQueueLimited:'Plano grátis: 3 trailers na fila',pvHistoryLimited:'O plano grátis mantém seus últimos 15 títulos',pvThemeLocked:'O tema Cinematográfico é um extra Premium',pvBadge:'PREMIUM',pvCancelNote:'O NANCYFLIX não guarda cartões · cancele quando quiser',pvSignIn:'Entre para assinar',pvLoading:'Verificando seu pagamento…',pvCancelled:'Checkout cancelado',pvCancelledD:'Nenhuma cobrança foi feita. Você pode tentar de novo quando quiser.',pvStatusFree:'Grátis',pvSince:'Membro desde',pvEmailNote:'Recibo enviado para',pvSelected:'Selecionado',pvOr:'ou economize no anual',pvSetupHint:'Proprietário: cole LINK_MONTHLY e LINK_YEARLY em CONFIG.STRIPE.'},
+ ar:{langTitle1:'اختر',langTitle2:'لغتك',langDesc:'اختر لغة الواجهة ومعلومات الأفلام. يمكنك تغييرها في أي وقت من زر الكرة الأرضية.',langSearch:'ابحث عن لغة…',langContinue:'متابعة',langNote:'١٠ لغات · دعم الكتابة من اليمين إلى اليسار',langChanged:'تم تحديث اللغة',langCurrent:'الحالية',langNoResults:'لا توجد لغة تطابق بحثك.',premium:'بريميوم',installTitle:'تثبيت NANCYFLIX',installDesc:'تطبيق بشاشة كاملة، بنقرة واحدة من شاشتك الرئيسية — يعمل دون إنترنت.',installBtn:'تثبيت',iosTitle:'إضافة إلى الشاشة الرئيسية',iosSub:'يثبّت Safari تطبيق NANCYFLIX في ثلاث خطوات.',ios1:'اضغط زر المشاركة في شريط Safari.',ios2:'مرّر للأسفل واضغط «إضافة إلى الشاشة الرئيسية».',ios3:'اضغط «إضافة» — يفتح NANCYFLIX بشاشة كاملة.',gotIt:'تم',splashS1:'نُجهّز سينماك',splashS2:'نسخّن جهاز العرض',splashS3:'نحمّل قائمتك',splashS4:'اقتربنا',pvKicker:'NANCYFLIX بريميوم',pvTitle:'سينما بلا حدود',pvSub:'عضوية واحدة. كل الأجهزة. إلغاء في أي وقت.',pvMonthly:'شهري',pvYearly:'سنوي',pvPerMonth:'/شهر',pvPerYear:'/سنة',pvSave:'وفّر ٤٠٪',pvPopular:'أفضل قيمة',pvCtaMonth:'اختر الشهري',pvCtaYear:'اختر السنوي',pvActive:'بريميوم مُفعّل',pvRenews:'يتجدد في',pvManage:'إدارة الاشتراك',pvRestore:'استعادة الشراء',pvFreePlan:'أنت على الخطة المجانية',pvCurrent:'الخطة الحالية',pvBenefits:'ماذا تحصل عليه العضوية',pvF1:'قائمة انتظار إعلانات بلا حدود',pvF1d:'المجاني يحتفظ بـ٣ إعلانات. بريميوم لا يتوقف.',pvF2:'سجل مشاهدة ٣٠ عنوانًا',pvF2d:'المجاني يحتفظ بآخر ١٥. بريميوم يحتفظ بـ٣٠.',pvF3:'سمة سينمائية حصرية',pvF3d:'مظهر «Amazing» الذهبي البنفسجي، للأعضاء فقط.',pvF4:'شارة ملف شخصي بريميوم',pvF4d:'حلقة ذهبية حول صورتك في كل التطبيق.',pvTrust:'دفع آمن عبر Stripe · إلغاء في أي وقت · بلا رسوم خفية',pvSetupT:'المدفوعات غير مُفعّلة بعد',pvSetupD:'أضف رابطي الدفع من Stripe في CONFIG.STRIPE. الخطوات في docs/PAYMENTS.md.',pvFaq:'أسئلة',pvFaq1q:'هل يمكنني الإلغاء في أي وقت؟',pvFaq1a:'نعم. افتح «إدارة الاشتراك» وألغِ بنقرة واحدة — يبقى بريميوم حتى نهاية الفترة المدفوعة.',pvFaq2q:'ماذا يحدث لقائمتي إذا ألغيت؟',pvFaq2a:'لا يُحذف شيء. تبقى قائمتك وسجلك؛ فقط مزايا بريميوم تعود لحدود الخطة المجانية.',pvFaq3q:'هل بطاقتي آمنة؟',pvFaq3a:'بيانات البطاقة لا تمر عبر NANCYFLIX. Stripe يستضيف صفحة الدفع ويعالج العملية.',pvPending:'نُفعّل عضويتك',pvPendingD:'تم الدفع لكن التأكيد لم يصل إلى هذا الجهاز بعد. اضغط «تحقق مرة أخرى» بعد قليل — أو راسل devbriannova@gmail.com مع معرّف الجلسة.',pvCheckAgain:'تحقق مرة أخرى',pvActivated:'تم تفعيل بريميوم',pvActivatedD:'مرحبًا بك في NANCYFLIX بريميوم. كل شيء مفتوح.',pvNeedKeys:'مفاتيح Stripe مطلوبة',pvQueueLimited:'الخطة المجانية: ٣ إعلانات في القائمة',pvHistoryLimited:'الخطة المجانية تحتفظ بآخر ١٥ عنوانًا',pvThemeLocked:'السمة السينمائية ميزة بريميوم',pvBadge:'بريميوم',pvCancelNote:'NANCYFLIX لا يحفظ البطاقات · إلغاء في أي وقت',pvSignIn:'سجّل الدخول للاشتراك',pvLoading:'نتحقق من دفعتك…',pvCancelled:'تم إلغاء الدفع',pvCancelledD:'لم يتم خصم أي مبلغ. يمكنك المحاولة لاحقًا.',pvStatusFree:'مجاني',pvSince:'عضو منذ',pvEmailNote:'أُرسل الإيصال إلى',pvSelected:'محدد',pvOr:'أو وفّر مع السنوي',pvSetupHint:'للمالك: الصق LINK_MONTHLY و LINK_YEARLY في CONFIG.STRIPE.'}
 };
 Object.keys(UI_I18N).forEach(l=>{I18N.dict[l]=Object.assign(I18N.dict[l]||{},UI_I18N[l]);});
 
@@ -1578,29 +1755,59 @@ async function secureHash(pw){
 <script>
 /* ============ 4. TOAST MANAGER ============ */
 const Toast = {
-  show(title,msg,type="info",ms=4200){
-    if(State.settings.inApp===false)return;
-    const el=document.createElement('div');el.className='toast '+(type==='info'?'':type);
-    el.innerHTML=`<div style="flex:1"><div class="tt">${esc(title)}</div>${msg?`<div class="tm">${esc(msg)}</div>`:''}</div>`;
-    document.getElementById('toasts').appendChild(el);
-    if(State.settings.sound!==false)Sound.ping(type);
-    setTimeout(()=>{el.style.opacity=0;el.style.transform='translateX(30px)';setTimeout(()=>el.remove(),250);},ms);
+  show(title,msg,type="info",ms=null,opts=null){
+    opts=opts||{};
+    if(State.settings.inApp===false&&!opts.force)return;
+    const st=State.settings.notiStyle||'banner';
+    if(st==='off'&&!opts.force)return;
+    const host=document.getElementById('toasts'); if(!host)return;
+    const pos=State.settings.notiPos||'top-right';
+    host.className='nf8-pos-'+pos;
+    while(host.children.length>=4)host.removeChild(host.firstChild);
+    const banner=(st!=='compact');
+    const el=document.createElement('div');
+    el.className='toast '+(type==='info'?'':type)+(banner?' nf8-banner':'');
+    const icons={
+      ok:'<path d="M20 6L9 17l-5-5"/>',
+      err:'<path d="M12 8v5M12 17h.01"/><circle cx="12" cy="12" r="9"/>',
+      warn:'<path d="M12 9v4M12 17h.01M10.3 3.9L2.6 18a1.6 1.6 0 001.4 2.4h16a1.6 1.6 0 001.4-2.4L13.7 3.9a1.6 1.6 0 00-2.8 0z"/>',
+      info:'<circle cx="12" cy="12" r="9"/><path d="M12 11v5M12 8h.01"/>'
+    };
+    const action=opts.action&&opts.action.label?('<button class="nf8-act" type="button">'+esc(opts.action.label)+'</button>'):'';
+    el.innerHTML=(banner?'<span class="nf8-tic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round">'+(icons[type]||icons.info)+'</svg></span>':'')+
+      '<div style="flex:1;min-width:0"><div class="tt">'+esc(title)+'</div>'+(msg?'<div class="tm">'+esc(msg)+'</div>':'')+action+'</div>'+
+      (banner?'<button class="nf8-x" type="button" aria-label="Dismiss"><svg viewBox="0 0 24 24" width="12" height="12" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><path d="M18 6L6 18M6 6l12 12"/></svg></button><i class="nf8-bar" style="animation-duration:'+(ms||(State.settings.notiDuration||5)*1000)+'ms"></i>':'');
+    host.appendChild(el);
+    if(State.settings.sound!==false)Sound.ping(type,State.settings.notiSound);
+    const close=()=>{el.style.opacity=0;el.style.transform='translateY(-8px)';setTimeout(()=>el.remove(),220);};
+    const x=el.querySelector('.nf8-x');if(x)x.onclick=close;
+    const act=el.querySelector('.nf8-act');if(act&&opts.action&&typeof opts.action.fn==='function')act.onclick=()=>{try{opts.action.fn();}catch(e){}close();};
+    const life=(ms!=null?ms:(State.settings.notiDuration||5)*1000);
+    if(life>0)el._t=setTimeout(close,life);
+    el.addEventListener('mouseenter',()=>{if(el._t)clearTimeout(el._t);});
+    el.addEventListener('mouseleave',()=>{if(life>0)el._t=setTimeout(close,1800);});
+    return el;
   }
 };
 
 /* ============ notification sounds via Web Audio (no autoplay before gesture) ============ */
 const Sound = {
   ctx:null,
-  ping(type){
+  ping(type,kind){
     try{
+      if(State.settings.sound===false)return;
+      kind=kind||State.settings.notiSound||'chime';
       if(!this.ctx)this.ctx=new (window.AudioContext||window.webkitAudioContext)();
-      const c=this.ctx,o=c.createOscillator(),g=c.createGain();
-      const f=type==='err'?220:type==='ok'?660:440;
-      o.frequency.value=f;o.type='sine';o.connect(g);g.connect(c.destination);
-      const vol=(State.settings.soundVol!=null?State.settings.soundVol:0.5)*0.12;
-      g.gain.setValueAtTime(vol,c.currentTime);
-      g.gain.exponentialRampToValueAtTime(0.0001,c.currentTime+0.25);
-      o.start();o.stop(c.currentTime+0.26);
+      const c=this.ctx; if(c.state==='suspended')c.resume().catch(()=>{});
+      const vol=(State.settings.soundVol!=null?State.settings.soundVol:0.5)*0.11;
+      const play=(freq,at,dur,wave,peak)=>{const o=c.createOscillator(),g=c.createGain();o.type=wave||'sine';o.frequency.value=freq;o.connect(g);g.connect(c.destination);
+        const t=c.currentTime+at; g.gain.setValueAtTime(0.0001,t); g.gain.exponentialRampToValueAtTime(Math.max(.0002,vol*(peak||1)),t+.015); g.gain.exponentialRampToValueAtTime(0.0001,t+dur); o.start(t); o.stop(t+dur+.02);};
+      const base=type==='err'?220:type==='ok'?660:440;
+      if(kind==='off')return;
+      if(kind==='pop'){play(base*1.4,0,.12,'triangle',1);return;}
+      if(kind==='soft'){play(base*.75,0,.45,'sine',.6);return;}
+      if(kind==='chime'){play(base,0,.32,'sine',1);play(base*1.5,.10,.38,'sine',.7);play(base*2,.20,.30,'triangle',.35);return;}
+      play(base,0,.25,'sine',1);
     }catch(e){}
   }
 };
@@ -1749,22 +1956,32 @@ const TMDB = {
   async call(path,params={}){
     if(!HAS_TMDB)throw new Error('TMDB not configured');
     const q=new URLSearchParams(params);
-    // localize movie metadata (titles, overviews) to the user's chosen language
-    try{if(!q.has('language')){const lc=(typeof LOCALE!=='undefined'&&LOCALE[State.settings&&State.settings.lang])||'en-US';q.set('language',lc);}}catch(e){}
+    // Movie metadata deliberately stays English on every UI language.
+    if(!q.has('language'))q.set('language','en-US');
     let url,ckey;
     if(CONFIG.TMDB_PROXY){ckey=path+'?'+q.toString();url=CONFIG.TMDB_PROXY+(CONFIG.TMDB_PROXY.includes('?')?'&':'?')+'path='+encodeURIComponent(path)+'&'+q.toString();}
     else{ckey=path+'?'+q.toString();q.set('api_key',CONFIG.TMDB_KEY);url=CONFIG.TMDB_BASE+path+'?'+q.toString();}
-    // offline: serve cached data immediately
     if(typeof navigator!=='undefined'&&navigator.onLine===false){const c=DataCache.get(ckey);if(c!=null){this.available=true;return c;}throw new Error('offline-no-cache');}
+    const ctl=(typeof AbortController!=='undefined')?new AbortController():null;
+    const timer=ctl?setTimeout(()=>{try{ctl.abort();}catch(e){}},9000):null;
     try{
-      const r=await fetch(url);if(!r.ok)throw new Error(r.status);
-      const j=await r.json();this.available=true;DataCache.set(ckey,j);return j;
+      const r=await fetch(url,ctl?{signal:ctl.signal}:undefined);
+      let j=null;try{j=await r.json();}catch(e){}
+      if(timer)clearTimeout(timer);
+      if(!r.ok)throw new Error('HTTP '+r.status+(j&&j.error?(' · '+j.error):''));
+      if(j&&j.error)throw new Error(String(j.error));
+      if(!j)throw new Error('Empty TMDB response');
+      this.available=true;DataCache.set(ckey,j);return j;
     }catch(e){
-      const c=DataCache.get(ckey);if(c!=null){this.available=true;return c;}  // fall back to cache when the network fails
+      if(timer)clearTimeout(timer);
+      const c=DataCache.get(ckey);if(c!=null){this.available=true;return c;}
       this.errors++;this.available=false;throw e;
     }
   },
-  async genres(){const d=await this.call('/genre/movie/list');return d.genres||GENRE_FALLBACK;},
+  async genres(){
+    try{const d=await this.call('/genre/movie/list');return (d&&d.genres&&d.genres.length)?d.genres:GENRE_FALLBACK;}
+    catch(e){this.available=false;return GENRE_FALLBACK;}
+  },
   async list(kind,page=1){ // trending/popular/top_rated/upcoming
     const map={trending:'/trending/movie/week',popular:'/movie/popular',top_rated:'/movie/top_rated',upcoming:'/movie/upcoming',now_playing:'/movie/now_playing'};
     const d=await this.call(map[kind]||map.popular,{page});return d.results||[];
@@ -1920,7 +2137,8 @@ const Genres = {
   mode:'all', active:null, gIndex:0, page:1, loading:false, done:false, observer:null,
   async render(){
     const v=document.getElementById('view-genres');
-    if(!State.genres.length)State.genres=await TMDB.genres();
+    if(!State.genres||!State.genres.length){State.genres=await TMDB.genres().catch(()=>GENRE_FALLBACK);}
+    if(!State.genreMap||!Object.keys(State.genreMap).length){State.genreMap={};State.genres.forEach(g=>State.genreMap[g.id]=g.name);}
     v.innerHTML=`<div class="section-head"><h3><span class="bar"></span>${t('browseGenre')}</h3></div>
       <div class="genre-tabs" id="genreTabs">
         <button data-g="all" class="${this.mode==='all'?'active':''}">${t('allGenres')}</button>
@@ -1941,21 +2159,40 @@ const Genres = {
     this.loadNextGenre();this.loadNextGenre();
   },
   async loadNextGenre(){
-    if(this.loading||this.done||this.mode!=='all')return;this.loading=true;
+    if(this.loading||this.done||this.mode!=='all')return;
+    this.loading=true;
     const sen=document.getElementById('sentinel');if(sen)sen.innerHTML='<div class="spinner"></div>';
     const g=State.genres[this.gIndex];
     if(!g){this.done=true;this.loading=false;if(sen)sen.innerHTML='<span>You’ve reached the end</span>';return;}
-    const list=await TMDB.byGenre(g.id,1);
-    const stream=document.getElementById('genreStream');if(!stream){this.loading=false;return;}
-    if(list.length){
-      const block=document.createElement('div');block.className='genre-block';
-      block.innerHTML=`<h3><span class="bar"></span>${esc(g.name)}<span class="gcount">${list.length}+ titles</span></h3><div class="grid">${list.map(cardHTML).join('')}</div>`;
-      stream.appendChild(block);
+    try{
+      const list=await TMDB.byGenre(g.id,1);
+      const stream=document.getElementById('genreStream');if(!stream)return;
+      if(list&&list.length){
+        const block=document.createElement('div');block.className='genre-block';
+        block.innerHTML=`<h3><span class="bar"></span>${esc(g.name)}<span class="gcount">${list.length}+ titles</span></h3><div class="grid">${list.map(cardHTML).join('')}</div>`;
+        stream.appendChild(block);
+      }else{
+        const block=document.createElement('div');block.className='genre-block nf8-genre-empty';
+        block.innerHTML=`<h3><span class="bar"></span>${esc(g.name)}</h3><p>No titles came back for this genre just now.</p>`;
+        const stream2=document.getElementById('genreStream');if(stream2)stream2.appendChild(block);
+      }
+      this.gIndex++;
+      this.done=this.gIndex>=State.genres.length;
+    }catch(err){
+      const stream=document.getElementById('genreStream');
+      if(stream&&!stream.querySelector('.nf8-genre-error')){
+        const box=document.createElement('div');box.className='nf8-genre-error';
+        box.innerHTML='<b>Could not load this genre</b><p>The movie service did not answer. Your other genres still work.</p><button class="btn sm" type="button">Try again</button>';
+        box.querySelector('button').onclick=()=>{box.remove();this.loadNextGenre();};
+        stream.appendChild(box);
+      }
+      if(g)this.gIndex++;
+      this.done=this.gIndex>=State.genres.length;
+    }finally{
+      this.loading=false;
+      if(sen)sen.innerHTML=this.done?'<span>You’ve reached the end</span>':'';
+      if(!this.done&&this.mode==='all')setTimeout(()=>{if(State.view==='genres')this.loadNextGenre();},250);
     }
-    this.gIndex++;
-    this.done=this.gIndex>=State.genres.length;
-    if(sen)sen.innerHTML=this.done?'<span>You’ve reached the end</span>':'';
-    this.loading=false;
   },
   focus(gid){
     this.mode='focus';this.active=gid;this.page=1;this.done=false;this.loading=false;
@@ -1967,15 +2204,33 @@ const Genres = {
     this.loadMoreFocus(true);
   },
   async loadMoreFocus(reset){
-    if(this.loading||this.done||this.mode!=='focus')return;this.loading=true;
+    if(this.loading||this.done||this.mode!=='focus')return;
+    this.loading=true;
     const sen=document.getElementById('sentinel');if(sen)sen.innerHTML='<div class="spinner"></div>';
-    const res=await TMDB.byGenre(this.active,this.page);
-    const grid=document.getElementById('genreGrid');if(!grid){this.loading=false;return;}
-    if(reset)grid.innerHTML='';
-    if(!res.length&&this.page===1){grid.innerHTML=`<div class="state" style="grid-column:1/-1">${svg(ICON.empty,'icon lg')}<h4>Nothing here yet</h4><p>No movies found for this genre right now.</p></div>`;this.done=true;}
-    else{grid.insertAdjacentHTML('beforeend',res.map(cardHTML).join(''));this.page++;if(this.page>20||res.length<20)this.done=true;}
-    if(sen)sen.innerHTML=this.done?'<span>You’ve reached the end</span>':'';
-    this.loading=false;
+    try{
+      const res=await TMDB.byGenre(this.active,this.page);
+      const grid=document.getElementById('genreGrid');if(!grid)return;
+      if(reset)grid.innerHTML='';
+      if(!res||!res.length){
+        if(this.page===1){grid.innerHTML=`<div class="state" style="grid-column:1/-1">${svg(ICON.empty,'icon lg')}<h4>Nothing here yet</h4><p>No movies found for this genre right now.</p></div>`;}
+        this.done=true;
+      }else{
+        grid.insertAdjacentHTML('beforeend',res.map(cardHTML).join(''));
+        this.page++;
+        if(this.page>20||res.length<20)this.done=true;
+      }
+    }catch(err){
+      const grid=document.getElementById('genreGrid');
+      if(grid){
+        const box=document.createElement('div');box.className='state nf8-genre-error';box.style.gridColumn='1/-1';
+        box.innerHTML=`${svg(ICON.alert,'icon lg')}<h4>This row could not load</h4><p>Check your connection and try again. Nothing is lost.</p><button class="btn sm" type="button">Retry</button>`;
+        box.querySelector('button').onclick=()=>{box.remove();this.loadMoreFocus(false);};
+        grid.appendChild(box);
+      }
+    }finally{
+      this.loading=false;
+      if(sen)sen.innerHTML=this.done?'<span>You’ve reached the end</span>':'';
+    }
   },
   _tick(){if(this.mode==='all')this.loadNextGenre();else this.loadMoreFocus();},
   _observe(){
@@ -2309,25 +2564,39 @@ const Search = {
   timer:null, page:1, query:'', total:0, pages:1,
   init(){
     const inp=document.getElementById('searchInput');
-    inp.addEventListener('input',()=>{clearTimeout(this.timer);const q=inp.value.trim();document.getElementById('searchClear').style.display=q?'block':'none';this.timer=setTimeout(()=>this.run(q),380);});
-    document.getElementById('searchClear').onclick=()=>{inp.value='';document.getElementById('searchClear').style.display='none';if(State.view==='search')switchView('home');};
-    inp.addEventListener('keydown',e=>{if(e.key==='Enter'){clearTimeout(this.timer);this.run(inp.value.trim());}});
+    if(!inp)return;
+    inp.addEventListener('input',()=>{clearTimeout(this.timer);const q=inp.value.trim();const clr=document.getElementById('searchClear');if(clr)clr.style.display=q?'flex':'none';this.timer=setTimeout(()=>this.run(q),380);});
+    const clr=document.getElementById('searchClear');
+    if(clr)clr.onclick=()=>{inp.value='';clr.style.display='none';if(State.view==='search')switchView('home');inp.focus();};
+    const go=document.getElementById('searchGo');
+    if(go)go.onclick=()=>{clearTimeout(this.timer);const q=inp.value.trim();if(q)this.run(q);else inp.focus();};
+    inp.addEventListener('keydown',e=>{if(e.key==='Enter'){clearTimeout(this.timer);const q=inp.value.trim();if(q)this.run(q);}});
   },
   async run(q,page=1){
-    if(!q){return;}
+    if(!q)return;
     this.query=q;this.page=page;
     switchView('search');
     const v=document.getElementById('view-search');
+    if(!v)return;
     v.innerHTML=`<div class="section-head"><h3><span class="bar"></span>${t('search')}</h3></div><div id="searchMeta" style="color:var(--muted);margin-bottom:14px">Searching “${esc(q)}”…</div><div class="grid" id="searchGrid">${skeletons(10)}</div><div class="pager" id="searchPager"></div>`;
     const seq=++State.searchSeq;
-    const r=await TMDB.search(q,page);
-    if(seq!==State.searchSeq)return;        // drop stale response
-    this.total=r.total;this.pages=Math.min(r.pages,20);
-    const grid=document.getElementById('searchGrid');if(!grid)return;
-    if(!r.results.length){v.querySelector('#searchGrid').outerHTML=`<div class="state">${svg(ICON.empty,'icon lg')}<h4>No results for “${esc(q)}”</h4><p>Try a different title or check your spelling.</p></div>`;document.getElementById('searchMeta').textContent='0 results';return;}
-    document.getElementById('searchMeta').textContent=`${r.total} result${r.total===1?'':'s'} for “${q}”`;
-    grid.innerHTML=r.results.map(cardHTML).join('');
-    this._pager();
+    try{
+      const r=await TMDB.search(q,page);
+      if(seq!==State.searchSeq)return;
+      this.total=r.total;this.pages=Math.min(r.pages,20);
+      const grid=document.getElementById('searchGrid');if(!grid)return;
+      if(!r.results.length){v.querySelector('#searchGrid').outerHTML=`<div class="state">${svg(ICON.empty,'icon lg')}<h4>No results for “${esc(q)}”</h4><p>Try a different title or check your spelling.</p></div>`;document.getElementById('searchMeta').textContent='0 results';return;}
+      document.getElementById('searchMeta').textContent=`${r.total} result${r.total===1?'':'s'} for “${q}”`;
+      grid.innerHTML=r.results.map(cardHTML).join('');
+      this._pager();
+    }catch(err){
+      if(seq!==State.searchSeq)return;
+      const meta=document.getElementById('searchMeta');
+      if(meta)meta.textContent='Search is unavailable right now.';
+      const grid=document.getElementById('searchGrid');
+      if(grid)grid.innerHTML=`<div class="state" style="grid-column:1/-1">${svg(ICON.alert,'icon lg')}<h4>We could not reach the movie service</h4><p>${HAS_TMDB&&!CONFIG.TMDB_KEY?'The private key is missing on the server. Add TMDB_V3_KEY in Vercel, then redeploy.':'Check your connection and try again.'}</p><button class="btn sm" type="button" id="searchRetry">Try again</button></div>`;
+      const b=document.getElementById('searchRetry');if(b)b.onclick=()=>this.run(q,1);
+    }
   },
   _pager(){
     const p=document.getElementById('searchPager');if(!p||this.pages<=1){if(p)p.innerHTML='';return;}
@@ -2445,7 +2714,7 @@ const Theme={
 
 /* ============ 16. SETTINGS MANAGER ============ */
 const Settings={
-  defaults(){return{theme:'dark',accent:null,density:'comfortable',posterQ:'high',font:'Inter',inApp:true,sound:true,soundVol:0.5,browserNoti:false,transitions:true,hover:true,splash:true,reduceMotion:false,autoplay:true,defaultCat:'trending',lang:'en'};},
+  defaults(){return{theme:'dark',accent:null,density:'comfortable',posterQ:'high',font:'Inter',inApp:true,sound:true,soundVol:0.5,browserNoti:false,transitions:true,hover:true,splash:true,reduceMotion:false,autoplay:true,defaultCat:'trending',lang:'en',notiStyle:'banner',notiPos:'top-right',notiDuration:5,notiSound:'chime',focusMin:25,focusSounds:['rain','wind'],focusVol:0.55,sportsStreams:{}};},
   openModal(){
     const s=State.settings;const m=document.getElementById('settingsModal');
     const si=this.storageInfo();
@@ -2473,7 +2742,17 @@ const Settings={
           ${this._sw(t('inAppNoti'),t('inAppNotiDesc'),'inApp',s.inApp)}
           ${this._sw(t('soundFx'),t('soundFxDesc'),'sound',s.sound)}
           <div class="set-row"><div class="lbl"><div class="t">${t('soundVolume')}</div></div><div class="vol-stepper"><button type="button" class="vstep" id="volDown" aria-label="Decrease volume">${svg(ICON.minus,'icon sm')}</button><div class="vol-disp"><span id="volNum">${Math.round(s.soundVol*100)}</span><small>%</small></div><button type="button" class="vstep" id="volUp" aria-label="Increase volume">${svg(ICON.plus,'icon sm')}</button></div></div>
-          ${this._sw(t('browserNoti'),t('browserNotiDesc'),'browserNoti',s.browserNoti)}</div>
+          ${this._sw(t('browserNoti'),t('browserNotiDesc'),'browserNoti',s.browserNoti)}
+          <div class="set-row"><div class="lbl"><div class="t">Pop-up style</div><div class="d">How in-app alerts appear on screen</div></div><select class="mini" id="setNotiStyle"><option value="banner" ${(s.notiStyle||'banner')==='banner'?'selected':''}>Rich banner</option><option value="compact" ${s.notiStyle==='compact'?'selected':''}>Compact toast</option><option value="off" ${s.notiStyle==='off'?'selected':''}>Off</option></select></div>
+          <div class="set-row"><div class="lbl"><div class="t">Pop-up position</div><div class="d">Where the banner appears</div></div><select class="mini" id="setNotiPos"><option value="top-right" ${(s.notiPos||'top-right')==='top-right'?'selected':''}>Top right</option><option value="top-center" ${s.notiPos==='top-center'?'selected':''}>Top centre</option><option value="bottom-right" ${s.notiPos==='bottom-right'?'selected':''}>Bottom right</option><option value="bottom-left" ${s.notiPos==='bottom-left'?'selected':''}>Bottom left</option></select></div>
+          <div class="set-row"><div class="lbl"><div class="t">How long it stays</div><div class="d">Seconds before a pop-up closes</div></div><select class="mini" id="setNotiDur">${[3,4,5,7,10].map(n=>`<option value="${n}" ${(+s.notiDuration||5)===n?'selected':''}>${n} seconds</option>`).join('')}</select></div>
+          <div class="set-row"><div class="lbl"><div class="t">Alert sound</div><div class="d">The tone played with a pop-up</div></div><select class="mini" id="setNotiSound"><option value="chime" ${(s.notiSound||'chime')==='chime'?'selected':''}>Chime</option><option value="pop" ${s.notiSound==='pop'?'selected':''}>Pop</option><option value="soft" ${s.notiSound==='soft'?'selected':''}>Soft tone</option><option value="off" ${s.notiSound==='off'?'selected':''}>Silent</option></select></div>
+          <div class="set-row" style="border:0"><div class="lbl"><div class="t">Test it</div><div class="d">Show a sample banner and play the sound</div></div><button class="btn sm" type="button" id="setNotiTest">Preview alert</button></div></div>
+        <div class="set-group" data-s="sports football stream live league broadcaster"><h4>${svg(ICON.ball,'icon sm')} Sports &amp; streams</h4>
+          <div class="set-row" style="border:0"><div class="lbl"><div class="t">Your legal stream links</div><div class="d">Optional. Paste a link you are allowed to use — your own stream, a broadcaster page, or a YouTube live. Leave blank to show official broadcaster links only.</div></div></div>
+          <div id="nf8StreamFields"></div></div>
+        <div class="set-group" data-s="focus sleep timer ambient sound relax"><h4>${svg(ICON.moon,'icon sm')} Focus &amp; sleep</h4>
+          <div class="set-row" style="border:0"><div class="lbl"><div class="t">Focus timer</div><div class="d">A countdown with layered ambient sound. Open it any time from the moon button.</div></div><button class="btn sm" type="button" id="setFocusOpen">Open focus timer</button></div></div>
         <div class="set-group" data-s="data storage management export usage offline"><h4>${t('grpData')}</h4>
           <div class="dm-grid" id="dataSummary">
             <div class="dm"><div class="dv">${this._fmtBytes(si.bytes)}</div><div class="dl">${t('onDeviceStorage')}</div></div>
@@ -2493,6 +2772,12 @@ const Settings={
     m.querySelector('#setPoster').onchange=e=>{s.posterQ=e.target.value;Theme.save();try{switchView(State.view);}catch(err){}};
     m.querySelectorAll('[data-set]').forEach(sw=>sw.onchange=()=>{const k=sw.dataset.set;s[k]=sw.checked;this._applyToggle(k,sw.checked);Theme.save();});
     m.querySelector('#setSearch').oninput=e=>{const q=e.target.value.toLowerCase();m.querySelectorAll('.set-group').forEach(g=>{g.style.display=(!q||g.dataset.s.includes(q)||g.textContent.toLowerCase().includes(q))?'block':'none';});};
+    const ns=m.querySelector('#setNotiStyle'); if(ns)ns.onchange=e=>{s.notiStyle=e.target.value;Theme.save();};
+    const np=m.querySelector('#setNotiPos'); if(np)np.onchange=e=>{s.notiPos=e.target.value;Theme.save();};
+    const nd=m.querySelector('#setNotiDur'); if(nd)nd.onchange=e=>{s.notiDuration=+e.target.value;Theme.save();};
+    const nsn=m.querySelector('#setNotiSound'); if(nsn)nsn.onchange=e=>{s.notiSound=e.target.value;Theme.save();try{Sound.ping('info',s.notiSound);}catch(x){}};
+    const nt=m.querySelector('#setNotiTest'); if(nt)nt.onclick=()=>Toast.show('NANCYFLIX alerts','This is how your pop-up looks and sounds. Change it any time in Settings.', 'ok',null,{force:true,action:{label:'Got it',fn:()=>{}}});
+    try{NF8.wireSettings(m);}catch(e){}
     openOverlay('settingsOverlay');
   },
   storageInfo(){
@@ -2841,8 +3126,7 @@ document.getElementById('mainNav').addEventListener('click',e=>{if(e.target.clos
 // auto-close if the viewport grows back to desktop width
 window.addEventListener('resize',()=>{if(window.innerWidth>900)toggleNav(false);});
 document.addEventListener('keydown',e=>{if(e.key==='Escape')toggleNav(false);});
-document.getElementById('mSearchBtn').onclick=()=>{document.getElementById('searchBox').classList.toggle('mshow');document.getElementById('searchInput').focus();};
-document.getElementById('fabSearch').onclick=()=>{window.scrollTo({top:0,behavior:'smooth'});const box=document.getElementById('searchBox');if(window.innerWidth<=560)box.classList.add('mshow');const inp=document.getElementById('searchInput');inp.focus();inp.select();};
+/* v8: search lives inside the field — no separate floating button */
 </script>
 <script>
 /* ============ LEGAL / ABOUT CONTENT ============ */
@@ -2984,14 +3268,31 @@ document.getElementById('forgotBtn').onclick=()=>{if(HAS_BACKEND)Toast.show('Pas
    ===================================================================== */
 
 /* ---------- 18. LANGUAGE CHOOSER ---------- */
+const NF8_FLAG=(code)=>{const f={
+ gb:'<rect width="60" height="40" fill="#012169"/><path d="M0 0l60 40M60 0L0 40" stroke="#fff" stroke-width="8"/><path d="M0 0l60 40M60 0L0 40" stroke="#c8102e" stroke-width="3"/><path d="M30 0v40M0 20h60" stroke="#fff" stroke-width="13"/><path d="M30 0v40M0 20h60" stroke="#c8102e" stroke-width="7"/>',
+ ke:'<rect width="60" height="40" fill="#000"/><rect y="13" width="60" height="14" fill="#fff"/><rect y="15" width="60" height="10" fill="#bb0000"/><rect y="25" width="60" height="5" fill="#fff"/><rect y="30" width="60" height="10" fill="#006600"/><path d="M30 12l9 8-9 9-9-9z" fill="#bb0000" stroke="#fff" stroke-width="1.5"/><path d="M30 15v10M26 19h8" stroke="#fff" stroke-width="1.2"/>',
+ fr:'<rect width="20" height="40" fill="#0055a4"/><rect x="20" width="20" height="40" fill="#fff"/><rect x="40" width="20" height="40" fill="#ef4135"/>',
+ es:'<rect width="60" height="40" fill="#aa151b"/><rect y="10" width="60" height="20" fill="#f1bf00"/><path d="M14 20h6v8h-6z" fill="#aa151b" opacity=".85"/>',
+ de:'<rect width="60" height="13.3" fill="#000"/><rect y="13.3" width="60" height="13.3" fill="#dd0000"/><rect y="26.6" width="60" height="13.4" fill="#ffce00"/>',
+ pt:'<rect width="60" height="40" fill="#046a38"/><rect x="24" width="36" height="40" fill="#da020e"/><circle cx="24" cy="20" r="7" fill="#ffe900" stroke="#fff" stroke-width="1"/><circle cx="24" cy="20" r="3.5" fill="#da020e"/>',
+ eg:'<rect width="60" height="13.3" fill="#ce1126"/><rect y="13.3" width="60" height="13.3" fill="#fff"/><rect y="26.6" width="60" height="13.4" fill="#000"/><path d="M30 15l5 5-5 7-5-7z" fill="#c09300"/>',
+ cn:'<rect width="60" height="40" fill="#de2910"/><path d="M12 8l1.9 5.6h5.9l-4.8 3.5 1.9 5.7-4.9-3.5-4.8 3.5 1.8-5.7-4.8-3.5h5.9z" fill="#ffde00"/><circle cx="24" cy="8" r="1.5" fill="#ffde00"/><circle cx="27" cy="12" r="1.5" fill="#ffde00"/><circle cx="27" cy="17" r="1.5" fill="#ffde00"/><circle cx="24" cy="21" r="1.5" fill="#ffde00"/>',
+ it:'<rect width="20" height="40" fill="#009246"/><rect x="20" width="20" height="40" fill="#fff"/><rect x="40" width="20" height="40" fill="#ce2b37"/>',
+ jp:'<rect width="60" height="40" fill="#fff"/><circle cx="30" cy="20" r="10" fill="#bc002d"/>'
+ }[code]||'<rect width="60" height="40" fill="#333"/>';
+ return '<svg class="nf8-flag" viewBox="0 0 60 40" aria-hidden="true" focusable="false">'+f+'</svg>';
+};
 const LANG_META={
-  en:{native:'English',english:'English',flag:'🇬🇧',region:'United States · United Kingdom'},
-  sw:{native:'Kiswahili',english:'Swahili',flag:'🇹🇿',region:'Tanzania · Kenya'},
-  fr:{native:'Français',english:'French',flag:'🇫🇷',region:'France · Belgique'},
-  es:{native:'Español',english:'Spanish',flag:'🇪🇸',region:'España · Latinoamérica'},
-  de:{native:'Deutsch',english:'German',flag:'🇩🇪',region:'Deutschland · Österreich'},
-  pt:{native:'Português',english:'Portuguese',flag:'🇧🇷',region:'Brasil · Portugal'},
-  ar:{native:'العربية',english:'Arabic',flag:'🇸🇦',region:'السعودية · الخليج',rtl:true}
+  en:{native:'English',english:'English',flag:NF8_FLAG('gb'),region:'United States · United Kingdom'},
+  sw:{native:'Kiswahili',english:'Swahili',flag:NF8_FLAG('ke'),region:'Kenya · Tanzania'},
+  fr:{native:'Français',english:'French',flag:NF8_FLAG('fr'),region:'France · Belgique'},
+  es:{native:'Español',english:'Spanish',flag:NF8_FLAG('es'),region:'España · Latinoamérica'},
+  de:{native:'Deutsch',english:'German',flag:NF8_FLAG('de'),region:'Deutschland · Österreich'},
+  pt:{native:'Português',english:'Portuguese',flag:NF8_FLAG('pt'),region:'Brasil · Portugal'},
+  ar:{native:'العربية',english:'Arabic',flag:NF8_FLAG('eg'),region:'مصر · الخليج',rtl:true},
+  it:{native:'Italiano',english:'Italian',flag:NF8_FLAG('it'),region:'Italia · Svizzera'},
+  zh:{native:'中文',english:'Chinese',flag:NF8_FLAG('cn'),region:'中国 · 新加坡'},
+  ja:{native:'日本語',english:'Japanese',flag:NF8_FLAG('ja'),region:'日本'}
 };
 const Lang={
   KEY:'lang', CHOSEN:'langChosen', _q:'', _reopenSettings:false,
@@ -3025,9 +3326,9 @@ const Lang={
   paint(){
     const m=LANG_META[this.current()];
     const f=document.getElementById('langFlag'),c=document.getElementById('langCode');
-    if(f)f.textContent=m.flag; if(c)c.textContent=this.current().toUpperCase();
+    if(f)f.innerHTML=m.flag; if(c)c.textContent=this.current().toUpperCase();
     const af=document.getElementById('authLangFlag'),an=document.getElementById('authLangName');
-    if(af)af.textContent=m.flag; if(an)an.textContent=m.native;
+    if(af)af.innerHTML=m.flag; if(an)an.textContent=m.native;
   },
   open(first){
     const p=document.getElementById('langPanel'); if(!p)return;
@@ -3081,10 +3382,19 @@ const Lang={
 
 /* ---------- 19. SPLASH AUDIO (synthesised, never plays late) ---------- */
 const SplashAudio={
-  ctx:null,on:LS.get('splashSound',true),played:false,done:false,
+  ctx:null,audio:null,on:LS.get('splashSound',true),played:false,done:false,_fade:null,
   init(){
     this.paint();
-    if(this.on) setTimeout(()=>this.play(),180);   // may be blocked by autoplay policy — that is fine
+    try{
+      this.audio=new Audio('audio/splash.mp3');
+      this.audio.preload='auto'; this.audio.volume=0; this.audio.loop=false;
+      this.audio.addEventListener('error',()=>{this.audio=null;});
+    }catch(e){ this.audio=null; }
+    if(this.on){
+      setTimeout(()=>this.play(),120);
+      const unlock=()=>{ if(!this.played&&!this.done)this.play(); };
+      ['pointerdown','keydown','touchstart'].forEach(ev=>document.addEventListener(ev,unlock,{once:true,passive:true}));
+    }
   },
   paint(){
     const b=document.getElementById('splashSound'); if(!b)return;
@@ -3092,14 +3402,11 @@ const SplashAudio={
     b.classList.toggle('on',!!this.on);
     b.setAttribute('aria-pressed',String(!!this.on));
     b.setAttribute('aria-label',this.on?'Mute intro sound':'Play intro sound');
-    const w1=b.querySelector('.w1'),w2=b.querySelector('.w2');
-    if(w1)w1.style.opacity=this.on?'1':'.25';
-    if(w2)w2.style.opacity=this.on?'1':'.25';
   },
   toggle(){
     this.on=!this.on; LS.set('splashSound',this.on); this.paint();
-    if(this.on){this.played=false;this.play();}
-    else{this._silence();}
+    if(this.on){ if(this.played&&this.audio){this.audio.volume=.8;this.audio.play().catch(()=>{});} else {this.played=false;this.play();} }
+    else{ this._silence(); }
   },
   _ac(){
     const AC=window.AudioContext||window.webkitAudioContext; if(!AC)return null;
@@ -3108,40 +3415,50 @@ const SplashAudio={
   },
   play(){
     if(!this.on||this.played||this.done)return;
-    const c=this._ac(); if(!c)return;
-    if(c.state==='suspended'){
-      c.resume().then(()=>{if(c.state==='running')this._sting();}).catch(()=>{});
+    if(this.audio){
+      const a=this.audio;
+      try{a.currentTime=0;}catch(e){}
+      a.volume=.8;
+      const pr=a.play();
+      if(pr&&pr.then){pr.then(()=>{this.played=true;}).catch(()=>{ /* autoplay blocked: wait for the tap */ });}
+      else{this.played=true;}
       return;
     }
+    const c=this._ac(); if(!c)return;
+    if(c.state==='suspended'){c.resume().then(()=>{if(c.state==='running')this._sting();}).catch(()=>{});return;}
     this._sting();
   },
   _sting(){
     const c=this.ctx; if(!c||this.played)return; this.played=true;
     const t0=c.currentTime+0.02, master=c.createGain();
-    master.gain.value=0.42; master.connect(c.destination);
-    // deep cinematic boom
+    master.gain.value=0.38; master.connect(c.destination);
     const o=c.createOscillator(),g=c.createGain();
     o.type='sine'; o.frequency.setValueAtTime(62,t0); o.frequency.exponentialRampToValueAtTime(33,t0+0.85);
-    g.gain.setValueAtTime(0.0001,t0); g.gain.exponentialRampToValueAtTime(0.55,t0+0.06); g.gain.exponentialRampToValueAtTime(0.0001,t0+1.2);
+    g.gain.setValueAtTime(0.0001,t0); g.gain.exponentialRampToValueAtTime(0.5,t0+0.06); g.gain.exponentialRampToValueAtTime(0.0001,t0+1.2);
     o.connect(g); g.connect(master); o.start(t0); o.stop(t0+1.25);
-    // projector riser
     const len=Math.floor(c.sampleRate*1.05), buf=c.createBuffer(1,len,c.sampleRate), d=buf.getChannelData(0);
     for(let i=0;i<len;i++){const k=i/len;d[i]=(Math.random()*2-1)*k*k;}
     const src=c.createBufferSource(); src.buffer=buf;
     const bp=c.createBiquadFilter(); bp.type='bandpass'; bp.Q.value=1.1;
     bp.frequency.setValueAtTime(260,t0); bp.frequency.exponentialRampToValueAtTime(5400,t0+1.0);
-    const ng=c.createGain(); ng.gain.setValueAtTime(0.0001,t0); ng.gain.exponentialRampToValueAtTime(0.15,t0+0.88); ng.gain.exponentialRampToValueAtTime(0.0001,t0+1.08);
+    const ng=c.createGain(); ng.gain.setValueAtTime(0.0001,t0); ng.gain.exponentialRampToValueAtTime(0.14,t0+0.88); ng.gain.exponentialRampToValueAtTime(0.0001,t0+1.08);
     src.connect(bp); bp.connect(ng); ng.connect(master); src.start(t0);
-    // shimmer chord
     [880,1318.5,1760].forEach((f,i)=>{const oo=c.createOscillator(),gg=c.createGain();oo.type='triangle';oo.frequency.value=f;const st=t0+0.82+i*0.05;
-      gg.gain.setValueAtTime(0.0001,st); gg.gain.exponentialRampToValueAtTime(0.06/(i+1),st+0.03); gg.gain.exponentialRampToValueAtTime(0.0001,st+0.85);
+      gg.gain.setValueAtTime(0.0001,st); gg.gain.exponentialRampToValueAtTime(0.05/(i+1),st+0.03); gg.gain.exponentialRampToValueAtTime(0.0001,st+0.85);
       oo.connect(gg); gg.connect(master); oo.start(st); oo.stop(st+0.9);});
   },
-  _silence(){try{if(this.ctx&&this.ctx.state==='running')this.ctx.suspend();}catch(e){}},
+  fade(sec){
+    if(!this.audio||!this.played)return;
+    const a=this.audio; clearInterval(this._fade);
+    const steps=Math.max(1,Math.round((sec||0.6)*10)); let i=0; const v0=a.volume||0.8;
+    this._fade=setInterval(()=>{i++; a.volume=Math.max(0,v0*(1-i/steps)); if(i>=steps){clearInterval(this._fade);try{a.pause();}catch(e){}}},100);
+  },
+  _silence(){clearInterval(this._fade);if(this.audio){try{this.audio.pause();}catch(e){}}try{if(this.ctx&&this.ctx.state==='running')this.ctx.suspend();}catch(e){}},
   dispose(){
-    this.done=true; this._silence();
-    const c=this.ctx; this.ctx=null;
-    if(c){try{c.close();}catch(e){}}
+    this.done=true; clearInterval(this._fade);
+    if(this.audio){try{this.audio.pause();this.audio.currentTime=0;}catch(e){}}
+    this._silence();
+    const c=this.ctx; this.ctx=null; if(c){try{c.close();}catch(e){}}
   }
 };
 
@@ -3396,8 +3713,8 @@ function priceBase(p){return String(p||'').replace(/\s*\/\s*(mo|month|yr|year|an
   switchView(b.dataset.bnav);
 });})();
 /* ============ app enter / return to auth ============ */
-function enterApp(){document.getElementById('auth').classList.remove('show');try{Lang.paint();Premium.refreshChrome();}catch(e){}document.getElementById('app').classList.add('show');document.body.classList.remove('noscroll');document.getElementById('mSearchBtn').style.display='';document.getElementById('fabSearch').classList.add('show');switchView(State.settings.defaultCat&&false?'home':'home');setTimeout(()=>{try{handleHash();}catch(e){}},300);}
-function backToAuth(tab='login'){document.getElementById('app').classList.remove('show');document.getElementById('fabSearch').classList.remove('show');[...document.querySelectorAll('.overlay.show')].forEach(o=>o.classList.remove('show'));document.getElementById('notiPanel').classList.remove('show');document.getElementById('auth').classList.add('show');document.body.classList.add('noscroll');setTab(tab);document.getElementById('demoNote').style.display=HAS_BACKEND?'none':'block';}
+function enterApp(){document.getElementById('auth').classList.remove('show');try{Lang.paint();Premium.refreshChrome();}catch(e){}document.getElementById('app').classList.add('show');document.body.classList.remove('noscroll');switchView(State.settings.defaultCat&&false?'home':'home');setTimeout(()=>{try{handleHash();}catch(e){}},300);}
+function backToAuth(tab='login'){document.getElementById('app').classList.remove('show');[...document.querySelectorAll('.overlay.show')].forEach(o=>o.classList.remove('show'));document.getElementById('notiPanel').classList.remove('show');document.getElementById('auth').classList.add('show');document.body.classList.add('noscroll');setTab(tab);document.getElementById('demoNote').style.display=HAS_BACKEND?'none':'block';}
 
 /* ============ 0. SPLASH + INITIALIZATION ============ */
 
@@ -3413,24 +3730,19 @@ const SplashRotator={
   stop(){if(this.timer){clearInterval(this.timer);this.timer=null;}}
 };
 function runSplash(){
-  try{initParticles();}catch(e){}
-  try{SplashRotator.start();}catch(e){}
   try{SplashAudio.init();}catch(e){}
-  const quick=(LS.get('guestSettings',{}).splash===false);
-  const dur=quick?700:5200;
+  const quick=(LS.get('guestSettings',{}).splash===false||State.settings.splash===false);
+  const dur=quick?700:5600;
   const t0=performance.now();
   const bar=document.getElementById('splashBar');
-  const ring=document.getElementById('splashRing');
   const pct=document.getElementById('splashPct');
   const stage=document.getElementById('splashStage');
-  const CIRC=389.6;
-  const stages=[[0,'splashS1'],[0.28,'splashS2'],[0.52,'splashS3'],[0.78,'splashS4']];
+  const stages=[[0,'splashS1'],[0.26,'splashS2'],[0.50,'splashS3'],[0.78,'splashS4']];
   let lastStage='';
   const ease=x=>1-Math.pow(1-x,3);
   const tick=now=>{
     const raw=Math.min(1,(now-t0)/dur), pr=ease(raw);
     if(bar)bar.style.width=(pr*100).toFixed(1)+'%';
-    if(ring)ring.style.strokeDashoffset=(CIRC*(1-pr)).toFixed(2);
     if(pct)pct.textContent=Math.round(pr*100)+'%';
     let key=stages[0][1];
     for(let i=0;i<stages.length;i++){if(raw>=stages[i][0])key=stages[i][1];}
@@ -3439,13 +3751,17 @@ function runSplash(){
   };
   requestAnimationFrame(tick);
   setTimeout(finishSplash,dur+3000);
+  const sb=document.getElementById('splashSound');
+  if(sb&&!sb._nf8){sb._nf8=1;sb.addEventListener('click',e=>{e.preventDefault();e.stopPropagation();try{SplashAudio.toggle();}catch(x){}});}
+  const sk=document.getElementById('splashSkip');
+  if(sk&&!sk._nf8){sk._nf8=1;sk.addEventListener('click',e=>{e.preventDefault();finishSplash();});}
 }
 let splashDone=false;
 function finishSplash(){
   if(splashDone)return;
   splashDone=true;
   try{SplashRotator.stop();}catch(e){}
-  try{SplashAudio.dispose();}catch(e){}
+  try{SplashAudio.fade(.5);}catch(e){}
   const sp=document.getElementById('splash');
   if(!sp){resumeSession();return;}
   sp.style.transition='opacity .45s ease, transform .45s ease';
@@ -4753,15 +5069,24 @@ const Live = {
 
 /* boot */
 (async function boot(){
-  try{State.genres=await TMDB.genres();}catch(e){State.genres=GENRE_FALLBACK;}
+  /* v8: the splash never waits for TMDB. Seed the known genres, start the app,
+     then refresh genre names quietly in the background. */
+  State.genres=GENRE_FALLBACK.slice();
   State.genreMap={};State.genres.forEach(g=>State.genreMap[g.id]=g.name);
-  Search.init();Sync.start();
+  try{Search.init();}catch(e){}
+  try{Sync.start();}catch(e){}
   try{Lang.init();}catch(e){}
   try{PWA.init();}catch(e){}
   window.addEventListener('offline',()=>Toast.show('Offline mode','You can keep browsing cached movies and posters. Trailers and playback need a connection.','warn'));
   window.addEventListener('online',()=>Toast.show('Back online','Live data restored.','ok'));
   try{Premium.refreshChrome();}catch(e){}
   runSplash();
+  setTimeout(async()=>{
+    try{
+      const g=await TMDB.genres();
+      if(g&&g.length){State.genres=g;State.genreMap={};g.forEach(x=>State.genreMap[x.id]=x.name);}
+    }catch(e){}
+  },900);
   setTimeout(()=>{try{Premium.handleReturn();}catch(e){}},1200);
 })();
 </script>
