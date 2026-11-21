@@ -1,3 +1,17 @@
+  init(){
+    this.paint();
+    try{
+      this.audio=new Audio('audio/splash.mp3');
+      this.audio.preload='auto'; this.audio.volume=.85; this.audio.loop=false;
+      this.audio.addEventListener('error',()=>{this.audio=null;});
+    }catch(e){ this.audio=null; }
+    if(this.on){
+      this.play();
+      const unlock=()=>{ if(!this.played&&!this.done)this.play(); };
+      ['pointerdown','touchstart','keydown'].forEach(ev=>document.addEventListener(ev,unlock,{once:true,passive:true}));
+      setTimeout(()=>{try{this.play();}catch(e){}},420);
+    }
+  },
 <!DOCTYPE html>
 <html lang="en" dir="ltr" data-theme="dark" translate="no">
 <head>
@@ -448,8 +462,9 @@ svg{display:block}
 .toast .tm{color:var(--muted)}
 @keyframes toastIn{from{transform:translateX(30px);opacity:0}to{transform:none;opacity:1}}
 /* ---- notification panel ---- */
-.panel{position:fixed;top:0;right:0;bottom:0;width:min(400px,100%);background:var(--surface);border-left:1px solid var(--border);z-index:650;transform:translateX(100%);transition:transform .28s;display:flex;flex-direction:column;box-shadow:var(--shadow)}
-.panel.show{transform:none}
+.panel{position:fixed;top:0;right:0;bottom:0;width:min(400px,100vw);max-width:100vw;background:var(--surface);border-left:1px solid var(--border);z-index:650;display:none;flex-direction:column;box-shadow:var(--shadow);overflow-x:hidden}
+.panel.show{display:flex;animation:nfPanelIn .28s ease both}
+@keyframes nfPanelIn{from{transform:translateX(100%)}to{transform:none}}
 .panel-head{display:flex;align-items:center;gap:10px;padding:18px 20px;border-bottom:1px solid var(--border)}
 .panel-head h3{font-size:17px;flex:1}
 .panel-body{flex:1;overflow:auto;padding:12px}
@@ -576,8 +591,9 @@ tbody tr:hover{background:var(--glass)}
 .gbar .gv{width:92px;text-align:right;font-size:12.5px;color:var(--muted)}
 /* ---- responsive ---- */
 @media(max-width:900px){
-  .nav{position:fixed;top:0;left:0;bottom:0;width:min(300px,84vw);margin-left:0;flex-direction:column;align-items:stretch;gap:6px;background:var(--bg-2);border-right:1px solid var(--border);box-shadow:var(--shadow);padding:0 14px 20px;transform:translateX(-102%);transition:transform .34s cubic-bezier(.4,0,.2,1);z-index:520;overflow-y:auto}
-  .nav.open{transform:none}
+  .nav{position:fixed;top:0;left:0;bottom:0;width:min(300px,84vw);margin-left:0;display:none;flex-direction:column;align-items:stretch;gap:6px;background:var(--bg-2);border-right:1px solid var(--border);box-shadow:var(--shadow);padding:0 14px 20px;z-index:520;overflow-y:auto;overflow-x:hidden}
+  .nav.open{display:flex;animation:nfDrawerIn .32s cubic-bezier(.4,0,.2,1) both}
+  @keyframes nfDrawerIn{from{transform:translateX(-100%)}to{transform:none}}
   .nav::before{content:'';display:block;height:60px;border-bottom:1px solid var(--border);margin:0 -14px 14px}
   .nav .drawer-head{position:absolute;top:0;left:0;right:0;height:60px;display:flex;align-items:center;gap:10px;padding:0 14px;pointer-events:none}
   .nav button{width:100%;justify-content:flex-start;padding:13px 16px;font-size:15px;border-radius:12px}
@@ -1148,7 +1164,7 @@ select,input,textarea{font-size:16px} /* stops iOS zoom-on-focus */
 .set-row .btn .nf8-flag{width:18px;height:12px;margin-inline-end:5px}
 
 /* --- cinematic splash --- */
-.nf8-splash{position:fixed;inset:0;z-index:1000;display:flex!important;flex-direction:column;align-items:center;justify-content:center;gap:0;background:#050508;overflow:hidden;padding:0!important}
+.nf8-splash{position:fixed;inset:0;z-index:1000;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:0;background:#050508;overflow:hidden;padding:0!important}
 .nf8-splash::before{content:'';position:absolute;inset:0;background:radial-gradient(900px 620px at 50% 45%,rgba(225,29,46,.20),transparent 62%),linear-gradient(180deg,#08080d 0%,#050508 60%,#030304 100%);pointer-events:none}
 .nf8-grain{position:absolute;inset:-50%;opacity:.20;pointer-events:none;background-image:repeating-linear-gradient(0deg,rgba(255,255,255,.07) 0 1px,transparent 1px 3px),repeating-linear-gradient(90deg,rgba(255,255,255,.05) 0 1px,transparent 1px 4px);animation:nf8grain 1.2s steps(2) infinite}
 @keyframes nf8grain{0%{transform:translate(0,0)}50%{transform:translate(-6px,4px)}100%{transform:translate(4px,-5px)}}
@@ -1172,9 +1188,9 @@ select,input,textarea{font-size:16px} /* stops iOS zoom-on-focus */
 @keyframes nf8scan{0%{transform:translateX(-120%)}60%,100%{transform:translateX(320%)}}
 .nf8-tag{font-size:9.5px;letter-spacing:.36em;text-indent:.36em;color:#a6a6b4;font-weight:700;animation:nf8up .9s .62s both}
 .nf8-stage{margin-top:26px;font-size:11px;letter-spacing:.18em;text-transform:uppercase;color:#727284;animation:nf8up .9s .8s both;min-height:15px}
-@keyframes nf8up{from{opacity:0;transform:translateY(14px)}to{opacity:1;transform:none}}
+@keyframes nf8up{from{opacity:0;translate:0 14px}to{opacity:1;translate:0 0}}
 @keyframes nf8word{from{opacity:0;letter-spacing:.02em;filter:blur(14px);transform:scale(1.06)}to{opacity:1;filter:blur(0);transform:none}}
-.nf8-splash .nf8-bottom{position:absolute;z-index:3;bottom:calc(38px + var(--safe-b));left:50%;transform:translateX(-50%);width:min(420px,72vw);display:flex;flex-direction:column;gap:9px;animation:nf8up .8s 1s both}
+.nf8-splash .nf8-bottom{position:absolute;z-index:3;bottom:calc(38px + var(--safe-b));left:0;right:0;margin-inline:auto;width:min(420px,72vw);max-width:calc(100% - 40px);display:flex;flex-direction:column;gap:9px;animation:nf8up .8s 1s both}
 .nf8-meter{height:2px;background:rgba(255,255,255,.10);overflow:hidden}
 .nf8-meter i{display:block;height:100%;width:0;background:linear-gradient(90deg,var(--accent),#ffcc66);box-shadow:0 0 16px rgba(255,59,78,.6);transition:width .2s linear}
 .nf8-pct{display:flex;align-items:center;justify-content:space-between;font-size:9px;letter-spacing:.22em;color:#666676;text-transform:uppercase}
@@ -1190,7 +1206,7 @@ select,input,textarea{font-size:16px} /* stops iOS zoom-on-focus */
 .nf8-skip{position:absolute;z-index:4;bottom:calc(34px + var(--safe-b));inset-inline-end:22px;display:inline-flex;align-items:center;gap:7px;padding:9px 14px;border-radius:99px;border:1px solid rgba(255,255,255,.13);background:rgba(255,255,255,.04);color:#b8b8c6;font-size:11px;font-weight:700;letter-spacing:.06em;backdrop-filter:blur(10px);transition:.2s}
 .nf8-skip svg{width:12px;height:12px}
 .nf8-skip:hover{color:#fff;border-color:rgba(255,255,255,.3)}
-@media(max-width:560px){.nf8-sound{bottom:calc(84px + var(--safe-b));inset-inline-start:16px;width:38px;height:38px}.nf8-skip{bottom:calc(84px + var(--safe-b));inset-inline-end:16px}.nf8-splash .nf8-bottom{bottom:calc(30px + var(--safe-b));width:80vw}.nf8-splash .nf8-iris{width:86vw}}
+@media(max-width:560px){.nf8-sound{bottom:calc(84px + var(--safe-b));inset-inline-start:16px;width:38px;height:38px}.nf8-skip{bottom:calc(84px + var(--safe-b));inset-inline-end:16px}.nf8-splash .nf8-bottom{bottom:calc(30px + var(--safe-b));width:min(420px,86vw)}.nf8-splash .nf8-iris{width:86vw}}
 
 /* --- genre error card --- */
 .nf8-genre-error{grid-column:1/-1;padding:22px;border:1px dashed rgba(225,29,46,.4);background:rgba(225,29,46,.05);border-radius:14px;text-align:center;color:var(--muted);font-size:12.5px}
@@ -1307,6 +1323,52 @@ select,input,textarea{font-size:16px} /* stops iOS zoom-on-focus */
 #nf8Update .go{padding:7px 12px;border-radius:8px;background:#ffcc66;color:#141418;font-size:11px;font-weight:900;flex:0 0 auto}
 #nf8Update .x{width:26px;height:26px;border-radius:7px;display:grid;place-items:center;color:#77778a;flex:0 0 auto}
 </style>
+<style id="nf8-splash-fix">
+/* the splash is an overlay: it must never keep the page locked once it fades */
+#splash{transition:opacity .5s ease}
+#splash.hide{display:none!important;pointer-events:none!important;visibility:hidden!important}
+#splash .nf8-bottom{position:absolute;left:0;right:0;margin-inline:auto;bottom:calc(46px + var(--safe-b));width:min(420px,78vw);max-width:calc(100% - 40px);display:flex;flex-direction:column;gap:9px}
+#splash .nf8-meter{height:3px;border-radius:99px;background:rgba(255,255,255,.10);overflow:hidden}
+#splash .nf8-meter i{display:block;height:100%;width:0;border-radius:99px;background:linear-gradient(90deg,#e11d2e,#ff5c6e 55%,#ffcc66);box-shadow:0 0 14px rgba(225,29,46,.55);transition:width .2s linear}
+#splash .nf8-pct{display:flex;align-items:center;justify-content:space-between;font-size:9px;letter-spacing:.24em;text-transform:uppercase;color:#6d6d80}
+#splash .nf8-pct span{color:#e8e8f0;font-weight:800;font-variant-numeric:tabular-nums}
+#splash .nf8-stage{margin-top:20px;min-height:16px}
+/* real motion, even if the device asks for reduced motion */
+#splash .nf8-word{animation:nf8word 1.5s .15s cubic-bezier(.2,.85,.2,1) both!important}
+#splash .nf8-kicker{animation:nf8up 1s .1s both!important}
+#splash .nf8-tag{animation:nf8up .9s .75s both!important}
+#splash .nf8-iris .r1{animation:nf8spin 26s linear infinite!important}
+#splash .nf8-iris .r2{animation:nf8spin 18s linear infinite reverse!important}
+#splash .nf8-iris b{animation:nf8pulse 2s ease-in-out infinite!important}
+#splash .nf8-beam{animation:nf8beam 7s ease-in-out infinite!important}
+#splash .nf8-grain{animation:nf8grain 1.2s steps(2) infinite!important}
+#splash .nf8-line i{animation:nf8scan 2.6s 1s ease-in-out infinite!important}
+@keyframes nf8wordIn{0%{opacity:0;transform:translateY(26px) scale(.94);filter:blur(8px)}60%{opacity:1;filter:blur(0)}100%{opacity:1;transform:none}}
+/* focus timer palettes */
+#nf8Focus{--fx-a:#e11d2e;--fx-b:#ffcc66;--fx-bg:#0d0d14;--fx-glow:rgba(225,29,46,.12)}
+#nf8Focus[data-fx="ember"]{--fx-a:#ff7a18;--fx-b:#ffd08a;--fx-bg:#140c07;--fx-glow:rgba(255,122,24,.16)}
+#nf8Focus[data-fx="forest"]{--fx-a:#1faa6b;--fx-b:#b8f5d0;--fx-bg:#07120e;--fx-glow:rgba(31,170,107,.16)}
+#nf8Focus[data-fx="aurora"]{--fx-a:#7c5cff;--fx-b:#8ee8ff;--fx-bg:#0a0a1a;--fx-glow:rgba(124,92,255,.18)}
+#nf8Focus[data-fx="mono"]{--fx-a:#8c8c9c;--fx-b:#e8e8f0;--fx-bg:#0b0b0f;--fx-glow:rgba(200,200,220,.10)}
+#nf8Focus .nf8-focus-card{background:radial-gradient(800px 300px at 20% 0%,var(--fx-glow),transparent 62%),var(--fx-bg)}
+#nf8Focus .nf8-focus-top .ic{background:linear-gradient(135deg,var(--fx-a),#000)}
+#nf8Focus .nf8-chip.on{background:var(--fx-a);border-color:var(--fx-a)}
+#nf8Focus .nf8-focus-state{color:var(--fx-b)}
+#nf8Focus .nf8-snd.on{border-color:var(--fx-a);background:var(--fx-glow)}
+#nf8Focus .nf8-snd.on .dot{background:var(--fx-a)}
+#nf8Focus .nf8-snd .bars i{background:var(--fx-a)}
+#nf8Focus .nf8-focus-clock b{text-shadow:0 0 34px var(--fx-glow)}
+#nf8Focus .nf8-themes{display:flex;gap:6px;justify-content:center;margin:0 0 14px}
+#nf8Focus .nf8-theme{width:24px;height:24px;border-radius:50%;border:2px solid transparent;padding:0}
+#nf8Focus .nf8-theme.on{border-color:#fff}
+</style>
+<style id="nf8-lang-fix">
+#langPanel{overflow:hidden}
+#langPanel .lp-wrap{height:100%;min-height:0;overflow:hidden}
+#langPanel .lp-grid{flex:1 1 auto;min-height:0;overflow-y:auto;overscroll-behavior:contain;align-content:start;padding:2px 4px 8px 2px}
+#langPanel .lp-foot{position:sticky;bottom:0;z-index:99;margin-top:auto;padding:16px 0 calc(4px + var(--safe-b));background:#07070c;border-top:1px solid rgba(255,255,255,.08)}
+@media(max-width:560px){#langPanel .lp-wrap{padding:calc(18px + var(--safe-t)) 14px calc(18px + var(--safe-b))}#langPanel .lp-head h2{font-size:26px}#langPanel .lp-search{margin:16px 0 12px}#langPanel .lp-foot .btn{width:100%}}
+</style>
 </head>
 <body class="noscroll">
 <!-- ============ SPLASH ============ -->
@@ -1329,10 +1391,6 @@ select,input,textarea{font-size:16px} /* stops iOS zoom-on-focus */
     <div class="nf8-meter"><i id="splashBar"></i></div>
     <div class="nf8-pct"><span id="splashPct">0%</span><em>LOADING</em></div>
   </div>
-  <button class="nf8-sound on" id="splashSound" type="button" aria-label="Mute intro sound" aria-pressed="true">
-    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M4 9v6h4l5 4V5L8 9z"/><path class="w1" d="M16.5 8.5a5 5 0 010 7"/><path class="w2" d="M19 6a8.5 8.5 0 010 12"/></svg>
-  </button>
-  <button class="nf8-skip" id="splashSkip" type="button">Skip intro <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M5 12h14M13 6l6 6-6 6"/></svg></button>
 </div>
 
 <!-- ============ AUTH ============ -->
@@ -3732,45 +3790,49 @@ const SplashRotator={
 function runSplash(){
   try{SplashAudio.init();}catch(e){}
   const quick=(LS.get('guestSettings',{}).splash===false||State.settings.splash===false);
-  const dur=quick?700:5600;
+  const dur=quick?900:5400;
   const t0=performance.now();
   const bar=document.getElementById('splashBar');
   const pct=document.getElementById('splashPct');
   const stage=document.getElementById('splashStage');
-  const stages=[[0,'splashS1'],[0.26,'splashS2'],[0.50,'splashS3'],[0.78,'splashS4']];
+  const stages=[[0,'splashS1'],[0.28,'splashS2'],[0.54,'splashS3'],[0.80,'splashS4']];
   let lastStage='';
   const ease=x=>1-Math.pow(1-x,3);
-  const tick=now=>{
-    const raw=Math.min(1,(now-t0)/dur), pr=ease(raw);
+  const paint=(raw)=>{
+    const pr=ease(Math.max(0,Math.min(1,raw)));
     if(bar)bar.style.width=(pr*100).toFixed(1)+'%';
     if(pct)pct.textContent=Math.round(pr*100)+'%';
     let key=stages[0][1];
-    for(let i=0;i<stages.length;i++){if(raw>=stages[i][0])key=stages[i][1];}
+    for(let k=0;k<stages.length;k++){if(raw>=stages[k][0])key=stages[k][1];}
     if(key!==lastStage){lastStage=key;if(stage)stage.textContent=t(key);}
-    if(raw<1&&!splashDone)requestAnimationFrame(tick);else finishSplash();
+  };
+  const tick=now=>{
+    const raw=Math.min(1,(now-t0)/dur);
+    paint(raw);
+    if(raw<1)requestAnimationFrame(tick);else finishSplash();
   };
   requestAnimationFrame(tick);
-  setTimeout(finishSplash,dur+3000);
-  const sb=document.getElementById('splashSound');
-  if(sb&&!sb._nf8){sb._nf8=1;sb.addEventListener('click',e=>{e.preventDefault();e.stopPropagation();try{SplashAudio.toggle();}catch(x){}});}
-  const sk=document.getElementById('splashSkip');
-  if(sk&&!sk._nf8){sk._nf8=1;sk.addEventListener('click',e=>{e.preventDefault();finishSplash();});}
+  /* hard failsafe: the splash can never trap the app, even if a frame stalls */
+  setTimeout(()=>{paint(1);finishSplash();},dur+400);
 }
 let splashDone=false;
 function finishSplash(){
   if(splashDone)return;
   splashDone=true;
   try{SplashRotator.stop();}catch(e){}
-  try{SplashAudio.fade(.5);}catch(e){}
+  try{SplashAudio.fade(.45);}catch(e){}
   const sp=document.getElementById('splash');
-  if(!sp){resumeSession();return;}
-  sp.style.transition='opacity .45s ease, transform .45s ease';
-  sp.style.opacity='0'; sp.style.transform='scale(1.03)';
+  if(sp){
+    sp.style.pointerEvents='none';
+    sp.classList.add('hide');
+    sp.style.opacity='0';
+    setTimeout(()=>{try{sp.remove();}catch(e){sp.style.display='none';}},700);
+  }
+  document.body.classList.remove('noscroll');
   setTimeout(()=>{
-    sp.style.display='none';
     resumeSession();
     if(!LS.get('langChosen')) setTimeout(()=>{try{Lang.open(true);}catch(e){}},320);
-  },470);
+  },460);
 }
 
 function resumeSession(){
@@ -5766,11 +5828,12 @@ const NF8={
   },
 
   /* ---------- 2. focus / sleep timer ---------- */
-  focus:{min:25,left:0,timer:null,running:false,paused:false,vol:0.45,master:null,ctx:null,channels:{},wake:null,
+  focus:{theme:'midnight',min:25,left:0,timer:null,running:false,paused:false,vol:0.45,master:null,ctx:null,channels:{},wake:null,
     NAMES:[['rain','Rain','soft rainfall'],['ocean','Ocean','slow waves'],['forest','Forest','wind & birds'],['fire','Fireplace','warm crackle'],['night','Night','crickets & hum'],['brown','Brown noise','deep masking']],
     open(){
       let ov=document.getElementById('nf8Focus');
       if(!ov){ov=document.createElement('div');ov.id='nf8Focus';document.body.appendChild(ov);}
+      ov.dataset.fx=this.theme||'midnight';
       ov.classList.add('show');document.body.classList.add('noscroll');this.paint(ov);
       ov.onclick=e=>{if(e.target===ov)this.close();};
     },
@@ -5779,11 +5842,13 @@ const NF8={
       ov.innerHTML='<div class="nf8-focus-card"><div class="nf8-focus-top"><span class="ic">'+IC('clock')+'</span><div><h3>Focus &amp; sleep timer</h3><p>Pick a length, then layer the ambient channels you want. Every channel can be stopped on its own, and the whole mix fades out at the end.</p></div><button class="nf8-focus-x" data-fx="close" aria-label="Close">'+IC('x')+'</button></div>'+
         '<div class="nf8-focus-clock"><b id="nf8Clock">25:00</b><span>remaining</span></div><div class="nf8-focus-state" id="nf8State">Ready when you are</div>'+
         '<div class="nf8-chips">'+[5,15,25,45,60,90].map(n=>'<button class="nf8-chip'+(n===this.min?' on':'')+'" data-min="'+n+'">'+n+' min</button>').join('')+'</div>'+
+        '<div class="nf8-themes">'+[['midnight','#e11d2e','Midnight'],['ember','#ff7a18','Ember'],['forest','#1faa6b','Forest'],['aurora','#7c5cff','Aurora'],['mono','#8c8c9c','Mono']].map(t=>'<button class="nf8-theme'+(this.theme===t[0]?' on':'')+'" data-fx-theme="'+t[0]+'" style="background:'+t[1]+'" aria-label="'+t[2]+' theme" title="'+t[2]+'"></button>').join('')+'</div>'+
         '<p class="nf8-focus-label">Ambient channels</p><div class="nf8-sounds">'+this.NAMES.map(s=>'<button class="nf8-snd" data-ch="'+s[0]+'"><span class="dot">'+IC('signal')+'</span><span class="nm">'+s[1]+'<small>'+s[2]+'</small></span><span class="bars"><i></i><i></i><i></i></span></button>').join('')+'</div>'+
         '<div class="nf8-focus-actions"><button class="btn" data-fx="start" id="nf8Start">Start</button><button class="btn ghost" data-fx="pause">Pause</button><button class="btn ghost" data-fx="stop">Stop all</button><span class="nf8-vol">'+IC('signal')+'<input type="range" min="0" max="100" value="'+Math.round(this.vol*100)+'" id="nf8Vol" aria-label="Master volume"></span></div>'+
         '<p class="nf8-focus-note">Sounds are generated in your browser with the Web Audio API, so nothing is downloaded and no audio files are hosted. Screen wake-lock is requested while the timer runs; the timer keeps counting even if you switch tabs.</p></div>';
       const self=this;
       ov.querySelector('[data-fx="close"]').onclick=()=>self.close();
+      ov.querySelectorAll('[data-fx-theme]').forEach(b=>b.onclick=()=>{self.theme=b.dataset.fxTheme;ov.dataset.fx=self.theme;LS.set('nf8fx',self.theme);ov.querySelectorAll('[data-fx-theme]').forEach(x=>x.classList.toggle('on',x===b));});
       ov.querySelectorAll('[data-min]').forEach(b=>b.onclick=()=>{self.min=+b.dataset.min;if(!self.running){self.left=self.min*60;}self.paintClock();ov.querySelectorAll('[data-min]').forEach(x=>x.classList.toggle('on',x===b));});
       ov.querySelectorAll('[data-ch]').forEach(b=>b.onclick=()=>{self.toggle(b.dataset.ch);b.classList.toggle('on',!!self.channels[b.dataset.ch]);});
       ov.querySelector('[data-fx="start"]').onclick=()=>self.start();
@@ -5917,9 +5982,12 @@ const NF8={
     try{document.getElementById('focusBtn').onclick=()=>this.focus.open();}catch(e){}
     try{document.getElementById('nf8Focus')||null;}catch(e){}
     const self=this;
-    const orig=Home.render;
-    Home.render=async function(){const r=await orig.apply(this,arguments);setTimeout(()=>{try{self.mount();}catch(e){}},60);return r;};
-    setTimeout(()=>{try{if(document.getElementById('view-home').classList.contains('show'))self.mount();}catch(e){}},1200);
+    try{const orig=Home.render;Home.render=async function(){const r=await orig.apply(this,arguments);setTimeout(()=>{try{self.mount();}catch(e){}},60);return r;};}catch(e){}
+    setTimeout(()=>{try{self.mount();}catch(e){}},1200);
+    /* keep a light watcher so the rail appears no matter how the home view is opened */
+    let _n=0;const _w=setInterval(()=>{_n++;try{if(document.getElementById('view-home'))self.mount();}catch(e){}
+      if(document.getElementById('nf8Sports')||_n>240)clearInterval(_w);},800);
+    document.addEventListener('click',e=>{try{if(e.target.closest('[data-view],[data-go],.nav button,#guestBtn'))setTimeout(()=>{try{self.mount();}catch(x){}},350);}catch(x){}},true);
     setTimeout(()=>this.updateCheck(),2600);
     document.addEventListener('keydown',e=>{if(e.key==='Escape'){this.closeGame();this.notiClose();}});
   }
