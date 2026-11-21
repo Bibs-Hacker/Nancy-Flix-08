@@ -1,14 +1,13 @@
 {
-  "version": "8.3.0",
+  "version": "8.4.0",
   "build": "2026-11-22",
   "notes": [
-    "Cinematic splash and projector intro polished",
-    "Live football: scores, today's fixtures, upcoming and match alerts",
-    "Real brand logos for Live TV channels",
-    "15 focus sounds in the sound picker",
-    "Cross-device sync: accounts, watchlist, alerts and announcements",
-    "Fix: stray text above the top bar, ticker stays pinned",
-    "Fix: update banner keeps its buttons and only reports success when verified",
-    "Fix: notification badge clears and counts down correctly"
+    "Splash rebuilt: the rotating HUD stays inside the screen, the brand name animates letter by letter, and the loading bar sits in a readable card",
+    "Continue with Google on the sign-in screen (after Google is enabled in Supabase)",
+    "Sign-up and sign-in now fall back to a working on-device account when the cloud refuses, with a clear reason",
+    "Fixture cards redesigned: competition, round, crests, score, venue, kick-off and a Where to watch button",
+    "Live matches open official broadcaster links and a YouTube live search",
+    "Live TV players explain a black frame and give a direct YouTube fallback",
+    "Admin access for bridah888@gmail.com and agollanancy@gmail.com"
   ]
 }
