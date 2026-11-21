@@ -868,6 +868,138 @@ select,input,textarea{font-size:16px} /* stops iOS zoom-on-focus */
 [dir=rtl] .row{direction:rtl}
 
 </style>
+<style>
+/* ================= NANCYFLIX v6 ================= */
+
+/* ---- 1. Hero readability (any theme) ---- */
+.hero .ov{
+  background:linear-gradient(90deg,rgba(5,5,9,.94) 0%,rgba(5,5,9,.62) 48%,rgba(5,5,9,.06) 100%),
+             linear-gradient(0deg,rgba(5,5,9,.88) 0%,rgba(5,5,9,.12) 52%,transparent 78%) !important;
+}
+.hero h2{color:#fff !important;text-shadow:0 2px 22px rgba(0,0,0,.6),0 1px 2px rgba(0,0,0,.5)}
+.hero p{color:#e9e9f0 !important;text-shadow:0 1px 12px rgba(0,0,0,.55)}
+.hero .meta .chip{background:rgba(10,10,16,.55);border-color:rgba(255,255,255,.22);color:#fff}
+.hero .inner .btn:not(.primary){background:rgba(12,12,18,.55);border-color:rgba(255,255,255,.26);color:#fff;backdrop-filter:blur(8px)}
+[dir=rtl] .hero .ov{background:linear-gradient(270deg,rgba(5,5,9,.94) 0%,rgba(5,5,9,.62) 48%,rgba(5,5,9,.06) 100%),linear-gradient(0deg,rgba(5,5,9,.88) 0%,rgba(5,5,9,.12) 52%,transparent 78%) !important}
+[data-theme=light] .hero{box-shadow:0 12px 30px rgba(24,26,38,.18)}
+
+/* ---- 2. Marquee under the nav ---- */
+.nf-marquee{position:relative;display:flex;align-items:center;gap:12px;height:38px;margin:0 0 18px;border:1px solid var(--border);border-radius:999px;background:linear-gradient(90deg,var(--accent-soft),transparent 40%,var(--accent-soft));overflow:hidden;isolation:isolate}
+.nf-marquee .tag{flex:0 0 auto;display:inline-flex;align-items:center;gap:6px;height:100%;padding:0 14px;font-size:10.5px;font-weight:900;letter-spacing:.12em;text-transform:uppercase;color:#fff;background:linear-gradient(135deg,var(--accent),var(--accent-2));clip-path:polygon(0 0,100% 0,calc(100% - 12px) 100%,0 100%)}
+.nf-marquee .track{display:flex;align-items:center;white-space:nowrap;animation:nfScroll 52s linear infinite;will-change:transform}
+.nf-marquee:hover .track{animation-play-state:paused}
+.nf-marquee .track span{font-size:12.5px;color:var(--text);opacity:.92;padding-right:38px;display:inline-flex;align-items:center;gap:8px}
+.nf-marquee .track span::after{content:'';width:5px;height:5px;border-radius:50%;background:var(--accent);opacity:.65}
+@keyframes nfScroll{from{transform:translateX(0)}to{transform:translateX(-50%)}}
+[dir=rtl] .nf-marquee .track{animation-direction:reverse}
+@media(max-width:600px){.nf-marquee{height:34px;margin-bottom:14px}.nf-marquee .tag{padding:0 11px;font-size:9.5px}.nf-marquee .track span{font-size:11.5px}}
+@media(prefers-reduced-motion:reduce){.nf-marquee .track{animation:none}}
+
+/* ---- 3. Channels ---- */
+.nf-cats{display:flex;gap:8px;overflow-x:auto;padding:2px 0 14px;scrollbar-width:none}
+.nf-cats::-webkit-scrollbar{display:none}
+.nf-cats button{flex:0 0 auto;padding:8px 14px;border-radius:999px;font-size:12px;font-weight:700;background:var(--surface);border:1px solid var(--border);color:var(--muted);cursor:pointer;transition:.18s}
+.nf-cats button.on{background:var(--accent);border-color:var(--accent);color:#fff}
+.ch-grid.nf6{grid-template-columns:repeat(auto-fill,minmax(168px,1fr))}
+.ch{position:relative;text-align:left}
+.ch .nf-badge{position:absolute;top:10px;right:10px;font-size:9px;font-weight:900;letter-spacing:.08em;padding:3px 7px;border-radius:6px;background:rgba(255,255,255,.14);border:1px solid rgba(255,255,255,.2)}
+.ch .nf-badge.plus{background:linear-gradient(135deg,#ffd98a,#ffcc66);color:#241a00;border-color:transparent}
+.ch.locked{opacity:.72}
+.ch.locked::after{content:'🔒';position:absolute;inset:0;display:flex;align-items:center;justify-content:center;font-size:22px;background:rgba(4,4,8,.45);border-radius:inherit}
+.nf-note{font-size:12px;color:var(--muted);margin:10px 0 0;line-height:1.6}
+
+/* ---- 4. Generic v6 modal ---- */
+.nf6-ov{align-items:center;justify-content:center;padding:16px}
+.nf6-modal{width:min(720px,100%);max-height:88vh;overflow:auto;background:var(--surface);border:1px solid var(--border);border-radius:18px;box-shadow:var(--shadow);animation:nfPop .22s ease}
+@keyframes nfPop{from{opacity:0;transform:translateY(14px) scale(.985)}to{opacity:1;transform:none}}
+.nf6-head{display:flex;align-items:flex-start;gap:12px;padding:18px 20px 12px;border-bottom:1px solid var(--border);position:sticky;top:0;background:var(--surface);z-index:2}
+.nf6-head .who{flex:1;min-width:0}
+.nf6-head .who .lg{font-size:10.5px;font-weight:800;letter-spacing:.16em;text-transform:uppercase;color:var(--accent-2)}
+.nf6-head .who h3{font-size:19px;line-height:1.25;margin-top:3px}
+.nf6-head .who .sub{font-size:12px;color:var(--muted);margin-top:4px}
+.nf6-x{flex:0 0 auto;width:34px;height:34px;border-radius:10px;border:1px solid var(--border);background:var(--bg-2);color:var(--text);cursor:pointer;font-size:16px;line-height:1}
+.nf6-body{padding:16px 20px 22px}
+.nf6-tabs{display:flex;gap:6px;padding:4px;background:var(--bg-2);border:1px solid var(--border);border-radius:12px;margin-bottom:14px}
+.nf6-tabs button{flex:1;padding:9px;border:0;border-radius:9px;background:transparent;color:var(--muted);font-size:12.5px;font-weight:800;cursor:pointer}
+.nf6-tabs button.on{background:var(--surface);color:var(--text);box-shadow:0 4px 14px rgba(0,0,0,.18)}
+
+/* fixtures */
+.nf-day{font-size:11px;font-weight:800;letter-spacing:.1em;text-transform:uppercase;color:var(--muted);margin:14px 0 8px}
+.nf-fx{display:flex;align-items:center;gap:12px;padding:11px 12px;border:1px solid var(--border);border-radius:12px;margin-bottom:8px;background:var(--bg-2);cursor:pointer;transition:.16s}
+.nf-fx:hover{border-color:var(--accent);transform:translateY(-1px)}
+.nf-fx .tm{flex:1;min-width:0;font-size:13.5px;font-weight:700;line-height:1.35}
+.nf-fx .tm em{font-style:normal;color:var(--muted);font-weight:600;font-size:11px;padding:0 4px}
+.nf-fx .tm small{display:block;color:var(--muted);font-weight:500;font-size:11px;margin-top:3px}
+.nf-fx .ko{flex:0 0 auto;text-align:right;font-size:11px;color:var(--muted);line-height:1.4}
+.nf-fx .ko b{display:block;color:var(--text);font-size:12px}
+.nf-fx .sh{flex:0 0 auto;width:30px;height:30px;border-radius:8px;border:1px solid var(--border);background:var(--surface);cursor:pointer}
+
+/* standings */
+.nf-tbl{width:100%;border-collapse:separate;border-spacing:0;font-size:12.5px}
+.nf-tbl th{position:sticky;top:0;background:var(--surface);text-align:right;font-size:10px;letter-spacing:.06em;text-transform:uppercase;color:var(--muted);padding:8px 6px;border-bottom:1px solid var(--border)}
+.nf-tbl th:nth-child(2),.nf-tbl td:nth-child(2){text-align:left}
+.nf-tbl td{padding:9px 6px;border-bottom:1px solid var(--border);text-align:right;font-variant-numeric:tabular-nums}
+.nf-tbl td.nm{font-weight:700;display:flex;align-items:center;gap:8px;min-width:0}
+.nf-tbl td.nm img{width:18px;height:18px;object-fit:contain;flex:0 0 auto}
+.nf-tbl tr.me td{background:var(--accent-soft)}
+.nf-tbl td.pts{font-weight:900;color:var(--accent-2)}
+
+/* match modal */
+.nf-match-hero{padding:18px;border-radius:14px;background:linear-gradient(135deg,var(--accent-soft),transparent 70%),var(--bg-2);border:1px solid var(--border);margin-bottom:14px}
+.nf-match-hero .vs{display:flex;align-items:center;gap:10px;font-size:17px;font-weight:900;line-height:1.25}
+.nf-match-hero .vs span{flex:1;min-width:0}
+.nf-match-hero .vs em{font-style:normal;font-size:10px;color:var(--muted);font-weight:800;letter-spacing:.1em}
+.nf-match-hero .meta{font-size:12px;color:var(--muted);margin-top:8px;line-height:1.6}
+.nf-act{display:flex;flex-wrap:wrap;gap:8px;margin-top:14px}
+.nf-act .btn{flex:1 1 auto}
+.nf-fine{font-size:11px;color:var(--muted);margin-top:12px;line-height:1.6}
+
+/* stream */
+.nf6-stream{width:min(860px,100%)}
+.nf-frame{position:relative;padding-top:56.25%;background:#000;border-radius:0}
+.nf-frame iframe,.nf-frame video{position:absolute;inset:0;width:100%;height:100%;border:0}
+.nf-livepill{display:inline-flex;align-items:center;gap:6px;font-size:10px;font-weight:900;letter-spacing:.1em;color:#fff;background:#e11d2e;padding:4px 9px;border-radius:6px}
+
+/* downloads */
+.nf-dl-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(132px,1fr));gap:14px}
+.nf-dl{position:relative;border-radius:12px;overflow:hidden;border:1px solid var(--border);background:var(--bg-2)}
+.nf-dl img{width:100%;aspect-ratio:2/3;object-fit:cover;display:block}
+.nf-dl .cap{padding:8px 9px;font-size:11.5px;font-weight:700;line-height:1.3}
+.nf-dl .cap small{display:block;color:var(--muted);font-weight:500;font-size:10.5px;margin-top:2px}
+.nf-dl .rm{position:absolute;top:6px;right:6px;width:26px;height:26px;border-radius:8px;border:0;background:rgba(4,4,8,.7);color:#fff;cursor:pointer;font-size:13px}
+.nf-dl-meter{display:flex;align-items:center;gap:10px;font-size:12px;color:var(--muted);margin:4px 0 14px}
+.nf-dl-meter .bar{flex:1;height:6px;border-radius:99px;background:var(--bg-2);overflow:hidden;border:1px solid var(--border)}
+.nf-dl-meter .bar i{display:block;height:100%;background:linear-gradient(90deg,var(--accent),var(--accent-2))}
+
+/* invite gate */
+.nf-gate{display:flex;gap:12px;align-items:flex-start;padding:14px;border-radius:12px;border:1px solid rgba(255,204,102,.45);background:linear-gradient(135deg,rgba(255,204,102,.14),transparent);margin-bottom:16px}
+.nf-gate .ic{font-size:22px;line-height:1}
+.nf-gate b{font-size:13.5px;display:block;margin-bottom:3px}
+.nf-gate span{font-size:11.5px;color:var(--muted);line-height:1.5}
+.nf-gate .btn{margin-top:8px}
+
+/* notification settings */
+.nf6-set .nf-chips{display:flex;gap:6px;flex-wrap:wrap;margin-top:6px}
+.nf6-set .nf-chip{font-size:10.5px;font-weight:800;padding:4px 9px;border-radius:999px;border:1px solid var(--border);background:var(--bg-2);color:var(--muted)}
+.nf6-set .nf-chip.gold{border-color:rgba(255,204,102,.5);color:#ffcc66;background:rgba(255,204,102,.10)}
+.nf6-set select.mini{max-width:170px}
+.nf6-set .nf-times{display:flex;gap:6px;align-items:center}
+.nf6-set input[type=time]{background:var(--bg-2);border:1px solid var(--border);border-radius:8px;color:var(--text);padding:6px 8px;font-size:12px}
+.nf-rich-banner .noti{padding:16px 14px;border-left:3px solid var(--accent);background:linear-gradient(100deg,var(--accent-soft),transparent 60%)}
+.nf-rich-banner .noti .tt{font-size:14px}
+
+/* tier list tweak */
+.tier-list li span{line-height:1.45}
+.nf-tier-note{font-size:11.5px;color:var(--muted);margin:14px 0 0;line-height:1.6}
+
+/* light theme polish */
+[data-theme=light] .nf-marquee{background:linear-gradient(90deg,rgba(194,24,42,.10),rgba(255,255,255,.5) 45%,rgba(194,24,42,.10))}
+[data-theme=light] .nf6-modal{background:#f7f8fb;border-color:#c8cbd8}
+[data-theme=light] .nf-fx,[data-theme=light] .nf-match-hero{background:#eef0f6}
+[data-theme=light] .nf-dl{background:#eef0f6}
+[data-theme=light] .nf6-tabs{background:#e6e8f0}
+
+</style>
 </head>
 <body class="noscroll">
 <!-- ============ SPLASH ============ -->
@@ -3206,14 +3338,16 @@ function resumeSession(){
    v5 — soft light theme helpers · update centre · 3-tier Premium ·
         Live TV · Live Football · cross-device entitlement · test mode
    ===================================================================== */
-const APP_VERSION = '5.0.0';
+const APP_VERSION = '6.0.0';
 const WHATS_NEW = [
-  'Live TV: free-to-air channels with a built-in player',
-  'Live Football: EPL, LaLiga, Serie A, Bundesliga, Ligue 1 & UCL fixtures',
-  'Premium now has three tiers — Plus, Premium and Super — with monthly or annual billing',
-  'Softer light theme, cleaner footer and official social icons',
-  'Faster, fully animated splash (no skip / no mute buttons)',
-  'Subscriptions can follow you across devices once the verify endpoint is deployed'
+  'Kenyan live TV: Citizen, KTN News, KTN Home, NTV, KBC, K24, Ramogi, Inooro, Kameme and TV47 inside the app',
+  'Football opens in-app: full fixture lists plus current league tables',
+  'Invite links: share any match, your friend signs up and lands on it',
+  'Poster downloads to your device — 10 free, 50 on Plus, unlimited on Premium',
+  'Every plan limit is now enforced for real: queue, history, themes, channels, downloads',
+  'Alerts you control: types, sounds, rich banners, quiet hours and new-release alerts',
+  'Updates apply in place, without uninstalling the app',
+  'Light theme hero title fixed, and a live news strip under the nav'
 ];
 
 /* ---------- 1. Notifications with action buttons ---------- */
@@ -3588,6 +3722,900 @@ const Live = {
   setTimeout(once, 2500);
   const t = setInterval(() => { if (State.user) { once(); clearInterval(t); } }, 1200);
 })();
+/* ===== v6 module ===== */
+/* ============ NANCYFLIX v6 · part A: plans, limits, downloads, alerts, marquee ============ */
+(function () {
+  'use strict';
+  var NF6 = window.NF6 = window.NF6 || {};
+  NF6.V = '6.0.0';
+  var Q = function (s, r) { return (r || document).querySelector(s); };
+  var QA = function (s, r) { return Array.prototype.slice.call((r || document).querySelectorAll(s)); };
+
+  /* ---------------- plans that are actually enforced ---------------- */
+  var LIMITS = {
+    free:    { name: 'Free',    dl: 10,       queue: 3,        hist: 15,  themes: ['dark', 'light', 'dim'], channels: 1,  sounds: ['soft', 'silent'], banners: ['compact'], ics: false, card: false },
+    plus:    { name: 'Plus',    dl: 50,       queue: 60,       hist: 60,  themes: 'all',                    channels: 99, sounds: ['soft', 'silent', 'chime'], banners: ['compact'], ics: false, card: false },
+    premium: { name: 'Premium', dl: Infinity, queue: Infinity, hist: 200, themes: 'all',                    channels: 99, sounds: ['soft', 'silent', 'chime', 'pop'], banners: ['compact', 'rich'], ics: true, card: false },
+    super:   { name: 'Super',   dl: Infinity, queue: Infinity, hist: 300, themes: 'all',                    channels: 99, sounds: ['soft', 'silent', 'chime', 'pop'], banners: ['compact', 'rich'], ics: true, card: true }
+  };
+  var RANK = { free: 0, plus: 1, premium: 2, super: 3 };
+
+  function tierOf() {
+    try {
+      if (typeof Premium === 'undefined' || !Premium.isActive()) return 'free';
+      var d = Premium.get() || {};
+      var p = String(d.tier || d.plan || 'premium').toLowerCase();
+      if (p.indexOf('super') === 0) return 'super';
+      if (p.indexOf('plus') === 0) return 'plus';
+      return 'premium';
+    } catch (e) { return 'free'; }
+  }
+  function limits() { return LIMITS[tierOf()] || LIMITS.free; }
+  function has(kind) {
+    var l = limits();
+    if (kind === 'downloads') return l.dl;
+    if (kind === 'queue') return l.queue;
+    if (kind === 'history') return l.hist;
+    if (kind === 'ics') return l.ics;
+    if (kind === 'card') return l.card;
+    if (kind === 'channels') return l.channels;
+    return true;
+  }
+  NF6.limits = limits; NF6.tier = tierOf; NF6.LIMITS = LIMITS; NF6.has = has;
+
+  NF6.upsell = function (msg) {
+    try { Toast.show('Members upgrade', msg || 'This is part of a paid plan.', 'info', 4200); } catch (e) {}
+    try { switchView('premium'); } catch (e) {}
+  };
+
+  /* keep tier + billing when a plan is activated (the old chain reset it) */
+  var baseActivate = Premium.activate.bind(Premium);
+  Premium.activate = function (d) {
+    d = d || {};
+    var raw = String(d.tier || d.plan || 'premium').toLowerCase();
+    var tier = raw.indexOf('super') === 0 ? 'super' : raw.indexOf('plus') === 0 ? 'plus' : 'premium';
+    var billing = d.billing || ((raw.indexOf('year') >= 0 || String(d.plan) === 'yearly') ? 'y' : 'm');
+    var expires = d.expires || new Date(Date.now() + (billing === 'y' ? 366 : 31) * 864e5).toISOString();
+    baseActivate(Object.assign({}, d, { plan: tier, tier: tier, billing: billing, expires: expires }));
+    var cur = Premium.get(); cur.tier = tier; cur.billing = billing; LS.set(Premium.key(), cur);
+    try { Premium.refreshChrome(); } catch (e) {}
+    NF6.applyPlanChrome();
+  };
+  Premium.tierId = tierOf; Premium.limits = limits;
+  Premium.queueLimit = function () { var q = limits().queue; return q === Infinity ? Infinity : q; };
+  Premium.historyLimit = function () { return limits().hist; };
+
+  /* history cap follows the plan */
+  var basePush = Store.pushHistory.bind(Store);
+  Store.pushHistory = function (id, snap, played) {
+    var out = basePush(id, snap, played);
+    try {
+      var key = id || 'guest', lim = limits().hist, h = Store.getHistory(key) || [];
+      if (h.length > lim) { Store.setHistory(key, h.slice(0, lim)); }
+    } catch (e) {}
+    return out;
+  };
+
+  /* queue cap follows the plan (the old enqueue stopped at 3 for everyone) */
+  Player.enqueueMovie = async function (id) {
+    if (typeof requireAuth === 'function' && !requireAuth()) return;
+    var lim = limits().queue;
+    if (this.queue.length >= lim) { NF6.upsell('Your ' + limits().name + ' plan holds ' + lim + ' trailers in the queue. Plus holds 60 and Premium never stops the line-up.'); return; }
+    try {
+      var d = await TMDB.detail(id); var tr = MovieDetail._trailer(d);
+      if (!tr || !tr.key) { Toast.show(t('queueTitle'), t('noTrailerQueue'), 'warn'); return; }
+      this.queue.push({ title: d.title, key: tr.key, id: d.id });
+      Toast.show(t('queuedToast'), d.title, 'ok');
+      this._renderQueue();
+    } catch (e) { Toast.show(t('queueTitle'), t('noTrailerQueue'), 'warn'); }
+  };
+
+  /* themes: 3 on Free, all five once you pay */
+  var baseTheme = Theme.apply.bind(Theme);
+  Theme.apply = function (id) {
+    var norm = Theme._norm(id);
+    var l = limits();
+    var ok = l.themes === 'all' || l.themes.indexOf(norm) >= 0;
+    if (!ok) {
+      var inSettings = !!(Q('#settingsOverlay.show') || Q('#profileOverlay.show'));
+      if (inSettings) { NF6.upsell('Theme "' + norm + '" comes with Plus and above. Free keeps Dark, Light and Dim.'); return; }
+      norm = 'dark';
+    }
+    return baseTheme(norm);
+  };
+
+  /* ---------------- downloads ---------------- */
+  var DL = NF6.Downloads = {
+    key: function () { return 'dl:' + ((State.user && State.user.id) || 'guest'); },
+    list: function () { var a = LS.get(this.key(), []); return Array.isArray(a) ? a : []; },
+    count: function () { return this.list().length; },
+    has: function (id) { return this.list().some(function (x) { return +x.id === +id; }); },
+    save: function (list) { LS.set(this.key(), list); try { this.renderBadge(); } catch (e) {} },
+    async cacheName() { return 'nf6-posters'; },
+    async saveOne(id) {
+      var lim = limits().dl;
+      if (this.count() >= lim) { NF6.upsell('Free saves ' + lim + ' posters. Plus saves 50, Premium and Super save as many as you like.'); return false; }
+      if (this.has(id)) { try { Toast.show('Already saved', 'This poster is in your downloads.', 'info'); } catch (e) {} return true; }
+      var d;
+      try { d = await TMDB.detail(id); } catch (e) { Toast.show('Download failed', 'No connection to the poster service.', 'warn'); return false; }
+      var url = img(d.poster_path, 'w780');
+      if (!url) { Toast.show('No poster', 'This title has no poster to save.', 'warn'); return false; }
+      var blob = null;
+      try { var r = await fetch(url, { mode: 'cors' }); if (!r.ok) throw new Error('http'); blob = await r.blob(); } catch (e) { blob = null; }
+      if (!blob) { Toast.show('Download failed', 'The poster host refused the file. Try again on a normal connection.', 'warn'); return false; }
+      var name = 'NANCYFLIX-' + String(d.title || 'poster').replace(/[^\w\d]+/g, '-').replace(/^-+|-+$/g, '').slice(0, 60) + '.jpg';
+      try {
+        var a = document.createElement('a');
+        a.href = URL.createObjectURL(blob); a.download = name; a.rel = 'noopener';
+        document.body.appendChild(a); a.click();
+        setTimeout(function () { URL.revokeObjectURL(a.href); a.remove(); }, 4000);
+      } catch (e) {}
+      try { var c = await caches.open(await this.cacheName()); await c.put(url, new Response(blob, { headers: { 'Content-Type': blob.type || 'image/jpeg' } })); } catch (e) {}
+      var list = this.list();
+      list.unshift({ id: d.id, title: d.title, poster: url, year: (d.release_date || '').slice(0, 4), score: d.vote_average || 0, ts: Date.now() });
+      this.save(list);
+      Toast.show('Saved to your device', '“' + d.title + '” poster · ' + this.count() + '/' + (lim === Infinity ? '∞' : lim), 'ok');
+      return true;
+    },
+    async remove(id) {
+      var list = this.list().filter(function (x) { return +x.id !== +id; });
+      this.save(list);
+      try { if (Q('#view-downloads.show')) VIEWS.downloads.render(); } catch (e) {}
+    },
+    async objectUrl(item) {
+      try {
+        var c = await caches.open(await this.cacheName()); var r = await c.match(item.poster);
+        if (r) { if (item._u) URL.revokeObjectURL(item._u); item._u = URL.createObjectURL(await r.blob()); return item._u; }
+      } catch (e) {}
+      return item.poster;
+    },
+    renderBadge: function () {
+      var b = Q('#nfDlCount'); if (b) b.textContent = this.count();
+    },
+    view: function () {
+      if (!State.user) { backToAuth('login'); return; }
+      switchView('downloads');
+    }
+  };
+  NF6.openDownloads = function () { DL.view(); };
+
+  /* ---------------- notification settings + dispatch ---------------- */
+  var NOTI_DEFAULT = { types: { release: true, football: true, account: true, promo: false }, sound: 'soft', banner: 'compact', quietOn: false, quietFrom: '22:00', quietTo: '07:00', autoRelease: true };
+  var N = NF6.Alerts = {
+    data: function () {
+      if (!State.settings) State.settings = {};
+      var d = State.settings.noti || {};
+      var out = { types: Object.assign({}, NOTI_DEFAULT.types, d.types || {}) };
+      Object.keys(NOTI_DEFAULT).forEach(function (k) { if (k !== 'types') out[k] = (d[k] === undefined ? NOTI_DEFAULT[k] : d[k]); });
+      State.settings.noti = out;
+      return out;
+    },
+    save: function () { try { Theme.save(); } catch (e) {} },
+    quiet: function () {
+      var d = this.data(); if (!d.quietOn) return false;
+      var now = new Date(); var cur = now.getHours() * 60 + now.getMinutes();
+      var p = function (s) { var a = String(s || '00:00').split(':'); return (+a[0]) * 60 + (+a[1] || 0); };
+      var f = p(d.quietFrom), t = p(d.quietTo);
+      return f <= t ? (cur >= f && cur < t) : (cur >= f || cur < t);
+    },
+    sound: function (style) {
+      if (!style || style === 'silent' || this.quiet()) return;
+      if (State.settings && State.settings.sound === false) return;
+      try {
+        var C = window.AudioContext || window.webkitAudioContext; if (!C) return;
+        if (!this._ctx) this._ctx = new C();
+        var c = this._ctx, t0 = c.currentTime;
+        var vol = (State.settings.soundVol != null ? State.settings.soundVol : 0.5) * 0.14;
+        var tone = function (freq, at, dur, type) {
+          var o = c.createOscillator(), g = c.createGain();
+          o.type = type || 'sine'; o.frequency.value = freq; o.connect(g); g.connect(c.destination);
+          g.gain.setValueAtTime(0.0001, t0 + at);
+          g.gain.exponentialRampToValueAtTime(vol, t0 + at + 0.02);
+          g.gain.exponentialRampToValueAtTime(0.0001, t0 + at + dur);
+          o.start(t0 + at); o.stop(t0 + at + dur + 0.02);
+        };
+        if (style === 'chime') { tone(880, 0, 0.18); tone(1320, 0.12, 0.26); }
+        else if (style === 'pop') { tone(520, 0, 0.07, 'triangle'); tone(300, 0.05, 0.12, 'triangle'); }
+        else { tone(660, 0, 0.2); }
+      } catch (e) {}
+    },
+    dispatch: function (kind, title, msg, opts) {
+      opts = opts || {};
+      var d = this.data();
+      if (d.types && d.types[kind] === false) return false;
+      if (!opts.forceSound) this.sound(d.sound);
+      try { Noti.add(title, msg, opts.type || 'info', { toast: true }); } catch (e) {}
+      return true;
+    },
+    scanReleases: async function (force) {
+      if (!State.user) return;
+      var d = this.data();
+      if (!d.autoRelease && !force) return;
+      var last = LS.get('nfRelScan', 0) || 0;
+      if (!force && Date.now() - last < 6 * 3600e3) return;
+      LS.set('nfRelScan', Date.now());
+      var list;
+      try { list = await TMDB.list('upcoming', 1); } catch (e) { return; }
+      if (!list || !list.length) return;
+      var today = new Date(); today.setHours(0, 0, 0, 0);
+      var seen = LS.get('nfSeenRel', []) || [];
+      var pick = null;
+      for (var i = 0; i < list.length; i++) {
+        var m = list[i]; if (!m || !m.release_date) continue;
+        if (seen.indexOf(m.id) >= 0) continue;
+        var dt = new Date(m.release_date + 'T00:00:00');
+        var days = Math.round((dt - today) / 864e5);
+        if (days >= 0 && days <= 21) { pick = m; break; }
+      }
+      if (!pick) return;
+      seen.push(pick.id); LS.set('nfSeenRel', seen.slice(-160));
+      var when = pick.release_date ? new Date(pick.release_date + 'T00:00:00').toLocaleDateString(undefined, { day: 'numeric', month: 'short' }) : '';
+      this.dispatch('release', 'New release: ' + pick.title, (when ? 'In cinemas ' + when + '. ' : '') + 'Tap to see the trailer and details.', { type: 'info' });
+    },
+    test: function () {
+      var d = this.data();
+      this.sound(d.sound);
+      try { Noti.add('Test alert', 'This is how your NANCYFLIX alerts will look and sound.', 'info', { toast: false }); Noti.render(); toggleNoti(true); } catch (e) {}
+    }
+  };
+  NF6.Alerts = N;
+
+  /* ---------------- marquee ---------------- */
+  var MQ = NF6.Marquee = {
+    items: ['🎬 NANCYFLIX v6 is live', '📺 Kenyan channels now inside Live TV', '⚽ Fixtures + league tables open in the app', '🎟️ Share any match with a private invite link', '⬇️ Save posters straight to your phone'],
+    set: function (list) {
+      var box = Q('#nfMarqueeTrack'); if (!box) return;
+      var one = list.map(function (s) { return '<span>' + esc(s) + '</span>'; }).join('');
+      box.innerHTML = one + one;
+    },
+    add: function (text) {
+      if (!text || this.items.indexOf(text) >= 0) return;
+      this.items = [text].concat(this.items).slice(0, 7);
+      this.set(this.items);
+    },
+    init: function () {
+      if (Q('#nfMarquee')) return;
+      var main = Q('main'); if (!main || !main.parentNode) return;
+      var el = document.createElement('div');
+      el.id = 'nfMarquee'; el.className = 'nf-marquee';
+      el.innerHTML = '<span class="tag">Now</span><div class="track" id="nfMarqueeTrack"></div>';
+      main.parentNode.insertBefore(el, main);
+      this.set(this.items);
+    }
+  };
+  var baseHero = Home._showHero.bind(Home);
+  Home._showHero = function (i) {
+    baseHero(i);
+    try { var m = this._heroList && this._heroList[i]; if (m && m.title) MQ.add('🔥 In the spotlight: ' + m.title); } catch (e) {}
+  };
+
+  /* ---------------- settings block ---------------- */
+  function notiGroupHTML() {
+    var d = N.data(), l = limits();
+    var soundOpts = [['soft', 'Soft'], ['silent', 'Silent'], ['chime', 'Chime'], ['pop', 'Pop']].map(function (o) {
+      var allowed = l.sounds.indexOf(o[0]) >= 0;
+      return '<option value="' + o[0] + '" ' + (d.sound === o[0] ? 'selected' : '') + '>' + o[1] + (allowed ? '' : ' (paid)') + '</option>';
+    }).join('');
+    var bannerOpts = [['compact', 'Compact list'], ['rich', 'Rich cards']].map(function (o) {
+      var allowed = l.banners.indexOf(o[0]) >= 0;
+      return '<option value="' + o[0] + '" ' + (d.banner === o[0] ? 'selected' : '') + '>' + o[1] + (allowed ? '' : ' (Premium)') + '</option>';
+    }).join('');
+    var sw = function (key, label, desc, on) {
+      return '<div class="set-row"><div class="lbl"><div class="t">' + label + '</div><div class="d">' + desc + '</div></div>' +
+        '<label class="switch"><input type="checkbox" data-nfnoti="' + key + '" ' + (on ? 'checked' : '') + '><span class="sl"></span></label></div>';
+    };
+    return '<div class="set-group nf6-set" data-s="notification alert sound banner release football downloads quiet update">' +
+      '<h4>🔔 Alerts, sounds &amp; downloads</h4>' +
+      sw('release', 'New releases', 'Tell me when a film lands in the next three weeks.', d.types.release) +
+      sw('football', 'Match reminders', 'Fixture and league-table nudges.', d.types.football) +
+      sw('account', 'Account & membership', 'Sign-in, plan and receipt messages.', d.types.account) +
+      '<div class="set-row"><div class="lbl"><div class="t">Alert sound <span class="nf-chip ' + (l.sounds.length > 2 ? 'gold' : '') + '">' + esc(l.name) + '</span></div><div class="d">Chime and Pop are paid sounds. Quiet hours mutes everything.</div></div><select class="mini" id="nfSound">' + soundOpts + '</select></div>' +
+      '<div class="set-row"><div class="lbl"><div class="t">Banner style</div><div class="d">Rich cards make unread alerts stand out.</div></div><select class="mini" id="nfBanner">' + bannerOpts + '</select></div>' +
+      sw('quietOn', 'Quiet hours', 'Silence sounds while you sleep. Alerts are still saved.', d.quietOn) +
+      '<div class="set-row"><div class="lbl"><div class="t">Quiet from / to</div><div class="d">Local time on this device.</div></div><div class="nf-times"><input type="time" id="nfQFrom" value="' + d.quietFrom + '"><input type="time" id="nfQTo" value="' + d.quietTo + '"></div></div>' +
+      '<div class="set-row"><div class="lbl"><div class="t">Poster downloads</div><div class="d">' + DL.count() + ' saved · ' + (l.dl === Infinity ? 'unlimited on ' + l.name : 'limit ' + l.dl + ' on ' + l.name) + '</div></div><button class="btn sm" id="nfGoDl">Open downloads</button></div>' +
+      '<div class="set-row" style="border:0"><div class="lbl"><div class="t">Welcome email</div><div class="d">Sent once after sign-up when the server key is configured.</div></div><button class="btn sm" id="nfWelcome">Resend</button></div>' +
+      '<div class="set-row" style="border:0"><div class="lbl"><div class="t">Test alert</div><div class="d">Checks the sound and the banner on this device.</div></div><button class="btn sm" id="nfTestAlert">Play</button></div>' +
+      '</div>';
+  }
+
+  function bindNotiGroup(root) {
+    var g = Q('.nf6-set', root); if (!g) return;
+    QA('[data-nfnoti]', g).forEach(function (el) {
+      el.onchange = function () {
+        var k = el.dataset.nfnoti, d = N.data();
+        if (k === 'quietOn') d.quietOn = el.checked; else d.types[k] = el.checked;
+        N.save();
+        if (k === 'quietOn' && el.checked) Toast.show('Quiet hours on', 'Sounds stay off between ' + d.quietFrom + ' and ' + d.quietTo + '.', 'info');
+      };
+    });
+    var snd = Q('#nfSound', g);
+    if (snd) snd.onchange = function () {
+      var l = limits(), v = snd.value;
+      if (l.sounds.indexOf(v) < 0) { snd.value = N.data().sound; NF6.upsell('Chime and Pop sounds come with Plus and above. Soft and Silent stay free.'); return; }
+      N.data().sound = v; N.save(); N.sound(v);
+    };
+    var ban = Q('#nfBanner', g);
+    if (ban) ban.onchange = function () {
+      var l = limits(), v = ban.value;
+      if (l.banners.indexOf(v) < 0) { ban.value = N.data().banner; NF6.upsell('Rich alert cards are a Premium extra.'); return; }
+      N.data().banner = v; N.save(); NF6.applyPlanChrome();
+    };
+    var qf = Q('#nfQFrom', g), qt = Q('#nfQTo', g);
+    if (qf) qf.onchange = function () { N.data().quietFrom = qf.value; N.save(); };
+    if (qt) qt.onchange = function () { N.data().quietTo = qt.value; N.save(); };
+    var go = Q('#nfGoDl', g); if (go) go.onclick = function () { closeOverlay('settingsOverlay'); DL.view(); };
+    var ta = Q('#nfTestAlert', g); if (ta) ta.onclick = function () { N.test(); };
+    var wm = Q('#nfWelcome', g); if (wm) wm.onclick = function () { NF6.resendWelcome(wm); };
+  }
+
+  var baseSettings = Settings.openModal.bind(Settings);
+  Settings.openModal = function () {
+    baseSettings();
+    var m = Q('#settingsModal'); if (!m) return;
+    if (!Q('.nf6-set', m)) {
+      var body = Q('#setBody', m) || m;
+      body.insertAdjacentHTML('beforeend', notiGroupHTML());
+    }
+    bindNotiGroup(m);
+    NF6.paintThemeLocks(m);
+  };
+
+  NF6.paintThemeLocks = function (root) {
+    var l = limits();
+    QA('[data-theme-opt]', root || document).forEach(function (el) {
+      var id = el.dataset.themeOpt;
+      var locked = l.themes !== 'all' && l.themes.indexOf(id) < 0;
+      el.classList.toggle('lockchip', locked);
+    });
+  };
+
+  NF6.applyPlanChrome = function () {
+    var l = limits();
+    try { document.body.classList.toggle('nf-rich-banner', l.banners.indexOf(N.data().banner) >= 0 && N.data().banner === 'rich'); } catch (e) {}
+    var tag = Q('#nfPlanTag');
+    if (tag) tag.textContent = l.name;
+    try { NF6.paintThemeLocks(); } catch (e) {}
+  };
+
+  NF6.resendWelcome = function (btn) {
+    if (!State.user) { backToAuth('login'); return; }
+    if (btn) { btn.disabled = true; btn.textContent = 'Sending…'; }
+    fetch('/api/welcome', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ email: State.user.email, name: State.user.name }) })
+      .then(function (r) { return r.json().catch(function () { return {}; }).then(function (j) { return { ok: r.ok, j: j }; }); })
+      .then(function (o) {
+        if (o.ok && o.j && o.j.sent) Toast.show('Welcome email sent', 'Check ' + State.user.email + '.', 'ok');
+        else Toast.show('Not sent', (o.j && o.j.error) || 'The email key is not configured on the server yet.', 'warn', 6000);
+      })
+      .catch(function () { Toast.show('Not sent', 'This build is not served with the /api functions, so email cannot be sent from here.', 'warn', 6000); })
+      .then(function () { if (btn) { btn.disabled = false; btn.textContent = 'Resend'; } });
+  };
+
+  /* ---------------- downloads view ---------------- */
+  var baseDlRender = null;
+  VIEWS.downloads = {
+    render: async function () {
+      var host = Q('#view-downloads'); if (!host) return;
+      var l = limits(), list = DL.list();
+      host.innerHTML = '<div class="live-head"><span class="live-dot"></span><h1>Downloads</h1><span class="live-sub">Posters saved on this device</span></div>' +
+        '<div class="nf-dl-meter"><span>' + list.length + ' / ' + (l.dl === Infinity ? '∞' : l.dl) + '</span><span class="bar"><i style="width:' + (l.dl === Infinity ? 12 : Math.min(100, list.length / l.dl * 100)) + '%"></i></span><span>' + esc(l.name) + ' plan</span></div>' +
+        (list.length ? '<div class="nf-dl-grid" id="nfDlGrid"></div>' : '<div class="state" style="padding:40px"><p>No posters yet. Open any film and tap <b>Save poster</b>.</p><button class="btn sm" onclick="switchView(\'home\')">Browse films</button></div>') +
+        '<p class="nf-note">Files are saved by your browser to Downloads / Photos. On iPhone, a long-press → “Save to Photos” also works. Posters are artwork only — films themselves are never downloaded.</p>';
+      var grid = Q('#nfDlGrid');
+      if (grid) {
+        for (var i = 0; i < list.length; i++) {
+          var it = list[i];
+          var src = await DL.objectUrl(it);
+          var card = document.createElement('div');
+          card.className = 'nf-dl';
+          card.innerHTML = '<img src="' + esc(src) + '" alt="' + esc(it.title) + ' poster"><button class="rm" data-rm="' + it.id + '" aria-label="Remove">✕</button><div class="cap">' + esc(it.title) + '<small>' + esc(it.year || '') + (it.score ? ' · ★ ' + Number(it.score).toFixed(1) : '') + '</small></div>';
+          grid.appendChild(card);
+        }
+        QA('[data-rm]', grid).forEach(function (b) { b.onclick = function () { DL.remove(b.dataset.rm); }; });
+      }
+      DL.renderBadge();
+    }
+  };
+
+  /* detail sheet button */
+  var baseDetail = MovieDetail.open.bind(MovieDetail);
+  MovieDetail.open = async function (id, opt) {
+    var r = await baseDetail(id, opt);
+    setTimeout(function () {
+      var play = Q('#dPlay'); if (!play || !play.parentNode) return;
+      if (Q('#nfDlBtn', play.parentNode)) { Q('#nfDlBtn', play.parentNode).textContent = DL.has(id) ? '✓ Saved' : '⬇ Save poster'; return; }
+      var b = document.createElement('button');
+      b.className = 'btn'; b.id = 'nfDlBtn';
+      b.innerHTML = DL.has(id) ? '✓ Saved' : '⬇ Save poster';
+      b.onclick = async function () { var ok = await DL.saveOne(id); if (ok) b.innerHTML = '✓ Saved'; };
+      play.parentNode.appendChild(b);
+    }, 60);
+    return r;
+  };
+
+  /* nav + view shell */
+  (function shell() {
+    var main = Q('main');
+    if (main && !Q('#view-downloads')) {
+      var s = document.createElement('section'); s.id = 'view-downloads'; s.className = 'view';
+      var before = Q('#view-watchlist');
+      if (before) main.insertBefore(s, before); else main.appendChild(s);
+    }
+    var nav = Q('#mainNav');
+    if (nav && !nav.querySelector('[data-view="downloads"]')) {
+      var b = document.createElement('button');
+      b.dataset.view = 'downloads';
+      b.innerHTML = '<svg class="icon sm" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3v12M7 10l5 5 5-5M5 21h14"/></svg><span>Downloads</span>';
+      var fb = nav.querySelector('[data-view="feedback"]');
+      nav.insertBefore(b, fb || null);
+      b.onclick = function () { DL.view(); };
+    }
+  })();
+
+  NF6.bootA = function () {
+    try { MQ.init(); } catch (e) {}
+    try { NF6.applyPlanChrome(); } catch (e) {}
+    setTimeout(function () { try { if (State.user && N.data().autoRelease) N.scanReleases(); } catch (e) {} }, 9000);
+    setInterval(function () { try { if (State.user) N.scanReleases(); } catch (e) {} }, 45 * 60 * 1000);
+  };
+})();
+
+/* ============ NANCYFLIX v6 · part B: channels, football, invites, update ============ */
+(function () {
+  'use strict';
+  var NF6 = window.NF6 = window.NF6 || {};
+  var Q = function (s, r) { return (r || document).querySelector(s); };
+  var QA = function (s, r) { return Array.prototype.slice.call((r || document).querySelectorAll(s)); };
+  var T = NF6.tier;
+  var RANK = { free: 0, plus: 1, premium: 2, super: 3 };
+  var API = 'https://www.thesportsdb.com/api/v1/json/123/';
+  var cache = {};
+  var CACHE_MS = 5 * 60 * 1000;
+
+  function get(url) {
+    if (cache[url] && Date.now() - cache[url].ts < CACHE_MS) return Promise.resolve(cache[url].data);
+    return fetch(url).then(function (r) { if (!r.ok) throw new Error('http ' + r.status); return r.json(); })
+      .then(function (j) { cache[url] = { ts: Date.now(), data: j }; return j; });
+  }
+  function season() {
+    var d = new Date(), y = d.getFullYear();
+    return d.getMonth() >= 6 ? y + '-' + (y + 1) : (y - 1) + '-' + y;
+  }
+  function seasonPrev() {
+    var d = new Date(), y = d.getFullYear(); var s = d.getMonth() >= 6 ? y : y - 1;
+    return (s - 1) + '-' + s;
+  }
+  function when(ev) {
+    var dt = ev.strTimestamp ? new Date(ev.strTimestamp) : new Date((ev.dateEvent || '') + 'T' + (ev.strTime || '00:00:00') + 'Z');
+    if (isNaN(dt.getTime())) return { full: ev.dateEvent || 'Date to be confirmed', day: 'Upcoming', time: '' };
+    return {
+      full: dt.toLocaleString(undefined, { weekday: 'short', day: 'numeric', month: 'short', hour: '2-digit', minute: '2-digit' }),
+      day: dt.toLocaleDateString(undefined, { weekday: 'long', day: 'numeric', month: 'long' }),
+      time: dt.toLocaleTimeString(undefined, { hour: '2-digit', minute: '2-digit' })
+    };
+  }
+  function fixtures(lg) {
+    return get(API + 'eventsnextleague.php?id=' + lg.id).then(function (j) { return (j && (j.events || j.results)) || []; });
+  }
+  async function table(lg) {
+    var s = season(), j = await get(API + 'lookuptable.php?l=' + lg.id + '&s=' + s);
+    var rows = (j && j.table) || [];
+    if (!rows.length) {
+      s = seasonPrev();
+      j = await get(API + 'lookuptable.php?l=' + lg.id + '&s=' + s);
+      rows = (j && j.table) || [];
+    }
+    return { rows: rows, season: s };
+  }
+  NF6.Footy = { fixtures: fixtures, table: table, season: season };
+
+  /* ---------------- channel line-up ---------------- */
+  var CH = [
+    { name: 'Citizen TV', groups: ['News', 'Soaps'], country: 'KE', type: 'yt', yt: 'UChBQgieUidXV1CmDxSdRm3g', tier: 'free', note: 'Kenya · news, drama & soaps' },
+    { name: 'KTN News', groups: ['News'], country: 'KE', type: 'yt', yt: 'UCKVsdeoHExltrWMuK0hOWmg', tier: 'plus', note: 'Kenya · 24-hour news' },
+    { name: 'KTN Home', groups: ['Entertainment', 'Soaps'], country: 'KE', type: 'yt', yt: 'UCkWr5PLM8hp8M4WNIkjpKsQ', tier: 'plus', note: 'Kenya · soaps & lifestyle' },
+    { name: 'NTV Kenya', groups: ['News', 'Soaps'], country: 'KE', type: 'yt', yt: 'UCqBJ47FjJcl61fmSbcadAVg', tier: 'plus', note: 'Kenya · news & telenovelas' },
+    { name: 'KBC', groups: ['News', 'Entertainment'], country: 'KE', type: 'yt', yt: 'UCc7N_foXM1R7SDHbS3iackQ', tier: 'plus', note: 'Kenya · public broadcaster' },
+    { name: 'K24 TV', groups: ['News', 'Soaps'], country: 'KE', type: 'yt', yt: 'UCt3SE-Mvs3WwP7UW-PiFdqQ', tier: 'plus', note: 'Kenya · news & drama' },
+    { name: 'Ramogi TV', groups: ['Regional'], country: 'KE', type: 'yt', yt: 'UCmKXJ4C59JjVVJ-axXfpJcg', tier: 'plus', note: 'Luo · Royal Media' },
+    { name: 'Inooro TV', groups: ['Regional', 'Soaps'], country: 'KE', type: 'yt', yt: 'UCZlNMLTVNxzwB0axilK-rDw', tier: 'plus', note: 'Kikuyu · Royal Media' },
+    { name: 'Kameme TV', groups: ['Regional'], country: 'KE', type: 'yt', yt: 'UCd9nkc2XA77NMxBvQz35I2Q', tier: 'plus', note: 'Kikuyu · news & music' },
+    { name: 'TV47', groups: ['News', 'Entertainment'], country: 'KE', type: 'yt', yt: 'UC_zA9UIWE1fB-jfFk_DBSYw', tier: 'plus', note: 'Kenya · news & talk' },
+    { name: 'France 24 English', groups: ['International', 'News'], country: 'FR', type: 'hls', url: 'https://static.france24.com/live/F24_EN_LO_HLS/live_web.m3u8', tier: 'free', note: 'World news' },
+    { name: 'DW English', groups: ['International', 'News'], country: 'DE', type: 'hls', url: 'https://dwamdstream102.akamaized.net/hls/live/2015525/dwstream102/index.m3u8', tier: 'plus', note: 'World news' },
+    { name: 'Al Jazeera English', groups: ['International', 'News'], country: 'QA', type: 'hls', url: 'https://live-hls-apps-aje-fa.getaj.net/AJE/index.m3u8', tier: 'plus', note: 'World news' }
+  ];
+  try { CHANNELS.length = 0; CH.push.apply(CHANNELS, CH); CHANNELS.push.apply(CHANNELS, []); } catch (e) {}
+  if (!CHANNELS.length) { Array.prototype.push.apply(CHANNELS, CH); }
+  NF6.channels = CH;
+
+  var CATS = ['All', 'News', 'Soaps', 'Entertainment', 'Regional', 'International'];
+  Live.cat6 = 'All';
+  Live.fx6 = {};
+
+  Live.renderTV = function () {
+    var body = Q('#liveBody'); if (!body) return;
+    var me = T();
+    var list = CH.filter(function (c) { return Live.cat6 === 'All' || c.groups.indexOf(Live.cat6) >= 0; });
+    body.innerHTML = '<p class="live-note">Kenyan and international free-to-air channels, playing inside the app. Channels marked <b>PLUS</b> need a paid plan; if a broadcaster is off air, the player says so instead of guessing.</p>' +
+      '<div class="nf-cats">' + CATS.map(function (c) { return '<button data-cat="' + c + '" class="' + (Live.cat6 === c ? 'on' : '') + '">' + c + '</button>'; }).join('') + '</div>' +
+      '<div class="ch-grid nf6">' + list.map(function (c, i) {
+        var locked = RANK[me] < RANK[c.tier];
+        var idx = CH.indexOf(c);
+        return '<button class="ch ' + (locked ? 'locked' : '') + '" data-ch6="' + idx + '">' +
+          '<span class="nf-badge ' + (c.tier !== 'free' ? 'plus' : '') + '">' + (c.tier === 'free' ? 'FREE' : c.tier === 'plus' ? 'PLUS' : 'PAID') + '</span>' +
+          '<span class="ch-live">LIVE</span><b>' + esc(c.name) + '</b><span>' + esc(c.note) + '</span></button>';
+      }).join('') + '</div>' +
+      '<p class="nf-note">Free plan includes Citizen TV + France 24. Plus and above unlock every Kenyan channel and the world-news feeds.</p>';
+    QA('[data-cat]', body).forEach(function (b) { b.onclick = function () { Live.cat6 = b.dataset.cat; Live.renderTV(); }; });
+    QA('[data-ch6]', body).forEach(function (b) {
+      b.onclick = function () {
+        var c = CH[+b.dataset.ch6];
+        if (RANK[me] < RANK[c.tier]) { NF6.upsell('“' + c.name + '” is on Plus and above. Free keeps Citizen TV and France 24.'); return; }
+        Live.open(c);
+      };
+    });
+  };
+
+  /* stream modal: YouTube live or HLS */
+  var baseOpen = Live.open.bind(Live);
+  Live.open = function (c) {
+    if (!c) return;
+    if (c.type === 'hls') { baseOpen(c); return; }
+    var ov = Q('#nfStream');
+    if (!ov) {
+      ov = document.createElement('div'); ov.id = 'nfStream'; ov.className = 'overlay nf6-ov';
+      document.body.appendChild(ov);
+      ov.addEventListener('click', function (e) { if (e.target === ov) Live.close6(); });
+    }
+    var yt = 'https://www.youtube.com/embed/live_stream?channel=' + encodeURIComponent(c.yt) + '&autoplay=1&playsinline=1&rel=0&modestbranding=1';
+    ov.innerHTML = '<div class="nf6-modal nf6-stream"><div class="nf6-head"><div class="who"><div class="lg">NANCYFLIX LIVE</div><h3>' + esc(c.name) + '</h3><div class="sub">' + esc(c.note) + '</div></div><span class="nf-livepill">● LIVE</span><button class="nf6-x" id="nfSClose" aria-label="Close">✕</button></div>' +
+      '<div class="nf-frame"><iframe src="' + yt + '" title="' + esc(c.name) + '" allow="autoplay; encrypted-media; picture-in-picture; fullscreen" allowfullscreen referrerpolicy="strict-origin-when-cross-origin"></iframe></div>' +
+      '<div class="nf6-body"><p class="nf-note" style="margin:0">Broadcast by ' + esc(c.name) + ' on its official YouTube live channel. If the channel is between bulletins, YouTube shows “waiting” — the stream returns with the next bulletin. <a href="https://www.youtube.com/channel/' + encodeURIComponent(c.yt) + '/live" target="_blank" rel="noopener noreferrer">Open on YouTube</a> if the in-app player is blocked by your browser.</p></div></div>';
+    ov.classList.add('show'); document.body.classList.add('noscroll');
+    Q('#nfSClose', ov).onclick = function () { Live.close6(); };
+  };
+  Live.close6 = function () {
+    var ov = Q('#nfStream'); if (ov) { ov.classList.remove('show'); var f = Q('iframe', ov); if (f) f.src = 'about:blank'; }
+    if (!Q('.overlay.show')) document.body.classList.remove('noscroll');
+  };
+
+  /* ---------------- football: in-app fixtures + tables ---------------- */
+  Live.renderFooty = function () {
+    var body = Q('#liveBody'); if (!body) return;
+    body.innerHTML = '<p class="live-note">Next fixtures per league, opened inside NANCYFLIX — no new tabs. Tables show the live standings for the current season.</p>' +
+      '<div class="fx-grid">' + LEAGUES.map(function (lg) {
+        return '<div class="fx-card" data-lgcard="' + lg.id + '"><div class="fx-lg"><b>' + esc(lg.name) + '</b>' +
+          '<span style="display:flex;gap:6px"><button class="btn sm ghost" data-tbl6="' + lg.id + '">Table</button><button class="btn sm ghost" data-all6="' + lg.id + '">All</button></span></div>' +
+          '<div class="nf6-fxbody" data-fxbody="' + lg.id + '"><div class="fx-load">Loading fixtures…</div></div>' +
+          '<button class="btn sm block" style="margin-top:10px" data-open6="' + lg.id + '">Open schedule in app →</button></div>';
+      }).join('') + '</div>';
+    QA('[data-open6]', body).forEach(function (b) { b.onclick = function () { Live.openLeague(b.dataset.open6, 'fx'); }; });
+    QA('[data-tbl6]', body).forEach(function (b) { b.onclick = function () { Live.openLeague(b.dataset.tbl6, 'tbl'); }; });
+    QA('[data-all6]', body).forEach(function (b) { b.onclick = function () { Live.openLeague(b.dataset.all6, 'fx'); }; });
+    LEAGUES.forEach(async function (lg) {
+      var box = Q('[data-fxbody="' + lg.id + '"]', body); if (!box) return;
+      var ev = [];
+      try { ev = await fixtures(lg); } catch (e) {}
+      Live.fx6[lg.id] = ev;
+      if (!box.isConnected) return;
+      var next = ev.slice(0, 3);
+      if (!next.length) { box.innerHTML = '<div class="fx">No fixtures published yet — open the schedule.</div>'; return; }
+      box.innerHTML = next.map(function (e, i) {
+        var w = when(e);
+        return '<div class="fx" data-m6="' + lg.id + ':' + i + '"><div class="fx-t">' + esc(e.strHomeTeam || 'TBC') + ' <em>vs</em> ' + esc(e.strAwayTeam || 'TBC') + '</div><div class="fx-m">' + esc(w.full) + (e.strVenue ? ' · ' + esc(e.strVenue) : '') + '</div></div>';
+      }).join('');
+      QA('[data-m6]', box).forEach(function (row) {
+        row.onclick = function () {
+          var p = row.dataset.m6.split(':'), lg2 = LEAGUES.filter(function (x) { return x.id === p[0]; })[0];
+          Live.openMatch(Live.fx6[p[0]][+p[1]], lg2);
+        };
+      });
+    });
+  };
+
+  Live.openLeague = function (lgId, tab) {
+    var lg = LEAGUES.filter(function (x) { return x.id === String(lgId); })[0];
+    if (!lg) return NF6.upsell('That league is not in the list yet.');
+    var ov = Q('#nfLeague');
+    if (!ov) {
+      ov = document.createElement('div'); ov.id = 'nfLeague'; ov.className = 'overlay nf6-ov';
+      document.body.appendChild(ov);
+      ov.addEventListener('click', function (e) { if (e.target === ov) NF6.close('nfLeague'); });
+    }
+    ov.innerHTML = '<div class="nf6-modal"><div class="nf6-head"><div class="who"><div class="lg">LEAGUE CENTRE</div><h3>' + esc(lg.name) + '</h3><div class="sub">Fixtures, results and the current table</div></div><button class="nf6-x" data-x="nfLeague" aria-label="Close">✕</button></div>' +
+      '<div class="nf6-body"><div class="nf6-tabs"><button data-tab="fx" class="' + (tab !== 'tbl' ? 'on' : '') + '">Fixtures</button><button data-tab="tbl" class="' + (tab === 'tbl' ? 'on' : '') + '">Table</button></div><div id="nfLgBody"><div class="fx-load">Loading…</div></div></div></div>';
+    ov.classList.add('show'); document.body.classList.add('noscroll');
+    QA('[data-x]', ov).forEach(function (b) { b.onclick = function () { NF6.close(b.dataset.x); }; });
+    var load = function (which) {
+      QA('[data-tab]', ov).forEach(function (b) { b.classList.toggle('on', b.dataset.tab === which); });
+      var box = Q('#nfLgBody', ov); if (!box) return;
+      if (which === 'tbl') {
+        box.innerHTML = '<div class="fx-load">Loading table…</div>';
+        table(lg).then(function (r) {
+          if (!r.rows.length) { box.innerHTML = '<p class="nf-note">The table is not published for ' + esc(r.season) + ' yet. Check the fixtures tab, or try again after the first matchday.</p>'; return; }
+          box.innerHTML = '<p class="nf-note" style="margin:0 0 8px">' + esc(lg.name) + ' · ' + esc(r.season) + '</p><div style="overflow:auto"><table class="nf-tbl"><thead><tr><th>#</th><th>Team</th><th>P</th><th>W</th><th>D</th><th>L</th><th>GD</th><th>Pts</th></tr></thead><tbody>' +
+            r.rows.map(function (x, i) {
+              var gd = (+x.intGoalsFor || 0) - (+x.intGoalsAgainst || 0);
+              return '<tr class="' + (i < 4 ? 'me' : '') + '"><td>' + esc(x.intRank || (i + 1)) + '</td><td class="nm">' + (x.strTeamBadge ? '<img src="' + esc(x.strTeamBadge) + '" alt="" loading="lazy">' : '') + '<span>' + esc(x.strTeam) + '</span></td><td>' + esc(x.intPlayed || 0) + '</td><td>' + esc(x.intWin || 0) + '</td><td>' + esc(x.intDraw || 0) + '</td><td>' + esc(x.intLoss || 0) + '</td><td>' + (gd > 0 ? '+' : '') + gd + '</td><td class="pts">' + esc(x.intPoints || 0) + '</td></tr>';
+            }).join('') + '</tbody></table></div><p class="nf-note">Top four are highlighted. Data from TheSportsDB; standings refresh every few minutes.</p>';
+        }).catch(function () { box.innerHTML = '<p class="nf-note">The table feed is unreachable right now. Try again in a minute.</p>'; });
+        return;
+      }
+      box.innerHTML = '<div class="fx-load">Loading fixtures…</div>';
+      fixtures(lg).then(function (ev) {
+        if (!ev.length) { box.innerHTML = '<p class="nf-note">No upcoming fixtures are published for this league. The feed fills in as the next round is scheduled.</p>'; return; }
+        var groups = {}, order = [];
+        ev.forEach(function (e) { var w = when(e); var k = w.day; if (!groups[k]) { groups[k] = []; order.push(k); } groups[k].push(e); });
+        box.innerHTML = order.map(function (k) {
+          return '<div class="nf-day">' + esc(k) + '</div>' + groups[k].map(function (e) {
+            var w = when(e), idx = ev.indexOf(e);
+            return '<div class="nf-fx" data-fxrow="' + idx + '"><div class="tm">' + esc(e.strHomeTeam || 'TBC') + ' <em>vs</em> ' + esc(e.strAwayTeam || 'TBC') + '<small>' + esc(e.strVenue || e.strLeague || '') + (e.intRound ? ' · Round ' + e.intRound : '') + '</small></div><div class="ko"><b>' + esc(w.time || 'TBC') + '</b>' + esc(e.dateEvent || '') + '</div><button class="sh" data-shrow="' + idx + '" aria-label="Share">↗</button></div>';
+          }).join('');
+        }).join('');
+        QA('[data-fxrow]', box).forEach(function (row) {
+          row.onclick = function (e) {
+            if (e.target.closest('[data-shrow]')) return;
+            Live.openMatch(ev[+row.dataset.fxrow], lg);
+          };
+        });
+        QA('[data-shrow]', box).forEach(function (b) {
+          b.onclick = function (e) { e.stopPropagation(); NF6.shareMatch(ev[+b.dataset.shrow], lg); };
+        });
+      }).catch(function () { box.innerHTML = '<p class="nf-note">The fixture feed is unreachable right now. Try again in a minute.</p>'; });
+    };
+    QA('[data-tab]', ov).forEach(function (b) { b.onclick = function () { load(b.dataset.tab); }; });
+    load(tab === 'tbl' ? 'tbl' : 'fx');
+  };
+
+  /* ---------------- match modal + invite links ---------------- */
+  function matchUrl(ev, lg) {
+    var base = location.origin && location.origin !== 'null' ? location.origin + location.pathname : String(location.href).split('?')[0];
+    var p = new URLSearchParams();
+    p.set('invite', '1');
+    if (ev.idEvent) p.set('match', ev.idEvent);
+    if (lg) p.set('league', lg.id);
+    p.set('h', ev.strHomeTeam || 'Home');
+    p.set('a', ev.strAwayTeam || 'Away');
+    if (ev.strTimestamp) p.set('d', ev.strTimestamp);
+    else if (ev.dateEvent) p.set('d', ev.dateEvent + 'T' + (ev.strTime || '00:00:00') + 'Z');
+    if (ev.strVenue) p.set('v', ev.strVenue);
+    return base + '?' + p.toString();
+  }
+  NF6.matchUrl = matchUrl;
+
+  function copyText(txt) {
+    if (navigator.clipboard && navigator.clipboard.writeText) return navigator.clipboard.writeText(txt).then(function () { return true; }).catch(function () { return legacyCopy(txt); });
+    return Promise.resolve(legacyCopy(txt));
+  }
+  function legacyCopy(txt) {
+    try {
+      var ta = document.createElement('textarea'); ta.value = txt; ta.style.position = 'fixed'; ta.style.opacity = '0';
+      document.body.appendChild(ta); ta.select(); var ok = document.execCommand('copy'); ta.remove(); return ok;
+    } catch (e) { return false; }
+  }
+  NF6.copy = copyText;
+
+  NF6.shareMatch = function (ev, lg) {
+    var url = matchUrl(ev, lg), title = (ev.strHomeTeam || 'Match') + ' vs ' + (ev.strAwayTeam || '');
+    if (navigator.share) {
+      navigator.share({ title: title + ' · NANCYFLIX', text: 'Watch ' + title + ' with me on NANCYFLIX', url: url })
+        .catch(function (err) { if (err && err.name === 'AbortError') return; copyText(url).then(function (ok) { if (ok) Toast.show('Invite link copied', 'Send it to a friend — they sign up, then land on this match.', 'ok', 3500); }); });
+      return;
+    }
+    copyText(url).then(function (ok) {
+      Toast.show(ok ? 'Invite link copied' : 'Copy this link', ok ? 'Send it to a friend — they sign up, then land on this match.' : url, ok ? 'ok' : 'info', ok ? 4000 : 12000);
+    });
+  };
+
+  function icsFor(ev, lg) {
+    var start = ev.strTimestamp ? new Date(ev.strTimestamp) : new Date((ev.dateEvent || '') + 'T' + (ev.strTime || '00:00:00') + 'Z');
+    if (isNaN(start.getTime())) return null;
+    var end = new Date(start.getTime() + 2 * 3600e3);
+    var z = function (d) { return d.toISOString().replace(/[-:]/g, '').split('.')[0] + 'Z'; };
+    var lines = ['BEGIN:VCALENDAR', 'VERSION:2.0', 'PRODID:-//NANCYFLIX//Match//EN', 'BEGIN:VEVENT', 'UID:nf' + (ev.idEvent || Date.now()) + '@nancyflix', 'DTSTAMP:' + z(new Date()), 'DTSTART:' + z(start), 'DTEND:' + z(end), 'SUMMARY:' + (ev.strHomeTeam || '') + ' vs ' + (ev.strAwayTeam || ''), 'LOCATION:' + (ev.strVenue || ''), 'DESCRIPTION:' + (lg ? lg.name : '') + ' — shared from NANCYFLIX', 'END:VEVENT', 'END:VCALENDAR'];
+    return lines.join('\r\n');
+  }
+
+  NF6.fixtureCard = function (ev, lg) {
+    var c = document.createElement('canvas'); c.width = 1080; c.height = 1080;
+    var x = c.getContext('2d'); if (!x) return;
+    var g = x.createLinearGradient(0, 0, 1080, 1080); g.addColorStop(0, '#16060c'); g.addColorStop(.55, '#0a0a12'); g.addColorStop(1, '#2a0710');
+    x.fillStyle = g; x.fillRect(0, 0, 1080, 1080);
+    x.fillStyle = 'rgba(225,29,46,.22)'; x.beginPath(); x.arc(980, 90, 340, 0, Math.PI * 2); x.fill();
+    x.fillStyle = '#ffcc66'; x.font = '700 26px Inter, Arial'; x.fillText('NANCYFLIX  ·  MATCH DAY', 80, 120);
+    x.fillStyle = '#ffffff'; x.font = '900 58px Inter, Arial';
+    var wrap = function (txt, y, size) {
+      x.font = '900 ' + size + 'px Inter, Arial'; var words = String(txt || '').split(' '), line = '', yy = y;
+      for (var i = 0; i < words.length; i++) { var test = (line + ' ' + words[i]).trim(); if (x.measureText(test).width > 900) { x.fillText(line, 80, yy); yy += size + 8; line = words[i]; } else line = test; }
+      x.fillText(line, 80, yy); return yy + size + 8;
+    };
+    var y = wrap(ev.strHomeTeam || 'Home', 300, 86);
+    x.fillStyle = '#e11d2e'; x.font = '900 52px Inter, Arial'; x.fillText('VS', 80, y + 40);
+    x.fillStyle = '#ffffff'; y = wrap(ev.strAwayTeam || 'Away', y + 130, 86);
+    var w = when(ev);
+    x.fillStyle = '#cfcfda'; x.font = '600 34px Inter, Arial'; x.fillText(w.full.slice(0, 46), 80, 900);
+    x.fillStyle = '#8c8c9e'; x.font = '600 28px Inter, Arial'; x.fillText((lg ? lg.name + ' · ' : '') + (ev.strVenue || ''), 80, 952);
+    x.fillStyle = 'rgba(255,255,255,.35)'; x.font = '600 24px Inter, Arial'; x.fillText('Shared from NANCYFLIX', 80, 1010);
+    try { c.toBlob(function (b) { if (!b) return; var a = document.createElement('a'); a.href = URL.createObjectURL(b); a.download = 'NANCYFLIX-' + (ev.strHomeTeam || 'match').replace(/\W+/g, '-') + '-vs-' + (ev.strAwayTeam || '').replace(/\W+/g, '-') + '.png'; document.body.appendChild(a); a.click(); setTimeout(function () { URL.revokeObjectURL(a.href); a.remove(); }, 4000); }, 'image/png'); } catch (e) {}
+  };
+
+  Live.openMatch = function (ev, lg) {
+    ev = ev || {};
+    var ov = Q('#nfMatch');
+    if (!ov) {
+      ov = document.createElement('div'); ov.id = 'nfMatch'; ov.className = 'overlay nf6-ov';
+      document.body.appendChild(ov);
+      ov.addEventListener('click', function (e) { if (e.target === ov) NF6.close('nfMatch'); });
+    }
+    var w = when(ev);
+    var home = ev.strHomeTeam || (ev.h || 'Home'), away = ev.strAwayTeam || (ev.a || 'Away');
+    ov.innerHTML = '<div class="nf6-modal"><div class="nf6-head"><div class="who"><div class="lg">MATCH CENTRE</div><h3>' + esc(home) + ' vs ' + esc(away) + '</h3><div class="sub">' + esc(ev.strLeague || (lg && lg.name) || 'Football') + '</div></div><button class="nf6-x" data-x="nfMatch" aria-label="Close">✕</button></div>' +
+      '<div class="nf6-body"><div class="nf-match-hero"><div class="vs"><span>' + esc(home) + '</span><em>VS</em><span style="text-align:right">' + esc(away) + '</span></div><div class="meta">' + esc(w.full) + (ev.strVenue ? '<br>' + esc(ev.strVenue) : '') + (ev.intRound ? '<br>Round ' + esc(ev.intRound) : '') + '</div></div>' +
+      '<div class="nf-act"><button class="btn primary" id="nfShareM">↗ Invite a friend</button><button class="btn" id="nfCopyM">Copy invite link</button><button class="btn" id="nfIcsM">' + (NF6.has('ics') ? '📅 Add to calendar' : '📅 Calendar · Premium') + '</button><button class="btn" id="nfCardM">' + (NF6.has('card') ? '🖼 Fixture card' : '🖼 Card · Super') + '</button></div>' +
+      '<p class="nf-fine">Your friend opens the link, creates a free account, and lands straight on this match. NANCYFLIX links to official broadcasters and never re-streams rights-protected matches.</p>' +
+      (lg ? '<button class="btn sm ghost" style="margin-top:10px" id="nfLgJump">' + esc(lg.name) + ' fixtures &amp; table →</button>' : '') + '</div></div>';
+    ov.classList.add('show'); document.body.classList.add('noscroll');
+    QA('[data-x]', ov).forEach(function (b) { b.onclick = function () { NF6.close(b.dataset.x); }; });
+    Q('#nfShareM', ov).onclick = function () { NF6.shareMatch(ev, lg); };
+    Q('#nfCopyM', ov).onclick = function () {
+      copyText(matchUrl(ev, lg)).then(function (ok) { Toast.show(ok ? 'Invite link copied' : 'Copy failed', ok ? 'Paste it in WhatsApp or SMS.' : 'Long-press the address bar instead.', ok ? 'ok' : 'warn'); });
+    };
+    var ics = Q('#nfIcsM', ov);
+    ics.onclick = function () {
+      if (!NF6.has('ics')) { NF6.upsell('Calendar files for matches are included with Premium and Super.'); return; }
+      var body = icsFor(ev, lg); if (!body) { Toast.show('No date yet', 'This fixture has no confirmed kick-off time.', 'warn'); return; }
+      var a = document.createElement('a'); a.href = URL.createObjectURL(new Blob([body], { type: 'text/calendar' })); a.download = 'nancyflix-match.ics'; document.body.appendChild(a); a.click(); setTimeout(function () { URL.revokeObjectURL(a.href); a.remove(); }, 3000);
+      Toast.show('Calendar file saved', 'Open it to add the match to your calendar.', 'ok');
+    };
+    Q('#nfCardM', ov).onclick = function () {
+      if (!NF6.has('card')) { NF6.upsell('Shareable fixture cards are a Super extra.'); return; }
+      NF6.fixtureCard(ev, lg);
+    };
+    var jump = Q('#nfLgJump', ov); if (jump) jump.onclick = function () { NF6.close('nfMatch'); Live.openLeague(lg.id, 'tbl'); };
+  };
+
+  NF6.close = function (id) {
+    var ov = Q('#' + id); if (ov) ov.classList.remove('show');
+    if (!Q('.overlay.show')) document.body.classList.remove('noscroll');
+  };
+
+  /* ---------------- invite gate ---------------- */
+  var Inv = NF6.Invite = {
+    pending: null,
+    parse: function () {
+      var p = new URLSearchParams(location.search);
+      if (p.get('invite') !== '1' && !p.get('match')) return null;
+      var d = p.get('d') || '';
+      this.pending = { id: p.get('match') || '', league: p.get('league') || '', h: p.get('h') || 'Home', a: p.get('a') || 'Away', d: d, v: p.get('v') || '' };
+      try { LS.set('nfInvite', this.pending); } catch (e) {}
+      return this.pending;
+    },
+    ev: function () {
+      var p = this.pending; if (!p) return {};
+      return { idEvent: p.id, strHomeTeam: p.h, strAwayTeam: p.a, strTimestamp: p.d, strVenue: p.v, dateEvent: (p.d || '').slice(0, 10) };
+    },
+    lg: function () {
+      var p = this.pending || {};
+      return LEAGUES.filter(function (x) { return x.id === String(p.league); })[0] || null;
+    },
+    paint: function () {
+      if (!this.pending) return;
+      var card = Q('#auth .auth-card'); if (!card) return;
+      var guest = Q('#guestBtn'); if (guest) { guest.style.display = 'none'; }
+      var note = Q('#demoNote'); if (note && !State.user) note.textContent = 'Create a free account to open your invite. Your watchlist and settings stay on this device.';
+      if (!Q('.nf-gate', card)) {
+        var g = document.createElement('div'); g.className = 'nf-gate';
+        g.innerHTML = '<span class="ic">🎟️</span><div style="flex:1"><b>' + esc(this.pending.h) + ' vs ' + esc(this.pending.a) + '</b><span>You were invited to this match. Register or sign in and it opens automatically.</span></div>';
+        var head = Q('.auth-head', card);
+        if (head && head.nextSibling) card.insertBefore(g, head.nextSibling); else card.appendChild(g);
+      }
+      try { setTab('register'); } catch (e) {}
+    },
+    resume: function () {
+      if (!State.user) return;
+      var p = this.pending || LS.get('nfInvite', null);
+      if (!p) return;
+      this.pending = p;
+      var g = Q('.nf-gate'); if (g) g.remove();
+      var guest = Q('#guestBtn'); if (guest) guest.style.display = '';
+      try { LS.del('nfInvite'); } catch (e) {}
+      try {
+        var u = new URL(location.href); ['invite', 'match', 'league', 'h', 'a', 'd', 'v'].forEach(function (k) { u.searchParams.delete(k); });
+        history.replaceState({}, '', u.pathname + (u.searchParams.toString() ? '?' + u.searchParams : '') + u.hash);
+      } catch (e) {}
+      var self = this;
+      setTimeout(function () {
+        Toast.show('Invite unlocked', 'Welcome — opening ' + p.h + ' vs ' + p.a + '.', 'ok', 4200);
+        self.pending = null;
+        Live.openMatch(self.evFrom(p), self.lgFrom(p));
+      }, 700);
+      this.pending = null;
+    },
+    evFrom: function (p) { return { idEvent: p.id, strHomeTeam: p.h, strAwayTeam: p.a, strTimestamp: p.d, strVenue: p.v, dateEvent: (p.d || '').slice(0, 10) }; },
+    lgFrom: function (p) { return LEAGUES.filter(function (x) { return x.id === String(p.league); })[0] || null; }
+  };
+  Inv.parse();
+
+  var baseBack = window.backToAuth;
+  window.backToAuth = function (tab) {
+    var r = baseBack.apply(null, arguments);
+    try { Inv.paint(); } catch (e) {}
+    return r;
+  };
+  var baseEnter = Auth._enter.bind(Auth);
+  Auth._enter = function (u, remember) {
+    var r = baseEnter(u, remember);
+    setTimeout(function () { try { Inv.resume(); } catch (e) {} }, 900);
+    return r;
+  };
+
+  /* ---------------- in-place update ---------------- */
+  function newer(a, b) {
+    var pa = String(a).split('.').map(Number), pb = String(b).split('.').map(Number);
+    for (var i = 0; i < 3; i++) { if ((pa[i] || 0) > (pb[i] || 0)) return true; if ((pa[i] || 0) < (pb[i] || 0)) return false; }
+    return false;
+  }
+  NF6.Update = {
+    check: function (silent) {
+      return fetch('version.json?t=' + Date.now(), { cache: 'no-store' })
+        .then(function (r) { if (!r.ok) throw new Error('http'); return r.json(); })
+        .then(function (j) {
+          if (!j || !j.version) return false;
+          var v = String(j.version);
+          if (!newer(v, APP_VERSION)) return false;
+          if (LS.get('nfUpdSeen', '') === v) return false;
+          LS.set('nfUpdSeen', v);
+          try {
+            Noti.add('Update ready · v' + v, (j.notes || 'A newer NANCYFLIX build is available.') + ' Tap Update now — nothing is uninstalled.', 'info', { toast: !silent });
+            Noti.render();
+          } catch (e) {}
+          return true;
+        })
+        .catch(function () { return false; });
+    },
+    init: function () {
+      var self = this;
+      setTimeout(function () { self.check(true); }, 6000);
+      setInterval(function () { self.check(true); }, 6 * 3600e3);
+      if ('serviceWorker' in navigator) {
+        navigator.serviceWorker.getRegistration().then(function (reg) {
+          if (!reg) return;
+          reg.update().catch(function () {});
+          reg.addEventListener('updatefound', function () {
+            var w = reg.installing; if (!w) return;
+            w.addEventListener('statechange', function () {
+              if (w.state === 'installed' && navigator.serviceWorker.controller) {
+                try { Toast.show('Update downloaded', 'It will apply the next time you open NANCYFLIX.', 'info', 5000); } catch (e) {}
+              }
+            });
+          });
+        }).catch(function () {});
+      }
+    }
+  };
+
+  /* plan-specific copy on the premium page */
+  try {
+    TIERS[0].items = ['Everything in Free', '50 poster downloads', '60-trailer queue', '60-title watch history', 'All 5 themes, including Amazing', 'Every Kenyan channel + world news', 'Chime alert sound'];
+    TIERS[0].groupLabel = 'The everyday upgrade';
+    TIERS[1].items = ['Everything in Plus', 'Unlimited poster downloads', 'Unlimited trailer queue', '200-title watch history', 'Rich alert cards + quiet hours', 'Match calendar files (.ics)', 'Gold profile badge'];
+    TIERS[1].groupLabel = 'Everything in Plus, and:';
+    TIERS[2].items = ['Everything in Premium', '300-title watch history', 'Shareable fixture cards (PNG)', 'Priority support by email', 'First access to new features'];
+    TIERS[2].groupLabel = 'Everything in Premium, and:';
+    TIERS[2].tag = 'For super fans';
+  } catch (e) {}
+
+  NF6.bootB = function () {
+    try { Inv.paint(); } catch (e) {}
+    try { NF6.Update.init(); } catch (e) {}
+    try { NF6.applyPlanChrome(); } catch (e) {}
+  };
+  if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', function () { try { NF6.bootA(); } catch (e) {} try { NF6.bootB(); } catch (e) {} });
+  else { try { NF6.bootA(); } catch (e) {} try { NF6.bootB(); } catch (e) {} }
+})();
+
+
 /* soft light theme tuning (pure CSS variables are patched in the stylesheet) */
 /* soft light theme tuning (pure CSS variables are patched in the stylesheet) */
 /* soft light theme tuning (pure CSS variables are patched in the stylesheet) */
