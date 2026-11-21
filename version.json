@@ -1,11 +1,14 @@
 {
-  "version": "8.2.0",
+  "version": "8.3.0",
   "build": "2026-11-22",
   "notes": [
-    "Top bar layering fixed — nothing leaks over the navigation any more",
-    "Update banner keeps both buttons and shows live progress until the new build is confirmed",
-    "Notification badges clear as you read and old update notices are removed",
-    "Real broadcaster and brand icons in Live TV",
-    "Live match alerts: goals, penalties, red and yellow cards, VAR checks"
+    "Cinematic splash and projector intro polished",
+    "Live football: scores, today's fixtures, upcoming and match alerts",
+    "Real brand logos for Live TV channels",
+    "15 focus sounds in the sound picker",
+    "Cross-device sync: accounts, watchlist, alerts and announcements",
+    "Fix: stray text above the top bar, ticker stays pinned",
+    "Fix: update banner keeps its buttons and only reports success when verified",
+    "Fix: notification badge clears and counts down correctly"
   ]
 }

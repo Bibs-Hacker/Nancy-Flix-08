@@ -1554,7 +1554,7 @@ select,input,textarea{font-size:16px} /* stops iOS zoom-on-focus */
   <div class="nfx-foot">
     <div class="nfx-now"><span class="nfx-dot"></span><span id="splashStage">LOADING YOUR WATCHLIST</span></div>
     <div class="nfx-meter"><i id="splashBar"></i></div>
-    <div class="nfx-meta"><b id="splashPct">0%</b><em id="splashStat">BOOT</em><span>V8.2.0</span></div>
+    <div class="nfx-meta"><b id="splashPct">0%</b><em id="splashStat">BOOT</em><span>V8.3.0</span></div>
   </div>
 </div>
 
@@ -1773,8 +1773,8 @@ const CONFIG = {
   TMDB_BASE: "https://api.themoviedb.org/3",
   IMG: "https://image.tmdb.org/t/p/",
   // Supabase (public anon values are safe to expose; service-role is NOT):
-  SUPABASE_URL: "",
-  SUPABASE_ANON_KEY: "",
+  SUPABASE_URL: "https://igtxbhljasdfzyuvtnvy.supabase.co",
+  SUPABASE_ANON_KEY: "sb_publishable_G9vrcYV0jWYAuSftgkboeg_20Dsndfy",
   ADMIN_EMAILS: ["bridah888@gmail.com", "agollanancy@gmail.com"], // display hint only; real role lives server-side
   /* ---- Stripe (real money) --------------------------------------------
      Create two Payment Links in the Stripe Dashboard (Products -> Payment
@@ -1922,7 +1922,7 @@ const LS = {
 async function sb(path,opts={}){
   const headers=Object.assign({
     apikey:CONFIG.SUPABASE_ANON_KEY,
-    Authorization:"Bearer "+(State.accessToken||CONFIG.SUPABASE_ANON_KEY),
+    ...(State.accessToken?{Authorization:"Bearer "+State.accessToken}:{}),
     "Content-Type":"application/json"
   },opts.headers||{});
   const res=await fetch(CONFIG.SUPABASE_URL+path,Object.assign({},opts,{headers}));
@@ -3240,7 +3240,7 @@ Admin.exportJSON=function(){const data={users:Analytics.users().map(u=>({name:u.
 const Auth={
   async register({name,email,password,gender,avatar}){
     email=email.toLowerCase().trim();
-    if(Store.mode==='backend'){/* call Supabase signUp + profiles insert; welcome email via Edge Fn */}
+    if(HAS_BACKEND&&window.SBX){ return SBX.register({name,email,password,gender,avatar}); }
     const users=Store.users();
     if(users.some(u=>u.email===email))throw new Error('An account with this email already exists.');
     const user={id:uid(),name,email,gender,avatar:avatar||null,createdAt:Date.now(),lastLogin:Date.now(),
@@ -3256,7 +3256,7 @@ const Auth={
   },
   async login({email,password,remember}){
     email=email.toLowerCase().trim();
-    if(Store.mode==='backend'){/* call Supabase signInWithPassword; role from profiles */}
+    if(HAS_BACKEND&&window.SBX){ return SBX.login({email,password,remember}); }
     const users=Store.users();const user=users.find(u=>u.email===email);
     if(!user||user.pwHash!==await secureHash(password))throw new Error('Invalid email or password.');
     user.lastLogin=Date.now();Store.saveUsers(users);
@@ -3265,6 +3265,7 @@ const Auth={
     return user;
   },
   _welcomeEmail(user){
+    if(HAS_BACKEND&&!CONFIG.WELCOME_EMAIL_FN){ try{Noti.add('Account synced','Your watchlist, history and notifications now follow you to every device.','ok',{toast:false});}catch(e){} return; }
     if(!HAS_BACKEND){Noti.add('Welcome email not sent','Your account is ready, but email delivery isn’t configured yet.','warn',{toast:false});return;}
     // In backend mode: POST to your Edge Function which calls the email provider.
     // Status below must reflect the REAL provider response — do not fake success.
@@ -3281,7 +3282,7 @@ const Auth={
     enterApp();
   },
   guest(){State.guest=true;State.user=null;State.watchlist=[];State.notifications=[];State.settings=LS.get('guestSettings',Settings.defaults());Theme.apply(State.settings.theme);Theme.font(State.settings.font);Theme.density(State.settings.density);this._applySettings();I18N.apply();Store.bumpGuest();Store.log('guest_session');this.refreshChrome();enterApp();},
-  async logout(){if(!await Confirm.ask('Are you sure you want to log out?','You can sign back in anytime.',{ok:'Yes, log me out',cancel:'Stay signed in'}))return;if(Store.mode==='backend'){/* supabase.auth.signOut() */}Store.setSession(null);Store.log('logout',State.user?State.user.email:'');State.user=null;State.guest=false;State.notifications=[];State.watchlist=[];Toast.show('Signed out','See you soon.','info');backToAuth('login');},
+  async logout(){if(!await Confirm.ask('Are you sure you want to log out?','You can sign back in anytime.',{ok:'Yes, log me out',cancel:'Stay signed in'}))return;if(HAS_BACKEND&&window.SBX){try{await SBX.signOut();}catch(e){}}Store.setSession(null);Store.log('logout',State.user?State.user.email:'');State.user=null;State.guest=false;State.notifications=[];State.watchlist=[];Toast.show('Signed out','See you soon.','info');backToAuth('login');},
   deleteSelf(){const id=State.user.id;let users=Store.users().filter(u=>u.id!==id);Store.saveUsers(users);LS.del(Store.wlKey(id));LS.del(Store.notiKey(id));Store.setSession(null);Store.log('account_deleted',State.user.email);State.user=null;Toast.show('Account removed','Your data was deleted.','info');backToAuth('reg');},
   async changePassword(){
     const u=State.user;if(!u)return;
@@ -4078,7 +4079,11 @@ function finishSplash(){
   },460);
 }
 
-function resumeSession(){
+async function resumeSession(){
+  if(HAS_BACKEND&&window.SBX){
+    try{ const ok=await SBX.resume(); if(ok) return; }catch(e){}
+    backToAuth('login'); return;
+  }
   const sid=Store.session();
   if(sid){const u=Store.users().find(x=>x.id===sid);if(u){Auth._enter(u);return;}}
   backToAuth('login');
@@ -4088,7 +4093,7 @@ function resumeSession(){
    v5 — soft light theme helpers · update centre · 3-tier Premium ·
         Live TV · Live Football · cross-device entitlement · test mode
    ===================================================================== */
-const APP_VERSION = '8.2.0';
+const APP_VERSION = '8.3.0';
 const WHATS_NEW = [
   'New cinematic boot sequence with HUD rings, radar sweep and per-letter 3D title flips',
   'Live Football now shows live scores, today and upcoming fixtures with real crests',
@@ -6598,7 +6603,7 @@ if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',
   function listHTML() {
     if (ST.busy && !ST.rows.length) return skeleton();
     if (ST.err && !ST.rows.length) {
-      return '<div class="fb-empty">' + ic('info', 'icon lg') + '<h4>Could not load the live feed</h4><p>' + esc(ST.err) + '</p><button class="btn sm ghost" data-fbr="1" type="button">Try again</button></div>';
+      return '<div class="fb-empty">' + ic('info', 'icon lg') + '<h4>Could not load the live feed</h4><p>' + esc(ST.err) + '</p><div class="fb-setup-f"><button class="btn sm ghost" data-fbr="1" type="button">Try again</button><button class="btn sm ghost" data-fboffline="1" type="button">Show offline fixtures</button></div></div>';
     }
     if (!ST.rows.length) return emptyHTML();
     return ST.rows.map(rowHTML).join('');
@@ -6807,6 +6812,270 @@ if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',
 #nf8Update .prog i{display:block;height:100%;width:0;border-radius:99px;background:linear-gradient(90deg,#e11d2e,#ffcc66);transition:width .35s ease}
 #nf8Update .x{width:26px;height:26px;border-radius:7px;display:grid;place-items:center;color:#77778a;flex:0 0 auto;background:transparent}
 </style>
+<script id="nf15-supabase">
+/* ============ v8.3 · Supabase backend: real accounts + cross-device sync ============ */
+(function(){
+  'use strict';
+  var URLB = (CONFIG.SUPABASE_URL||'').replace(/\/$/,'');
+  var KEY  = CONFIG.SUPABASE_ANON_KEY||'';
+  var SKEY = 'sbSession';
+
+  function jhead(token,extra){
+    var h = {'Content-Type':'application/json', apikey:KEY};
+    if(token) h.Authorization = 'Bearer '+token;
+    if(extra) Object.keys(extra).forEach(function(k){ h[k]=extra[k]; });
+    return h;
+  }
+  async function call(path,opts){
+    opts = opts||{};
+    var token = opts.token!==undefined ? opts.token : (LS.get(SKEY,{})||{}).access_token;
+    var r = await fetch(URLB+path,{method:opts.method||'GET',headers:jhead(token,opts.headers),body:opts.body?JSON.stringify(opts.body):undefined});
+    var txt = await r.text(); var data=null;
+    try{ data = txt? JSON.parse(txt) : null; }catch(e){ data = {raw:txt}; }
+    if(!r.ok){
+      var msg = (data&&(data.msg||data.message||data.error_description||data.error)) || ('Request failed ('+r.status+')');
+      var err = new Error(String(msg)); err.status=r.status; err.data=data; throw err;
+    }
+    return data;
+  }
+
+  function saveSession(d){
+    if(!d||!d.access_token){ LS.del(SKEY); State.accessToken=''; return null; }
+    var ses = {access_token:d.access_token, refresh_token:d.refresh_token||'', expires_at:(d.expires_at|| (Math.floor(Date.now()/1000)+(d.expires_in||3600)))};
+    LS.set(SKEY,ses); State.accessToken=ses.access_token; return ses;
+  }
+
+  function displayUser(u,prof){
+    prof = prof||{};
+    var email = (u.email||prof.email||'').toLowerCase();
+    var name = prof.name || (u.user_metadata&&(u.user_metadata.name||u.user_metadata.full_name)) || email.split('@')[0];
+    return {
+      id: u.id, name: name, email: email,
+      gender: prof.gender || (u.user_metadata&&u.user_metadata.gender) || 'unspecified',
+      avatar: prof.avatar || (u.user_metadata&&u.user_metadata.avatar) || null,
+      createdAt: prof.created_at ? new Date(prof.created_at).getTime() : Date.now(),
+      lastLogin: Date.now(),
+      isAdmin: !!(prof.is_admin || (CONFIG.ADMIN_EMAILS||[]).indexOf(email)>=0),
+      settings: Object.assign(Settings.defaults(), prof.settings||{}),
+      pwHash: ''
+    };
+  }
+
+  async function profileRow(id){
+    try{
+      var rows = await call('/rest/v1/profiles?id=eq.'+encodeURIComponent(id)+'&select=*');
+      return (rows&&rows[0])||null;
+    }catch(e){ return null; }
+  }
+
+  async function upsertProfile(user){
+    var body = {id:user.id,email:user.email,name:user.name,gender:user.gender,avatar:user.avatar,settings:user.settings||{},is_admin:!!user.isAdmin};
+    try{
+      await call('/rest/v1/profiles?on_conflict=id',{method:'POST',headers:{Prefer:'resolution=merge-duplicates,return=minimal'},body:body});
+    }catch(e){ /* table not created yet — local copy still works */ }
+  }
+
+  window.SBX = {
+    async register(o){
+      var email=(o.email||'').toLowerCase().trim();
+      var res = await call('/auth/v1/signup',{method:'POST',token:'',body:{email:email,password:o.password,data:{name:o.name,gender:o.gender,avatar:o.avatar||null}}});
+      var user = res&&res.user;
+      if(!user) throw new Error('Sign-up failed — please try again.');
+      if(!res.access_token){
+        /* project still has email confirmation turned on */
+        try{ await call('/auth/v1/token?grant_type=password',{method:'POST',token:'',body:{email:email,password:o.password}}).then(function(t){ res=t; }); }catch(e){}
+      }
+      if(res&&res.access_token){
+        saveSession(res);
+        var u = displayUser(res.user||user,{name:o.name,gender:o.gender,avatar:o.avatar});
+        u.isAdmin = (CONFIG.ADMIN_EMAILS||[]).indexOf(email)>=0;
+        await upsertProfile(u);
+        Auth._enter(u); Store.log('registration',email);
+        Noti.add('Welcome to NANCYFLIX, '+(u.name||'').split(' ')[0]+'!','Your account now syncs on every device.','ok',{toast:true});
+        try{ Sync.pull(); }catch(e){}
+        return u;
+      }
+      throw new Error('Account created — open the confirmation email, then sign in.');
+    },
+    async login(o){
+      var email=(o.email||'').toLowerCase().trim();
+      var ses = await call('/auth/v1/token?grant_type=password',{method:'POST',token:'',body:{email:email,password:o.password}});
+      saveSession(ses);
+      var u = ses.user || await call('/auth/v1/user',{token:ses.access_token});
+      var prof = await profileRow(u.id);
+      var user = displayUser(u,prof);
+      if(!prof) await upsertProfile(user);
+      Auth._enter(user,o.remember!==false); Store.log('login',email);
+      Toast.show('Welcome back','Signed in as '+user.name,'ok');
+      try{ await Sync.pull(); }catch(e){}
+      return user;
+    },
+    async signOut(){
+      try{ await call('/auth/v1/logout',{method:'POST'}); }catch(e){}
+      LS.del(SKEY); State.accessToken='';
+    },
+    async resume(){
+      var ses = LS.get(SKEY,null);
+      if(!ses||!ses.access_token) return false;
+      var now = Math.floor(Date.now()/1000);
+      try{
+        if(!ses.expires_at || ses.expires_at < now+90){
+          if(!ses.refresh_token) return false;
+          var r = await call('/auth/v1/token?grant_type=refresh_token',{method:'POST',body:{refresh_token:ses.refresh_token},token:''});
+          ses = saveSession(r);
+        }
+        State.accessToken = ses.access_token;
+        var u = await call('/auth/v1/user',{token:ses.access_token});
+        var prof = await profileRow(u.id);
+        var user = displayUser(u,prof);
+        Auth._enter(user);
+        return true;
+      }catch(e){ return false; }
+    },
+    profile:profileRow
+  };
+
+  /* ---------- push helpers ---------- */
+  var timers = {};
+  function debounce(key,fn,ms){
+    clearTimeout(timers[key]);
+    timers[key]=setTimeout(function(){ try{ fn(); }catch(e){} },ms||900);
+  }
+
+  async function saveNotifications(){
+    if(!State.user) return;
+    try{
+      await call('/rest/v1/profiles?id=eq.'+encodeURIComponent(State.user.id),{method:'PATCH',headers:{Prefer:'return=minimal'},body:{notifications:State.notifications.slice(0,80)}});
+    }catch(e){}
+  }
+  async function saveHistory(){
+    if(!State.user) return;
+    try{
+      await call('/rest/v1/profiles?id=eq.'+encodeURIComponent(State.user.id),{method:'PATCH',headers:{Prefer:'return=minimal'},body:{history:Store.getHistory(State.user.id).slice(0,40)}});
+    }catch(e){}
+  }
+  async function saveWatchlist(){
+    if(!State.user) return;
+    try{
+      await call('/rest/v1/watchlists?on_conflict=user_id',{method:'POST',headers:{Prefer:'resolution=merge-duplicates,return=minimal'},body:{user_id:State.user.id,items:State.watchlist}});
+    }catch(e){}
+  }
+  async function saveSettings(){
+    if(!State.user) return;
+    try{
+      await call('/rest/v1/profiles?id=eq.'+encodeURIComponent(State.user.id),{method:'PATCH',headers:{Prefer:'return=minimal'},body:{settings:State.settings}});
+    }catch(e){}
+  }
+  function saveFeedback(){
+    if(!State.user) return;
+    var it = Store.inbox()[0]; if(!it) return;
+    call('/rest/v1/feedback?on_conflict=id',{method:'POST',headers:{Prefer:'resolution=merge-duplicates,return=minimal'},body:{id:it.id,user_id:State.user.id,email:State.user.email,payload:it,ts:it.ts||Date.now(),read:!!it.read}}).catch(function(){});
+  }
+  function saveAnnouncement(){
+    var a = Store.announcements()[0]; if(!a) return;
+    call('/rest/v1/announcements?on_conflict=id',{method:'POST',headers:{Prefer:'resolution=merge-duplicates,return=minimal'},body:{id:a.id,title:a.title||'',message:a.message||'',ts:a.ts||Date.now(),'by':a.by||''}}).catch(function(){});
+  }
+
+  /* ---------- merge ---------- */
+  function mergeNoti(local,remote){
+    var map={}, out=[];
+    (local||[]).forEach(function(n){ if(n&&n.id) map[n.id]=n; });
+    (remote||[]).forEach(function(n){ if(n&&n.id){ map[n.id]=Object.assign({},n,{read:!!(map[n.id]&&map[n.id].read)||!!n.read}); } });
+    Object.keys(map).forEach(function(k){ out.push(map[k]); });
+    out.sort(function(a,b){ return (b.ts||0)-(a.ts||0); });
+    return out.slice(0,80);
+  }
+
+  async function pullAll(){
+    if(!HAS_BACKEND||!State.user||!State.accessToken) return false;
+    var uid=State.user.id, changed=false;
+    try{
+      var rows = await call('/rest/v1/profiles?id=eq.'+encodeURIComponent(uid)+'&select=*');
+      var p = rows&&rows[0];
+      if(p){
+        if(Array.isArray(p.notifications)){
+          var merged = mergeNoti(State.notifications,p.notifications);
+          if(merged.length!==State.notifications.length) changed=true;
+          State.notifications = merged; Store.setNoti(uid,merged);
+        }
+        if(Array.isArray(p.history)&&p.history.length){ Store.setHistory(uid,p.history); }
+        if(p.settings&&Object.keys(p.settings).length){ State.settings=Object.assign(Settings.defaults(),p.settings); }
+        if(typeof p.is_admin==='boolean' && p.is_admin && !State.user.isAdmin){ State.user.isAdmin=true; changed=true; }
+      }
+      var wl = await call('/rest/v1/watchlists?user_id=eq.'+encodeURIComponent(uid)+'&select=items');
+      if(wl&&wl[0]&&Array.isArray(wl[0].items)){
+        if(wl[0].items.length!==State.watchlist.length){ changed=true; }
+        State.watchlist = wl[0].items; Store.setWatchlist(uid,State.watchlist);
+      }
+      var an = await call('/rest/v1/announcements?select=*&order=ts.desc&limit=25');
+      if(an&&an.length){ Store.setAnnouncements(an.map(function(a){return {id:a.id,title:a.title,message:a.message,ts:a.ts,by:a.by};})); }
+      Noti.syncAnnouncements(); Noti.render(); Noti.syncBadge();
+      if(State.view==='watchlist'){ try{ Watchlist.render(); }catch(e){} }
+      if(changed){ try{ I18N.apply(); Theme.apply(State.settings.theme); }catch(e){} }
+      return true;
+    }catch(e){ return false; }
+  }
+
+  async function pullAdmin(){
+    if(!HAS_BACKEND||!State.user||!State.user.isAdmin) return;
+    try{
+      var profs = await call('/rest/v1/profiles?select=*&order=created_at.desc&limit=500');
+      if(profs&&profs.length){
+        var users = Store.users().slice();
+        profs.forEach(function(p){
+          var i = users.findIndex(function(u){ return u.id===p.id; });
+          var rec = {id:p.id,name:p.name||p.email,email:(p.email||'').toLowerCase(),gender:p.gender||'',avatar:p.avatar||null,createdAt:p.created_at?new Date(p.created_at).getTime():Date.now(),isAdmin:!!p.is_admin,settings:p.settings||{}};
+          if(i>=0) users[i]=Object.assign({},rec,{pwHash:users[i].pwHash||''}); else users.push(rec);
+        });
+        Store.saveUsers(users);
+      }
+      var fb = await call('/rest/v1/feedback?select=*&order=ts.desc&limit=300');
+      if(fb&&fb.length){
+        var inbox = fb.map(function(f){ var p=f.payload||{}; return Object.assign({},p,{id:f.id,ts:f.ts,read:!!f.read,email:f.email||p.email}); });
+        Store.setInbox(inbox);
+      }
+      if(State.view==='admin'){ try{ Admin.render(); }catch(e){} }
+    }catch(e){}
+  }
+
+  /* ---------- hook the app's own Sync ---------- */
+  Sync.push = function(what){
+    if(!HAS_BACKEND||!State.user) return;
+    if(what==='notifications') return debounce('noti',saveNotifications,700);
+    if(what==='history') return debounce('hist',saveHistory,900);
+    if(what==='watchlist') return debounce('wl',saveWatchlist,700);
+    if(what==='settings') return debounce('set',saveSettings,900);
+    if(what==='inbox') return saveFeedback();
+    if(what==='announcements') return saveAnnouncement();
+    if(what==='profile') return debounce('prof',function(){ upsertProfile(State.user); },900);
+  };
+  Sync.pull = pullAll;
+  Sync.adminPull = pullAdmin;
+  Sync.start = function(){
+    setInterval(function(){
+      if(!State.user) return;
+      if(!HAS_BACKEND){ Noti.syncAnnouncements(); return; }
+      pullAll();
+      if(State.user.isAdmin) pullAdmin();
+    },30000);
+    document.addEventListener('visibilitychange',function(){ if(!document.hidden&&State.user&&HAS_BACKEND){ pullAll(); } });
+    setInterval(function(){ if(State.user&&HAS_BACKEND){ Sync.push('notifications'); Sync.push('history'); } },120000);
+  };
+
+  /* ---------- keep notifications mirrored ---------- */
+  var _setNoti = Store.setNoti.bind(Store);
+  Store.setNoti = function(id,list){ _setNoti(id,list); try{ if(HAS_BACKEND&&State.user&&id===State.user.id) Sync.push('notifications'); }catch(e){} };
+  var _setHist = Store.setHistory.bind(Store);
+  Store.setHistory = function(id,list){ _setHist(id,list); try{ if(HAS_BACKEND&&State.user&&id===State.user.id) Sync.push('history'); }catch(e){} };
+
+  /* admin panel refresh button target */
+  window.NFSyncNow = function(){ pullAll().then(function(ok){ if(ok) Toast.show('Synced','Your data is up to date on this device.','ok',2600); else Toast.show('Sync skipped','Sign in with a synced account to pull data.','warn',3200); }); if(State.user&&State.user.isAdmin) pullAdmin(); };
+
+  /* first pull after boot if a session was restored */
+  setTimeout(function(){ if(HAS_BACKEND&&State.user&&State.accessToken) pullAll(); },3000);
+})();
+</script>
+
 </body>
 </html>
 
