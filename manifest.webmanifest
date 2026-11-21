@@ -1,8 +1,8 @@
 {
   "id": "/",
-  "name": "NANCYFLIX — Dev Brian Studios",
+  "name": "NANCYFLIX",
   "short_name": "NANCYFLIX",
-  "description": "Discover movies, watch official trailers, build a watchlist and rate what you love. By Dev Brian Studios.",
+  "description": "Discover movies, watch trailers, follow live football and TV, and build your watchlist.",
   "start_url": "./?utm_source=pwa",
   "scope": "./",
   "display": "standalone",

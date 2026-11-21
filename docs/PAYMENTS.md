@@ -1,91 +1,139 @@
-# NANCYFLIX — Real Premium with Stripe
+# Payments & memberships — NANCYFLIX v5
 
-This folder ships everything needed to charge real money for Premium:
+Three plans, two billing cycles, six Stripe Payment Links. Everything expensive
+happens on the server, so the app file stays public and safe to share.
 
-| File | Purpose |
-|---|---|
-| `index.html` → `CONFIG.STRIPE` | The two Payment Link URLs, price labels, portal link |
-| `api/stripe-verify.js` | Server-side check that a checkout really was paid |
-
-Prices used in the UI: **$4.99 / month** and **$39.99 / year**.
+| Plan | Monthly | Annual | Who it is for |
+|---|---|---|---|
+| **Plus** | $2.99 | $24.99 | casual viewers: bigger queue, history, themes |
+| **Premium** *(most popular)* | $4.99 | $39.99 | Live TV + Live Football + gold profile + cross-device |
+| **Super** | $9.99 | $79.99 | families: 10 devices, 4 profiles, match reminders |
 
 ---
 
-## 1. Create the two Payment Links (10 minutes, no code)
+## 1. Create the six Payment Links (Stripe dashboard)
 
-1. Go to <https://dashboard.stripe.com> → sign in (test mode first is fine).
-2. **Product catalog → Add product**
-   - Name: `NANCYFLIX Premium`
-   - Price: `4.99 USD`, **Recurring**, every **month** → Save.
-3. Add a second price on the same product: `39.99 USD`, **Recurring**, every **year**.
-4. **Payment links → New**
-   - Pick the monthly price → create link → copy it (`https://buy.stripe.com/...`).
-   - Repeat for the yearly price.
-5. In each Payment Link → **Settings / After payment**:
-   - Choose *Redirect to your website*.
-   - URL for **monthly**:
-     ```
-     https://YOUR-DOMAIN/?checkout=success&plan=monthly&session_id={CHECKOUT_SESSION_ID}
-     ```
-   - URL for **yearly**:
-     ```
-     https://YOUR-DOMAIN/?checkout=success&plan=yearly&session_id={CHECKOUT_SESSION_ID}
-     ```
-   > `{CHECKOUT_SESSION_ID}` must be typed exactly like that — Stripe replaces it with the real id.
-6. Optional but recommended: **Settings → Collect customer email** = on.
+1. Go to **Product catalogue → Add product**. Create three recurring products:
+   `NANCYFLIX Plus`, `NANCYFLIX Premium`, `NANCYFLIX Super`.
+   For each one add **two prices**: monthly and yearly (the amounts above).
+2. For every price, click **Create payment link**.
+3. In the link editor, open **After payment → Confirmation page** and set
+   *“Don’t show confirmation page — redirect”* to your deployed app:
 
-## 2. Paste the links into the app
+   ```
+   https://YOUR-DOMAIN/?plan=plus&billing=monthly&session_id={CHECKOUT_SESSION_ID}
+   https://YOUR-DOMAIN/?plan=plus&billing=yearly&session_id={CHECKOUT_SESSION_ID}
+   https://YOUR-DOMAIN/?plan=premium&billing=monthly&session_id={CHECKOUT_SESSION_ID}
+   https://YOUR-DOMAIN/?plan=premium&billing=yearly&session_id={CHECKOUT_SESSION_ID}
+   https://YOUR-DOMAIN/?plan=super&billing=monthly&session_id={CHECKOUT_SESSION_ID}
+   https://YOUR-DOMAIN/?plan=super&billing=yearly&session_id={CHECKOUT_SESSION_ID}
+   ```
 
-Open `index.html`, find `CONFIG.STRIPE` (around line 1030) and fill in:
+   The `plan=` value must be exactly `plus`, `premium` or `super`.
+4. Optional but recommended: in the link settings add **Metadata → plan** with the
+   same value, and turn on **Collect customer email** (required for cross-device
+   restore — the membership is looked up by email).
+5. Copy the six `https://buy.stripe.com/...` URLs into `CONFIG.STRIPE` near the top
+   of `index.html`:
 
-```js
-STRIPE: {
-  LINK_MONTHLY: "https://buy.stripe.com/xxxxxxxx",
-  LINK_YEARLY:  "https://buy.stripe.com/yyyyyyyy",
-  PORTAL_URL:   "https://billing.stripe.com/p/login/zzzz",   // optional
-  VERIFY_ENDPOINT: "/api/stripe-verify",
-  PRICE_MONTHLY: "$4.99",
-  PRICE_YEARLY:  "$39.99"
-}
+   ```js
+   LINK_PLUS_MONTHLY:    "https://buy.stripe.com/...",
+   LINK_PLUS_YEARLY:     "https://buy.stripe.com/...",
+   LINK_PREMIUM_MONTHLY: "https://buy.stripe.com/...",
+   LINK_PREMIUM_YEARLY:  "https://buy.stripe.com/...",
+   LINK_SUPER_MONTHLY:   "https://buy.stripe.com/...",
+   LINK_SUPER_YEARLY:    "https://buy.stripe.com/...",
+   ```
+
+   The old `LINK_MONTHLY` / `LINK_YEARLY` keys are still accepted as a fallback for
+   the Premium tier only.
+
+Leave every link empty and the app simply says *“not configured yet”* instead of
+charging anyone — nothing breaks.
+
+---
+
+## 2. Host environment variables
+
+Add these in **Vercel → Project → Settings → Environment Variables** (or Netlify →
+Site settings → Build & deploy → Environment), then redeploy.
+
+| Variable | Used by | Notes |
+|---|---|---|
+| `STRIPE_SECRET_KEY` | `api/stripe-verify.js` | `sk_live_...` or `sk_test_...` |
+| `SUPABASE_URL` | both API files | `https://xxxx.supabase.co` |
+| `SUPABASE_SERVICE_KEY` | both API files | the **service_role** key — server only |
+
+Never place any of these in `index.html`. The browser only ever sees the public
+`buy.stripe.com` link.
+
+---
+
+## 3. Create the entitlements table (cross-device)
+
+Supabase → **SQL Editor → New query**, paste and run:
+
+```sql
+create table if not exists public.entitlements (
+  email      text primary key,
+  plan       text,
+  status     text,
+  customer   text,
+  session    text,
+  expires    timestamptz,
+  updated_at timestamptz default now()
+);
+
+alter table public.entitlements enable row level security;
+-- no policies: only the server (service_role key) may read or write.
 ```
 
-`PORTAL_URL`: Stripe Dashboard → **Settings → Billing → Customer portal** → activate → copy the login link. That is what the “Manage subscription” button opens.
+That is all. `api/stripe-verify.js` writes a row the moment a checkout completes,
+and `api/entitlement.js` reads it back. Sign in on any device with the same email
+and the app calls `Entitlement.sync()` → the plan unlocks automatically.
 
-## 3. Turn on server-side verification (recommended)
+It also works with a **manual grant** while testing:
 
-Without it the app still unlocks Premium after a successful redirect, but only on that device — a determined user could fake the URL.
+```sql
+insert into public.entitlements (email, plan, status, expires)
+values ('you@example.com', 'super', 'active', now() + interval '1 year')
+on conflict (email) do update set plan = excluded.plan, status = 'active', expires = excluded.expires;
+```
 
-**Vercel**
-1. Push the project (the folder containing `index.html` and `api/`) to GitHub.
-2. Vercel → **Add New → Project** → import the repo → Deploy.
-3. **Settings → Environment Variables** → add:
-   - Name `STRIPE_SECRET_KEY`, value `sk_live_...` (or `sk_test_...` while testing).
-4. **Deployments → Redeploy.**
-5. Test: open `https://YOUR-DOMAIN/api/stripe-verify?session_id=cs_test_...`
-   - `{"active":false,"reason":"bad_session_id"}` = the function is live (id was fake).
-   - `{"active":false,"reason":"not_configured"}` = env var missing.
+---
 
-**Netlify** — same file works: move it to `netlify/functions/stripe-verify.js`, set the env var, and call `/.netlify/functions/stripe-verify` (change `VERIFY_ENDPOINT`).
+## 4. What happens on a purchase
 
-> The secret key must never appear inside `index.html`. If it ever did, roll it in the Stripe Dashboard immediately.
+1. Tap **Get Premium** → browser goes to the matching Stripe Payment Link with
+   `client_reference_id` and `prefilled_email` filled in.
+2. Stripe charges, then redirects to `/?plan=premium&session_id=cs_...`.
+3. The app sends that session id to `/api/stripe-verify`, which asks Stripe directly
+   (server-side key) and returns `{active, plan, expires, customer}`.
+4. On success the app stores the plan on the device **and** the API writes it to
+   `entitlements`, so the next login anywhere restores it.
+5. `Manage subscription` opens your Stripe customer portal (`PORTAL_URL`), where a
+   customer can switch tier or cancel.
 
-## 4. What the customer experiences
+---
 
-1. Premium page → choose Monthly or Yearly → **Go Premium**.
-2. Stripe-hosted checkout (card, Apple Pay, Google Pay).
-3. Redirect back → app calls the verify endpoint → Premium unlocks, the account badge turns gold, and `/premium` shows *Active until <date>*.
-4. **Manage subscription** opens the Stripe portal (cancel / update card).
-5. If the return page loads before the webhook-free check confirms, the page shows “Payment received — confirming…” with a **Check again** button; entitlement is stored per account.
+## 5. Test without spending money
 
-## 5. Test cards / test mode
+* Stripe **test mode** → use the six test links (they look identical, prefix `cs_test_`).
+  Card `4242 4242 4242 4242`, any future date, any CVC.
+* Or skip Stripe entirely: **Settings → Testing & updates → Unlock 7 days**.
+  That unlocks every Premium feature on that device for 7 days, no card, so you can
+  try Live TV, Live Football, themes, queue and history. **End test** puts it back.
+* Admin accounts can grant a plan from the admin panel.
 
-- Card `4242 4242 4242 4242`, any future expiry, any CVC.
-- Use `sk_test_...` + test Payment Links while learning, then swap to live links and `sk_live_...`.
-- Stripe payouts need an activated account (bank details, ID) — that part is on Stripe, not on this code.
+---
 
 ## 6. Honest limits
 
-- Entitlement is cached in the browser per account id. It survives refresh and re-login on that device, but it is not a cross-device subscription database.
-- For airtight cross-device control, add Stripe **webhooks** writing to Supabase and check that table at login. The verify endpoint already returns `customer`, `plan`, `expires`, so the data is there when you are ready.
-- Tax/VAT, refunds, invoices and receipts are handled by Stripe settings, not by this file.
-- Prices shown in the UI are text labels — change `PRICE_MONTHLY` / `PRICE_YEARLY` if you change the Stripe prices.
+* Live TV lists **free-to-air HLS streams** published by the broadcasters. They can
+  rotate or go offline without notice; the player shows a clear fallback message.
+  No subscription channels are included.
+* Live Football shows **fixtures only** (dates, venues, competition) and links to the
+  official broadcaster. Rights-protected matches are never re-streamed.
+* The 7-day unlock is device-local by design (it is a testing switch, not a licence).
+* Cross-device restore needs steps 2 and 3 done; until then the app keeps working
+  with device-local entitlements and says so quietly.

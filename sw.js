@@ -1,5 +1,5 @@
 /* NANCYFLIX service worker — app shell + offline + poster cache */
-const VERSION = 'nancyflix-v4.1.0';
+const VERSION = 'nancyflix-v5.0.0';
 const CORE = [
   './', './index.html', './manifest.webmanifest',
   './icons/icon-192.png', './icons/icon-512.png',

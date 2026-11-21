@@ -37,7 +37,7 @@
 }
 /* ===== Curated theme set: Dark (default root) · Light · Romantic · Amazing · Dim ===== */
 [data-theme=dark]{--bg:#06060a;--bg-2:#0d0d14;--surface:#12121c;--surface-2:#1a1a26;--text:#f5f5fa;--muted:#9a9aae;--border:#24242f;--accent:#e11d2e;--accent-2:#ff3b4e;--accent-soft:rgba(225,29,46,.14);--neon:#ff5c6e;--shadow:0 18px 50px rgba(0,0,0,.55);--glass:rgba(255,255,255,.04);--glass-br:rgba(255,255,255,.08);}
-[data-theme=light]{--bg:#eef0f5;--bg-2:#f6f7fb;--surface:#ffffff;--surface-2:#eef1f7;--text:#15151d;--muted:#5c5c70;--border:#dcdee7;--accent:#e11d2e;--accent-2:#ff3b4e;--accent-soft:rgba(225,29,46,.10);--neon:#ff5c6e;--glass:rgba(0,0,0,.03);--glass-br:rgba(0,0,0,.08);--shadow:0 14px 40px rgba(0,0,0,.14);}
+[data-theme=light]{--bg:#d8dae3;--bg-2:#e2e4ec;--surface:#f0f1f6;--surface-2:#dfe1ea;--text:#17171f;--muted:#4f4f63;--border:#c3c6d4;--accent:#c2182a;--accent-2:#e11d2e;--accent-soft:rgba(194,24,42,.10);--neon:#d92b3e;--glass:rgba(0,0,0,.04);--glass-br:rgba(0,0,0,.10);--shadow:0 10px 28px rgba(0,0,0,.13);}
 [data-theme=romantic]{--bg:#1a0810;--bg-2:#250b18;--surface:#2e0f20;--surface-2:#3b1429;--text:#ffeaf2;--muted:#d99bb6;--border:#5a2340;--accent:#ff5d8f;--accent-2:#ff9ec4;--neon:#ffc2dc;--accent-soft:rgba(255,93,143,.16);--shadow:0 18px 50px rgba(60,0,25,.6);--glass:rgba(255,255,255,.05);--glass-br:rgba(255,160,190,.14);}
 [data-theme=amazing]{--bg:#06050f;--bg-2:#0d0a20;--surface:#14102e;--surface-2:#1e1744;--text:#f3f0ff;--muted:#a79fd6;--border:#2e2660;--accent:#7c5cff;--accent-2:#ffcc66;--neon:#c9b4ff;--accent-soft:rgba(124,92,255,.18);--shadow:0 20px 60px rgba(40,20,90,.6);--glass:rgba(255,255,255,.05);--glass-br:rgba(160,140,255,.16);}
 [data-theme=dim]{--bg:#141418;--bg-2:#1a1a20;--surface:#202028;--surface-2:#2a2a34;--text:#d7d7e0;--muted:#86869a;--border:#33333f;--accent:#c2606c;--accent-2:#d98893;--neon:#e0a0aa;--accent-soft:rgba(194,96,108,.14);--shadow:0 14px 40px rgba(0,0,0,.4);--glass:rgba(255,255,255,.03);--glass-br:rgba(255,255,255,.06);}
@@ -70,6 +70,96 @@ svg{display:block}
 .badge.ok{background:rgba(46,204,113,.16);color:var(--ok)}
 .badge.warn{background:rgba(241,196,15,.16);color:var(--warn)}
 .badge.err{background:rgba(231,76,60,.16);color:var(--err)}
+/* ---------- v5 components ---------- */
+.noti-actions{display:flex;gap:8px;flex-wrap:wrap;margin-top:10px}
+.noti-actions .btn{font-size:12px;padding:7px 12px}
+
+.bill-toggle{display:inline-flex;gap:4px;padding:4px;border:1px solid var(--border);background:var(--surface);border-radius:999px;margin-top:18px}
+.bill-toggle button{border:0;background:none;color:var(--muted);padding:8px 16px;border-radius:999px;font-weight:700;font-size:13px;cursor:pointer}
+.bill-toggle button.on{background:var(--accent);color:#fff}
+.bill-toggle em{font-style:normal;font-size:11px;opacity:.85;margin-inline-start:4px}
+
+.tiers{display:grid;grid-template-columns:repeat(3,1fr);gap:18px;max-width:1180px;margin:6px auto 0;padding:0 22px;align-items:stretch}
+.tier{position:relative;background:var(--surface);border:1px solid var(--border);border-radius:20px;padding:24px 20px 18px;display:flex;flex-direction:column}
+.tier.pop{border-color:rgba(255,204,102,.55);box-shadow:0 18px 44px rgba(255,180,60,.14)}
+.tier.cur{outline:2px solid #ffcc66;outline-offset:2px}
+.tier-tag{position:absolute;top:-11px;left:50%;transform:translateX(-50%);background:linear-gradient(135deg,#ffd98a,#ffcc66);color:#1c1200;font-size:10.5px;font-weight:800;letter-spacing:.07em;text-transform:uppercase;padding:5px 11px;border-radius:999px;white-space:nowrap}
+.tier h3{font-size:19px;margin:6px 0 6px;font-weight:800}
+.tier-price{font-size:38px;font-weight:800;letter-spacing:-.02em;line-height:1}
+.tier-price small{font-size:13px;font-weight:600;color:var(--muted);margin-inline-start:4px}
+.tier-bill{font-size:12px;color:var(--muted);margin:6px 0 16px}
+.tier .btn.block{width:100%;justify-content:center;text-align:center;display:flex}
+.tier-group{font-size:11.5px;font-weight:800;letter-spacing:.05em;text-transform:uppercase;color:var(--muted);margin:20px 0 10px}
+.tier-list{list-style:none;display:flex;flex-direction:column;gap:9px;margin:0;padding:0}
+.tier-list li{display:flex;gap:9px;font-size:13.5px;line-height:1.42;color:var(--text)}
+.tier-list svg{width:15px;height:15px;flex:0 0 auto;color:#2fbf71;margin-top:2px}
+.pv-hero-sm{padding-top:10px}
+.pv-cta.center{justify-content:center;flex-wrap:wrap}
+
+.live-head{display:flex;align-items:center;gap:10px;padding:20px 22px 0}
+.live-head h1{font-size:26px;font-weight:800}
+.live-sub{color:var(--muted);font-size:13px}
+.live-dot{width:9px;height:9px;border-radius:50%;background:#ff2d3e;animation:pulseDot 1.8s infinite}
+@keyframes pulseDot{0%{box-shadow:0 0 0 0 rgba(255,45,62,.55)}70%{box-shadow:0 0 0 9px rgba(255,45,62,0)}100%{box-shadow:0 0 0 0 rgba(255,45,62,0)}}
+.live-tabs{display:flex;gap:8px;padding:14px 22px 6px;flex-wrap:wrap}
+.live-tabs button{border:1px solid var(--border);background:var(--surface);color:var(--muted);font-weight:700;font-size:13px;padding:8px 16px;border-radius:999px;cursor:pointer}
+.live-tabs button.on{background:var(--accent);border-color:transparent;color:#fff}
+.live-body{padding:10px 22px 60px}
+.live-note{font-size:12.5px;color:var(--muted);margin:0 0 14px;line-height:1.5}
+.ch-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(180px,1fr));gap:12px}
+.ch{position:relative;text-align:start;padding:16px;border-radius:14px;border:1px solid var(--border);background:var(--surface);color:var(--text);display:flex;flex-direction:column;gap:3px;cursor:pointer;transition:transform .18s,border-color .18s}
+.ch:hover{transform:translateY(-2px);border-color:var(--accent)}
+.ch b{font-size:14px;padding-inline-end:38px}
+.ch span{font-size:11.5px;color:var(--muted)}
+.ch-live{position:absolute;top:12px;inset-inline-end:12px;font-size:10px;font-weight:800;color:#ff4455;letter-spacing:.08em}
+.fx-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(290px,1fr));gap:14px}
+.fx-card{border:1px solid var(--border);border-radius:14px;background:var(--surface);padding:14px 16px}
+.fx-lg{display:flex;justify-content:space-between;align-items:center;margin-bottom:8px;gap:8px}
+.fx-lg a{font-size:11.5px;color:var(--accent-2);white-space:nowrap}
+.fx{padding:9px 0;border-top:1px solid var(--border)}
+.fx-t{font-size:13.5px;font-weight:600;line-height:1.35}
+.fx-t em{color:var(--muted);font-style:normal;font-size:11px;margin:0 2px}
+.fx-m{font-size:11.5px;color:var(--muted);margin-top:2px}
+.fx-load{padding:18px;color:var(--muted);font-size:13px}
+.live-overlay{display:none;position:fixed;inset:0;background:rgba(0,0,0,.74);z-index:95;align-items:center;justify-content:center;padding:16px}
+.live-overlay.show{display:flex}
+.live-modal{width:min(920px,96vw);background:#07070b;border-radius:16px;overflow:hidden;position:relative;border:1px solid #22222c}
+.live-top{display:flex;justify-content:space-between;align-items:center;padding:10px 14px;color:#fff;background:#0b0b10;font-size:14px}
+#liveVideo{width:100%;aspect-ratio:16/9;background:#000;display:block}
+.live-fallback{padding:12px 14px;color:#d8d8e0;font-size:13px;display:flex;gap:10px;align-items:center;flex-wrap:wrap}
+
+.tester-box{margin-top:6px;border-top:1px solid var(--border);padding-top:14px}
+
+@media(max-width:900px){
+  .tiers{grid-template-columns:1fr;gap:14px;padding:0 16px}
+  .tier-price{font-size:32px}
+  .live-body,.live-head,.live-tabs{padding-inline:16px}
+}
+
+
+/* softer daylight surfaces */
+[data-theme=light] body{background:linear-gradient(180deg,#dfe1ea 0%,#d6d8e2 55%,#cdd0dc 100%)}
+[data-theme=light] .topbar{background:rgba(242,243,248,.9);border-bottom-color:#c8cbd8;box-shadow:0 1px 0 rgba(255,255,255,.7)}
+[data-theme=light] .bottom-nav{background:rgba(242,243,248,.94);border-top-color:#c8cbd8;box-shadow:0 -8px 24px rgba(24,26,38,.10)}
+[data-theme=light] .noti-panel,[data-theme=light] .modal,[data-theme=light] .sheet{background:#f4f5f9;border-color:#c8cbd8}
+[data-theme=light] .pv-hero{background:linear-gradient(180deg,rgba(225,29,46,.06),transparent)}
+[data-theme=light] .tier{box-shadow:0 8px 20px rgba(24,26,38,.06)}
+/* ---------- splash v5: cinematic, no buttons ---------- */
+#splash{background:radial-gradient(1200px 700px at 50% 40%,#12060a 0%,#06060a 55%,#040408 100%)}
+#splash .splash-inner{position:relative}
+#splash .splash-logo{animation:logoPop 1.1s cubic-bezier(.2,.9,.2,1) both}
+@keyframes logoPop{0%{transform:scale(.55) rotate(-9deg);opacity:0;filter:blur(6px)}55%{transform:scale(1.12) rotate(2deg);opacity:1;filter:blur(0)}100%{transform:scale(1) rotate(0)}}
+#splash .splash-badge{animation:badgeIn .9s .18s both}
+@keyframes badgeIn{from{opacity:0;transform:translateY(-10px);letter-spacing:.5em}to{opacity:1;transform:none}}
+#splash .splash-word{animation:wordIn 1.3s .12s both}
+@keyframes wordIn{0%{opacity:0;letter-spacing:.62em;transform:translateY(8px)}100%{opacity:1;letter-spacing:.22em;transform:none}}
+#splash .splash-tag{animation:tagIn 1s .5s both}
+@keyframes tagIn{from{opacity:0;transform:translateY(6px)}to{opacity:1;transform:none}}
+#splash .splash-inner::after{content:'';position:absolute;inset:-40% -60%;background:linear-gradient(105deg,transparent 42%,rgba(255,255,255,.10) 50%,transparent 58%);animation:sweep 2.6s 1.4s ease-in-out both;pointer-events:none}
+@keyframes sweep{0%{transform:translateX(-70%)}100%{transform:translateX(70%)}}
+#splash .splash-ring .prg{animation:ringGlow 2.4s ease-in-out infinite}
+@keyframes ringGlow{0%,100%{filter:drop-shadow(0 0 5px rgba(255,59,78,.45))}50%{filter:drop-shadow(0 0 16px rgba(255,59,78,.9))}}
+#splash .splash-status{letter-spacing:.02em}
 </style>
 <style>
 /* ---- Splash ---- */
@@ -639,7 +729,7 @@ select,input,textarea{font-size:16px} /* stops iOS zoom-on-focus */
 .ios-step svg{width:15px;height:15px;vertical-align:-2px;display:inline-block}
 
 /* ---------- mobile bottom navigation ---------- */
-.bottom-nav{position:fixed;z-index:456;left:0;right:0;bottom:0;display:none;grid-template-columns:repeat(5,1fr);align-items:center;gap:2px;padding:7px 6px calc(7px + var(--safe-b));background:rgba(8,8,13,.92);backdrop-filter:blur(22px);-webkit-backdrop-filter:blur(22px);border-top:1px solid rgba(255,255,255,.075);box-shadow:0 -8px 30px rgba(0,0,0,.45)}
+.bottom-nav{position:fixed;z-index:456;left:0;right:0;bottom:0;display:none;grid-template-columns:repeat(auto-fit,minmax(0,1fr));align-items:center;gap:2px;padding:7px 6px calc(7px + var(--safe-b));background:rgba(8,8,13,.92);backdrop-filter:blur(22px);-webkit-backdrop-filter:blur(22px);border-top:1px solid rgba(255,255,255,.075);box-shadow:0 -8px 30px rgba(0,0,0,.45)}
 .bottom-nav button{display:flex;flex-direction:column;align-items:center;gap:3px;padding:6px 2px;border-radius:12px;color:var(--muted);font-size:9.5px;font-weight:700;letter-spacing:.02em;transition:color .2s;position:relative;min-height:48px;justify-content:center}
 .bottom-nav button svg{width:21px;height:21px;transition:transform .2s}
 .bottom-nav button.active{color:var(--text)}
@@ -804,10 +894,6 @@ select,input,textarea{font-size:16px} /* stops iOS zoom-on-focus */
       <div class="splash-status"><span id="splashStage">Preparing your cinema</span><b id="splashPct">0%</b></div>
     </div>
   </div>
-  <button class="splash-sound" id="splashSound" aria-label="Intro sound" aria-pressed="false">
-    <svg class="icon sm" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M11 5L6 9H3v6h3l5 4z"/><path class="w1" d="M15.5 8.5a5 5 0 010 7"/><path class="w2" d="M18.5 5.5a9 9 0 010 13"/></svg>
-  </button>
-  <button class="splash-skip" id="splashSkip">Skip intro <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M9 6l6 6-6 6"/></svg></button>
 </div>
 
 <!-- ============ AUTH ============ -->
@@ -886,13 +972,8 @@ select,input,textarea{font-size:16px} /* stops iOS zoom-on-focus */
       <div class="foot-brand">
         <div class="brand"><svg width="26" height="26" viewBox="0 0 64 64" aria-hidden="true"><rect width="64" height="64" rx="14" fill="#12121c"/><rect x="11" y="26" width="42" height="25" rx="3" fill="#e11d2e"/><g transform="rotate(-9 32 20)"><rect x="10" y="14" width="44" height="10" rx="2" fill="#f5f5fa"/><path d="M20 14l-5 10M30 14l-5 10M40 14l-5 10M50 14l-5 10" stroke="#12121c" stroke-width="3" stroke-linecap="round"/></g></svg><span class="t">NANCYFLIX</span></div>
         <p data-i18n="footBrandDesc">Every story deserves a screen. Discover trending films, browse by genre, build your watchlist and play official trailers — all powered by live TMDB data.</p>
-        <div class="foot-social">
-          <a href="https://x.com/devbriann" target="_blank" rel="noopener noreferrer" aria-label="X — @devbriann" title="X · @devbriann"><svg class="icon sm" viewBox="0 0 24 24"><path d="M4 4l16 16M20 4L4 20"/></svg></a>
-          <a href="https://instagram.com/_encrypted_.soul" target="_blank" rel="noopener noreferrer" aria-label="Instagram — @_encrypted_.soul" title="Instagram · @_encrypted_.soul"><svg class="icon sm" viewBox="0 0 24 24"><rect x="3" y="3" width="18" height="18" rx="5"/><circle cx="12" cy="12" r="4"/><circle cx="17.5" cy="6.5" r="1"/></svg></a>
-          <a href="mailto:devbriannova@gmail.com" aria-label="Email devbriannova@gmail.com" title="devbriannova@gmail.com"><svg class="icon sm" viewBox="0 0 24 24"><rect x="3" y="5" width="18" height="14" rx="2"/><path d="M3 7l9 6 9-6"/></svg></a>
-        </div>
-        <a class="foot-mail" href="mailto:devbriannova@gmail.com">devbriannova@gmail.com</a>
-      </div>
+        <div class="foot-social"><a href="https://x.com/devbriann" target="_blank" rel="noopener noreferrer" aria-label="X" title="X · @devbriann"><svg class="icon sm" viewBox="0 0 24 24" fill="currentColor"><path d="M17.53 3H20.5l-6.49 7.42L21.5 21h-5.9l-4.6-6.02L5.7 21H2.72l6.94-7.94L2.5 3h6.05l4.16 5.5L17.53 3zm-1.03 16.1h1.64L7.4 4.8H5.64l10.86 14.3z"/></svg></a><a href="https://www.instagram.com/_.encrypted_soul/" target="_blank" rel="noopener noreferrer" aria-label="Instagram" title="Instagram · @_.encrypted_soul"><svg class="icon sm" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="18" height="18" rx="5.2"/><circle cx="12" cy="12" r="4.1"/><circle cx="17.4" cy="6.6" r="1.1" fill="currentColor" stroke="none"/></svg></a><a href="https://www.threads.net/@_.encrypted_soul" target="_blank" rel="noopener noreferrer" aria-label="Threads" title="Threads · @_.encrypted_soul"><svg class="icon sm" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M12.3 21c-4.6 0-7.8-3-7.8-8.1S7.8 4.8 12.3 4.8c3.4 0 5.9 1.7 6.8 4.6"/><path d="M12.2 17.9c-2 0-3.4-.9-3.4-2.3 0-1.5 1.6-2.4 3.6-2.4 2.6 0 4.2 1.3 4.2 3.3 0 1.8-1.5 3.1-3.6 3.1-2.5 0-4.2-1.9-4.2-4.8"/><path d="M15.5 9.3c2.4 0 4 1.4 4.4 3.7"/></svg></a><a class="mail-link" href="mailto:devbriannova@gmail.com?subject=NANCYFLIX%20support" aria-label="Email" title="Email us"><svg class="icon sm" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="2.5" y="5" width="19" height="14" rx="2.5"/><path d="M3 7l9 6.5L21 7"/></svg></a></div>
+              </div>
       <div class="foot-col">
         <h4 data-i18n="footBrowse">Browse</h4>
         <ul>
@@ -1046,6 +1127,13 @@ const CONFIG = {
     LINK_YEARLY: "",
     PORTAL_URL: "",
     VERIFY_ENDPOINT: "/api/stripe-verify",
+    ENTITLEMENT_ENDPOINT: "/api/entitlement",
+    LINK_PLUS_MONTHLY: "",
+    LINK_PLUS_YEARLY: "",
+    LINK_PREMIUM_MONTHLY: "",
+    LINK_PREMIUM_YEARLY: "",
+    LINK_SUPER_MONTHLY: "",
+    LINK_SUPER_YEARLY: "",
     PRICE_MONTHLY: "$4.99",
     PRICE_YEARLY: "$39.99"
   }
@@ -2734,8 +2822,6 @@ const Lang={
 const SplashAudio={
   ctx:null,on:LS.get('splashSound',true),played:false,done:false,
   init(){
-    const btn=document.getElementById('splashSound');
-    if(btn){btn.onclick=()=>this.toggle();}
     this.paint();
     if(this.on) setTimeout(()=>this.play(),180);   // may be blocked by autoplay policy — that is fine
   },
@@ -3070,14 +3156,14 @@ function runSplash(){
   try{SplashRotator.start();}catch(e){}
   try{SplashAudio.init();}catch(e){}
   const quick=(LS.get('guestSettings',{}).splash===false);
-  const dur=quick?700:3200;
+  const dur=quick?700:5200;
   const t0=performance.now();
   const bar=document.getElementById('splashBar');
   const ring=document.getElementById('splashRing');
   const pct=document.getElementById('splashPct');
   const stage=document.getElementById('splashStage');
   const CIRC=389.6;
-  const stages=[[0,'splashS1'],[0.34,'splashS2'],[0.62,'splashS3'],[0.86,'splashS4']];
+  const stages=[[0,'splashS1'],[0.28,'splashS2'],[0.52,'splashS3'],[0.78,'splashS4']];
   let lastStage='';
   const ease=x=>1-Math.pow(1-x,3);
   const tick=now=>{
@@ -3091,8 +3177,6 @@ function runSplash(){
     if(raw<1&&!splashDone)requestAnimationFrame(tick);else finishSplash();
   };
   requestAnimationFrame(tick);
-  const skip=document.getElementById('splashSkip');
-  if(skip)skip.onclick=()=>finishSplash();
   setTimeout(finishSplash,dur+3000);
 }
 let splashDone=false;
@@ -3117,6 +3201,398 @@ function resumeSession(){
   if(sid){const u=Store.users().find(x=>x.id===sid);if(u){Auth._enter(u);return;}}
   backToAuth('login');
 }
+
+/* =====================================================================
+   v5 — soft light theme helpers · update centre · 3-tier Premium ·
+        Live TV · Live Football · cross-device entitlement · test mode
+   ===================================================================== */
+const APP_VERSION = '5.0.0';
+const WHATS_NEW = [
+  'Live TV: free-to-air channels with a built-in player',
+  'Live Football: EPL, LaLiga, Serie A, Bundesliga, Ligue 1 & UCL fixtures',
+  'Premium now has three tiers — Plus, Premium and Super — with monthly or annual billing',
+  'Softer light theme, cleaner footer and official social icons',
+  'Faster, fully animated splash (no skip / no mute buttons)',
+  'Subscriptions can follow you across devices once the verify endpoint is deployed'
+];
+
+/* ---------- 1. Notifications with action buttons ---------- */
+const _notiRenderBase = Noti.render.bind(Noti);
+Noti.render = function () {
+  _notiRenderBase();
+  const list = document.getElementById('notiList');
+  if (!list) return;
+  const rows = [...list.querySelectorAll('.noti')];
+  State.notifications.forEach((n, i) => {
+    const row = rows[i];
+    if (!row || !n.actions || !n.actions.length) return;
+    const holder = row.querySelector('div[style]') || row;
+    const bar = document.createElement('div');
+    bar.className = 'noti-actions';
+    n.actions.forEach(a => {
+      const b = document.createElement('button');
+      b.className = 'btn sm' + (a.primary ? ' primary' : '');
+      b.textContent = a.label;
+      b.onclick = () => { try { window[a.fn](); } catch (e) {} };
+      bar.appendChild(b);
+    });
+    holder.appendChild(bar);
+  });
+};
+
+/* ---------- 2. Update centre ---------- */
+const UpdateCentre = {
+  KEY: 'appVersion', SNOOZE: 'updateSnooze',
+  check() {
+    if (!State.user || !State.notifications) return;
+    const prev = LS.get(this.KEY, null);
+    if (!prev) { LS.set(this.KEY, APP_VERSION); return; }   /* first run on this device — nothing to update */
+    if (prev === APP_VERSION) return;
+    if ((LS.get(this.SNOOZE, 0) || 0) > Date.now()) return;
+    if (State.notifications.some(n => n.srcVersion === APP_VERSION)) return;
+    const n = {
+      id: uid(), srcVersion: APP_VERSION, type: 'info', read: false, ts: Date.now(), announce: true,
+      title: 'Update ready · NANCYFLIX v' + APP_VERSION,
+      message: 'New in this version: ' + WHATS_NEW.slice(0, 3).join(' · ') + '. Tap Update now to load it.',
+      actions: [
+        { label: 'Update now', primary: true, fn: 'UpdateCentre_apply' },
+        { label: 'Remind me later', fn: 'UpdateCentre_later' }
+      ]
+    };
+    State.notifications.unshift(n);
+    try { Store.setNoti(State.user.id, State.notifications); } catch (e) {}
+    this.render();
+    const dot = document.getElementById('notiDot');
+    if (dot) { const unread = State.notifications.filter(x => !x.read).length; dot.textContent = unread > 9 ? '9+' : unread; dot.classList.toggle('show', unread > 0); }
+    try { Toast.show('Update available', 'NANCYFLIX v' + APP_VERSION + ' is ready — open your notification inbox.', 'info', 5000); } catch (e) {}
+  },
+  render() { try { Noti.render(); } catch (e) {} },
+  async apply() {
+    LS.set(this.KEY, APP_VERSION); LS.del(this.SNOOZE);
+    try {
+      if (navigator.serviceWorker && navigator.serviceWorker.getRegistration) {
+        const reg = await navigator.serviceWorker.getRegistration();
+        if (reg && reg.waiting) reg.waiting.postMessage({ type: 'SKIP_WAITING' });
+        if (reg) await reg.update().catch(() => {});
+      }
+    } catch (e) {}
+    try { const ks = await caches.keys(); await Promise.all(ks.map(k => caches.delete(k))); } catch (e) {}
+    location.reload();
+  },
+  later() {
+    LS.set(this.SNOOZE, Date.now() + 6 * 3600 * 1000);
+    LS.set(this.KEY, APP_VERSION);
+    State.notifications = State.notifications.filter(n => n.srcVersion !== APP_VERSION);
+    if (State.user) Store.setNoti(State.user.id, State.notifications);
+    this.render();
+    try { Toast.show('Reminder set', 'We will remind you in about 6 hours.', 'info', 3000); } catch (e) {}
+  }
+};
+window.UpdateCentre_apply = () => UpdateCentre.apply();
+window.UpdateCentre_later = () => UpdateCentre.later();
+
+/* ---------- 3. Cross-device entitlement ---------- */
+const Entitlement = {
+  endpoint() { return (CONFIG.STRIPE.ENTITLEMENT_ENDPOINT || '/api/entitlement').trim(); },
+  async sync(silent = true) {
+    if (!State.user || !State.user.email) return false;
+    if (typeof Premium === 'undefined' || Premium.isActive()) return false;
+    try {
+      const r = await fetch(this.endpoint() + '?email=' + encodeURIComponent(State.user.email), { headers: { Accept: 'application/json' } });
+      if (!r.ok) return false;
+      const j = await r.json();
+      if (j && j.active && j.expires && new Date(j.expires).getTime() > Date.now()) {
+        Premium.activate({ plan: j.plan || 'premium', expires: j.expires, customer: j.customer, source: 'server' });
+        if (!silent) { try { Toast.show('Membership restored', 'Your ' + (j.plan || 'premium') + ' plan is active on this device too.', 'ok', 5000); } catch (e) {} }
+        return true;
+      }
+    } catch (e) {}
+    return false;
+  }
+};
+
+/* ---------- 4. Three-tier Premium ---------- */
+const TIERS = [
+  {
+    id: 'plus', name: 'Plus', m: '$2.99', y: '$24.99', tag: '', groupLabel: 'Our introductory plan',
+    items: ['Everything in Free', 'Unlimited trailer queue', '60-title watch history', 'All standard themes', 'HD posters, data-saver off', 'Early access to new releases']
+  },
+  {
+    id: 'premium', name: 'Premium', m: '$4.99', y: '$39.99', tag: 'Most popular', popular: true, groupLabel: 'Everything in Plus, and:',
+    items: ['Cinematic Gold + all 9 themes', 'Live TV centre (free channels)', 'Live Football fixtures & reminders', 'Gold profile badge', 'Cross-device watchlist sync', 'Priority feature access']
+  },
+  {
+    id: 'super', name: 'Super', m: '$9.99', y: '$79.99', tag: 'For families', groupLabel: 'Everything in Premium, and:',
+    items: ['Up to 10 devices', '4 family profiles', 'Match-day reminders by email', 'Early beta builds', 'Direct support line', 'Download posters for offline']
+  }
+];
+const _premiumRenderV4 = Premium.render.bind(Premium);
+Premium.cycle = 'y';
+Premium.tier = 'premium';
+Premium.render = function () {
+  const host = document.getElementById('view-premium');
+  if (!host) return;
+  const active = this.isActive(), d = this.get();
+  const linksOk = !!(CONFIG.STRIPE.LINK_MONTHLY || CONFIG.STRIPE.LINK_YEARLY || CONFIG.STRIPE.LINK_PLUS_MONTHLY || CONFIG.STRIPE.LINK_PREMIUM_MONTHLY || CONFIG.STRIPE.LINK_SUPER_MONTHLY);
+  const isAdmin = !!(State.user && (CONFIG.ADMIN_EMAILS || []).indexOf(((State.user.email || '') + '').toLowerCase()) >= 0);
+  const fmt = x => { try { return new Date(x).toLocaleDateString(undefined, { day: 'numeric', month: 'short', year: 'numeric' }); } catch (e) { return x; } };
+  const chk = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M4 12l5 5L20 6"/></svg>';
+  const star = '<svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 2l2.9 6.3 6.9.8-5.1 4.7 1.4 6.8L12 17.3 5.9 20.6l1.4-6.8L2.2 9.1l6.9-.8z"/></svg>';
+
+  host.innerHTML =
+    '<section class="pv-hero pv-hero-sm">' +
+      '<span class="pv-kicker">' + star + ' NANCYFLIX MEMBERSHIP</span>' +
+      '<h1 class="pv-title">Pick your seat</h1>' +
+      '<p class="pv-sub">Every tier unlocks more of the cinema. Switch or cancel any time.</p>' +
+      (active
+        ? '<div class="pv-status"><span class="dotok"></span><div><b>' + esc(t('pvActive')) + ' · ' + esc((d.plan || 'premium').toUpperCase()) + '</b><br><span>' + esc(t('pvRenews')) + ' ' + (d.expires ? fmt(d.expires) : '—') + '</span></div></div>'
+        : '<div class="bill-toggle"><button data-cycle="m" class="' + (this.cycle === 'm' ? 'on' : '') + '">Monthly</button><button data-cycle="y" class="' + (this.cycle === 'y' ? 'on' : '') + '">Annual <em>save up to 33%</em></button></div>') +
+    '</section>' +
+    (isAdmin && !linksOk ? '<div class="pv-banner show"><b>' + esc(t('pvNeedKeys')) + '</b><span>' + esc(t('pvSetupHint')) + '</span></div>' : '') +
+    '<section class="tiers">' +
+      TIERS.map(tier => {
+        const isCur = active && String(d.plan || '').toLowerCase().indexOf(tier.id) === 0;
+        const price = this.cycle === 'y' ? tier.y : tier.m;
+        const per = this.cycle === 'y' ? '/year' : '/month';
+        return '<article class="tier' + (tier.popular ? ' pop' : '') + (isCur ? ' cur' : '') + '">' +
+          (tier.tag ? '<span class="tier-tag">' + esc(tier.tag) + '</span>' : '') +
+          '<h3>' + esc(tier.name) + '</h3>' +
+          '<div class="tier-price">' + esc(price) + '<small>' + per + '</small></div>' +
+          '<div class="tier-bill">' + (this.cycle === 'y' ? 'billed once a year' : 'billed every month') + '</div>' +
+          '<button class="btn ' + (tier.popular ? 'gold' : '') + ' block" data-buy="' + tier.id + '">' + (isCur ? 'Current plan' : 'Get ' + tier.name) + '</button>' +
+          '<div class="tier-group">' + esc(tier.groupLabel) + '</div>' +
+          '<ul class="tier-list">' + tier.items.map(i => '<li>' + chk + '<span>' + esc(i) + '</span></li>').join('') + '</ul>' +
+        '</article>';
+      }).join('') +
+    '</section>' +
+    (active ? '<div class="pv-cta center"><button class="btn gold" id="pvPortal">' + esc(t('pvManage')) + '</button><button class="btn" id="pvRestore">' + esc(t('pvRestore')) + '</button></div>' : '') +
+    '<p class="pv-note">' + esc(t('pvTrust')) + '</p>' +
+    '<p class="pv-note">Fixture lists and free-to-air channels are public information; rights-protected league matches are linked to their official broadcasters, never re-streamed.</p>';
+
+  host.querySelectorAll('[data-buy]').forEach(b => { b.onclick = () => this.buy(b.dataset.buy); });
+  host.querySelectorAll('[data-cycle]').forEach(b => { b.onclick = () => { this.cycle = b.dataset.cycle; this.render(); }; });
+  const po = host.querySelector('#pvPortal'); if (po) po.onclick = () => this.portal();
+  const rs = host.querySelector('#pvRestore'); if (rs) rs.onclick = () => { Entitlement.sync(false); this.recheck(); };
+  this.refreshChrome();
+};
+Premium.buy = function (tierId) {
+  if (!requireAuth()) return;
+  if (this.isActive()) { try { Toast.show('Already a member', 'Use Manage subscription to switch plans.', 'info'); } catch (e) {} this.portal(); return; }
+  const t = tierId.toUpperCase();
+  const map = {
+    plus: { m: 'LINK_PLUS_MONTHLY', y: 'LINK_PLUS_YEARLY' },
+    premium: { m: 'LINK_PREMIUM_MONTHLY', y: 'LINK_PREMIUM_YEARLY' },
+    super: { m: 'LINK_SUPER_MONTHLY', y: 'LINK_SUPER_YEARLY' }
+  }[tierId];
+  let url = CONFIG.STRIPE[map[this.cycle === 'y' ? 'y' : 'm']] || '';
+  if (!url && tierId === 'premium') url = this.cycle === 'y' ? CONFIG.STRIPE.LINK_YEARLY : CONFIG.STRIPE.LINK_MONTHLY;
+  url = (url || '').trim();
+  if (!url) { this.setupNotice(); return; }
+  let u; try { u = new URL(url); } catch (e) { try { Toast.show(t('pvNeedKeys'), 'That is not a valid Stripe payment link.', 'err', 7000); } catch (x) {} return; }
+  try {
+    u.searchParams.set('client_reference_id', State.user.id);
+    if (State.user.email) u.searchParams.set('prefilled_email', State.user.email);
+    u.searchParams.set('utm_source', 'nancyflix');
+    u.searchParams.set('utm_medium', 'app');
+    u.searchParams.set('utm_content', tierId + '_' + this.cycle);
+  } catch (e) {}
+  window.location.href = u.toString();
+};
+/* keep plan name from the redirect, e.g. ?plan=super */
+const _activateV4 = Premium.activate.bind(Premium);
+Premium.activate = function (d) {
+  const plan = String((d && d.plan) || 'premium').toLowerCase();
+  const known = ['plus', 'premium', 'super', 'monthly', 'yearly'];
+  const clean = known.some(k => plan.indexOf(k) === 0) ? plan : 'premium';
+  return _activateV4(Object.assign({}, d, { plan: clean }));
+};
+
+/* ---------- 5. Live TV + Live Football ---------- */
+const CHANNELS = [
+  { name: 'Red Bull TV', cat: 'Sport and culture', country: 'AT', url: 'https://rbmn-live.akamaized.net/hls/live/590964/BoRB-AT/master.m3u8' },
+  { name: 'France 24 English', cat: 'News', country: 'FR', url: 'https://static.france24.com/live/F24_EN_LO_HLS/live_web.m3u8' },
+  { name: 'DW English', cat: 'News', country: 'DE', url: 'https://dwamdstream102.akamaized.net/hls/live/2015525/dwstream102/index.m3u8' },
+  { name: 'Al Jazeera English', cat: 'News', country: 'QA', url: 'https://live-hls-apps-aje-fa.getaj.net/AJE/index.m3u8' },
+  { name: 'Bloomberg TV', cat: 'Business', country: 'US', url: 'https://bloomberg.com/media-manifest/streams/us.m3u8' },
+  { name: 'NASA TV', cat: 'Science', country: 'US', url: 'https://ntv1.akamaized.net/hls/live/2014075/NASA-NTV1-HLS/master.m3u8' }
+];
+const LEAGUES = [
+  { id: '4328', name: 'Premier League', site: 'https://www.premierleague.com/fixtures' },
+  { id: '4335', name: 'LaLiga', site: 'https://www.laliga.com/en-GB/laliga-easports/schedule' },
+  { id: '4332', name: 'Serie A', site: 'https://www.legaseriea.it/en/serie-a/fixture-and-results' },
+  { id: '4331', name: 'Bundesliga', site: 'https://www.bundesliga.com/en/bundesliga/fixtures' },
+  { id: '4334', name: 'Ligue 1', site: 'https://www.ligue1.com/calendrier' },
+  { id: '4480', name: 'Champions League', site: 'https://www.uefa.com/uefachampionsleague/fixtures-results/' }
+];
+
+const Live = {
+  tab: 'tv', cache: {},
+  async render() {
+    const host = document.getElementById('view-live');
+    if (!host) return;
+    host.innerHTML =
+      '<div class="live-head"><span class="live-dot"></span><h1>Live</h1><span class="live-sub">Free channels & football fixtures</span></div>' +
+      '<div class="live-tabs"><button data-ltab="tv" class="' + (this.tab === 'tv' ? 'on' : '') + '">TV channels</button><button data-ltab="footy" class="' + (this.tab === 'footy' ? 'on' : '') + '">Football</button></div>' +
+      '<div id="liveBody" class="live-body"></div>';
+    host.querySelectorAll('[data-ltab]').forEach(b => { b.onclick = () => { this.tab = b.dataset.ltab; this.render(); }; });
+    if (this.tab === 'tv') this.renderTV(); else this.renderFooty();
+  },
+  renderTV() {
+    const body = document.getElementById('liveBody');
+    if (!body) return;
+    body.innerHTML = '<p class="live-note">Public, free-to-air streams. If a channel is offline it is usually the broadcaster rotating its URL — try another.</p>' +
+      '<div class="ch-grid">' + CHANNELS.map((c, i) =>
+        '<button class="ch" data-ch="' + i + '"><span class="ch-live">LIVE</span><b>' + esc(c.name) + '</b><span>' + esc(c.country) + ' · ' + esc(c.cat) + '</span></button>'
+      ).join('') + '</div>';
+    body.querySelectorAll('[data-ch]').forEach(b => { b.onclick = () => this.open(CHANNELS[+b.dataset.ch]); });
+  },
+  async renderFooty() {
+    const body = document.getElementById('liveBody');
+    if (!body) return;
+    body.innerHTML = '<p class="live-note">Next fixtures per league. Tap a league to see its official schedule.</p><div id="fxGrid" class="fx-grid"><div class="fx-load">Loading fixtures…</div></div>';
+    const grid = document.getElementById('fxGrid');
+    const cards = [];
+    for (const lg of LEAGUES) {
+      let ev = this.cache[lg.id];
+      if (!ev) {
+        try {
+          const r = await fetch('https://www.thesportsdb.com/api/v1/json/123/eventsnextleague.php?id=' + lg.id);
+          const j = await r.json();
+          ev = (j && j.events) || [];
+          this.cache[lg.id] = ev;
+        } catch (e) { ev = []; }
+      }
+      const next = ev.slice(0, 3);
+      cards.push('<div class="fx-card"><div class="fx-lg"><b>' + esc(lg.name) + '</b><a href="' + lg.site + '" target="_blank" rel="noopener noreferrer">schedule ↗</a></div>' +
+        (next.length ? next.map(e => {
+          const dt = e.strTimestamp ? new Date(e.strTimestamp) : new Date((e.dateEvent || '') + 'T' + (e.strTime || '00:00:00'));
+          const when = isNaN(dt.getTime()) ? (e.dateEvent || 'TBC') : dt.toLocaleString(undefined, { weekday: 'short', day: 'numeric', month: 'short', hour: '2-digit', minute: '2-digit' });
+          return '<div class="fx"><div class="fx-t">' + esc(e.strHomeTeam || 'TBC') + ' <em>vs</em> ' + esc(e.strAwayTeam || 'TBC') + '</div><div class="fx-m">' + esc(when) + (e.strVenue ? ' · ' + esc(e.strVenue) : '') + '</div></div>';
+        }).join('') : '<div class="fx">Schedule feed unavailable right now — open the official schedule link.</div>') + '</div>');
+    }
+    if (grid) grid.innerHTML = cards.join('');
+  },
+  open(ch) {
+    let ov = document.getElementById('liveOverlay');
+    if (!ov) {
+      ov = document.createElement('div');
+      ov.id = 'liveOverlay'; ov.className = 'overlay live-overlay';
+      ov.innerHTML = '<div class="live-modal"><div class="live-top"><b id="liveName"></b><button class="icon-btn" id="liveClose" aria-label="Close"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 6L6 18M6 6l12 12"/></svg></button></div><video id="liveVideo" controls autoplay playsinline></video><div class="live-fallback" id="liveFallback"></div></div>';
+      document.body.appendChild(ov);
+      ov.addEventListener('click', e => { if (e.target === ov) this.close(); });
+      ov.querySelector('#liveClose').onclick = () => this.close();
+    }
+    ov.classList.add('show'); document.body.classList.add('noscroll');
+    document.getElementById('liveName').textContent = ch.name;
+    const v = document.getElementById('liveVideo');
+    const fb = document.getElementById('liveFallback');
+    fb.innerHTML = '';
+    const fail = () => { fb.innerHTML = '<p>This channel is not opening right now — the broadcaster may have moved the stream, or this browser cannot decode it. Try another channel.</p><a class="btn sm" href="' + ch.url + '" target="_blank" rel="noopener noreferrer">Open stream in a new tab</a>'; };
+    v.onerror = fail;
+    v.onplaying = () => { fb.innerHTML = ''; };
+    clearTimeout(this._t);
+    this._t = setTimeout(() => { if (!v.currentTime && v.readyState < 2) fail(); }, 9000);
+    if (v.canPlayType('application/vnd.apple.mpegurl')) {
+      v.src = ch.url; v.play().catch(() => {});
+    } else {
+      const boot = () => {
+        if (window.Hls && window.Hls.isSupported()) {
+          const h = new window.Hls({ lowLatencyMode: true });
+          h.on(window.Hls.Events.ERROR, (ev, data) => { if (data && data.fatal) fail(); });
+          h.loadSource(ch.url); h.attachMedia(v);
+          v.play().catch(() => {});
+        } else fail();
+      };
+      if (window.Hls) boot();
+      else {
+        const sc = document.createElement('script');
+        sc.src = 'https://cdn.jsdelivr.net/npm/hls.js@1.5.13/dist/hls.min.js';
+        sc.onload = boot; sc.onerror = fail;
+        document.head.appendChild(sc);
+      }
+    }
+  },
+  close() {
+    const ov = document.getElementById('liveOverlay');
+    if (ov) ov.classList.remove('show');
+    const v = document.getElementById('liveVideo');
+    if (v) { try { clearTimeout(this._t); v.onerror = null; v.onplaying = null; v.pause(); v.removeAttribute('src'); v.load(); } catch (e) {} }
+    if (!document.querySelector('.overlay.show')) document.body.classList.remove('noscroll');
+  },
+  startPoll() { /* reserved for a future live-score ticker */ }
+};
+
+/* ---------- 6. Nav + views wiring ---------- */
+(function liveChrome() {
+  const main = document.querySelector('main');
+  if (main && !document.getElementById('view-live')) {
+    const sec = document.createElement('section');
+    sec.id = 'view-live'; sec.className = 'view';
+    const before = document.getElementById('view-watchlist');
+    if (before) main.insertBefore(sec, before); else main.appendChild(sec);
+  }
+  try { VIEWS.live = { render: () => Live.render() }; } catch (e) {}
+
+  const nav = document.getElementById('mainNav');
+  if (nav && !nav.querySelector('[data-view="live"]')) {
+    const b = document.createElement('button');
+    b.dataset.view = 'live';
+    b.innerHTML = '<svg class="icon sm" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="7" width="20" height="13" rx="2"/><path d="M8 3l2 4M16 3l-2 4M7 12h4M7 16h7"/></svg><span>Live</span>';
+    const prem = nav.querySelector('[data-view="premium"]');
+    nav.insertBefore(b, prem || null);
+    b.onclick = () => switchView('live');
+  }
+  const bn = document.getElementById('bottomNav');
+  if (bn && !bn.querySelector('[data-bnav="live"]')) {
+    const b = document.createElement('button');
+    b.dataset.bnav = 'live';
+    b.innerHTML = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="7" width="20" height="13" rx="2"/><path d="M8 3l2 4M16 3l-2 4M7 12h4M7 16h7"/></svg><span>Live</span>';
+    const wl = bn.querySelector('[data-bnav="watchlist"]');
+    bn.insertBefore(b, wl || null);
+  }
+})();
+
+/* ---------- 7. Settings extras: tester unlock + updates ---------- */
+(function settingsExtras() {
+  const base = Settings.openModal.bind(Settings);
+  Settings.openModal = function () {
+    base();
+    const m = document.getElementById('settingsModal');
+    if (!m || m.querySelector('.tester-box')) return;
+    const active = Premium.isActive(), d = Premium.get();
+    const box = document.createElement('div');
+    box.className = 'tester-box set-group';
+    box.innerHTML = '<h4>Testing & updates</h4>' +
+      '<div class="set-row" style="border:0"><div class="lbl"><div class="t">' + (active ? 'Premium is unlocked on this device' : 'Test every Premium feature') + '</div><div class="d">' + (active ? 'Plan: ' + esc(String(d.plan || 'premium')) + (d.expires ? ' · until ' + new Date(d.expires).toLocaleDateString() : '') + (d.source === 'test' ? ' · test unlock' : '') : 'Unlocks Live, themes, queue and history for 7 days — no card needed, so you can check everything works.') + '</div></div>' +
+      (active ? '<button class="btn sm" id="testerOff">End test</button>' : '<button class="btn sm primary" id="testerOn">Unlock 7 days</button>') + '</div>' +
+      '<div class="set-row" style="border:0"><div class="lbl"><div class="t">App version</div><div class="d">v' + APP_VERSION + ' · ' + WHATS_NEW.length + ' new items</div></div><button class="btn sm" id="testerUpdate">Check for update</button></div>';
+    m.appendChild(box);
+    const on = box.querySelector('#testerOn');
+    if (on) on.onclick = () => { Premium.activate({ plan: 'premium', source: 'test', expires: new Date(Date.now() + 7 * 864e5).toISOString() }); Settings.openModal(); };
+    const off = box.querySelector('#testerOff');
+    if (off) off.onclick = () => { LS.set(Premium.key(), { status: 'free' }); Premium.refreshChrome(); Toast.show('Test unlock ended', 'Back to the Free plan.', 'info'); Settings.openModal(); };
+    const up = box.querySelector('#testerUpdate');
+    if (up) up.onclick = () => { LS.set(UpdateCentre.KEY, '0'); LS.del(UpdateCentre.SNOOZE); UpdateCentre.check(); toggleNoti(true); };
+  };
+})();
+
+/* ---------- 8. Boot hooks ---------- */
+(function v5Boot() {
+  let done = false;
+  const once = async () => {
+    if (done || !State.user) return;
+    done = true;
+    setTimeout(() => UpdateCentre.check(), 1800);
+    setTimeout(() => Entitlement.sync(true), 900);
+  };
+  setTimeout(once, 2500);
+  const t = setInterval(() => { if (State.user) { once(); clearInterval(t); } }, 1200);
+})();
+/* soft light theme tuning (pure CSS variables are patched in the stylesheet) */
+/* soft light theme tuning (pure CSS variables are patched in the stylesheet) */
+/* soft light theme tuning (pure CSS variables are patched in the stylesheet) */
+/* soft light theme tuning (pure CSS variables are patched in the stylesheet) */
+/* soft light theme tuning (pure CSS variables are patched in the stylesheet) */
 
 /* boot */
 (async function boot(){

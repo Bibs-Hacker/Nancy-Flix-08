@@ -45,7 +45,9 @@ module.exports = async (req, res) => {
     const sub = (s.subscription && typeof s.subscription === 'object') ? s.subscription : null;
     const cust = (s.customer && typeof s.customer === 'object') ? s.customer : null;
 
-    let plan = (s.metadata && s.metadata.plan) || '';
+    let plan = (s.metadata && s.metadata.plan) ||
+      (s.client_reference_id && /^(plus|premium|super)/i.test(s.client_reference_id) ? s.client_reference_id : '') ||
+      '';
     let expires = null;
     let status = 'active';
 
@@ -62,6 +64,12 @@ module.exports = async (req, res) => {
     }
 
     const active = ['active', 'trialing'].indexOf(status) >= 0;
+    const email = (cust && cust.email) || (s.customer_details && s.customer_details.email) || null;
+
+    /* ---- remember the membership server-side so other devices can restore it ---- */
+    if (active && email) {
+      try { await saveEntitlement({ email, plan: plan || 'premium', status, expires, customer: (cust && cust.id) || (typeof s.customer === 'string' ? s.customer : null), session: s.id }); } catch (e) {}
+    }
 
     res.status(200).json({
       active: active,
@@ -69,7 +77,7 @@ module.exports = async (req, res) => {
       status: status,
       expires: expires,
       customer: (cust && cust.id) || (typeof s.customer === 'string' ? s.customer : null),
-      email: (cust && cust.email) || s.customer_details && s.customer_details.email || null,
+      email: email,
       session: s.id,
       livemode: !!s.livemode
     });
@@ -77,3 +85,34 @@ module.exports = async (req, res) => {
     res.status(200).json({ active: false, reason: 'stripe_error', message: String(err && err.message || err) });
   }
 };
+
+/* ---------------------------------------------------------------------------
+ * Store / update the entitlement row in Supabase (REST, no SDK needed).
+ * Silently no-ops when the Supabase env vars are not configured, so the app
+ * keeps working before you finish setup.
+ * ------------------------------------------------------------------------- */
+async function saveEntitlement(row) {
+  const url = (process.env.SUPABASE_URL || '').replace(/\/$/, '');
+  const key = process.env.SUPABASE_SERVICE_KEY || process.env.SUPABASE_SERVICE_ROLE_KEY || '';
+  if (!url || !key) return false;
+  const body = {
+    email: String(row.email).toLowerCase(),
+    plan: row.plan || 'premium',
+    status: row.status || 'active',
+    customer: row.customer || null,
+    session: row.session || null,
+    expires: row.expires || null,
+    updated_at: new Date().toISOString()
+  };
+  const r = await fetch(url + '/rest/v1/entitlements?on_conflict=email', {
+    method: 'POST',
+    headers: {
+      apikey: key,
+      Authorization: 'Bearer ' + key,
+      'Content-Type': 'application/json',
+      Prefer: 'resolution=merge-duplicates,return=minimal'
+    },
+    body: JSON.stringify(body)
+  });
+  return r.ok;
+}
