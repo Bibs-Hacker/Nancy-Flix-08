@@ -1,9 +1,9 @@
 /* NANCYFLIX service worker — app shell + offline + poster cache */
-const VERSION = 'nancyflix-v7.0.0';
+const VERSION = 'nancyflix-v8.0.0';
 const CORE = [
   './', './index.html', './manifest.webmanifest',
   './icons/icon-192.png', './icons/icon-512.png',
-  './icons/maskable-512.png', './icons/apple-touch-icon.png'
+  './icons/maskable-512.png', './icons/apple-touch-icon.png', './audio/splash.mp3'
 ];
 
 self.addEventListener('install', e => {

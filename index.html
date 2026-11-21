@@ -3783,16 +3783,16 @@ function resumeSession(){
    v5 — soft light theme helpers · update centre · 3-tier Premium ·
         Live TV · Live Football · cross-device entitlement · test mode
    ===================================================================== */
-const APP_VERSION = '7.0.0';
+const APP_VERSION = '8.0.0';
 const WHATS_NEW = [
-  'Kenyan live TV: Citizen, KTN News, KTN Home, NTV, KBC, K24, Ramogi, Inooro, Kameme and TV47 inside the app',
-  'Football opens in-app: full fixture lists plus current league tables',
-  'Invite links: share any match, your friend signs up and lands on it',
-  'Poster downloads to your device — 10 free, 50 on Plus, unlimited on Premium',
-  'Every plan limit is now enforced for real: queue, history, themes, channels, downloads',
-  'Alerts you control: types, sounds, rich banners, quiet hours and new-release alerts',
-  'Updates apply in place, without uninstalling the app',
-  'Light theme hero title fixed, and a live news strip under the nav'
+  'Sports rail with the next football fixtures and official broadcaster links',
+  'Focus and sleep timer with six individually stoppable ambient channels',
+  'Visible update banner with an Update-now action',
+  'Notification pop-up preferences: position, duration, sound and permission',
+  'Mobile menu drawer now shows every navigation button',
+  'Ten-language chooser with real flag icons',
+  'Cinematic splash with a restored soundtrack',
+  'Genres never load forever - retry and end-of-list handling'
 ];
 
 /* ---------- 1. Notifications with action buttons ---------- */
@@ -5626,6 +5626,306 @@ const Live = {
   if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', boot);
   else setTimeout(boot, 30);
 })();
+
+</script>
+<style id="nf8-sw-css">
+.nf8-sw{position:relative;width:46px;height:26px;flex:0 0 auto;border-radius:20px;background:var(--surface-2);border:1px solid var(--border);transition:.22s;padding:0}
+.nf8-sw i{position:absolute;top:2px;left:2px;width:20px;height:20px;border-radius:50%;background:#fff;transition:.22s;box-shadow:0 2px 6px rgba(0,0,0,.35)}
+.nf8-sw.on{background:linear-gradient(135deg,#e11d2e,#ff3b4e);border-color:transparent}
+.nf8-sw.on i{left:22px}
+#toasts{position:fixed;top:calc(70px + var(--safe-t));right:16px;z-index:2000;display:flex;flex-direction:column;gap:10px;pointer-events:none;max-width:calc(100vw - 32px);align-items:flex-end}
+#toasts>*{pointer-events:auto}
+#toasts.nf8-pos-top-right{top:calc(70px + var(--safe-t));right:16px;align-items:flex-end}
+#toasts.nf8-pos-top-center{top:calc(70px + var(--safe-t));left:50%;transform:translateX(-50%);align-items:center}
+#toasts.nf8-pos-bottom-right{bottom:calc(80px + var(--safe-b));right:16px;align-items:flex-end}
+#toasts.nf8-pos-bottom-left{bottom:calc(80px + var(--safe-b));left:16px;align-items:flex-start}
+</style>
+<script id="nf8-js">
+/* ============================================================
+   NANCYFLIX v8 — sports rail · focus timer · notification prefs
+   ============================================================ */
+
+/* ---------- 0. mobile drawer fix ----------
+   The top bar uses backdrop-filter, which makes it a containing block for
+   fixed children, so the slide-out menu was trapped inside a 60px strip.
+   Move the nav to <body> while the mobile layout is active. */
+(function(){
+  const topbar=document.querySelector('.topbar');
+  const nav=document.getElementById('mainNav');
+  if(!topbar||!nav)return;
+  const right=topbar.querySelector('.top-right');
+  let mobile=null;
+  function place(){
+    const want=window.innerWidth<=900;
+    if(want===mobile)return;
+    mobile=want;
+    if(want){ if(nav.parentElement!==document.body)document.body.appendChild(nav); }
+    else {
+      if(nav.parentElement!==topbar)topbar.insertBefore(nav,right||null);
+      nav.classList.remove('open');
+      document.getElementById('navBackdrop')&&document.getElementById('navBackdrop').classList.remove('show');
+    }
+  }
+  place();
+  window.addEventListener('resize',place,{passive:true});
+})();
+
+/* ---------- 1. sports rail ---------- */
+const IC=(n,c)=>NF7.ic(n,c);
+const NF8={
+  STREAM_KEY:'nf8_streams',
+  LEAGUES:[
+    {code:'eng',name:'Premier League',country:'England',cc:'ENG',open:'https://raw.githubusercontent.com/openfootball/football.json/master/2026-27/en.1.json',fallback:'https://raw.githubusercontent.com/openfootball/football.json/master/2025-26/en.1.json',site:'https://www.premierleague.com/broadcasters',siteName:'Premier League broadcasters'},
+    {code:'esp',name:'LaLiga',country:'Spain',cc:'ESP',open:'https://raw.githubusercontent.com/openfootball/football.json/master/2026-27/es.1.json',fallback:'https://raw.githubusercontent.com/openfootball/football.json/master/2025-26/es.1.json',site:'https://www.laliga.com/en-GB/where-to-watch',siteName:'LaLiga where to watch'},
+    {code:'ita',name:'Serie A',country:'Italy',cc:'ITA',open:'https://raw.githubusercontent.com/openfootball/football.json/master/2026-27/it.1.json',fallback:'https://raw.githubusercontent.com/openfootball/football.json/master/2025-26/it.1.json',site:'https://www.legaseriea.it/en',siteName:'Serie A official site'},
+    {code:'ger',name:'Bundesliga',country:'Germany',cc:'GER',open:'https://raw.githubusercontent.com/openfootball/football.json/master/2026-27/de.1.json',fallback:'https://raw.githubusercontent.com/openfootball/football.json/master/2025-26/de.1.json',site:'https://www.bundesliga.com/en/bundesliga/where-to-watch',siteName:'Bundesliga where to watch'},
+    {code:'fra',name:'Ligue 1',country:'France',cc:'FRA',open:'https://raw.githubusercontent.com/openfootball/football.json/master/2026-27/fr.1.json',fallback:'https://raw.githubusercontent.com/openfootball/football.json/master/2025-26/fr.1.json',site:'https://www.ligue1.com/',siteName:'Ligue 1 official site'}
+  ],
+  _cache:{},
+  _get(url){
+    if(this._cache[url])return Promise.resolve(this._cache[url]);
+    const ctl=new AbortController();const to=setTimeout(()=>ctl.abort(),9000);
+    return fetch(url,{signal:ctl.signal,cache:'no-store'})
+      .then(r=>{if(!r.ok)throw new Error('http '+r.status);return r.json();})
+      .then(j=>{clearTimeout(to);this._cache[url]=j;return j;})
+      .catch(e=>{clearTimeout(to);throw e;});
+  },
+  season(lg){
+    return this._get(lg.open).catch(()=>this._get(lg.fallback)).then(d=>{
+      const list=(d.matches||[]).map(m=>({
+        date:m.date||'', time:m.time||'',
+        home:(m.team1&&(m.team1.name||m.team1))||'',
+        away:(m.team2&&(m.team2.name||m.team2))||'',
+        score:m.score&&m.score.ft?m.score.ft:null,
+        round:m.round||''
+      })).filter(m=>m.home&&m.away);
+      const today=new Date();today.setHours(0,0,0,0);
+      const up=list.filter(m=>m.date&&new Date(m.date+'T12:00:00')>=today&&!m.score).sort((a,b)=>a.date.localeCompare(b.date));
+      return {up:up, all:list, lg:lg};
+    });
+  },
+  mount(){
+    const home=document.getElementById('view-home');
+    if(!home||document.getElementById('nf8Sports'))return;
+    const sec=document.createElement('section');
+    sec.className='section nf8-sports';
+    sec.id='nf8Sports';
+    sec.innerHTML='<div class="nf8-sports-head"><span class="ic">'+IC('ball')+'</span><div><h3>Next up in football</h3><p>Live fixtures from the official open football database</p></div><span class="live"><i></i>2026/27</span></div><div class="nf8-rail" id="nf8Rail"><div class="nf8-empty">Loading the next fixtures…</div></div>';
+    const hero=document.getElementById('hero');
+    if(hero&&hero.parentElement===home)hero.insertAdjacentElement('afterend',sec);
+    else home.insertBefore(sec,home.firstChild);
+    this.load();
+  },
+  load(){
+    const rail=document.getElementById('nf8Rail'); if(!rail)return;
+    Promise.all(this.LEAGUES.map(lg=>this.season(lg).catch(()=>null))).then(all=>{
+      const rows=[];
+      all.forEach(s=>{ if(!s||!s.up.length)return; s.up.slice(0,2).forEach(m=>rows.push({m:m,lg:s.lg})); });
+      rows.sort((a,b)=>(a.m.date||'').localeCompare(b.m.date||''));
+      if(!rows.length){rail.innerHTML='<div class="nf8-empty">No fixtures are published for the new season yet. Open a league site below to check the official schedule.</div>';return;}
+      rail.innerHTML=rows.slice(0,10).map((r,i)=>{
+        const d=new Date(r.m.date+'T12:00:00');
+        const ds=isNaN(d)?r.m.date:d.toLocaleDateString(undefined,{weekday:'short',day:'numeric',month:'short'});
+        return '<button class="nf8-game" data-nf8game="'+i+'"><span class="lg"><span class="nf8-logo" style="display:grid;place-items:center;background:rgba(225,29,46,.16);color:#ff8d99;font-size:8px;font-weight:900">'+esc(r.lg.cc)+'</span>'+esc(r.lg.name)+'</span><span class="tm">'+esc(r.m.home)+' <em>vs</em> '+esc(r.m.away)+'</span><span class="mt"><span>'+esc(ds)+(r.m.time?' · '+esc(r.m.time):'')+'</span><b>Details</b></span><span class="watch">'+IC('play')+'Watch options</span></button>';
+      }).join('');
+      rail.querySelectorAll('[data-nf8game]').forEach(b=>{b.onclick=()=>{const r=rows[+b.dataset.nf8game];this.openGame(r.m,r.lg);};});
+    });
+  },
+  streams(){try{return JSON.parse(LS.get(this.STREAM_KEY,'{}'))||{};}catch(e){return {};}},
+  saveStream(code,url){const s=this.streams();if(url)s[code]=url;else delete s[code];LS.set(this.STREAM_KEY,JSON.stringify(s));},
+  openGame(m,lg){
+    let ov=document.getElementById('nf8Game');
+    if(!ov){ov=document.createElement('div');ov.id='nf8Game';ov.className='overlay show';document.body.appendChild(ov);}
+    ov.classList.add('show');document.body.classList.add('noscroll');
+    const d=m.date?new Date(m.date+'T12:00:00'):null;
+    const ds=d&&!isNaN(d)?d.toLocaleDateString(undefined,{weekday:'long',day:'numeric',month:'long',year:'numeric'}):'Date to be confirmed';
+    const saved=this.streams()[lg.code]||'';
+    ov.innerHTML='<div class="nf6-modal"><div class="nf6-head"><div class="who"><div class="lg">'+esc(lg.country.toUpperCase())+' · '+esc(lg.name)+'</div><h3>'+esc(m.home)+' vs '+esc(m.away)+'</h3><div class="sub">'+esc(ds)+(m.time?' · kick-off '+esc(m.time):'')+(m.round?' · '+esc(m.round):'')+'</div></div><button class="nf6-x" data-nf8x aria-label="Close">'+IC('x')+'</button></div><div class="nf6-body">'+
+      '<p class="nf-note" style="margin:0 0 10px">NANCYFLIX does not host or rebroadcast matches. Use the official broadcaster for your country — that is the only reliable, legal way to watch.</p>'+
+      '<div class="nf8-official"><a href="'+esc(lg.site)+'" target="_blank" rel="noopener noreferrer">'+IC('out')+esc(lg.siteName)+'</a><a href="https://www.livesoccertv.com/" target="_blank" rel="noopener noreferrer">'+IC('out')+'Global TV listings</a></div>'+
+      '<div class="nf8-streambox"><b>Already have a stream link?</b><p>Paste a link you own or are authorised to use (YouTube, .m3u8 or .mp4). It is stored only on this device for this league.</p><div style="display:flex;gap:8px;flex-wrap:wrap"><input id="nf8StreamUrl" class="mini" style="flex:1 1 220px;min-width:0" placeholder="https://…" value="'+esc(saved)+'"><button class="btn sm" id="nf8StreamSave">Save</button><button class="btn sm ghost" id="nf8StreamPlay">Play</button></div></div>'+
+      '<div id="nf8StreamBox" style="margin-top:12px"></div></div></div>';
+    const x=ov.querySelector('[data-nf8x]'); if(x)x.onclick=()=>this.closeGame();
+    ov.onclick=e=>{if(e.target===ov)this.closeGame();};
+    const inp=ov.querySelector('#nf8StreamUrl');
+    ov.querySelector('#nf8StreamSave').onclick=()=>{this.saveStream(lg.code,(inp.value||'').trim());Toast.show('Stream saved','It will be offered next time for '+lg.name+'.','ok',2600);};
+    ov.querySelector('#nf8StreamPlay').onclick=()=>this.playStream((inp.value||'').trim(),ov.querySelector('#nf8StreamBox'));
+  },
+  closeGame(){const ov=document.getElementById('nf8Game');if(ov)ov.classList.remove('show');if(!document.querySelector('.overlay.show'))document.body.classList.remove('noscroll');const b=document.getElementById('nf8StreamBox');if(b)b.innerHTML='';},
+  playStream(url,box){
+    if(!box)return;
+    if(!url){box.innerHTML='<div class="nf8-empty">Paste a link first.</div>';return;}
+    if(!/^https?:\/\//i.test(url)){box.innerHTML='<div class="nf8-empty">That does not look like a web link.</div>';return;}
+    let yt='';
+    try{const u=new URL(url);if(/(^|\.)youtube\.com$|youtu\.be$/.test(u.hostname)){yt=u.hostname==='youtu.be'?u.pathname.slice(1):(u.searchParams.get('v')||'');}}catch(e){}
+    if(yt){box.innerHTML='<div style="aspect-ratio:16/9;border-radius:12px;overflow:hidden;background:#000"><iframe src="https://www.youtube-nocookie.com/embed/'+encodeURIComponent(yt)+'?autoplay=1&rel=0" title="Match stream" style="width:100%;height:100%;border:0" allow="autoplay; encrypted-media; picture-in-picture" allowfullscreen></iframe></div>';return;}
+    if(/\.(m3u8|mp4|webm)(\?|$)/i.test(url)){box.innerHTML='<video id="nf8Vid" controls autoplay playsinline style="width:100%;border-radius:12px;background:#000"></video>';const v=box.querySelector('#nf8Vid');
+      if(/\.m3u8/i.test(url)&&v.canPlayType('application/vnd.apple.mpegurl')===''){box.innerHTML='<div class="nf8-empty">This browser cannot play HLS links natively. Open the link in a player such as VLC.</div>';return;}
+      v.src=url;v.play().catch(()=>{});return;}
+    box.innerHTML='<div class="nf8-empty">This link cannot be embedded. <a href="'+esc(url)+'" target="_blank" rel="noopener noreferrer">Open it in a new tab</a>.</div>';
+  },
+
+  /* ---------- 2. focus / sleep timer ---------- */
+  focus:{min:25,left:0,timer:null,running:false,paused:false,vol:0.45,master:null,ctx:null,channels:{},wake:null,
+    NAMES:[['rain','Rain','soft rainfall'],['ocean','Ocean','slow waves'],['forest','Forest','wind & birds'],['fire','Fireplace','warm crackle'],['night','Night','crickets & hum'],['brown','Brown noise','deep masking']],
+    open(){
+      let ov=document.getElementById('nf8Focus');
+      if(!ov){ov=document.createElement('div');ov.id='nf8Focus';document.body.appendChild(ov);}
+      ov.classList.add('show');document.body.classList.add('noscroll');this.paint(ov);
+      ov.onclick=e=>{if(e.target===ov)this.close();};
+    },
+    close(){const ov=document.getElementById('nf8Focus');if(ov)ov.classList.remove('show');if(!document.querySelector('.overlay.show'))document.body.classList.remove('noscroll');},
+    paint(ov){
+      ov.innerHTML='<div class="nf8-focus-card"><div class="nf8-focus-top"><span class="ic">'+IC('clock')+'</span><div><h3>Focus &amp; sleep timer</h3><p>Pick a length, then layer the ambient channels you want. Every channel can be stopped on its own, and the whole mix fades out at the end.</p></div><button class="nf8-focus-x" data-fx="close" aria-label="Close">'+IC('x')+'</button></div>'+
+        '<div class="nf8-focus-clock"><b id="nf8Clock">25:00</b><span>remaining</span></div><div class="nf8-focus-state" id="nf8State">Ready when you are</div>'+
+        '<div class="nf8-chips">'+[5,15,25,45,60,90].map(n=>'<button class="nf8-chip'+(n===this.min?' on':'')+'" data-min="'+n+'">'+n+' min</button>').join('')+'</div>'+
+        '<p class="nf8-focus-label">Ambient channels</p><div class="nf8-sounds">'+this.NAMES.map(s=>'<button class="nf8-snd" data-ch="'+s[0]+'"><span class="dot">'+IC('signal')+'</span><span class="nm">'+s[1]+'<small>'+s[2]+'</small></span><span class="bars"><i></i><i></i><i></i></span></button>').join('')+'</div>'+
+        '<div class="nf8-focus-actions"><button class="btn" data-fx="start" id="nf8Start">Start</button><button class="btn ghost" data-fx="pause">Pause</button><button class="btn ghost" data-fx="stop">Stop all</button><span class="nf8-vol">'+IC('signal')+'<input type="range" min="0" max="100" value="'+Math.round(this.vol*100)+'" id="nf8Vol" aria-label="Master volume"></span></div>'+
+        '<p class="nf8-focus-note">Sounds are generated in your browser with the Web Audio API, so nothing is downloaded and no audio files are hosted. Screen wake-lock is requested while the timer runs; the timer keeps counting even if you switch tabs.</p></div>';
+      const self=this;
+      ov.querySelector('[data-fx="close"]').onclick=()=>self.close();
+      ov.querySelectorAll('[data-min]').forEach(b=>b.onclick=()=>{self.min=+b.dataset.min;if(!self.running){self.left=self.min*60;}self.paintClock();ov.querySelectorAll('[data-min]').forEach(x=>x.classList.toggle('on',x===b));});
+      ov.querySelectorAll('[data-ch]').forEach(b=>b.onclick=()=>{self.toggle(b.dataset.ch);b.classList.toggle('on',!!self.channels[b.dataset.ch]);});
+      ov.querySelector('[data-fx="start"]').onclick=()=>self.start();
+      ov.querySelector('[data-fx="pause"]').onclick=()=>self.pause();
+      ov.querySelector('[data-fx="stop"]').onclick=()=>self.stopAll();
+      ov.querySelector('#nf8Vol').oninput=e=>{self.vol=+e.target.value/100;self.applyVol();};
+      this.paintClock();
+    },
+    paintClock(){const c=document.getElementById('nf8Clock');if(!c)return;const s=Math.max(0,Math.ceil(this.left||this.min*60));c.textContent=String(Math.floor(s/60)).padStart(2,'0')+':'+String(s%60).padStart(2,'0');const st=document.getElementById('nf8State');if(st)st.textContent=this.running?(this.paused?'Paused':'Focusing · '+(Object.keys(this.channels).length||0)+' channel(s)'):'Ready when you are';},
+    ac(){if(!this.ctx){const C=window.AudioContext||window.webkitAudioContext;if(!C)return null;this.ctx=new C();this.master=this.ctx.createGain();this.master.gain.value=this.vol;this.master.connect(this.ctx.destination);}if(this.ctx.state==='suspended')this.ctx.resume().catch(()=>{});return this.ctx;},
+    applyVol(){if(this.master)this.master.gain.value=this.vol;},
+    start(){
+      const c=this.ac(); if(!c)return Toast.show('Audio unavailable','This browser blocked Web Audio.','err');
+      this.running=true;this.paused=false;
+      if(!this.left||this.left<=0)this.left=this.min*60;
+      clearInterval(this.timer);
+      this.timer=setInterval(()=>{
+        if(this.paused)return;
+        this.left-=1;
+        if(this.left<=8&&this.master&&!this._fading){this._fading=true;}
+        if(this._fading&&this.master){this.master.gain.value=Math.max(0,this.vol*(this.left/8));}
+        if(this.left<=0){this.finish();return;}
+        this.paintClock();
+      },1000);
+      this.paintClock();
+      this.lock();
+      Toast.show('Focus timer started',this.min+' minutes · the mix will fade out at the end.','ok',2600);
+    },
+    pause(){if(!this.running)return;this.paused=!this.paused;const b=document.querySelector('#nf8Focus [data-fx="pause"]');if(b)b.textContent=this.paused?'Resume':'Pause';if(this.paused){this._duck();}else{if(this.master)this.master.gain.value=this.vol;this.ac();}this.paintClock();},
+    _duck(){if(this.master)this.master.gain.value=0;},
+    finish(){clearInterval(this.timer);this.running=false;this.paused=false;this._fading=false;this.left=0;this.stopAll(true);this.paintClock();
+      try{Toast.show('Session complete','Timer finished — the ambient mix has faded out.','ok',6000);}catch(e){}
+      try{new Notification('NANCYFLIX · focus session complete',{body:'Your timer finished. Take a break.'});}catch(e){}
+      this.release();
+    },
+    toggle(id){
+      if(this.channels[id]){this.stopCh(id);return;}
+      const c=this.ac(); if(!c)return;
+      const g=c.createGain(); g.gain.value=0; g.connect(this.master);
+      const nodes=[]; const src=this.build(id,c,g);
+      if(src)nodes.push(src);
+      g.gain.linearRampToValueAtTime(1, c.currentTime+0.9);
+      this.channels[id]={g:g,nodes:nodes};
+    },
+    build(id,c,g){
+      const len=c.sampleRate*4, buf=c.createBuffer(1,len,c.sampleRate), d=buf.getChannelData(0);
+      let last=0;
+      for(let i=0;i<len;i++){const w=Math.random()*2-1;last=(last+0.02*w)/1.02;d[i]=w*0.6+last*2.2;}
+      const src=c.createBufferSource(); src.buffer=buf; src.loop=true;
+      const f=c.createBiquadFilter();
+      if(id==='rain'){f.type='highpass';f.frequency.value=900;}
+      else if(id==='ocean'){f.type='lowpass';f.frequency.value=700;const lfo=c.createOscillator(),lg=c.createGain();lfo.frequency.value=0.09;lg.gain.value=320;lfo.connect(lg);lg.connect(f.frequency);lfo.start();this.channels._lfo=lfo;}
+      else if(id==='forest'){f.type='bandpass';f.frequency.value=1900;f.Q.value=0.6;}
+      else if(id==='fire'){f.type='bandpass';f.frequency.value=480;f.Q.value=0.7;}
+      else if(id==='night'){f.type='bandpass';f.frequency.value=3400;f.Q.value=2.2;}
+      else {f.type='lowpass';f.frequency.value=260;}
+      const vg=c.createGain(); vg.gain.value=id==='brown'?0.55:0.32;
+      src.connect(f); f.connect(vg); vg.connect(g); src.start();
+      return src;
+    },
+    stopCh(id){const ch=this.channels[id];if(!ch)return;try{ch.g.gain.cancelScheduledValues(this.ctx.currentTime);ch.g.gain.setTargetAtTime(0,this.ctx.currentTime,0.12);}catch(e){}const t=setTimeout(()=>{try{ch.nodes.forEach(n=>n.stop&&n.stop());}catch(e){}},500);if(ch.nodes)ch.nodes.push({stop:()=>clearTimeout(t)});delete this.channels[id];},
+    stopAll(silent){Object.keys(this.channels).forEach(k=>{if(k!=='_lfo')this.stopCh(k);});clearInterval(this.timer);this.running=false;this.paused=false;this.left=this.min*60;const b=document.querySelector('#nf8Focus [data-fx="pause"]');if(b)b.textContent='Pause';document.querySelectorAll('#nf8Focus .nf8-snd').forEach(x=>x.classList.remove('on'));this.paintClock();if(!silent)this.release();},
+    async lock(){try{if('wakeLock' in navigator){this.wake=await navigator.wakeLock.request('screen');}}catch(e){}},
+    release(){try{this.wake&&this.wake.release();}catch(e){}this.wake=null;}
+  },
+
+  /* ---------- 3. notification preferences ---------- */
+  notiOpen(){
+    let ov=document.getElementById('nf8Noti');
+    if(!ov){ov=document.createElement('div');ov.id='nf8Noti';ov.className='overlay';document.body.appendChild(ov);}
+    const s=State.settings||{};
+    const row=(k,t,d,on)=>'<div class="set-row"><div class="lbl"><div class="t">'+t+'</div><div class="d">'+d+'</div></div><button class="nf8-sw'+(on?' on':'')+'" data-nf8="'+k+'" role="switch" aria-checked="'+!!on+'"><i></i></button></div>';
+    ov.innerHTML='<div class="modal" style="max-width:440px"><div class="modal-head"><h3>Notifications</h3><button class="icon-btn" data-nf8close aria-label="Close">'+IC('x')+'</button></div><div class="modal-body">'+
+      row('inApp','Pop-up banners','Show a banner in the corner for alerts and updates',s.inApp!==false)+
+      row('sound','Sound','Play a tone with each pop-up',s.sound!==false)+
+      row('browser','Browser notifications','Ask this device to show system notifications',typeof Notification!=='undefined'&&Notification.permission==='granted')+
+      '<div class="set-row"><div class="lbl"><div class="t">Banner position</div><div class="d">Where pop-ups appear on screen</div></div><select class="mini" id="nf8Pos">'+['top-right','top-center','bottom-right','bottom-left'].map(p=>'<option value="'+p+'" '+((s.notiPos||'top-right')===p?'selected':'')+'>'+p.replace('-',' ')+'</option>').join('')+'</select></div>'+
+      '<div class="set-row"><div class="lbl"><div class="t">Banner duration</div><div class="d">How long a pop-up stays before it hides</div></div><select class="mini" id="nf8Dur">'+[3,5,8,12].map(n=>'<option value="'+n+'" '+((+s.notiDuration||5)===n?'selected':'')+'>'+n+' seconds</option>').join('')+'</select></div>'+
+      '<div style="display:flex;gap:8px;margin-top:14px"><button class="btn sm" id="nf8Test">Send test notification</button></div>'+
+      '<p class="nf8-focus-note">Browser notifications only work over HTTPS and after you allow them. In-app pop-ups work everywhere.</p></div></div>';
+    ov.classList.add('show');document.body.classList.add('noscroll');
+    ov.onclick=e=>{if(e.target===ov)this.notiClose();};
+    ov.querySelector('[data-nf8close]').onclick=()=>this.notiClose();
+    ov.querySelectorAll('[data-nf8]').forEach(b=>b.onclick=async()=>{
+      const k=b.dataset.nf8; const on=!b.classList.contains('on');
+      if(k==='browser'&&on&&typeof Notification!=='undefined'){const p=await Notification.requestPermission();if(p!=='granted'){Toast.show('Permission not granted','You can allow notifications in your browser settings.','warn',4000);return;}}
+      b.classList.toggle('on',on);b.setAttribute('aria-checked',String(on));
+      State.settings[k]=on;
+      try{Theme.save();}catch(e){}
+      try{Sound.ping('ok');}catch(e){}
+    });
+    ov.querySelector('#nf8Pos').onchange=e=>{State.settings.notiPos=e.target.value;try{Theme.save();}catch(x){}};
+    ov.querySelector('#nf8Dur').onchange=e=>{State.settings.notiDuration=+e.target.value;try{Theme.save();}catch(x){}};
+    ov.querySelector('#nf8Test').onclick=()=>Toast.show('Test notification','This is how your pop-ups will look. Adjust the position and duration above.','ok');
+  },
+  notiClose(){const ov=document.getElementById('nf8Noti');if(ov)ov.classList.remove('show');if(!document.querySelector('.overlay.show'))document.body.classList.remove('noscroll');},
+
+  /* ---------- 4. settings hook ---------- */
+  wireSettings(root){
+    if(!root||root.querySelector('#nf8NotiPrefs'))return;
+    const anchor=root.querySelector('#setNotiSound');
+    const rowEl=anchor?anchor.closest('.set-row'):null;
+    const wrap=document.createElement('div');
+    wrap.className='set-row';
+    wrap.innerHTML='<div class="lbl"><div class="t">Pop-ups &amp; notification style</div><div class="d">Position, duration, sound and browser permission</div></div><button class="btn sm" id="nf8NotiPrefs">Configure</button>';
+    if(rowEl&&rowEl.parentElement)rowEl.parentElement.insertBefore(wrap,rowEl.nextSibling);
+    else root.appendChild(wrap);
+    wrap.querySelector('#nf8NotiPrefs').onclick=()=>NF8.notiOpen();
+  },
+
+  /* ---------- 5. update banner ---------- */
+  updateCheck(){
+    fetch('version.json?t='+Date.now(),{cache:'no-store'}).then(r=>r.ok?r.json():null).then(v=>{
+      if(!v||!v.version)return;
+      if(!NF8._newer(v.version,APP_VERSION))return;
+      if(LS.get('nf8SeenVersion')===v.version)return;
+      Toast.show('Update ready · v'+v.version,(v.notes&&v.notes.length?v.notes.slice(0,2).join(' · '):'A new build is available.')+' — tap Update now to load it.','info',0,{action:{label:'Update now',fn:async()=>{
+        LS.set('nf8SeenVersion',v.version);
+        try{const regs=await navigator.serviceWorker.getRegistrations();await Promise.all(regs.map(r=>r.unregister()));}catch(e){}
+        try{if(window.caches){const ks=await caches.keys();await Promise.all(ks.map(k=>caches.delete(k)));}}catch(e){}
+        Toast.show('Updating…','Loading the new build. This takes a few seconds.','ok',2600);
+        setTimeout(()=>location.reload(),900);
+      }}});
+    }).catch(()=>{});
+  },
+  _newer(a,b){const A=String(a).split('.').map(Number),B=String(b).split('.').map(Number);for(let i=0;i<Math.max(A.length,B.length);i++){const x=A[i]||0,y=B[i]||0;if(x>y)return true;if(x<y)return false;}return false;},
+
+  boot(){
+    try{const lf=document.getElementById('langFlag');if(lf)lf.innerHTML=NF8_FLAG('gb');}catch(e){}
+    try{if(LANG_META&&LANG_META[Lang.current()]){const lf=document.getElementById('langFlag');if(lf)lf.innerHTML=LANG_META[Lang.current()].flag;}}catch(e){}
+    try{document.getElementById('focusBtn').onclick=()=>this.focus.open();}catch(e){}
+    try{document.getElementById('nf8Focus')||null;}catch(e){}
+    const self=this;
+    const orig=Home.render;
+    Home.render=async function(){const r=await orig.apply(this,arguments);setTimeout(()=>{try{self.mount();}catch(e){}},60);return r;};
+    setTimeout(()=>{try{if(document.getElementById('view-home').classList.contains('show'))self.mount();}catch(e){}},1200);
+    setTimeout(()=>this.updateCheck(),2600);
+    document.addEventListener('keydown',e=>{if(e.key==='Escape'){this.closeGame();this.notiClose();}});
+  }
+};
+
+if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',()=>NF8.boot());else NF8.boot();
 
 </script>
 </body>
