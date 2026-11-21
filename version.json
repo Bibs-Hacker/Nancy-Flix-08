@@ -1,12 +1,11 @@
 {
-  "version": "8.0.0",
-  "build": "2026-11-21",
+  "version": "8.2.0",
+  "build": "2026-11-22",
   "notes": [
-    "Sports rail with official broadcaster links",
-    "Focus and sleep timer with six ambient channels",
-    "Mobile menu drawer fixed",
-    "Update banner and notification preferences",
-    "Ten-language chooser with flag icons",
-    "Cinematic splash with soundtrack"
+    "Top bar layering fixed — nothing leaks over the navigation any more",
+    "Update banner keeps both buttons and shows live progress until the new build is confirmed",
+    "Notification badges clear as you read and old update notices are removed",
+    "Real broadcaster and brand icons in Live TV",
+    "Live match alerts: goals, penalties, red and yellow cards, VAR checks"
   ]
 }

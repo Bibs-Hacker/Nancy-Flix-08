@@ -1,17 +1,3 @@
-  init(){
-    this.paint();
-    try{
-      this.audio=new Audio('audio/splash.mp3');
-      this.audio.preload='auto'; this.audio.volume=.85; this.audio.loop=false;
-      this.audio.addEventListener('error',()=>{this.audio=null;});
-    }catch(e){ this.audio=null; }
-    if(this.on){
-      this.play();
-      const unlock=()=>{ if(!this.played&&!this.done)this.play(); };
-      ['pointerdown','touchstart','keydown'].forEach(ev=>document.addEventListener(ev,unlock,{once:true,passive:true}));
-      setTimeout(()=>{try{this.play();}catch(e){}},420);
-    }
-  },
 <!DOCTYPE html>
 <html lang="en" dir="ltr" data-theme="dark" translate="no">
 <head>
@@ -57,7 +43,7 @@
 [data-theme=dim]{--bg:#141418;--bg-2:#1a1a20;--surface:#202028;--surface-2:#2a2a34;--text:#d7d7e0;--muted:#86869a;--border:#33333f;--accent:#c2606c;--accent-2:#d98893;--neon:#e0a0aa;--accent-soft:rgba(194,96,108,.14);--shadow:0 14px 40px rgba(0,0,0,.4);--glass:rgba(255,255,255,.03);--glass-br:rgba(255,255,255,.06);}
 *{box-sizing:border-box;margin:0;padding:0}
 html{scroll-behavior:smooth}
-body{background:var(--bg);color:var(--text);font-family:var(--font);line-height:1.5;overflow-x:hidden;-webkit-font-smoothing:antialiased}
+body{background:var(--bg);color:var(--text);font-family:var(--font);line-height:1.5;overflow-x:hidden;overflow-x:clip;-webkit-font-smoothing:antialiased}
 body.noscroll{overflow:hidden}
 a{color:inherit;text-decoration:none}
 button{font-family:inherit;cursor:pointer;border:none;background:none;color:inherit}
@@ -1369,27 +1355,206 @@ select,input,textarea{font-size:16px} /* stops iOS zoom-on-focus */
 #langPanel .lp-foot{position:sticky;bottom:0;z-index:99;margin-top:auto;padding:16px 0 calc(4px + var(--safe-b));background:#07070c;border-top:1px solid rgba(255,255,255,.08)}
 @media(max-width:560px){#langPanel .lp-wrap{padding:calc(18px + var(--safe-t)) 14px calc(18px + var(--safe-b))}#langPanel .lp-head h2{font-size:26px}#langPanel .lp-search{margin:16px 0 12px}#langPanel .lp-foot .btn{width:100%}}
 </style>
+
+<style id="nf10-splash">
+/* ---------- NANCYFLIX v8.1 cinematic boot sequence ---------- */
+#splash.nfx-splash{position:fixed;inset:0;z-index:1400;display:flex;flex-direction:column;align-items:center;justify-content:center;background:#040407;overflow:hidden;perspective:1200px;isolation:isolate;padding:0;gap:0}
+#splash.nfx-splash::before{content:'';position:absolute;inset:0;z-index:-3;background:radial-gradient(800px 580px at 50% 44%,rgba(225,29,46,.22),transparent 64%),linear-gradient(180deg,#08080d 0%,#040407 58%,#020203 100%)}
+.nfx-aura{position:absolute;z-index:-2;width:min(64vw,540px);aspect-ratio:1;border-radius:50%;background:radial-gradient(circle,rgba(225,29,46,.36),rgba(225,29,46,.10) 46%,transparent 72%);filter:blur(8px);animation:nfxbreath 4.8s ease-in-out infinite}
+.nfx-floor{position:absolute;left:-24%;right:-24%;bottom:-4%;height:34%;background-image:linear-gradient(rgba(225,29,46,.16) 1px,transparent 1px),linear-gradient(90deg,rgba(225,29,46,.16) 1px,transparent 1px);background-size:62px 42px;transform:perspective(380px) rotateX(66deg);transform-origin:50% 100%;-webkit-mask-image:linear-gradient(180deg,transparent,#000 46%);mask-image:linear-gradient(180deg,transparent,#000 46%);opacity:.5;animation:nfxfloor 9s linear infinite;pointer-events:none}
+.nfx-hud{position:absolute;width:min(94vw,680px);height:auto;max-height:94vh;pointer-events:none;opacity:.92;animation:nfxhudin 1.8s ease both;overflow:visible}
+.nfx-hud circle{fill:none}
+.nfx-rings circle{stroke:rgba(255,255,255,.075);stroke-width:.8}
+.nfx-r0{stroke-dasharray:1 5;opacity:.5}
+.nfx-r1{stroke:rgba(255,255,255,.10)}
+.nfx-r2{stroke:rgba(255,204,102,.16);stroke-dasharray:2 8}
+.nfx-r3{stroke:rgba(225,29,46,.34);stroke-width:1.1}
+.nfx-arcs{transform-origin:200px 200px}
+.nfx-arcs circle{stroke:url(#nfxGrad);stroke-width:2;stroke-linecap:round}
+.nfx-a1{stroke-dasharray:330 851;animation:nfxspin 9s linear infinite}
+.nfx-a2{stroke-dasharray:148 869;stroke-width:1.4;transform-origin:200px 200px;animation:nfxspin 5.6s linear infinite reverse}
+.nfx-radar{transform-origin:200px 200px;animation:nfxspin 4.4s linear infinite}
+.nfx-ray{stroke:rgba(255,92,110,.75);stroke-width:1.4}
+.nfx-targets g{transform-box:fill-box;transform-origin:center}
+.nfx-tg circle{stroke:#ff5c6e;stroke-width:1.6;fill:rgba(225,29,46,.35)}
+.nfx-tg path{stroke:rgba(255,204,102,.55);stroke-width:1.1}
+.nfx-tg{animation:nfxtarget 3.6s ease-in-out infinite}
+.nfx-tg.t1{animation-delay:.0s}.nfx-tg.t2{animation-delay:.7s}.nfx-tg.t3{animation-delay:1.4s}.nfx-tg.t4{animation-delay:2.1s}.nfx-tg.t5{animation-delay:2.8s}
+.nfx-scan{position:absolute;inset:0;pointer-events:none;z-index:1;background:repeating-linear-gradient(180deg,rgba(255,255,255,.04) 0 1px,transparent 1px 3px);opacity:.6;mix-blend-mode:screen}
+.nfx-scan::after{content:'';position:absolute;left:0;right:0;top:-30%;height:26%;background:linear-gradient(180deg,transparent,rgba(255,59,78,.05) 70%,rgba(255,59,78,.16));animation:nfxscan 5.4s linear infinite}
+.nfx-core{position:relative;z-index:2;display:flex;flex-direction:column;align-items:center;text-align:center;padding:0 22px;transform-style:preserve-3d}
+.nfx-kicker{display:flex;align-items:center;gap:11px;font-size:9.5px;letter-spacing:.46em;text-indent:.46em;color:#9c9cae;font-weight:800;text-transform:uppercase;animation:nfxrise .9s .08s both}
+.nfx-kicker i{display:block;width:clamp(16px,5vw,44px);height:1px;background:linear-gradient(90deg,transparent,rgba(255,204,102,.75));flex:0 0 auto}
+.nfx-kicker i:last-of-type{transform:scaleX(-1)}
+.nfx-word{display:flex;justify-content:center;align-items:baseline;margin:clamp(10px,2.2vh,20px) 0 0;font-family:'Anton','Bebas Neue',Impact,Haettenschweiler,'Franklin Gothic Bold','Arial Narrow Bold',system-ui,sans-serif;font-weight:400;font-size:clamp(38px,10.4vw,102px);line-height:1;letter-spacing:clamp(1px,.45vw,5px);transform-style:preserve-3d}
+.nfx-word span{display:inline-block;opacity:0;color:#fff;transform-origin:50% 100%;transform:rotateX(-96deg) translateZ(-70px);text-shadow:0 0 16px rgba(225,29,46,.55),0 0 44px rgba(225,29,46,.32),0 2px 0 rgba(0,0,0,.45);animation:nfxflip .92s cubic-bezier(.18,.86,.24,1.04) forwards;animation-delay:calc(.3s + var(--i) * .082s);will-change:transform,opacity}
+.nfx-word span:nth-child(n+6){color:#ff4257;text-shadow:0 0 16px rgba(255,59,78,.85),0 0 52px rgba(225,29,46,.55),0 2px 0 rgba(0,0,0,.45)}
+.nfx-tag{margin-top:clamp(10px,2vh,16px);font-size:clamp(8.5px,1.9vw,11px);letter-spacing:clamp(2.4px,1.4vw,7px);text-indent:clamp(2.4px,1.4vw,7px);text-transform:uppercase;color:#b99a63;animation:nfxrise 1s .78s both}
+.nfx-foot{position:absolute;left:50%;transform:translateX(-50%);bottom:calc(34px + var(--safe-b,0px));width:min(440px,86vw);z-index:3;display:flex;flex-direction:column;gap:9px;animation:nfxrise .9s .85s both}
+.nfx-now{display:flex;align-items:center;gap:8px;font-size:9.5px;letter-spacing:.22em;text-transform:uppercase;color:#8b8b9d;min-height:13px;white-space:nowrap;overflow:hidden}
+.nfx-dot{width:6px;height:6px;border-radius:50%;background:#e11d2e;box-shadow:0 0 0 4px rgba(225,29,46,.14),0 0 12px rgba(255,59,78,.7);animation:nfxpulse 1.6s ease-in-out infinite;flex:0 0 auto}
+.nfx-meter{position:relative;height:3px;border-radius:99px;background:rgba(255,255,255,.08);overflow:hidden}
+.nfx-meter i{display:block;height:100%;width:0;border-radius:99px;background:linear-gradient(90deg,#e11d2e,#ff5c6e 58%,#ffcc66);box-shadow:0 0 14px rgba(225,29,46,.72);transition:width .32s ease}
+.nfx-meta{display:flex;align-items:baseline;gap:10px;font-size:8.5px;letter-spacing:.2em;text-transform:uppercase;color:#5e5e70}
+.nfx-meta b{font-size:10.5px;letter-spacing:.08em;color:#ececf4;font-variant-numeric:tabular-nums}
+.nfx-meta em{font-style:normal;color:#ffcc66;letter-spacing:.18em}
+.nfx-meta span{margin-inline-start:auto;letter-spacing:.16em}
+#splash.nfx-splash.hide{opacity:0;transition:opacity .55s ease}
+@keyframes nfxflip{0%{opacity:0;transform:rotateX(-96deg) translateZ(-70px)}55%{opacity:1}100%{opacity:1;transform:rotateX(0deg) translateZ(0)}}
+@keyframes nfxrise{from{opacity:0;transform:translateY(12px)}to{opacity:1;transform:none}}
+@keyframes nfxhudin{from{opacity:0;transform:scale(.92) rotate(-3deg)}to{opacity:.92;transform:none}}
+@keyframes nfxspin{to{transform:rotate(360deg)}}
+@keyframes nfxbreath{0%,100%{transform:scale(.94);opacity:.72}50%{transform:scale(1.06);opacity:1}}
+@keyframes nfxpulse{0%,100%{transform:scale(1);opacity:1}50%{transform:scale(.7);opacity:.55}}
+@keyframes nfxscan{0%{transform:translateY(0)}100%{transform:translateY(520%)}}
+@keyframes nfxfloor{0%{background-position:0 0,0 0}100%{background-position:0 42px,62px 0}}
+@keyframes nfxtarget{0%,72%,100%{opacity:.35}18%{opacity:1}}
+@media(max-height:640px){.nfx-tag{display:none}.nfx-word{font-size:clamp(34px,8.4vw,72px)}.nfx-hud{width:min(80vw,460px)}.nfx-foot{bottom:calc(18px + var(--safe-b,0px))}}
+@media(max-width:420px){.nfx-kicker{font-size:8px;letter-spacing:.3em}.nfx-hud{width:100vw}}
+@media(prefers-reduced-motion:reduce){
+  #splash.nfx-splash .nfx-arcs,#splash.nfx-splash .nfx-radar,#splash.nfx-splash .nfx-floor{display:none}
+  #splash.nfx-splash .nfx-aura{animation:none;opacity:.8}
+  #splash.nfx-splash .nfx-scan::after{animation:none;display:none}
+  .nfx-word span{animation:none;opacity:1;transform:none}
+  .nfx-kicker,.nfx-tag,.nfx-foot{animation:none;opacity:1;transform:none}
+  .nfx-tg{animation:none;opacity:.8}
+  .nfx-dot{animation:none}
+}
+</style>
+
+<style id="nf11-football-css">
+/* ---------- live football (API-Football) ---------- */
+.fb-bar{display:flex;align-items:center;gap:10px;flex-wrap:wrap;margin:2px 0 12px}
+.fb-tabs{display:inline-flex;gap:2px;padding:3px;border-radius:99px;background:rgba(255,255,255,.05);border:1px solid var(--border)}
+.fb-tabs button{padding:7px 14px;border-radius:99px;font-size:11.5px;font-weight:800;color:#a9a9bb;background:transparent;border:0;white-space:nowrap}
+.fb-tabs button.on{background:linear-gradient(135deg,#e11d2e,#a30f1c);color:#fff;box-shadow:0 6px 16px rgba(225,29,46,.30)}
+.fb-pill{margin-inline-start:auto;display:inline-flex;align-items:center;gap:6px;font-size:9px;font-weight:800;letter-spacing:.14em;text-transform:uppercase;color:#8b8b9d;white-space:nowrap}
+.fb-pill i{width:6px;height:6px;border-radius:50%;background:#3ddc84;box-shadow:0 0 8px rgba(61,220,132,.9)}
+.fb-pill.off i{background:#ffb020;box-shadow:0 0 8px rgba(255,176,32,.9)}
+.fb-lgs{display:flex;gap:7px;overflow-x:auto;padding:0 0 12px;margin:0 -2px;scrollbar-width:none;-webkit-overflow-scrolling:touch}
+.fb-lgs::-webkit-scrollbar{display:none}
+.fb-lgs button{flex:0 0 auto;display:inline-flex;align-items:center;gap:6px;padding:6px 11px;border-radius:99px;border:1px solid var(--border);background:rgba(255,255,255,.03);font-size:10.5px;font-weight:800;color:#b9b9c8;white-space:nowrap}
+.fb-lgs button.on{border-color:rgba(225,29,46,.62);background:rgba(225,29,46,.15);color:#fff}
+.fb-lgs img{width:15px;height:15px;object-fit:contain}
+.fb-list{display:flex;flex-direction:column;gap:8px}
+.fbr{display:flex;align-items:center;gap:10px;width:100%;text-align:start;padding:11px 12px;border-radius:12px;border:1px solid var(--border);background:var(--bg-2);cursor:pointer;transition:border-color .16s,transform .16s}
+.fbr:hover{border-color:rgba(225,29,46,.5)}
+.fbr:active{transform:translateY(1px)}
+.fbr-l{width:34px;height:34px;border-radius:9px;display:grid;place-items:center;background:rgba(255,255,255,.05);overflow:hidden;flex:0 0 auto;color:#8d8d9c}
+.fbr-l img{width:24px;height:24px;object-fit:contain}
+.fbr-l svg{width:16px;height:16px}
+.fbr-c{flex:1;min-width:0;display:flex;flex-direction:column;gap:3px}
+.fbr-t{display:flex;align-items:center;gap:7px;font-size:12.5px;font-weight:800;color:var(--text);min-width:0}
+.fbr-t b{font-weight:800;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.fbr-t i{font-style:normal;margin-inline-start:auto;font-variant-numeric:tabular-nums;font-weight:900;color:#fff;padding-inline-start:8px}
+.fbr-cr{width:14px;height:14px;display:inline-grid;place-items:center;flex:0 0 auto}
+.fbr-cr img{width:14px;height:14px;object-fit:contain}
+.fbr-m{font-size:10px;color:var(--muted);overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.fbr-st{flex:0 0 auto;font-size:9px;font-weight:900;letter-spacing:.06em;text-transform:uppercase;padding:4px 7px;border-radius:6px;background:rgba(255,255,255,.06);color:#9b9bab;white-space:nowrap}
+.fbr-st.live{background:rgba(225,29,46,.16);color:#ff8d99;display:inline-flex;align-items:center;gap:5px}
+.fbr-st.live::before{content:'';width:5px;height:5px;border-radius:50%;background:#ff3b4e;animation:nfxpulse 1.4s ease-in-out infinite}
+.fbr-st.ft{color:#cfcfdd}
+.fbr.sk{pointer-events:none;opacity:.6}
+.sk-l{display:block;height:9px;border-radius:5px;background:linear-gradient(90deg,rgba(255,255,255,.05),rgba(255,255,255,.12),rgba(255,255,255,.05));background-size:200% 100%;animation:nfxshim 1.3s linear infinite}
+.sk-l.w70{width:70%}.sk-l.w55{width:55%}.sk-l.w40{width:40%}
+.fbr.sk .fbr-l{background:rgba(255,255,255,.05)}
+@keyframes nfxshim{0%{background-position:120% 0}100%{background-position:-60% 0}}
+.fb-empty{display:flex;flex-direction:column;align-items:center;text-align:center;gap:8px;padding:34px 18px;border:1px dashed var(--border);border-radius:14px;color:var(--muted)}
+.fb-empty svg{width:26px;height:26px;color:#6b6b7d}
+.fb-empty h4{font-size:13.5px;color:var(--text)}
+.fb-empty p{font-size:11.5px;max-width:38ch;line-height:1.5}
+.fb-setup{border:1px solid rgba(255,204,102,.34);border-radius:14px;padding:15px;background:linear-gradient(150deg,rgba(255,204,102,.07),rgba(255,255,255,.02))}
+.fb-setup-h{display:flex;gap:10px;align-items:flex-start}
+.fb-setup-h svg{width:20px;height:20px;color:#ffcc66;flex:0 0 auto;margin-top:2px}
+.fb-setup-h b{display:block;font-size:13px}
+.fb-setup-h span{display:block;font-size:11.5px;color:var(--muted);line-height:1.5;margin-top:3px}
+.fb-steps{margin:12px 0 12px;padding-inline-start:20px;display:flex;flex-direction:column;gap:7px;font-size:11.5px;color:#c9c9d8;line-height:1.5}
+.fb-steps code{background:rgba(255,255,255,.07);padding:1px 5px;border-radius:5px;font-size:11px;color:#ffcc66}
+.fb-steps a{color:#ff8d99;text-decoration:underline}
+.fb-setup-f{display:flex;gap:8px;flex-wrap:wrap}
+.fbm-score{display:grid;grid-template-columns:1fr auto 1fr;align-items:center;gap:10px;padding:6px 0 14px}
+.fbm-team{display:flex;flex-direction:column;align-items:center;gap:7px;text-align:center;min-width:0}
+.fbm-team .fbr-cr{width:44px;height:44px}
+.fbm-team .fbr-cr img{width:44px;height:44px}
+.fbm-team b{font-size:11.5px;line-height:1.3;font-weight:800}
+.fbm-mid{display:flex;flex-direction:column;align-items:center;gap:6px}
+.fbm-mid>b{font-size:22px;font-weight:900;letter-spacing:.04em;font-variant-numeric:tabular-nums}
+.fbm-pill{font-size:8.5px;font-weight:900;letter-spacing:.1em;text-transform:uppercase;padding:4px 8px;border-radius:99px;background:rgba(255,255,255,.07);color:#b9b9c8;white-space:nowrap}
+.fbm-pill.live{background:rgba(225,29,46,.18);color:#ff8d99}
+.fbm-facts{display:grid;grid-template-columns:repeat(auto-fit,minmax(120px,1fr));gap:8px;padding:12px 0;border-top:1px solid var(--border);border-bottom:1px solid var(--border)}
+.fbm-facts span{display:flex;flex-direction:column;gap:2px;min-width:0}
+.fbm-facts em{font-style:normal;font-size:8.5px;letter-spacing:.14em;text-transform:uppercase;color:#6b6b7d}
+.fbm-facts b{font-size:11.5px;font-weight:700;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.fbm-h{font-size:10.5px;letter-spacing:.16em;text-transform:uppercase;color:var(--muted);margin:14px 0 8px}
+.fbm-ev{display:flex;flex-direction:column;gap:6px}
+.fbm-load{font-size:11.5px;color:var(--muted);padding:6px 0}
+.fbm-ev-row{display:flex;align-items:baseline;gap:10px;font-size:11.5px;padding:7px 9px;border-radius:8px;background:rgba(255,255,255,.035)}
+.fbm-ev-row b{flex:0 0 34px;color:#ffcc66;font-variant-numeric:tabular-nums;font-size:11px}
+.fbm-ev-row .who{flex:1;min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.fbm-ev-row .who em{display:block;font-style:normal;font-size:10px;color:var(--muted)}
+.fbm-ev-row .what{flex:0 0 auto;font-size:9.5px;letter-spacing:.08em;text-transform:uppercase;color:#9b9bab}
+.fbm-ev-row.goal{background:rgba(225,29,46,.10)}
+.fbm-ev-row.goal .what{color:#ff8d99}
+.nf-fb-ov{align-items:center;justify-content:center;padding:16px}
+@media(max-width:520px){
+  .fb-pill{display:none}
+  .fb-tabs{width:100%;justify-content:space-between}
+  .fb-tabs button{flex:1;padding:8px 6px;font-size:11px}
+  .fbm-score{gap:6px}
+  .fbm-team .fbr-cr,.fbm-team .fbr-cr img{width:36px;height:36px}
+  .fbm-mid>b{font-size:19px}
+}
+</style>
+
+<style id="nf12-marks">
+.ch.nf7 .nf7-logo{width:28px;height:28px;flex:0 0 auto;display:grid;place-items:center;border-radius:8px;overflow:hidden;box-shadow:0 4px 14px rgba(0,0,0,.35)}
+.ch.nf7 .nf7-logo svg{width:28px;height:28px;display:block}
+.ch.nf7 .top{gap:9px}
+@media(max-width:520px){.ch.nf7 .nf7-logo{width:26px;height:26px}.ch.nf7 .nf7-logo svg{width:26px;height:26px}}
+</style>
 </head>
 <body class="noscroll">
 <!-- ============ SPLASH ============ -->
-<div id="splash" class="nf8-splash" role="status" aria-label="NANCYFLIX is starting">
-  <div class="nf8-grain" aria-hidden="true"></div>
-  <div class="nf8-beam" aria-hidden="true"></div>
-  <div class="nf8-iris" aria-hidden="true">
-    <span class="r1"></span><span class="r2"></span><span class="r3"></span>
-    <i style="--a:0deg"></i><i style="--a:45deg"></i><i style="--a:90deg"></i><i style="--a:135deg"></i>
-    <b></b>
+<div id="splash" class="nfx-splash" role="status" aria-label="NANCYFLIX is starting">
+  <div class="nfx-aura" aria-hidden="true"></div>
+  <div class="nfx-floor" aria-hidden="true"></div>
+  <svg class="nfx-hud" viewBox="0 0 400 400" aria-hidden="true" focusable="false">
+    <defs>
+      <linearGradient id="nfxGrad" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#e11d2e"/><stop offset=".55" stop-color="#ff5c6e"/><stop offset="1" stop-color="#ffcc66"/></linearGradient>
+      <radialGradient id="nfxSweep" cx=".5" cy=".5" r=".5"><stop offset="0" stop-color="#ff3b4e" stop-opacity=".5"/><stop offset=".72" stop-color="#ff3b4e" stop-opacity=".12"/><stop offset="1" stop-color="#ff3b4e" stop-opacity="0"/></radialGradient>
+    </defs>
+    <g class="nfx-rings">
+      <circle class="nfx-r0" cx="200" cy="200" r="196"/>
+      <circle class="nfx-r1" cx="200" cy="200" r="176"/>
+      <circle class="nfx-r2" cx="200" cy="200" r="140"/>
+      <circle class="nfx-r3" cx="200" cy="200" r="104"/>
+    </g>
+    <g class="nfx-arcs">
+      <circle class="nfx-a1" cx="200" cy="200" r="188"/>
+      <circle class="nfx-a2" cx="200" cy="200" r="162"/>
+    </g>
+    <g class="nfx-radar">
+      <path class="nfx-wedge" d="M200 200 L200 24 A176 176 0 0 1 324 76 Z" fill="url(#nfxSweep)"/>
+      <line class="nfx-ray" x1="200" y1="200" x2="200" y2="24"/>
+    </g>
+    <g class="nfx-targets">
+      <g class="nfx-tg t1"><circle cx="200" cy="26" r="4.5"/><path d="M200 14v-7M200 45v-7M186 26h-7M221 26h-7"/></g>
+      <g class="nfx-tg t2"><circle cx="330" cy="304" r="4"/><path d="M330 294v-6M330 320v-6M320 304h-6M347 304h-6"/></g>
+      <g class="nfx-tg t3"><circle cx="70" cy="296" r="4"/><path d="M70 286v-6M70 312v-6M60 296h-6M87 296h-6"/></g>
+      <g class="nfx-tg t4"><circle cx="322" cy="98" r="3.5"/><path d="M322 89v-6M322 113v-6M313 98h-6M337 98h-6"/></g>
+      <g class="nfx-tg t5"><circle cx="96" cy="118" r="3.5"/><path d="M96 109v-6M96 133v-6M87 118h-6M111 118h-6"/></g>
+    </g>
+  </svg>
+  <div class="nfx-scan" aria-hidden="true"></div>
+  <div class="nfx-core">
+    <div class="nfx-kicker"><i></i><span>DEV BRIAN STUDIOS</span><i></i></div>
+    <div class="nfx-word" id="splashWord" aria-label="NANCYFLIX"><span style="--i:0">N</span><span style="--i:1">A</span><span style="--i:2">N</span><span style="--i:3">C</span><span style="--i:4">Y</span><span style="--i:5">F</span><span style="--i:6">L</span><span style="--i:7">I</span><span style="--i:8">X</span></div>
+    <div class="nfx-tag">EVERY STORY DESERVES A SCREEN</div>
   </div>
-  <div class="nf8-core">
-    <div class="nf8-kicker">DEV BRIAN STUDIOS</div>
-    <div class="nf8-word">NANCYFLIX</div>
-    <div class="nf8-line"><i></i></div>
-    <div class="nf8-tag">EVERY STORY DESERVES A SCREEN</div>
-    <div class="nf8-stage" id="splashStage">Preparing your cinema</div>
-  </div>
-  <div class="nf8-bottom">
-    <div class="nf8-meter"><i id="splashBar"></i></div>
-    <div class="nf8-pct"><span id="splashPct">0%</span><em>LOADING</em></div>
+  <div class="nfx-foot">
+    <div class="nfx-now"><span class="nfx-dot"></span><span id="splashStage">LOADING YOUR WATCHLIST</span></div>
+    <div class="nfx-meter"><i id="splashBar"></i></div>
+    <div class="nfx-meta"><b id="splashPct">0%</b><em id="splashStat">BOOT</em><span>V8.2.0</span></div>
   </div>
 </div>
 
@@ -1881,13 +2046,58 @@ const Noti = {
     return n;
   },
   markAll(){State.notifications.forEach(n=>n.read=true);if(State.user)Store.setNoti(State.user.id,State.notifications);this.render();},
+  syncBadge(){
+    const unread=State.notifications.filter(n=>!n.read).length;
+    const dot=document.getElementById('notiDot');
+    if(!dot)return;
+    dot.textContent=unread>9?'9+':String(unread);
+    dot.classList.toggle('show',unread>0);
+    dot.setAttribute('aria-label',unread?unread+' unread notifications':'No unread notifications');
+  },
+  markRead(id){
+    const n=State.notifications.find(x=>x.id===id);
+    if(!n||n.read)return;
+    n.read=true;
+    if(State.user){try{Store.setNoti(State.user.id,State.notifications);}catch(e){}}
+    this.render();
+    try{this.syncBadge();}catch(e){}
+  },
+  clearVersion(ver){
+    const before=State.notifications.length;
+    State.notifications=State.notifications.filter(n=>String(n.srcVersion||'')!==String(ver));
+    if(State.user&&State.notifications.length!==before){try{Store.setNoti(State.user.id,State.notifications);}catch(e){}}
+    this.render();
+  },
   render(){
     const list=document.getElementById('notiList');
     const unread=State.notifications.filter(n=>!n.read).length;
     const dot=document.getElementById('notiDot');
-    dot.textContent=unread>9?'9+':unread;dot.classList.toggle('show',unread>0);
+    if(dot){dot.textContent=unread>9?'9+':String(unread);dot.classList.toggle('show',unread>0);}
+    if(!list)return;
     if(!State.notifications.length){list.innerHTML=`<div class="state">${svg(ICON.empty,'icon lg')}<h4>No notifications</h4><p>Updates, announcements and activity will appear here.</p></div>`;return;}
-    list.innerHTML=State.notifications.map(n=>`<div class="noti ${n.read?'':'unread'} ${n.announce?'announce':''}"><div class="ni">${svg(n.announce?ICON.alert:ICON.film,'icon sm')}</div><div style="flex:1"><div class="nt">${esc(n.title)}</div><div class="nm">${esc(n.message)}</div><div class="nd">${fmtDT(n.ts)}</div></div></div>`).join('');
+    list.innerHTML=State.notifications.map(n=>{
+      const acts=(n.actions||[]).map((a,i)=>`<button class="nf-act${a.primary?' pri':''}" type="button" data-nact="${esc(n.id)}|${i}">${esc(a.label)}</button>`).join('');
+      return `<div class="noti ${n.read?'':'unread'} ${n.announce?'announce':''}" data-nid="${esc(n.id)}">
+        <div class="ni">${svg(n.announce?ICON.alert:ICON.film,'icon sm')}</div>
+        <div style="flex:1;min-width:0"><div class="nt">${esc(n.title)}</div><div class="nm">${esc(n.message)}</div><div class="nd">${fmtDT(n.ts)}</div>
+        ${acts?`<div class="nf-acts">${acts}</div>`:''}</div>
+        ${n.read?'':'<span class="nf-dot" aria-hidden="true"></span>'}
+      </div>`;
+    }).join('');
+    const self=this;
+    list.querySelectorAll('[data-nact]').forEach(b=>{
+      b.onclick=e=>{
+        e.stopPropagation();
+        const [id,idx]=b.dataset.nact.split('|');
+        const n=State.notifications.find(x=>x.id===id);
+        self.markRead(id);
+        const a=n&&n.actions&&n.actions[+idx];
+        if(a&&a.fn){const f=window[a.fn];if(typeof f==='function'){try{f();}catch(err){}}}
+      };
+    });
+    list.querySelectorAll('[data-nid]').forEach(row=>{
+      row.onclick=()=>self.markRead(row.dataset.nid);
+    });
   },
   // pull admin broadcast announcements the user hasn't seen yet
   syncAnnouncements(){
@@ -2902,7 +3112,7 @@ const Admin={
   render(){
     if(!State.user||!State.user.isAdmin){document.getElementById('view-admin').innerHTML=`<div class="state">${svg(ICON.alert,'icon lg')}<h4>Administrator access only</h4><p>This area is restricted to verified administrators.</p></div>`;return;}
     const tabs=[['overview','Overview'],['users','User Directory'],['analytics','Analytics'],['inbox','Inbox'],['announce','Announcements'],['audit','Audit & Security'],['config','Site Config']];
-    document.getElementById('view-admin').innerHTML=`<div class="admin-shell"><aside class="admin-side"><div class="admin-brand">${svg(ICON.film,'icon')} Admin Studio <span class="badge admin">ADMIN</span></div>${tabs.map(t=>`<button data-at="${t[0]}" class="${t[0]===this.tab?'active':''}">${t[1]}</button>`).join('')}</aside><div class="admin-main" id="adminMain"></div></div>`;
+    document.getElementById('view-admin').innerHTML=`<div class="admin-shell"><aside class="admin-side"><div class="admin-brand">${svg(ICON.film,'icon')} Admin Studio <span class="badge admin">ADMIN</span></div>${tabs.map(t=>`<button data-at="${t[0]}" class="${t[0]===this.tab?'active':''}">${t[1]}</button>`).join('')}</aside><div class="admin-main">${HAS_BACKEND?'':'<div class="nf-local-note" style="margin:0 0 14px;padding:11px 13px;border-radius:11px;background:rgba(255,204,102,.10);border:1px solid rgba(255,204,102,.34);font-size:12px;line-height:1.5;color:#e8e3d4"><b>Local mode.</b> Accounts, announcements, user lists and analytics live in this browser only, so a second device will look empty. Add your Supabase project URL and anon key in the app config, then redeploy, to share one database across every device.</div>'}<div id="adminMain"></div></div>`;
     document.querySelector('.admin-side').onclick=e=>{const b=e.target.closest('[data-at]');if(b){this.tab=b.dataset.at;this.page=1;this.render();}};
     this.renderTab();
   },
@@ -3789,31 +3999,64 @@ const SplashRotator={
 };
 function runSplash(){
   try{SplashAudio.init();}catch(e){}
-  const quick=(LS.get('guestSettings',{}).splash===false||State.settings.splash===false);
-  const dur=quick?900:5400;
-  const t0=performance.now();
-  const bar=document.getElementById('splashBar');
-  const pct=document.getElementById('splashPct');
-  const stage=document.getElementById('splashStage');
-  const stages=[[0,'splashS1'],[0.28,'splashS2'],[0.54,'splashS3'],[0.80,'splashS4']];
-  let lastStage='';
-  const ease=x=>1-Math.pow(1-x,3);
-  const paint=(raw)=>{
-    const pr=ease(Math.max(0,Math.min(1,raw)));
-    if(bar)bar.style.width=(pr*100).toFixed(1)+'%';
-    if(pct)pct.textContent=Math.round(pr*100)+'%';
-    let key=stages[0][1];
-    for(let k=0;k<stages.length;k++){if(raw>=stages[k][0])key=stages[k][1];}
-    if(key!==lastStage){lastStage=key;if(stage)stage.textContent=t(key);}
-  };
-  const tick=now=>{
-    const raw=Math.min(1,(now-t0)/dur);
-    paint(raw);
-    if(raw<1)requestAnimationFrame(tick);else finishSplash();
-  };
-  requestAnimationFrame(tick);
-  /* hard failsafe: the splash can never trap the app, even if a frame stalls */
-  setTimeout(()=>{paint(1);finishSplash();},dur+400);
+  var sp=document.getElementById('splash');
+  var bar=document.getElementById('splashBar');
+  var pctEl=document.getElementById('splashPct');
+  var stageEl=document.getElementById('splashStage');
+  var statEl=document.getElementById('splashStat');
+  var reduce=false;
+  try{ reduce=!!(window.matchMedia&&window.matchMedia('(prefers-reduced-motion: reduce)').matches); }catch(e){}
+  var quick=false;
+  try{ quick=(LS.get('guestSettings',{}).splash===false||State.settings.splash===false); }catch(e){}
+  var dur=quick?900:(reduce?2600:5200);
+  var NOW=function(){ return (window.performance&&performance.now)?performance.now():Date.now(); };
+  var t0=NOW();
+  var STAGES=[[0,'LOADING YOUR WATCHLIST','BOOT'],[0.30,'SYNCING THE LIBRARY','CORE'],[0.58,'CALIBRATING PROJECTION','SYNC'],[0.84,'ALMOST READY','READY']];
+  var ceiling=0.22, last=-1, closed=false;
+  function bump(v){ if(v>ceiling) ceiling=Math.min(1,v); }
+  /* the bar follows real boot work: fonts, then the genre list the home page needs */
+  try{
+    if(document.fonts&&document.fonts.ready&&document.fonts.ready.then) document.fonts.ready.then(function(){ bump(0.56); });
+    else bump(0.56);
+  }catch(e){ bump(0.56); }
+  try{
+    if(window.TMDB&&TMDB.genres){
+      window.__nfGenres=TMDB.genres().then(function(g){
+        try{ if(g&&g.length){ State.genres=g; State.genreMap={}; g.forEach(function(x){State.genreMap[x.id]=x.name;}); } }catch(e){}
+        bump(0.88); return g;
+      }).catch(function(){ bump(0.88); return null; });
+    } else bump(0.88);
+  }catch(e){ bump(0.88); }
+  /* if a request hangs, the splash still completes instead of trapping the app */
+  setTimeout(function(){ bump(0.88); },2400);
+  function paint(){
+    var t=Math.min(1,(NOW()-t0)/dur);
+    var pr=1-Math.pow(1-Math.min(t,ceiling),3);
+    if(pr>=0.999) pr=1;
+    if(bar) bar.style.width=(pr*100).toFixed(1)+'%';
+    if(pctEl) pctEl.textContent=Math.round(pr*100)+'%';
+    var k=0; for(var i=0;i<STAGES.length;i++){ if(t>=STAGES[i][0]) k=i; }
+    if(k!==last){
+      last=k;
+      if(stageEl) stageEl.textContent=STAGES[k][1];
+      if(statEl) statEl.textContent=STAGES[k][2];
+    }
+    return {t:t,pr:pr};
+  }
+  function loop(){
+    if(closed) return;
+    var st=paint();
+    if(st.pr>=1||(st.t>=1&&ceiling>=0.88)){ closed=true; return done(); }
+    requestAnimationFrame(loop);
+  }
+  function done(){
+    if(bar) bar.style.width='100%';
+    if(pctEl) pctEl.textContent='100%';
+    if(stageEl) stageEl.textContent='READY';
+    setTimeout(finishSplash,quick?120:340);
+  }
+  requestAnimationFrame(loop);
+  setTimeout(function(){ if(!closed){ closed=true; done(); } },dur+1500);
 }
 let splashDone=false;
 function finishSplash(){
@@ -3845,16 +4088,13 @@ function resumeSession(){
    v5 — soft light theme helpers · update centre · 3-tier Premium ·
         Live TV · Live Football · cross-device entitlement · test mode
    ===================================================================== */
-const APP_VERSION = '8.0.0';
+const APP_VERSION = '8.2.0';
 const WHATS_NEW = [
-  'Sports rail with the next football fixtures and official broadcaster links',
-  'Focus and sleep timer with six individually stoppable ambient channels',
-  'Visible update banner with an Update-now action',
-  'Notification pop-up preferences: position, duration, sound and permission',
-  'Mobile menu drawer now shows every navigation button',
-  'Ten-language chooser with real flag icons',
-  'Cinematic splash with a restored soundtrack',
-  'Genres never load forever - retry and end-of-list handling'
+  'New cinematic boot sequence with HUD rings, radar sweep and per-letter 3D title flips',
+  'Live Football now shows live scores, today and upcoming fixtures with real crests',
+  'Live TV channels carry their own brand marks, and focus mode has nine new sounds',
+  'Update banner keeps both buttons, shows real progress and only confirms when the new build is running',
+  'Notification badges now clear as you read, and a pinned running ticker stays under the top bar'
 ];
 
 /* ---------- 1. Notifications with action buttons ---------- */
@@ -3886,9 +4126,13 @@ const UpdateCentre = {
   KEY: 'appVersion', SNOOZE: 'updateSnooze',
   check() {
     if (!State.user || !State.notifications) return;
+    try{
+      const keep=State.notifications.filter(n=>!n.srcVersion||String(n.srcVersion)===String(APP_VERSION)||!n.read);
+      if(keep.length!==State.notifications.length){State.notifications=keep;if(State.user)Store.setNoti(State.user.id,State.notifications);}
+    }catch(e){}
     const prev = LS.get(this.KEY, null);
     if (!prev) { LS.set(this.KEY, APP_VERSION); return; }   /* first run on this device — nothing to update */
-    if (prev === APP_VERSION) return;
+    if (prev === APP_VERSION || LS.get('nf8SeenVersion') === APP_VERSION) { return; }
     if ((LS.get(this.SNOOZE, 0) || 0) > Date.now()) return;
     if (State.notifications.some(n => n.srcVersion === APP_VERSION)) return;
     const n = {
@@ -3909,6 +4153,7 @@ const UpdateCentre = {
   },
   render() { try { Noti.render(); } catch (e) {} },
   async apply() {
+    if(window.NF8&&NF8.apply){ try{ return NF8.apply(NF8.target||APP_VERSION); }catch(e){} }
     LS.set(this.KEY, APP_VERSION); LS.del(this.SNOOZE);
     try {
       if (navigator.serviceWorker && navigator.serviceWorker.getRegistration) {
@@ -3921,6 +4166,7 @@ const UpdateCentre = {
     location.reload();
   },
   later() {
+    try{LS.set('nf8SnoozeUntil',Date.now()+6*3600*1000);NF8.hide&&NF8.hide(6*3600*1000);}catch(e){}
     LS.set(this.SNOOZE, Date.now() + 6 * 3600 * 1000);
     LS.set(this.KEY, APP_VERSION);
     State.notifications = State.notifications.filter(n => n.srcVersion !== APP_VERSION);
@@ -5145,7 +5391,7 @@ const Live = {
   runSplash();
   setTimeout(async()=>{
     try{
-      const g=await TMDB.genres();
+      const g=await (window.__nfGenres||TMDB.genres());
       if(g&&g.length){State.genres=g;State.genreMap={};g.forEach(x=>State.genreMap[x.id]=x.name);}
     }catch(e){}
   },900);
@@ -5174,6 +5420,7 @@ const Live = {
     check: '<path d="M20 6L9 17l-5-5"/>',
     star: '<path d="M12 3l2.7 5.6 6.1.9-4.4 4.3 1 6.1L12 17l-5.4 2.9 1-6.1L3.2 9.5l6.1-.9z"/>',
     spark: '<path d="M12 3l1.8 5.2L19 10l-5.2 1.8L12 17l-1.8-5.2L5 10l5.2-1.8z"/>',
+    cloud: '<path d="M7 18h10a4 4 0 000-8 6 6 0 00-11.6 1.6A3.5 3.5 0 007 18z"/>',
     arrow: '<path d="M5 12h14M13 6l6 6-6 6"/>',
     out: '<path d="M14 4h6v6M20 4l-9 9M18 14v6H4V6h6"/>',
     image: '<rect x="3" y="4" width="18" height="16" rx="2"/><circle cx="8.5" cy="9" r="1.5"/><path d="M21 16l-5-5-6 6"/>',
@@ -5374,11 +5621,39 @@ const Live = {
 
   function tierNow() { try { return NF6.tier(); } catch (e) { return 'free'; } }
 
+  /* self-drawn brand marks (vector monograms, no licensed artwork) */
+  var MARKS = {
+    'Citizen TV': ['#c8102e', 'CIT', 15], 'Inooro TV': ['#0f8a3c', 'INO', 15], 'K24 TV': ['#0a3d91', 'K24', 15],
+    'KTN News': ['#15151f', 'KTN', 15], 'KTN Home': ['#7a1f2b', 'KTN', 15], 'NTV Kenya': ['#1b3fa0', 'NTV', 15],
+    'KBC': ['#0a7a4a', 'KBC', 15], 'Ramogi TV': ['#b5651d', 'RAM', 14], 'Kameme TV': ['#1f7a4d', 'KAM', 14],
+    'TV47': ['#d01f2a', '47', 17], '3 Stones TV': ['#4b4b66', '3S', 17], 'Akili Kids': ['#f2a71b', 'AKI', 14],
+    'Kass TV': ['#1b6e8f', 'KAS', 14], 'Meru TV': ['#2f7d32', 'MER', 14], 'Mashariki TV': ['#a33b1f', 'MSH', 14],
+    'Bukedde TV 1': ['#0e7c7b', 'B1', 17], 'Bukedde TV 2': ['#0e7c7b', 'B2', 17],
+    'TBC 1': ['#1b5e20', 'TBC', 15], 'TBC 2': ['#1b5e20', 'TBC', 15],
+    'France 24 English': ['#0a1f44', 'F24', 15], 'DW English': ['#0b2c5a', 'DW', 17], 'Al Jazeera English': ['#8a6a00', 'AJ', 16]
+  };
+  var DOM7 = {'Citizen TV':'citizen.digital','Inooro TV':'inooro.tv','K24 TV':'k24tv.co.ke','KTN News':'standardmedia.co.ke','KTN Home':'standardmedia.co.ke','NTV Kenya':'ntvkenya.co.ke','KBC':'kbc.co.ke','Ramogi TV':'royalmedia.co.ke','Kameme TV':'kameme.co.ke','TV47':'tv47.co.ke','Red Bull TV':'redbull.com','France 24 English':'france24.com','DW English':'dw.com','Al Jazeera English':'aljazeera.com','Bloomberg TV':'bloomberg.com','NASA TV':'nasa.gov'};
+  function brandImg(c){
+    var dom = DOM7[c.name];
+    if(!dom){ var guess=String(c.name||'').toLowerCase().replace(/[^a-z0-9]/g,''); if(guess.length>3) dom = c.cc==='KE'? guess+'.co.ke' : guess+'.com'; }
+    if(!dom) return '';
+    return '<img class="nf7-brand" src="https://www.google.com/s2/favicons?sz=128&domain=' + encodeURIComponent(dom) + '" alt="" loading="lazy" decoding="async" referrerpolicy="no-referrer">';
+  }
+  document.addEventListener('error',function(e){var t=e.target;if(t&&t.classList&&t.classList.contains('nf7-brand')){t.style.display='none';}},true);
+  function markSVG(c) {
+    var m = MARKS[c.name] || ['#2a2a36', String(c.name || 'TV').replace(/[^A-Za-z0-9]/g, '').slice(0, 3).toUpperCase(), 14];
+    return '<svg class="nf7-mark" viewBox="0 0 48 48" role="img" aria-label="' + esc(c.name) + ' mark" focusable="false">' +
+      '<rect width="48" height="48" rx="11" fill="' + m[0] + '"/>' +
+      '<rect width="48" height="21" fill="rgba(255,255,255,.08)"/>' +
+      '<circle cx="39.5" cy="8.5" r="2.6" fill="rgba(255,255,255,.5)"/>' +
+      '<text x="24" y="31.5" text-anchor="middle" font-family="Arial Black,Arial,sans-serif" font-size="' + m[2] + '" font-weight="900" letter-spacing="-.6" fill="#fff">' + esc(m[1]) + '</text></svg>';
+  }
+
   function cardHTML(c, idx) {
     var locked = RANK[tierNow()] < RANK[c.tier];
     var src = c.feeds.some(function (f) { return f.type === 'hls'; }) ? 'Direct' : 'YouTube';
     return '<button class="ch nf7 ' + (locked ? 'locked' : '') + '" data-ch7="' + idx + '" aria-label="' + esc(c.name + (locked ? ' — needs Plus' : '')) + '">' +
-      '<span class="top"><span class="nm">' + esc(c.name) + '</span><span class="nf-badge ' + (c.tier === 'free' ? '' : 'plus') + '">' + (c.tier === 'free' ? 'FREE' : 'PLUS') + '</span></span>' +
+      '<span class="top"><span class="nf7-logo">' + markSVG(c) + brandImg(c) + '</span><span class="nm">' + esc(c.name) + '</span><span class="nf-badge ' + (c.tier === 'free' ? '' : 'plus') + '">' + (c.tier === 'free' ? 'FREE' : 'PLUS') + '</span></span>' +
       '<span class="note">' + esc(c.cc + ' · ' + c.note) + '</span>' +
       '<span class="foot">' + (locked
         ? '<span class="unlock">' + ic('lock') + 'Unlock</span>'
@@ -5829,7 +6104,8 @@ const NF8={
 
   /* ---------- 2. focus / sleep timer ---------- */
   focus:{theme:'midnight',min:25,left:0,timer:null,running:false,paused:false,vol:0.45,master:null,ctx:null,channels:{},wake:null,
-    NAMES:[['rain','Rain','soft rainfall'],['ocean','Ocean','slow waves'],['forest','Forest','wind & birds'],['fire','Fireplace','warm crackle'],['night','Night','crickets & hum'],['brown','Brown noise','deep masking']],
+    NAMES:[['rain','Rain','soft rainfall'],['ocean','Ocean','slow waves'],['forest','Forest','wind & birds'],['fire','Fireplace','warm crackle'],['night','Night','crickets & hum'],['brown','Brown noise','deep masking'],
+      ['river','Flowing river','water over stones'],['birds','Morning birdsong','dawn chorus'],['piano','Soft piano','gentle keys'],['space','Deep space','low cosmic drone'],['city','Rainy city','streets & tyres'],['bells','Meditation bells','singing bowls'],['wolves','Distant wolves','far-off howls'],['lake','Lake waves','lapping shore'],['thunder','Distant thunder','rolling rumbles']],
     open(){
       let ov=document.getElementById('nf8Focus');
       if(!ov){ov=document.createElement('div');ov.id='nf8Focus';document.body.appendChild(ov);}
@@ -5894,20 +6170,143 @@ const NF8={
       this.channels[id]={g:g,nodes:nodes};
     },
     build(id,c,g){
-      const len=c.sampleRate*4, buf=c.createBuffer(1,len,c.sampleRate), d=buf.getChannelData(0);
-      let last=0;
-      for(let i=0;i<len;i++){const w=Math.random()*2-1;last=(last+0.02*w)/1.02;d[i]=w*0.6+last*2.2;}
-      const src=c.createBufferSource(); src.buffer=buf; src.loop=true;
-      const f=c.createBiquadFilter();
-      if(id==='rain'){f.type='highpass';f.frequency.value=900;}
-      else if(id==='ocean'){f.type='lowpass';f.frequency.value=700;const lfo=c.createOscillator(),lg=c.createGain();lfo.frequency.value=0.09;lg.gain.value=320;lfo.connect(lg);lg.connect(f.frequency);lfo.start();this.channels._lfo=lfo;}
-      else if(id==='forest'){f.type='bandpass';f.frequency.value=1900;f.Q.value=0.6;}
-      else if(id==='fire'){f.type='bandpass';f.frequency.value=480;f.Q.value=0.7;}
-      else if(id==='night'){f.type='bandpass';f.frequency.value=3400;f.Q.value=2.2;}
-      else {f.type='lowpass';f.frequency.value=260;}
-      const vg=c.createGain(); vg.gain.value=id==='brown'?0.55:0.32;
-      src.connect(f); f.connect(vg); vg.connect(g); src.start();
-      return src;
+      const t0=c.currentTime;
+      const noise=()=>{
+        const len=c.sampleRate*4, buf=c.createBuffer(1,len,c.sampleRate), d=buf.getChannelData(0);
+        let last=0;
+        for(let i=0;i<len;i++){const w=Math.random()*2-1;last=(last+0.02*w)/1.02;d[i]=w*0.6+last*2.2;}
+        const src=c.createBufferSource(); src.buffer=buf; src.loop=true; return src;
+      };
+      const chain=(type,freq,q,vol)=>{
+        const src=noise(), f=c.createBiquadFilter(), vg=c.createGain();
+        f.type=type; f.frequency.value=freq; if(q)f.Q.value=q;
+        vg.gain.value=vol==null?0.32:vol;
+        src.connect(f); f.connect(vg); vg.connect(g); src.start();
+        return {src:src,f:f,vg:vg};
+      };
+      const lfo=(param,rate,depth,type)=>{
+        const o=c.createOscillator(), gg=c.createGain();
+        o.type=type||'sine'; o.frequency.value=rate; gg.gain.value=depth;
+        o.connect(gg); gg.connect(param); o.start(); return o;
+      };
+      const after=(fn,min,max)=>{
+        let t=null, dead=false;
+        const next=()=>{ if(dead)return; const d=(min+Math.random()*(max-min))*1000; t=setTimeout(()=>{ if(dead)return; try{fn();}catch(e){} next(); },d); };
+        next();
+        return {stop(){dead=true;clearTimeout(t);}};
+      };
+      const blip=(freq,when,dur,type,peak,glide)=>{
+        const o=c.createOscillator(), gg=c.createGain(), st=t0+when;
+        o.type=type||'sine'; o.frequency.setValueAtTime(freq,st);
+        if(glide)o.frequency.exponentialRampToValueAtTime(glide,st+dur*0.6);
+        gg.gain.setValueAtTime(0.0001,st);
+        gg.gain.exponentialRampToValueAtTime(peak||0.2,st+Math.min(0.09,dur*0.25));
+        gg.gain.exponentialRampToValueAtTime(0.0001,st+dur);
+        o.connect(gg); gg.connect(g); o.start(st); o.stop(st+dur+0.06);
+        return o;
+      };
+      const kill=(list)=>({stop(){list.forEach(x=>{try{x.stop();}catch(e){}})}});
+
+      if(id==='rain')  return chain('highpass',900,null,0.32).src;
+      if(id==='forest')return chain('bandpass',1900,0.6,0.30).src;
+      if(id==='fire')  return chain('bandpass',480,0.7,0.32).src;
+      if(id==='night') return chain('bandpass',3400,2.2,0.26).src;
+      if(id==='brown') return chain('lowpass',260,null,0.55).src;
+
+      if(id==='ocean'){
+        const n=chain('lowpass',700,null,0.34);
+        return kill([lfo(n.f.frequency,0.09,320), n.src]);
+      }
+      if(id==='river'){
+        const n=chain('bandpass',1150,0.8,0.26);
+        return kill([lfo(n.f.frequency,0.21,420), lfo(n.vg.gain,0.13,0.10), n.src]);
+      }
+      if(id==='lake'){
+        const n=chain('lowpass',520,null,0.30);
+        return kill([lfo(n.vg.gain,0.11,0.19), lfo(n.f.frequency,0.07,120), n.src]);
+      }
+      if(id==='city'){
+        const n=chain('lowpass',430,null,0.24);
+        const sw=after(()=>{blip(1300+Math.random()*1000,0.02,0.55,'bandpass',0.05,600+Math.random()*400);},5,13);
+        return kill([lfo(n.f.frequency,0.07,150), n.src, sw]);
+      }
+      if(id==='space'){
+        const o1=c.createOscillator(), o2=c.createOscillator(), o3=c.createOscillator();
+        o1.type='sine'; o1.frequency.value=55;
+        o2.type='sine'; o2.frequency.value=82.4; o2.detune.value=6;
+        o3.type='triangle'; o3.frequency.value=110; o3.detune.value=-8;
+        const gg=c.createGain(); gg.gain.value=0.17;
+        const f=c.createBiquadFilter(); f.type='lowpass'; f.frequency.value=420;
+        o1.connect(gg); o2.connect(gg); o3.connect(gg); gg.connect(f); f.connect(g);
+        [o1,o2,o3].forEach(o=>o.start());
+        return kill([lfo(f.frequency,0.035,200), o1, o2, o3]);
+      }
+      if(id==='birds'){
+        const n=chain('highpass',2400,null,0.045);
+        const chirp=()=>{
+          const f=2300+Math.random()*1700, o=c.createOscillator(), gg=c.createGain(), st=t0+0.03;
+          o.type='sine';
+          o.frequency.setValueAtTime(f,st);
+          o.frequency.exponentialRampToValueAtTime(f*1.45,st+0.07);
+          o.frequency.exponentialRampToValueAtTime(f*0.9,st+0.16);
+          gg.gain.setValueAtTime(0.0001,st);
+          gg.gain.exponentialRampToValueAtTime(0.13,st+0.04);
+          gg.gain.exponentialRampToValueAtTime(0.0001,st+0.21);
+          o.connect(gg); gg.connect(g); o.start(st); o.stop(st+0.26);
+        };
+        const a=after(chirp,2.2,5.2), b=after(chirp,3.4,6.6), d=after(chirp,6,11);
+        return kill([a,b,d,n.src]);
+      }
+      if(id==='piano'){
+        const scale=[261.63,293.66,329.63,392.0,440.0,523.25,587.33];
+        const play=()=>{
+          const f=scale[Math.floor(Math.random()*scale.length)]*(Math.random()<0.25?2:1);
+          blip(f,0.02,3.4,'sine',0.13);
+          blip(f*2,0.02,2.2,'triangle',0.035);
+        };
+        return kill([after(play,2.8,6.2), after(play,5.5,9)]);
+      }
+      if(id==='bells'){
+        const base=[528,396,660];
+        const strike=()=>{
+          const f=base[Math.floor(Math.random()*base.length)];
+          blip(f,0.02,7,'sine',0.15);
+          blip(f*2.01,0.02,4.2,'sine',0.045);
+          blip(f*2.98,0.02,2.6,'sine',0.018);
+        };
+        return kill([after(strike,7,15)]);
+      }
+      if(id==='wolves'){
+        const howl=()=>{
+          const o=c.createOscillator(), gg=c.createGain(), v=c.createOscillator(), vg=c.createGain();
+          const st=t0+0.05;
+          o.type='sine'; o.frequency.setValueAtTime(290,st);
+          o.frequency.linearRampToValueAtTime(430,st+1.1);
+          o.frequency.linearRampToValueAtTime(365,st+2.5);
+          o.frequency.linearRampToValueAtTime(240,st+3.7);
+          v.type='sine'; v.frequency.value=5.4; vg.gain.value=7;
+          v.connect(vg); vg.connect(o.frequency);
+          gg.gain.setValueAtTime(0.0001,st);
+          gg.gain.exponentialRampToValueAtTime(0.085,st+1.0);
+          gg.gain.exponentialRampToValueAtTime(0.0001,st+3.9);
+          o.connect(gg); gg.connect(g);
+          o.start(st); o.stop(st+4); v.start(st); v.stop(st+4);
+        };
+        return kill([after(howl,16,30)]);
+      }
+      if(id==='thunder'){
+        const rumble=()=>{
+          const src=noise(), f=c.createBiquadFilter(), gg=c.createGain(), st=t0+0.05;
+          f.type='lowpass'; f.frequency.value=110;
+          gg.gain.setValueAtTime(0.0001,st);
+          gg.gain.exponentialRampToValueAtTime(0.5,st+0.4);
+          gg.gain.exponentialRampToValueAtTime(0.0001,st+4.4);
+          src.connect(f); f.connect(gg); gg.connect(g);
+          src.start(st); src.stop(st+4.5);
+        };
+        return kill([after(rumble,12,26)]);
+      }
+      return chain('lowpass',260,null,0.32).src;
     },
     stopCh(id){const ch=this.channels[id];if(!ch)return;try{ch.g.gain.cancelScheduledValues(this.ctx.currentTime);ch.g.gain.setTargetAtTime(0,this.ctx.currentTime,0.12);}catch(e){}const t=setTimeout(()=>{try{ch.nodes.forEach(n=>n.stop&&n.stop());}catch(e){}},500);if(ch.nodes)ch.nodes.push({stop:()=>clearTimeout(t)});delete this.channels[id];},
     stopAll(silent){Object.keys(this.channels).forEach(k=>{if(k!=='_lfo')this.stopCh(k);});clearInterval(this.timer);this.running=false;this.paused=false;this.left=this.min*60;const b=document.querySelector('#nf8Focus [data-fx="pause"]');if(b)b.textContent='Pause';document.querySelectorAll('#nf8Focus .nf8-snd').forEach(x=>x.classList.remove('on'));this.paintClock();if(!silent)this.release();},
@@ -5960,23 +6359,99 @@ const NF8={
   },
 
   /* ---------- 5. update banner ---------- */
+  /* ---- updates: banner with two buttons, real progress, verified result ---- */
+  PENDING:'nf8PendingVersion',
+  banner:null,
+  mountBanner(){
+    if(this.banner&&document.body.contains(this.banner))return this.banner;
+    const el=document.createElement('div');el.id='nf8Update';
+    el.innerHTML='<div class="row"><span class="ic">'+IC('cloud')+'</span><div class="tx"><b>Update ready</b><span class="sub" id="nf8UpdSub">A newer NANCYFLIX build is available</span></div><button class="x" type="button" aria-label="Dismiss">'+IC('x')+'</button></div>'+
+      '<div class="acts"><button class="go" type="button" id="nf8UpdGo">Update now</button><button class="later" type="button" id="nf8UpdLater">Remind me later</button></div>'+
+      '<div class="prog"><i id="nf8UpdBar"></i></div>';
+    document.body.appendChild(el);this.banner=el;
+    const self=this;
+    el.querySelector('.x').onclick=()=>self.hide(6*3600*1000);
+    el.querySelector('#nf8UpdLater').onclick=()=>{self.hide(6*3600*1000);Toast.show('Reminder set','We will remind you again in about 6 hours.','info',3200);};
+    el.querySelector('#nf8UpdGo').onclick=()=>self.apply(self.target||'');
+    return el;
+  },
+  hide(ms){
+    if(this.banner)this.banner.classList.remove('show');
+    if(ms)LS.set('nf8SnoozeUntil',Date.now()+ms);
+  },
+  show(v){
+    const el=this.mountBanner();this.target=v.version;
+    el.querySelector('#nf8UpdSub').textContent='v'+v.version+(v.notes&&v.notes.length?' · '+v.notes[0]:'');
+    el.classList.remove('busy');el.classList.add('show');
+  },
+  step(p,label){
+    const el=this.banner;if(!el)return;
+    try{const g=el.querySelector('#nf8UpdGo');if(g)g.textContent='Updating '+Math.round(p*100)+'%';}catch(e){}
+    el.classList.add('busy');
+    const bar=el.querySelector('#nf8UpdBar');if(bar)bar.style.width=Math.round(p*100)+'%';
+    const sub=el.querySelector('#nf8UpdSub');if(sub&&label)sub.textContent=label;
+  },
+  async apply(version){
+    if(this._busy)return;this._busy=true;
+    const el=this.mountBanner();
+    el.querySelectorAll('button').forEach(b=>b.setAttribute('aria-disabled','true'));
+    el.classList.add('busy');
+    try{LS.set(this.PENDING,version||'');LS.set('appVersion',version||APP_VERSION);}catch(e){}
+    this.step(.12,'Preparing the new build…');
+    try{
+      if('serviceWorker' in navigator){
+        const regs=await navigator.serviceWorker.getRegistrations();
+        this.step(.3,'Refreshing the service worker…');
+        await Promise.all(regs.map(r=>{
+          try{if(r.waiting)r.waiting.postMessage({type:'SKIP_WAITING'});}catch(e){}
+          return r.update().catch(()=>{});
+        }));
+      }
+    }catch(e){}
+    this.step(.55,'Clearing the old cached files…');
+    try{if(window.caches){const ks=await caches.keys();await Promise.all(ks.map(k=>caches.delete(k)));}}catch(e){}
+    this.step(.82,'Almost there — reloading…');
+    setTimeout(()=>{try{location.reload();}catch(e){}},650);
+  },
+  afterBoot(){
+    let pending='';try{pending=LS.get(this.PENDING,'');}catch(e){}
+    if(!pending)return;
+    const done=!this._newer(pending,APP_VERSION);   /* we are on or past the requested build */
+    try{LS.del(this.PENDING);}catch(e){}
+    if(done){
+      try{LS.set('appVersion',APP_VERSION);LS.set('nf8SeenVersion',pending);}catch(e){}
+      try{this.hide&&this.banner&&this.banner.classList.remove('show');}catch(e){}
+      try{Noti.clearVersion(pending);Noti.syncBadge();}catch(e){}
+      try{Toast.show('Updated successfully','You are running NANCYFLIX v'+APP_VERSION+'.','ok',5200);}catch(e){}
+    }else{
+      try{Toast.show('Update did not finish','Your browser is still showing v'+APP_VERSION+'. Close the tab, reopen the site, then try Update again.','warn',9000);}catch(e){}
+      this.show({version:pending,notes:[]});
+    }
+  },
   updateCheck(){
+    this.afterBoot();
     fetch('version.json?t='+Date.now(),{cache:'no-store'}).then(r=>r.ok?r.json():null).then(v=>{
       if(!v||!v.version)return;
-      if(!NF8._newer(v.version,APP_VERSION))return;
+      if(!this._newer(v.version,APP_VERSION))return;
+      const until=LS.get('nf8SnoozeUntil',0)||0;
+      if(until>Date.now())return;
       if(LS.get('nf8SeenVersion')===v.version)return;
-      Toast.show('Update ready · v'+v.version,(v.notes&&v.notes.length?v.notes.slice(0,2).join(' · '):'A new build is available.')+' — tap Update now to load it.','info',0,{action:{label:'Update now',fn:async()=>{
-        LS.set('nf8SeenVersion',v.version);
-        try{const regs=await navigator.serviceWorker.getRegistrations();await Promise.all(regs.map(r=>r.unregister()));}catch(e){}
-        try{if(window.caches){const ks=await caches.keys();await Promise.all(ks.map(k=>caches.delete(k)));}}catch(e){}
-        Toast.show('Updating…','Loading the new build. This takes a few seconds.','ok',2600);
-        setTimeout(()=>location.reload(),900);
-      }}});
+      this.show(v);
     }).catch(()=>{});
   },
   _newer(a,b){const A=String(a).split('.').map(Number),B=String(b).split('.').map(Number);for(let i=0;i<Math.max(A.length,B.length);i++){const x=A[i]||0,y=B[i]||0;if(x>y)return true;if(x<y)return false;}return false;},
 
   boot(){
+    /* keep the sticky ticker exactly under the top bar */
+    try{
+      const bar=document.querySelector('.topbar');
+      const setH=()=>{const h=bar?Math.round(bar.getBoundingClientRect().height):64;document.documentElement.style.setProperty('--nf-top-h',h+'px');};
+      setH();
+      window.addEventListener('resize',setH,{passive:true});
+      window.addEventListener('orientationchange',()=>setTimeout(setH,220),{passive:true});
+      if(window.ResizeObserver&&bar)new ResizeObserver(setH).observe(bar);
+    }catch(e){}
+    try{Noti.syncBadge();}catch(e){}
     try{const lf=document.getElementById('langFlag');if(lf)lf.innerHTML=NF8_FLAG('gb');}catch(e){}
     try{if(LANG_META&&LANG_META[Lang.current()]){const lf=document.getElementById('langFlag');if(lf)lf.innerHTML=LANG_META[Lang.current()].flag;}}catch(e){}
     try{document.getElementById('focusBtn').onclick=()=>this.focus.open();}catch(e){}
@@ -5996,5 +6471,397 @@ const NF8={
 if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',()=>NF8.boot());else NF8.boot();
 
 </script>
+
+<script id="nf11-football">
+/* ================= NANCYFLIX v8.1 · live football (API-Football v3) ================= */
+(function () {
+  'use strict';
+  var Q = function (s, r) { return (r || document).querySelector(s); };
+  var QA = function (s, r) { return Array.prototype.slice.call((r || document).querySelectorAll(s)); };
+  function esc(s) { return String(s == null ? '' : s).replace(/[&<>"']/g, function (c) { return { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]; }); }
+  function ic(n, c) { try { return window.NF7.ic(n, c); } catch (e) { return ''; } }
+  function pad(n) { return ('0' + n).slice(-2); }
+
+  var LGS = [
+    { id: 39, name: 'Premier League', cc: 'England', site: 'https://www.premierleague.com/broadcasters', siteName: 'Premier League broadcasters' },
+    { id: 140, name: 'LaLiga', cc: 'Spain', site: 'https://www.laliga.com/en-GB/where-to-watch', siteName: 'LaLiga where to watch' },
+    { id: 135, name: 'Serie A', cc: 'Italy', site: 'https://www.legaseriea.it/en', siteName: 'Serie A official site' },
+    { id: 78, name: 'Bundesliga', cc: 'Germany', site: 'https://www.bundesliga.com/en/bundesliga/where-to-watch', siteName: 'Bundesliga where to watch' },
+    { id: 61, name: 'Ligue 1', cc: 'France', site: 'https://www.ligue1.com/', siteName: 'Ligue 1 official site' },
+    { id: 2, name: 'Champions League', cc: 'Europe', site: 'https://www.uefa.com/uefachampionsleague/', siteName: 'Champions League official site' }
+  ];
+  var BYID = {}; LGS.forEach(function (l) { BYID[l.id] = l; });
+  var TABS = [['live', 'Live now'], ['today', 'Today'], ['next', 'Upcoming']];
+  var ST = { tab: 'live', lg: 'all', configured: null, remaining: null, data: {}, busy: false, err: '', timer: null, rows: [] };
+
+  function season() { var d = new Date(); return d.getMonth() >= 6 ? d.getFullYear() : d.getFullYear() - 1; }
+  function todayISO() { var d = new Date(); return d.getFullYear() + '-' + pad(d.getMonth() + 1) + '-' + pad(d.getDate()); }
+  function isToday(d) { var n = new Date(); return d && d.getDate() === n.getDate() && d.getMonth() === n.getMonth() && d.getFullYear() === n.getFullYear(); }
+  function hhmm(d) { try { return d.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }); } catch (e) { return ''; } }
+  function dmy(d) { try { return d.toLocaleDateString(undefined, { weekday: 'short', day: 'numeric', month: 'short' }); } catch (e) { return ''; } }
+
+  /* ---------- transport ---------- */
+  function api(params) {
+    var qs = Object.keys(params).filter(function (k) { return params[k] !== '' && params[k] != null; })
+      .map(function (k) { return encodeURIComponent(k) + '=' + encodeURIComponent(params[k]); }).join('&');
+    return fetch('api/football?' + qs, { headers: { Accept: 'application/json' }, cache: 'no-store' }).then(function (r) {
+      return r.text().then(function (t) {
+        var j = null; try { j = JSON.parse(t); } catch (e) {}
+        if (r.status === 503 || r.status === 404 || r.status === 405) { var e1 = new Error('not configured'); e1.code = 'nocfg'; throw e1; }
+        if (!r.ok) { var e2 = new Error((j && j.error) || ('HTTP ' + r.status)); e2.code = r.status === 429 ? 'quota' : 'http'; throw e2; }
+        if (!j) { var e3 = new Error('The feed did not answer with data'); e3.code = 'parse'; throw e3; }
+        if (j._remaining != null) ST.remaining = j._remaining;
+        if (j._configured === true) ST.configured = true;
+        return j;
+      });
+    });
+  }
+
+  function query() {
+    var p = { ep: 'fixtures', timezone: 'Africa/Nairobi' };
+    if (ST.tab === 'live') { p.live = 'all'; if (ST.lg !== 'all') p.league = ST.lg; }
+    else if (ST.tab === 'today') { p.date = todayISO(); if (ST.lg !== 'all') { p.league = ST.lg; p.season = season(); } }
+    else { p.next = 20; if (ST.lg !== 'all') { p.league = ST.lg; p.season = season(); } }
+    return p;
+  }
+
+  function norm(f) {
+    f = f || {};
+    var fx = f.fixture || {}, lg = f.league || {}, tm = f.teams || {}, gl = f.goals || {};
+    var when = null;
+    if (fx.date) { when = new Date(fx.date); if (isNaN(when.getTime())) when = null; }
+    return {
+      id: fx.id,
+      when: when,
+      venue: (fx.venue && fx.venue.name) || '',
+      city: (fx.venue && fx.venue.city) || '',
+      ref: (fx.referee && fx.referee.name) || '',
+      status: { short: (fx.status && fx.status.short) || '', long: (fx.status && fx.status.long) || '', min: fx.status ? fx.status.elapsed : null },
+      lg: { id: lg.id, name: lg.name || '', country: lg.country || '', logo: lg.logo || '', round: lg.round || '', season: lg.season },
+      home: { id: (tm.home || {}).id, name: (tm.home || {}).name || '', logo: (tm.home || {}).logo || '', goals: gl.home },
+      away: { id: (tm.away || {}).id, name: (tm.away || {}).name || '', logo: (tm.away || {}).logo || '', goals: gl.away }
+    };
+  }
+
+  function live(row) { return /^(1H|2H|HT|ET|BT|P|LIVE|INT|SUSP)$/.test(row.status.short); }
+  function finished(row) { return /^(FT|AET|PEN)$/.test(row.status.short); }
+  function badge(row) {
+    var st = row.status.short, min = row.status.min != null ? row.status.min + "'" : '';
+    if (live(row)) return '<span class="fbr-st live">' + esc(st === 'HT' ? 'HT' : (st === '1H' || st === '2H' || st === 'ET' || st === 'P') && min ? min : 'LIVE') + '</span>';
+    if (finished(row)) return '<span class="fbr-st ft">' + esc(st) + '</span>';
+    if (row.when) return '<span class="fbr-st">' + esc(isToday(row.when) ? hhmm(row.when) : dmy(row.when)) + '</span>';
+    return '<span class="fbr-st">' + esc(st || 'TBC') + '</span>';
+  }
+
+  function crest(url) {
+    if (!url) return '<span class="fbr-cr"></span>';
+    return '<span class="fbr-cr"><img data-crest src="' + esc(url) + '" alt="" loading="lazy"></span>';
+  }
+
+  function rowHTML(r, i) {
+    var showScore = live(r) || finished(r);
+    var hg = showScore && r.home.goals != null ? r.home.goals : '';
+    var ag = showScore && r.away.goals != null ? r.away.goals : '';
+    var meta = [r.lg.name, r.venue || r.city].filter(Boolean).join(' · ');
+    return '<button class="fbr" data-fbi="' + i + '" type="button">' +
+      '<span class="fbr-l">' + (r.lg.logo ? '<img data-crest src="' + esc(r.lg.logo) + '" alt="" loading="lazy">' : ic('ball')) + '</span>' +
+      '<span class="fbr-c">' +
+        '<span class="fbr-t">' + crest(r.home.logo) + '<b>' + esc(r.home.name) + '</b><i>' + esc(hg) + '</i></span>' +
+        '<span class="fbr-t">' + crest(r.away.logo) + '<b>' + esc(r.away.name) + '</b><i>' + esc(ag) + '</i></span>' +
+        '<span class="fbr-m">' + esc(meta || 'Football') + '</span>' +
+      '</span>' + badge(r) + '</button>';
+  }
+
+  function skeleton() {
+    var s = '';
+    for (var i = 0; i < 4; i++) s += '<div class="fbr sk"><span class="fbr-l"></span><span class="fbr-c"><span class="sk-l w70"></span><span class="sk-l w55"></span><span class="sk-l w40"></span></span></div>';
+    return s;
+  }
+
+  function emptyHTML() {
+    var m = ST.tab === 'live' ? 'No match is being played right now.' : ST.tab === 'today' ? 'No fixtures are listed for today in this competition.' : 'No upcoming fixtures were returned for this competition.';
+    return '<div class="fb-empty">' + ic('ball', 'icon lg') + '<h4>' + esc(m) + '</h4><p>Switch competition above, or refresh in a moment.</p><button class="btn sm ghost" data-fbr="1" type="button">Refresh</button></div>';
+  }
+
+  function setupHTML() {
+    return '<div class="fb-setup">' +
+      '<div class="fb-setup-h">' + ic('signal') + '<div><b>The live feed is not connected yet</b><span>NANCYFLIX can show live scores, today’s fixtures and upcoming matches once the free API-Football key is added on the server.</span></div></div>' +
+      '<ol class="fb-steps">' +
+        '<li>Create a free key at <a href="https://dashboard.api-football.com/register" target="_blank" rel="noopener noreferrer">dashboard.api-football.com</a>.</li>' +
+        '<li>In your hosting dashboard, add an environment variable named <code>API_FOOTBALL_KEY</code> with that key.</li>' +
+        '<li>Redeploy, then reload NANCYFLIX. The key stays on the server — it is never written into the app.</li>' +
+      '</ol>' +
+      '<div class="fb-setup-f"><button class="btn sm" data-fbretry="1" type="button">Try again</button><button class="btn sm ghost" data-fboffline="1" type="button">Show offline fixtures</button></div>' +
+    '</div>';
+  }
+
+  function listHTML() {
+    if (ST.busy && !ST.rows.length) return skeleton();
+    if (ST.err && !ST.rows.length) {
+      return '<div class="fb-empty">' + ic('info', 'icon lg') + '<h4>Could not load the live feed</h4><p>' + esc(ST.err) + '</p><button class="btn sm ghost" data-fbr="1" type="button">Try again</button></div>';
+    }
+    if (!ST.rows.length) return emptyHTML();
+    return ST.rows.map(rowHTML).join('');
+  }
+
+  function chipsHTML() {
+    var out = '<button class="' + (ST.lg === 'all' ? 'on' : '') + '" data-fblg="all" type="button">All competitions</button>';
+    LGS.forEach(function (l) {
+      out += '<button class="' + (String(ST.lg) === String(l.id) ? 'on' : '') + '" data-fblg="' + l.id + '" type="button">' +
+        '<img data-crest src="https://media.api-sports.io/football/leagues/' + l.id + '.png" alt="" loading="lazy">' + esc(l.name) + '</button>';
+    });
+    return out;
+  }
+
+  function shellHTML() {
+    var pill = ST.configured === false
+      ? '<span class="fb-pill off"><i></i>Not connected</span>'
+      : '<span class="fb-pill"><i></i>' + (ST.remaining != null ? 'Live feed · ' + ST.remaining + ' calls left' : 'Live feed') + '</span>';
+    return '<div class="fb-bar"><div class="fb-tabs">' + TABS.map(function (t) {
+      return '<button data-fbt="' + t[0] + '" class="' + (ST.tab === t[0] ? 'on' : '') + '" type="button">' + t[1] + '</button>';
+    }).join('') + '</div>' + pill + '</div>' +
+    (ST.configured === false ? '' : '<div class="fb-lgs">' + chipsHTML() + '</div>');
+  }
+
+  function paint() {
+    var body = Q('#liveBody'); if (!body) return;
+    var html = shellHTML();
+    if (ST.configured === false) html += setupHTML();
+    else html += '<div class="fb-list">' + listHTML() + '</div>' +
+      '<p class="nf-note">Scores, minutes and fixtures come from API-Football. Kick-off times are shown in your local time. Tap any match for the full view.</p>';
+    body.innerHTML = html;
+    wire(body);
+    schedule();
+  }
+
+  function wire(body) {
+    QA('[data-fbt]', body).forEach(function (b) { b.onclick = function () { if (ST.tab === b.dataset.fbt) return; ST.tab = b.dataset.fbt; ST.err = ''; ST.rows = []; load(true); }; });
+    QA('[data-fblg]', body).forEach(function (b) { b.onclick = function () { var v = b.dataset.fblg; ST.lg = v === 'all' ? 'all' : Number(v); ST.err = ''; ST.rows = []; load(true); }; });
+    QA('[data-fbi]', body).forEach(function (b) { b.onclick = function () { openDetail(Number(b.dataset.fbi)); }; });
+    QA('[data-fbr]', body).forEach(function (b) { b.onclick = function () { load(true); }; });
+    QA('[data-fbretry]', body).forEach(function (b) { b.onclick = function () { ST.configured = null; paint(); load(true); }; });
+    QA('[data-fboffline]', body).forEach(function (b) { b.onclick = function () { if (F.offline) F.offline(); }; });
+  }
+
+  function schedule() {
+    if (ST.timer) { clearInterval(ST.timer); ST.timer = null; }
+    if (ST.tab !== 'live' || ST.configured === false) return;
+    ST.timer = setInterval(function () {
+      if (document.visibilityState !== 'visible') return;
+      if (!Q('#view-live.active')) return;
+      load(true);
+    }, 45000);
+  }
+
+  function load(force) {
+    var key = ST.tab + '|' + ST.lg;
+    if (!force && ST.data[key]) { ST.rows = ST.data[key]; paint(); return; }
+    if (force) ST.data[key] = null;
+    ST.busy = true; ST.err = '';
+    paint();
+    api(query()).then(function (j) {
+      var rows = (j.response || []).map(norm).filter(function (r) { return r.home.name && r.away.name; });
+      ST.busy = false; ST.configured = true;
+      if (j.errors && Object.keys(j.errors).length) {
+        var first = j.errors[Object.keys(j.errors)[0]];
+        if (!rows.length) ST.err = String(first || 'The feed returned an error');
+      }
+      ST.data[key] = rows; ST.rows = rows; paint();
+    }).catch(function (e) {
+      ST.busy = false;
+      if (e && e.code === 'nocfg') { ST.configured = false; ST.rows = []; paint(); return; }
+      ST.err = (e && e.code === 'quota') ? 'The daily request limit for the free plan is used up. Scores return after the reset.' : ((e && e.message) || 'Could not reach the feed');
+      ST.rows = [];
+      paint();
+    });
+  }
+
+  /* ---------- full match view ---------- */
+  function detailHTML(r) {
+    var st = live(r) ? '<span class="fbm-pill live">' + esc(r.status.long || 'In play') + '</span>' : finished(r) ? '<span class="fbm-pill">' + esc(r.status.long || 'Full time') + '</span>' : '<span class="fbm-pill">' + esc(r.status.long || 'Not started') + '</span>';
+    var score = (live(r) || finished(r)) ? (r.home.goals == null ? 0 : r.home.goals) + ' – ' + (r.away.goals == null ? 0 : r.away.goals) : 'VS';
+    var lg = BYID[r.lg.id] || { site: 'https://www.livesoccertv.com/', siteName: 'Global TV listings' };
+    var when = r.when ? (dmy(r.when) + ' · ' + hhmm(r.when)) : 'Kick-off to be confirmed';
+    return '<div class="nf6-modal fbm">' +
+      '<div class="nf6-head"><div class="who"><div class="lg">' + esc((r.lg.country || 'Football').toUpperCase()) + ' · ' + esc(r.lg.round || r.lg.name) + '</div><h3>' + esc(r.home.name) + ' vs ' + esc(r.away.name) + '</h3><div class="sub">' + esc(when) + (r.venue ? ' · ' + esc(r.venue) : '') + '</div></div><button class="nf6-x" data-fbx="1" aria-label="Close">' + ic('x') + '</button></div>' +
+      '<div class="nf6-body fbm-body">' +
+        '<div class="fbm-score">' +
+          '<div class="fbm-team">' + crest(r.home.logo) + '<b>' + esc(r.home.name) + '</b></div>' +
+          '<div class="fbm-mid"><b>' + esc(score) + '</b>' + st + '</div>' +
+          '<div class="fbm-team r">' + crest(r.away.logo) + '<b>' + esc(r.away.name) + '</b></div>' +
+        '</div>' +
+        '<div class="fbm-facts">' +
+          '<span><em>Competition</em><b>' + esc(r.lg.name || 'Football') + '</b></span>' +
+          '<span><em>Round</em><b>' + esc(r.lg.round || '—') + '</b></span>' +
+          '<span><em>Venue</em><b>' + esc(r.venue || '—') + '</b></span>' +
+          '<span><em>Referee</em><b>' + esc(r.ref || '—') + '</b></span>' +
+        '</div>' +
+        '<h4 class="fbm-h">Match events</h4><div class="fbm-ev" id="fbmEvents"><div class="fbm-load">Loading the timeline…</div></div>' +
+        '<p class="nf-note" style="margin-top:14px">NANCYFLIX does not host or rebroadcast matches. Watch through the official broadcaster for your country.</p>' +
+        '<div class="nf8-official"><a href="' + esc(lg.site) + '" target="_blank" rel="noopener noreferrer">' + ic('out') + esc(lg.siteName) + '</a><a href="https://www.livesoccertv.com/" target="_blank" rel="noopener noreferrer">' + ic('out') + 'Global TV listings</a></div>' +
+      '</div></div>';
+  }
+
+  function eventsHTML(list) {
+    if (!list.length) return '<p class="nf-note" style="margin:0">No goals or cards have been recorded yet.</p>';
+    return list.sort(function (a, b) { return (a.minute || 0) - (b.minute || 0); }).map(function (e) {
+      var mine = e.type === 'Goal';
+      return '<div class="fbm-ev-row' + (mine ? ' goal' : '') + '">' +
+        '<b>' + esc((e.minute == null ? '' : e.minute) + (e.extra ? '+' + e.extra : '') + "'") + '</b>' +
+        '<span class="who">' + esc(e.player || '') + (e.assist ? '<em>assist ' + esc(e.assist) + '</em>' : '') + '</span>' +
+        '<span class="what">' + esc(mine ? (e.detail || 'Goal') : (e.detail || e.type)) + '</span></div>';
+    }).join('');
+  }
+
+  function openDetail(i) {
+    var r = ST.rows[i]; if (!r) return;
+    var ov = document.getElementById('nfFbMatch');
+    if (!ov) { ov = document.createElement('div'); ov.id = 'nfFbMatch'; ov.className = 'overlay nf-fb-ov'; document.body.appendChild(ov); }
+    ov.innerHTML = detailHTML(r);
+    ov.classList.add('show'); document.body.classList.add('noscroll');
+    ov.onclick = function (e) { if (e.target === ov) closeDetail(); };
+    var x = Q('[data-fbx]', ov); if (x) x.onclick = closeDetail;
+    api({ ep: 'fixtures/events', fixture: r.id }).then(function (j) {
+      var box = document.getElementById('fbmEvents'); if (!box) return;
+      var list = (j.response || []).filter(function (e) { return e.type === 'Goal' || e.type === 'Card'; }).map(function (e) {
+        return { minute: e.time ? e.time.elapsed : null, extra: e.time ? e.time.extra : null, type: e.type, detail: e.detail, player: e.player ? e.player.name : '', assist: e.assist ? e.assist.name : '' };
+      });
+      box.innerHTML = eventsHTML(list);
+    }).catch(function () {
+      var box = document.getElementById('fbmEvents'); if (box) box.innerHTML = '<p class="nf-note" style="margin:0">The timeline is not available for this match.</p>';
+    });
+  }
+
+  function closeDetail() {
+    var ov = document.getElementById('nfFbMatch'); if (ov) ov.classList.remove('show');
+    if (!Q('.overlay.show')) document.body.classList.remove('noscroll');
+  }
+
+  /* ---------- wiring into the Live view ---------- */
+  var F = {
+    render: function () {
+      if (ST.configured === false) { paint(); return; }
+      var key = ST.tab + '|' + ST.lg;
+      if (ST.data[key]) { ST.rows = ST.data[key]; paint(); } else { load(true); }
+    },
+    open: openDetail,
+    offline: null
+  };
+
+  document.addEventListener('error', function (e) {
+    var t = e.target;
+    if (t && t.tagName === 'IMG' && t.hasAttribute('data-crest')) { t.style.visibility = 'hidden'; }
+  }, true);
+  document.addEventListener('keydown', function (e) { if (e.key === 'Escape') closeDetail(); });
+
+  function mount() {
+    if (!window.Live || window.Live.__fb) return;
+    window.Live.__fb = true;
+    var prev = window.Live.renderFooty;
+    F.offline = function () { if (prev) prev.call(window.Live); };
+    window.Live.renderFooty = function () { F.render(); };
+    window.NF8 = window.NF8 || {};
+    window.NF8.Football = F;
+  }
+  mount();
+  if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', mount);
+})();
+
+</script>
+
+<style id="nf9-ui">
+/* ---- ticker: pinned under the top bar, aligned with the page gutters ---- */
+#nfMarquee{position:sticky;top:var(--nf-top-h,64px);z-index:295;isolation:isolate;transform:translateZ(0);margin:0 clamp(10px,2.4vw,26px) 14px;border-radius:12px;background:linear-gradient(90deg,rgba(225,29,46,.10),rgba(255,255,255,.02) 45%,rgba(225,29,46,.10)),rgba(10,10,16,.92);backdrop-filter:blur(12px);box-shadow:0 10px 26px rgba(0,0,0,.35)}
+#nfMarquee .tag{min-width:62px;justify-content:center}
+#nfMarquee .vp{mask-image:linear-gradient(90deg,transparent 0,#000 12px,#000 calc(100% - 18px),transparent 100%);-webkit-mask-image:linear-gradient(90deg,transparent 0,#000 12px,#000 calc(100% - 18px),transparent 100%)}
+@media(max-width:600px){#nfMarquee{top:var(--nf-top-h,56px);margin:0 10px 12px}}
+@media(prefers-reduced-motion:reduce){#nfMarquee .track{animation:none}}
+
+/* ---- notification row + its action buttons ---- */
+.noti{display:flex;gap:10px;padding:11px 10px;border-radius:10px}
+.noti.unread{background:rgba(225,29,46,.07)}
+.noti .ni{flex:0 0 auto;width:30px;height:30px;border-radius:9px;display:grid;place-items:center;background:rgba(255,255,255,.05);color:#ff6b7a}
+.noti .nt{font-size:12.5px;font-weight:800}
+.noti .nm{font-size:11.5px;color:var(--muted);line-height:1.45;margin-top:2px}
+.noti .nd{font-size:9.5px;color:#6b6b7d;margin-top:4px;letter-spacing:.04em}
+.noti .nf-acts{display:flex;flex-wrap:wrap;gap:7px;margin-top:9px}
+.noti .nf-act{padding:7px 12px;border-radius:8px;font-size:11px;font-weight:800;border:1px solid rgba(255,255,255,.14);background:rgba(255,255,255,.06);color:#fff}
+.noti .nf-act.pri{background:linear-gradient(135deg,#e11d2e,#a30f1c);border-color:transparent}
+.noti .nf-act:active{transform:translateY(1px)}
+.noti .nf-dot{width:6px;height:6px;border-radius:50%;background:#e11d2e;flex:0 0 auto;margin-top:7px}
+
+/* ---- update banner: two buttons, live progress, never covers the nav ---- */
+#nf8Update{position:fixed;z-index:590;top:calc(var(--nf-top-h,64px) + 10px);left:50%;transform:translateX(-50%) translateY(-180%);width:min(560px,calc(100vw - 20px));display:block;padding:12px 12px 12px 14px;border-radius:14px;background:linear-gradient(120deg,#1b1b26,#101018);border:1px solid rgba(255,204,102,.42);box-shadow:0 18px 55px rgba(0,0,0,.6);transition:transform .38s cubic-bezier(.2,.9,.3,1.05),opacity .3s}
+#nf8Update.show{transform:translateX(-50%) translateY(0)}
+#nf8Update .row{display:flex;align-items:center;gap:10px}
+#nf8Update .ic{width:30px;height:30px;border-radius:9px;background:rgba(255,204,102,.14);display:grid;place-items:center;color:#ffcc66;flex:0 0 auto}
+#nf8Update .tx{flex:1;min-width:0}
+#nf8Update b{display:block;font-size:12.5px}
+#nf8Update .sub{display:block;font-size:10.5px;color:#9a9aad;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+#nf8Update .acts{display:flex;gap:7px;margin-top:10px}
+#nf8Update .go,#nf8Update .later{padding:8px 13px;border-radius:9px;font-size:11.5px;font-weight:900;border:1px solid transparent}
+#nf8Update .go{background:linear-gradient(135deg,#ffcc66,#f0a63c);color:#141418}
+#nf8Update .later{background:rgba(255,255,255,.07);border-color:rgba(255,255,255,.14);color:#e8e8f0}
+#nf8Update .prog{height:3px;border-radius:99px;background:rgba(255,255,255,.10);overflow:hidden;margin-top:10px;display:none}
+#nf8Update.busy .prog{display:block}
+#nf8Update .prog i{display:block;height:100%;width:0;border-radius:99px;background:linear-gradient(90deg,#e11d2e,#ffcc66);transition:width .35s ease}
+#nf8Update .x{width:26px;height:26px;border-radius:7px;display:grid;place-items:center;color:#77778a;flex:0 0 auto;background:transparent}
+</style>
 </body>
 </html>
+
+<style id="nf13-brand">
+.nf7-logo{position:relative;overflow:hidden}
+.nf7-brand{position:absolute;inset:3px;width:calc(100% - 6px);height:calc(100% - 6px);object-fit:contain;background:#0b0b12;border-radius:8px;padding:2px}
+</style>
+<script id="nf14-fbalerts">
+(function(){
+  'use strict';
+  var seen={}; try{seen=JSON.parse(localStorage.getItem('nf8FbEvents')||'{}')||{};}catch(e){}
+  var busy=false, started=false;
+  function get(u){return fetch(u,{headers:{Accept:'application/json'},cache:'no-store'}).then(function(r){return r.ok?r.json():null;}).catch(function(){return null;});}
+  function notify(t,m,kind){
+    try{if(window.Noti&&Noti.add)Noti.add(t,m,kind||'info',{toast:false,announce:true});}catch(e){}
+    try{Toast.show(t,m,kind||'info',8000);}catch(e){}
+  }
+  function report(f,e){
+    var h=(f.teams&&f.teams.home&&f.teams.home.name)||'Home', a=(f.teams&&f.teams.away&&f.teams.away.name)||'Away';
+    var g=f.goals||{}, sc=(g.home==null?'-':g.home)+'-'+(g.away==null?'-':g.away);
+    var min=(e.time&&e.time.elapsed)||'', who=(e.player&&e.player.name)||'', lg=(f.league&&f.league.name)||'';
+    var t='',m='';
+    if(e.type==='Goal'){
+      var pen=/penalty/i.test(e.detail||'');
+      t=(pen?'PENALTY GOAL \u00b7 ':'GOAL \u00b7 ')+h+' v '+a;
+      m=min+'\u2032 '+who+(pen?' (penalty)':'')+' \u2014 '+sc+' \u00b7 '+lg;
+    } else if(e.type==='Card'){
+      var red=/red/i.test(e.detail||'');
+      t=(red?'RED CARD \u00b7 ':'YELLOW CARD \u00b7 ')+h+' v '+a;
+      m=min+'\u2032 '+who+' \u2014 '+(e.detail||'')+' \u00b7 '+sc;
+    } else if(e.type==='Var'){
+      t='VAR CHECK \u00b7 '+h+' v '+a; m=min+'\u2032 '+(e.detail||'')+' \u00b7 '+sc;
+    } else return;
+    notify(t,m,/red|penalty/i.test((e.detail||'')+t)?'warn':'info');
+  }
+  async function tick(){
+    if(busy||document.hidden||!navigator.onLine)return; busy=true;
+    try{
+      var live=await get('api/football?ep=fixtures&live=all');
+      if(!live||live.configured===false||live._configured===false||!live.response)return;
+      var fx=(live.response||[]).slice(0,6);
+      for(var i=0;i<fx.length;i++){
+        var f=fx[i]; if(!f.fixture||!f.fixture.id)continue;
+        var ev=await get('api/football?ep=fixtures/events&fixture='+f.fixture.id);
+        if(!ev||!ev.response)continue;
+        var list=ev.response, key=list.map(function(x){return (x.time&&x.time.elapsed)+'|'+x.type+'|'+x.detail+'|'+((x.player&&x.player.name)||'');});
+        var prev=seen[f.fixture.id];
+        if(prev&&key.length>prev.length){ for(var k=prev.length;k<key.length;k++) report(f,list[k]); }
+        seen[f.fixture.id]=key;
+      }
+      try{localStorage.setItem('nf8FbEvents',JSON.stringify(seen));}catch(e){}
+    }catch(e){} finally{busy=false;}
+  }
+  function boot(){ if(started)return; started=true; setTimeout(tick,15000); setInterval(tick,80000); }
+  if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',boot); else boot();
+  document.addEventListener('visibilitychange',function(){ if(!document.hidden) setTimeout(tick,4000); });
+})();
+</script>

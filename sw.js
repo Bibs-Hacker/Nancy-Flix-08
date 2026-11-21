@@ -1,5 +1,5 @@
 /* NANCYFLIX service worker — app shell + offline + poster cache */
-const VERSION = 'nancyflix-v8.0.0';
+const VERSION = 'nancyflix-v8.2.0';
 const CORE = [
   './', './index.html', './manifest.webmanifest',
   './icons/icon-192.png', './icons/icon-512.png',
@@ -29,6 +29,9 @@ self.addEventListener('fetch', e => {
   if (req.method !== 'GET') return;
   const url = new URL(req.url);
   if (url.protocol !== 'http:' && url.protocol !== 'https:') return;
+
+  // Live data must never be served from the shell cache.
+  if (url.pathname.indexOf('/api/') >= 0) return;
 
   // App navigation: network first, fall back to cached shell so the app opens offline.
   if (req.mode === 'navigate') {
