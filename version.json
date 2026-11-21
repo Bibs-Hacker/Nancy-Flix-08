@@ -1,5 +1,13 @@
 {
- "version": "6.0.0",
- "released": "2026-11-21",
- "notes": "Kenyan live TV, in-app fixtures and tables, invite links, poster downloads, plan limits, richer alerts."
+  "version": "7.0.0",
+  "build": "2026-11-21",
+  "notes": [
+    "Marquee no longer covers the NOW tag",
+    "SVG icons replace every emoji",
+    "Live TV cards rebuilt with clean rows",
+    "Back button readable on all themes",
+    "Founder accounts unlock every feature",
+    "East African channels expanded",
+    "Full league fixtures and calculated tables"
+  ]
 }
