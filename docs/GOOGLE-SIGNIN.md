@@ -37,3 +37,42 @@ reason from Supabase (for example `provider is not enabled`). It never fakes suc
 `bridah888@gmail.com` and `agollanancy@gmail.com` are recognised as admins by the app and
 by the database rules in `docs/SUPABASE-SYNC.sql`. Sign in with Google using one of those
 addresses and Admin Studio appears in the menu.
+
+---
+
+## Even simpler: no Google setup at all
+
+You do not need Google to let people in. The sign-in screen now offers two easier paths.
+
+### A. Continue on this device (instant, works offline)
+
+1. Open the sign-in screen and tap **Continue on this device — no password**.
+2. The app opens immediately with a local profile on that phone.
+3. Watchlist, settings and history are saved on that device and survive updates and restarts.
+4. Add an email later from Profile if you want cloud sync.
+
+This is the fastest route for testing with friends: nothing to configure.
+
+### B. One-time email code (needs Supabase Email provider)
+
+1. Supabase -> **Authentication -> Providers -> Email**: make sure it is enabled.
+2. Supabase -> **Authentication -> Email Templates -> Magic Link**: the template must
+   include the token, otherwise the email has a link and no 6-digit code. Use a body like:
+
+   ```
+   Your NANCYFLIX code is {{ .Token }}
+   It expires in one hour.
+   ```
+
+3. In the app, type the email and tap **Email me a code**.
+4. Type the 6 digits and tap **Sign in**.
+
+If the mail does not arrive, the project is still using Supabase's rate-limited test mailer.
+For real use, add your own SMTP under **Project Settings -> Auth -> SMTP**.
+
+## Keeping people signed in
+
+The app now restores the saved session even when the cloud check fails, so an update or a
+brief network drop no longer sends anyone back to the login screen. A session is only
+cleared when the user taps Log out, or when Supabase rejects the refresh token (a real
+sign-out on another device).

@@ -1639,6 +1639,63 @@ select,input,textarea{font-size:16px} /* stops iOS zoom-on-focus */
 .fbw-opt .go{margin-inline-start:auto;color:#ff6272;font-size:11px;font-weight:800;white-space:nowrap}
 .fbw-legal{margin-top:14px;font-size:10.5px;line-height:1.6;color:#6f6f84}
 </style>
+<!-- ===== v8.4.1 : splash centring · crests · live banner · terms gate · quick sign-in ===== -->
+<style id="nf16-fixes">
+/* ---- splash: one centred column, HUD and card locked to the same centre line ---- */
+#splash.nfx-splash{display:grid;grid-template-columns:100%;grid-template-rows:100%;place-items:center;padding:0}
+#splash.nfx-splash .nfx-aura{left:50%;top:46%;margin-left:calc(min(64vw,540px) / -2);margin-top:calc(min(64vw,540px) / -2)}
+#splash.nfx-splash .nfx-hud{position:absolute;left:50%;top:50%;right:auto;bottom:auto;width:min(76vmin,540px);height:auto;max-height:none;margin:0;transform:translate(-50%,-50%);animation:nf16hud 1.5s ease both;pointer-events:none}
+@keyframes nf16hud{from{opacity:0}to{opacity:.95}}
+#splash.nfx-splash .nfx-core{grid-area:1/1;position:relative;z-index:2;width:100%;max-width:100%;margin:0 auto;padding:0 18px;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center}
+#splash.nfx-splash .nfx-word{width:100%;justify-content:center;text-align:center}
+#splash.nfx-splash .nfx-foot{position:absolute;left:0;right:0;margin-inline:auto;bottom:calc(26px + var(--safe-b,0px));transform:none;width:min(420px,calc(100vw - 30px));animation:nf16foot .8s 1s both}
+@keyframes nf16foot{from{opacity:0}to{opacity:1}}
+@keyframes nf16fade{from{opacity:0}to{opacity:1}}
+@media(max-height:640px){#splash.nfx-splash .nfx-hud{width:min(66vmin,420px)}#splash.nfx-splash .nfx-foot{bottom:calc(10px + var(--safe-b,0px))}}
+@media(prefers-reduced-motion:reduce){#splash.nfx-splash .nfx-hud,#splash.nfx-splash .nfx-foot{animation:none!important}#splash.nfx-splash .nfx-hud{opacity:.95;transform:translate(-50%,-50%)}#splash.nfx-splash .nfx-foot{opacity:1;transform:none}}
+
+/* ---- club crests in calculated standings ---- */
+.nf-crest{display:inline-grid;place-items:center;width:20px;height:20px;border-radius:50%;background:rgba(255,255,255,.07);border:1px solid rgba(255,255,255,.10);overflow:hidden;flex:0 0 auto;vertical-align:-5px;margin-inline-end:8px}
+.nf-crest img{width:100%;height:100%;object-fit:contain;display:block}
+.nf-crest b{font-size:7.5px;letter-spacing:.02em;color:#c9c9d8;font-weight:900}
+.nf-tbl .nm{white-space:nowrap}
+
+/* ---- live now banner + nav dot ---- */
+.nf-livebanner{display:flex;align-items:center;gap:11px;padding:12px 14px;margin:0 0 14px;border-radius:14px;border:1px solid rgba(225,29,46,.42);background:linear-gradient(120deg,rgba(225,29,46,.20),rgba(225,29,46,.05) 58%,rgba(255,204,102,.08));position:relative;overflow:hidden}
+.nf-livebanner .lb-pulse{width:9px;height:9px;border-radius:50%;background:#ff3b4e;box-shadow:0 0 0 5px rgba(225,29,46,.18),0 0 14px rgba(255,59,78,.85);animation:nfxpulse 1.5s ease-in-out infinite;flex:0 0 auto}
+.nf-livebanner .lb-txt{min-width:0;display:flex;flex-direction:column;gap:2px}
+.nf-livebanner .lb-txt b{font-size:11px;letter-spacing:.16em;text-transform:uppercase;color:#ff8d99}
+.nf-livebanner .lb-txt span{font-size:11.5px;color:#d8d8e4;line-height:1.35}
+.nf-livebanner .lb-go{margin-inline-start:auto;flex:0 0 auto;padding:8px 13px;border-radius:99px;border:0;font-size:11px;font-weight:900;color:#fff;background:linear-gradient(135deg,#e11d2e,#a30f1c);box-shadow:0 6px 16px rgba(225,29,46,.34);cursor:pointer;white-space:nowrap}
+.nf-livedot{position:absolute;top:6px;inset-inline-end:8px;width:7px;height:7px;border-radius:50%;background:#ff3b4e;box-shadow:0 0 0 2px #06060a,0 0 9px rgba(255,59,78,.9);animation:nfxpulse 1.5s ease-in-out infinite}
+nav .nav button[data-view="live"],#mainNav button[data-view="live"],#bottomNav button[data-bnav="live"]{position:relative}
+
+/* ---- terms & privacy gate ---- */
+.lawgate{margin:12px 0 4px;border:1px solid rgba(255,255,255,.10);border-radius:13px;background:rgba(255,255,255,.025);overflow:hidden}
+.lawgate-h{display:flex;align-items:center;gap:8px;padding:10px 12px;font-size:10px;font-weight:900;letter-spacing:.14em;text-transform:uppercase;color:#c9c9d8;border-bottom:1px solid rgba(255,255,255,.07)}
+.lawgate-h em{margin-inline-start:auto;font-style:normal;font-size:9px;letter-spacing:.10em;color:#ffcc66;text-transform:none;font-weight:800}
+.lawgate-body{max-height:132px;overflow:auto;padding:11px 12px;font-size:10.8px;line-height:1.65;color:#a7a7ba;scrollbar-width:thin;overscroll-behavior:contain}
+.lawgate-body h4{margin:0 0 5px;font-size:11px;letter-spacing:.06em;color:#ececf4;text-transform:uppercase}
+.lawgate-body p{margin:0 0 8px}
+.lawgate-body p:last-child{margin-bottom:0}
+.lawgate-ok{display:flex;align-items:flex-start;gap:9px;padding:10px 12px;border-top:1px solid rgba(255,255,255,.07);font-size:10.8px;line-height:1.45;color:#b9b9c8;cursor:pointer}
+.lawgate-ok input{width:16px;height:16px;margin:0;flex:0 0 auto;accent-color:#e11d2e}
+.lawgate-ok input:disabled+span{opacity:.55}
+.lawgate .btn{width:100%;margin-top:8px}
+#regSubmit:disabled{opacity:.45;cursor:not-allowed;filter:grayscale(.35)}
+.lawgate-foot{display:flex;gap:8px;padding:0 12px 10px;flex-wrap:wrap}
+.lawgate-foot button{background:none;border:0;padding:0;font-size:10px;font-weight:800;color:#ff8d99;text-decoration:underline;cursor:pointer}
+
+/* ---- one-time code sign-in ---- */
+.otp-box{margin-top:12px;padding:12px;border:1px solid rgba(255,255,255,.09);border-radius:13px;background:rgba(255,255,255,.02)}
+.otp-box .auth-or{margin:0 0 10px}
+.otp-row{display:flex;gap:8px}
+.otp-row input{flex:1;min-width:0;padding:10px 12px;border-radius:10px;border:1px solid rgba(255,255,255,.14);background:rgba(255,255,255,.04);color:#fff;font-size:12.5px}
+.otp-row button{flex:0 0 auto;padding:10px 13px;border-radius:10px;border:0;font-size:11.5px;font-weight:900;color:#fff;background:linear-gradient(135deg,#e11d2e,#a30f1c);cursor:pointer}
+.otp-row button.ghost{background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.14);color:#dcdce8}
+.otp-row[hidden]{display:none}
+.otp-hint{margin:8px 0 0;font-size:10px;line-height:1.5;color:#8b8b9f}
+</style>
 </head>
 <body class="noscroll">
 <!-- ============ SPLASH ============ -->
@@ -1681,7 +1738,7 @@ select,input,textarea{font-size:16px} /* stops iOS zoom-on-focus */
   <div class="nfx-foot">
     <div class="nfx-now"><span class="nfx-dot"></span><span id="splashStage">LOADING YOUR WATCHLIST</span></div>
     <div class="nfx-meter"><i id="splashBar"></i></div>
-    <div class="nfx-meta"><b id="splashPct">0%</b><em id="splashStat">BOOT</em><span>V8.4.0</span></div>
+    <div class="nfx-meta"><b id="splashPct">0%</b><em id="splashStat">BOOT</em><span>V8.4.1</span></div>
   </div>
 </div>
 
@@ -1706,6 +1763,12 @@ select,input,textarea{font-size:16px} /* stops iOS zoom-on-focus */
       <label class="set-row" style="border:0;padding:4px 0"><span class="lbl"><span class="t" style="font-size:13px">Remember me</span></span><span class="switch"><input type="checkbox" id="liRemember" checked><span class="sl"></span></span></label>
       <button type="submit" class="btn primary block" style="margin-top:10px">Sign in</button>
       <div class="auth-alt"><button type="button" id="forgotBtn">Forgot password?</button></div>
+      <div class="otp-box">
+        <div class="auth-or">or sign in with a one-time code</div>
+        <div class="otp-row"><input type="email" id="otpEmail" inputmode="email" autocomplete="email" placeholder="Your email"><button type="button" id="otpSend">Email me a code</button></div>
+        <div class="otp-row" id="otpRow" hidden><input type="text" id="otpCode" inputmode="numeric" autocomplete="one-time-code" maxlength="6" placeholder="6-digit code"><button type="button" id="otpVerify">Sign in</button></div>
+        <p class="otp-hint" id="otpHint">No password to remember and no Google setup. We email a 6-digit code — it works as soon as email sign-in is switched on for the project.</p>
+      </div>
     </form>
     <!-- register -->
     <form id="regForm" style="display:none">
@@ -1714,14 +1777,36 @@ select,input,textarea{font-size:16px} /* stops iOS zoom-on-focus */
       <div class="field"><label>Password</label><div class="wrap"><input type="password" id="rgPass" autocomplete="new-password" required><button type="button" class="toggle" data-pw="rgPass" aria-label="Show password"><svg class="icon sm" viewBox="0 0 24 24"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8S1 12 1 12z"/><circle cx="12" cy="12" r="3"/></svg></button></div><div class="pw-meter"><i id="pwBar"></i></div><div class="pw-hint" id="pwHint">Use 8+ characters with letters, numbers &amp; symbols.</div></div>
       <div class="field"><label>Gender</label><select id="rgGender"><option value="">Select…</option><option>Female</option><option>Male</option><option>Non-binary</option><option>Prefer not to say</option></select></div>
       <div class="field"><label>Profile picture</label><div class="avatar-pick"><div class="avatar-prev" id="avPrev"><svg class="icon" viewBox="0 0 24 24"><path d="M20 21v-2a4 4 0 00-4-4H8a4 4 0 00-4 4v2"/><circle cx="12" cy="7" r="4"/></svg></div><label class="btn sm" style="cursor:pointer">Choose image<input type="file" id="rgAvatar" accept="image/*" hidden></label></div></div>
-      <button type="submit" class="btn primary block" style="margin-top:6px">Create account</button>
+      <div class="lawgate" id="lawGate">
+        <div class="lawgate-h"><span>Terms of Use and Privacy</span><em id="lawGateState">Scroll to read</em></div>
+        <div class="lawgate-body" id="lawGateBody" tabindex="0" role="region" aria-label="Terms of Use and Privacy summary">
+          <h4>Welcome to NANCYFLIX</h4>
+          <p>NANCYFLIX is a discovery app for films and sport, made by Dev Brian Studios. By creating an account you agree to use it lawfully, keep your login private, and accept that catalogue data, posters and trailers come from TMDB and other public sources.</p>
+          <h4>1 · Your account</h4>
+          <p>You are responsible for activity on your account and for the accuracy of the email you register. One person per account. You may delete your account at any time from Profile, which removes your saved watchlist and preferences.</p>
+          <h4>2 · Acceptable use</h4>
+          <p>Do not scrape, resell, re-stream or redistribute content, attempt to break the service, or use it to harass anyone. Live channels are embedded from the broadcaster's own public player and remain the broadcaster's property; NANCYFLIX never re-streams rights-protected matches.</p>
+          <h4>3 · Availability</h4>
+          <p>The app is provided as is, without warranties. Streams, fixtures and data can change or go offline without notice. Features may be added, changed or withdrawn while the service is being improved.</p>
+          <h4>4 · Privacy in plain language</h4>
+          <p>We store your name, email, optional photo, watchlist and settings so the app works and can sync across your devices. Passwords are hashed. We do not sell data and we do not run advertising trackers. Diagnostics are limited to what the browser needs to run the app.</p>
+          <h4>5 · Your choices</h4>
+          <p>You can edit or delete your profile, clear local storage, or ask us to remove your cloud record by emailing devbriannova@gmail.com. Storage is limited to strictly necessary items and your own preferences.</p>
+          <h4>6 · Contact</h4>
+          <p>Questions about these terms or your data: devbriannova@gmail.com. Full documents are available in the footer under Terms of Use and Privacy Policy. Continuing means you have read this summary and accept it.</p>
+        </div>
+        <div class="lawgate-foot"><button type="button" data-lawdoc="terms">Open full Terms of Use</button><button type="button" data-lawdoc="privacy">Open Privacy Policy</button></div>
+        <label class="lawgate-ok"><input type="checkbox" id="rgAgree" disabled><span>I have read and agree to the Terms of Use and the Privacy Policy.</span></label>
+      </div>
+      <button type="submit" class="btn primary block" id="regSubmit" style="margin-top:8px" disabled>Create account</button>
     </form>
     <div class="auth-or">or</div>
     <button type="button" class="auth-oauth" id="googleBtn" aria-label="Continue with Google">
       <svg viewBox="0 0 48 48" aria-hidden="true"><path fill="#EA4335" d="M24 9.5c3.5 0 6.6 1.2 9 3.5l6.7-6.7C35.6 2.4 30.2 0 24 0 14.6 0 6.5 5.4 2.6 13.2l7.8 6.1C12.3 13.2 17.6 9.5 24 9.5z"/><path fill="#4285F4" d="M46.1 24.6c0-1.6-.1-3.1-.4-4.6H24v8.7h12.4c-.5 2.8-2.1 5.2-4.4 6.8l7.6 5.9c4.4-4.1 6.5-10.1 6.5-16.8z"/><path fill="#FBBC05" d="M10.4 28.7c-.5-1.5-.8-3-.8-4.7s.3-3.2.8-4.7l-7.8-6.1C1 16.2 0 20 0 24s1 7.8 2.6 10.8l7.8-6.1z"/><path fill="#34A853" d="M24 48c6.2 0 11.4-2 15.2-5.5l-7.6-5.9c-2.1 1.4-4.8 2.3-7.6 2.3-6.4 0-11.7-3.7-13.6-9.2l-7.8 6.1C6.5 42.6 14.6 48 24 48z"/></svg>
       <span>Continue with Google</span>
     </button>
-    <div class="auth-alt">or <button type="button" id="guestBtn">Continue as guest ›</button></div>
+    <button type="button" class="btn block" id="deviceBtn" style="margin-top:10px">Continue on this device — no password</button>
+    <div class="auth-alt">or <button type="button" id="guestBtn">browse as guest ›</button></div>
     <div class="demo-note" id="demoNote">Your account, watchlist and settings are saved on this device and stay available offline. With cloud sign-in on, they also follow you to every device you sign in on. Movies, posters and trailers stream live from TMDB.</div>
   </div>
 </div>
@@ -4141,10 +4226,12 @@ function runSplash(){
   try{ reduce=!!(window.matchMedia&&window.matchMedia('(prefers-reduced-motion: reduce)').matches); }catch(e){}
   var quick=false;
   try{ quick=(LS.get('guestSettings',{}).splash===false||State.settings.splash===false); }catch(e){}
-  var dur=quick?900:(reduce?2600:5200);
+  var dur=quick?900:(reduce?2400:4200);
   var NOW=function(){ return (window.performance&&performance.now)?performance.now():Date.now(); };
   var t0=NOW();
-  var STAGES=[[0,'LOADING YOUR WATCHLIST','BOOT'],[0.30,'SYNCING THE LIBRARY','CORE'],[0.58,'CALIBRATING PROJECTION','SYNC'],[0.84,'ALMOST READY','READY']];
+  var STAGES=[[0,'LOADING YOUR WATCHLIST','BOOT'],[0.26,'SYNCING THE LIBRARY','CORE'],[0.52,'CALIBRATING PROJECTION','SYNC'],[0.78,'ALMOST READY','READY']];
+  /* the bar always advances, even when a network call never answers */
+  function autoFloor(t){ if(t<0.18) return 0.34; if(t<0.42) return 0.60; if(t<0.70) return 0.82; if(t<0.90) return 0.94; return 1; }
   var ceiling=0.22, last=-1, closed=false;
   function bump(v){ if(v>ceiling) ceiling=Math.min(1,v); }
   /* the bar follows real boot work: fonts, then the genre list the home page needs */
@@ -4164,7 +4251,8 @@ function runSplash(){
   setTimeout(function(){ bump(0.88); },2400);
   function paint(){
     var t=Math.min(1,(NOW()-t0)/dur);
-    var pr=1-Math.pow(1-Math.min(t,ceiling),3);
+    var cap=Math.max(ceiling,autoFloor(t));
+    var pr=1-Math.pow(1-Math.min(t,cap),3);
     if(pr>=0.999) pr=1;
     if(bar) bar.style.width=(pr*100).toFixed(1)+'%';
     if(pctEl) pctEl.textContent=Math.round(pr*100)+'%';
@@ -4179,7 +4267,7 @@ function runSplash(){
   function loop(){
     if(closed) return;
     var st=paint();
-    if(st.pr>=1||(st.t>=1&&ceiling>=0.88)){ closed=true; return done(); }
+    if(st.pr>=1||st.t>=1){ closed=true; return done(); }
     requestAnimationFrame(loop);
   }
   function done(){
@@ -4189,7 +4277,7 @@ function runSplash(){
     setTimeout(finishSplash,quick?120:340);
   }
   requestAnimationFrame(loop);
-  setTimeout(function(){ if(!closed){ closed=true; done(); } },dur+1500);
+  setTimeout(function(){ if(!closed){ closed=true; done(); } },dur+900);
 }
 let splashDone=false;
 function finishSplash(){
@@ -4212,12 +4300,19 @@ function finishSplash(){
 }
 
 async function resumeSession(){
+  const sid=Store.session();
+  const local=(sid&&Store.users().find(x=>x.id===sid))||null;
   if(HAS_BACKEND&&window.SBX){
     try{ const ok=await SBX.resume(); if(ok) return; }catch(e){}
+    /* an update or a flaky network must never sign you out: keep the saved device session */
+    if(local){
+      try{ Auth._enter(local); }catch(e){ backToAuth('login'); return; }
+      try{ Toast.show('Offline mode','Cloud sync did not answer, so NANCYFLIX opened your saved session on this device.','warn',5200); }catch(e){}
+      return;
+    }
     backToAuth('login'); return;
   }
-  const sid=Store.session();
-  if(sid){const u=Store.users().find(x=>x.id===sid);if(u){Auth._enter(u);return;}}
+  if(local){Auth._enter(local);return;}
   backToAuth('login');
 }
 
@@ -4225,9 +4320,12 @@ async function resumeSession(){
    v5 — soft light theme helpers · update centre · 3-tier Premium ·
         Live TV · Live Football · cross-device entitlement · test mode
    ===================================================================== */
-const APP_VERSION = '8.4.0';
+const APP_VERSION = '8.4.1';
 const WHATS_NEW = [
-  'Rebuilt splash: contained radar HUD, animated brand name and a readable loading bar',
+  'Splash is centred on every screen and always finishes loading',
+  'Real club crests in the standings tables',
+  'Live banner on the Live tab; every channel is open to watch',
+  'No more re-login after an update, plus a passwordless sign-in option',
   'Sign up or in with Google in one tap',
   'Redesigned fixture cards with one-tap Where to watch',
   'Live TV players now explain a black frame and offer a direct YouTube fallback',
@@ -4460,8 +4558,11 @@ const Live = {
     host.innerHTML =
       '<div class="live-head"><span class="live-dot"></span><h1>Live</h1><span class="live-sub">Free channels & football fixtures</span></div>' +
       '<div class="live-tabs"><button data-ltab="tv" class="' + (this.tab === 'tv' ? 'on' : '') + '">TV channels</button><button data-ltab="footy" class="' + (this.tab === 'footy' ? 'on' : '') + '">Football</button></div>' +
+      '<div class="nf-livebanner"><span class="lb-pulse"></span><div class="lb-txt"><b>Live now</b><span>' + (this.tab === 'tv' ? 'Channels are on air — tap any card to watch inside the app' : 'Fixtures and scores update live — open any match for the broadcast options') + '</span></div><button class="lb-go" data-lbgo>' + (this.tab === 'tv' ? 'Watch live' : 'Live TV') + '</button></div>' +
       '<div id="liveBody" class="live-body"></div>';
     host.querySelectorAll('[data-ltab]').forEach(b => { b.onclick = () => { this.tab = b.dataset.ltab; this.render(); }; });
+    var lbg = host.querySelector('[data-lbgo]');
+    if (lbg) lbg.onclick = () => { this.tab = 'tv'; this.render(); try { window.scrollTo({ top: 0, behavior: 'smooth' }); } catch (e) { window.scrollTo(0, 0); } };
     if (this.tab === 'tv') this.renderTV(); else this.renderFooty();
   },
   renderTV() {
@@ -4564,7 +4665,7 @@ const Live = {
   if (nav && !nav.querySelector('[data-view="live"]')) {
     const b = document.createElement('button');
     b.dataset.view = 'live';
-    b.innerHTML = '<svg class="icon sm" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="7" width="20" height="13" rx="2"/><path d="M8 3l2 4M16 3l-2 4M7 12h4M7 16h7"/></svg><span>Live</span>';
+    b.innerHTML = '<svg class="icon sm" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="7" width="20" height="13" rx="2"/><path d="M8 3l2 4M16 3l-2 4M7 12h4M7 16h7"/></svg><span>Live</span><span class="nf-livedot" aria-hidden="true"></span>';
     const prem = nav.querySelector('[data-view="premium"]');
     nav.insertBefore(b, prem || null);
     b.onclick = () => switchView('live');
@@ -4573,7 +4674,7 @@ const Live = {
   if (bn && !bn.querySelector('[data-bnav="live"]')) {
     const b = document.createElement('button');
     b.dataset.bnav = 'live';
-    b.innerHTML = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="7" width="20" height="13" rx="2"/><path d="M8 3l2 4M16 3l-2 4M7 12h4M7 16h7"/></svg><span>Live</span>';
+    b.innerHTML = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="7" width="20" height="13" rx="2"/><path d="M8 3l2 4M16 3l-2 4M7 12h4M7 16h7"/></svg><span>Live</span><span class="nf-livedot" aria-hidden="true"></span>';
     const wl = bn.querySelector('[data-bnav="watchlist"]');
     bn.insertBefore(b, wl || null);
   }
@@ -5236,7 +5337,7 @@ const Live = {
           box.innerHTML = '<p class="nf-note" style="margin:0 0 8px">' + esc(lg.name) + ' · ' + esc(r.season) + '</p><div style="overflow:auto"><table class="nf-tbl"><thead><tr><th>#</th><th>Team</th><th>P</th><th>W</th><th>D</th><th>L</th><th>GD</th><th>Pts</th></tr></thead><tbody>' +
             r.rows.map(function (x, i) {
               var gd = (+x.intGoalsFor || 0) - (+x.intGoalsAgainst || 0);
-              return '<tr class="' + (i < 4 ? 'me' : '') + '"><td>' + esc(x.intRank || (i + 1)) + '</td><td class="nm">' + (x.strTeamBadge ? '<img src="' + esc(x.strTeamBadge) + '" alt="" loading="lazy">' : '') + '<span>' + esc(x.strTeam) + '</span></td><td>' + esc(x.intPlayed || 0) + '</td><td>' + esc(x.intWin || 0) + '</td><td>' + esc(x.intDraw || 0) + '</td><td>' + esc(x.intLoss || 0) + '</td><td>' + (gd > 0 ? '+' : '') + gd + '</td><td class="pts">' + esc(x.intPoints || 0) + '</td></tr>';
+              return '<tr class="' + (i < 4 ? 'me' : '') + '"><td>' + esc(x.intRank || (i + 1)) + '</td><td class="nm">' + (x.strTeamBadge ? '<img class="nf-crest-img" src="' + esc(x.strTeamBadge) + '" alt="" loading="lazy" referrerpolicy="no-referrer">' : '<span class="nf-crest"><b>' + esc(String(x.strTeam || 'FC').replace(/[^A-Za-z0-9 ]/g, ' ').trim().split(/\s+/).filter(Boolean).slice(0, 2).map(function (w) { return w.charAt(0); }).join('').toUpperCase() || 'FC') + '</b></span>') + '<span>' + esc(x.strTeam) + '</span></td><td>' + esc(x.intPlayed || 0) + '</td><td>' + esc(x.intWin || 0) + '</td><td>' + esc(x.intDraw || 0) + '</td><td>' + esc(x.intLoss || 0) + '</td><td>' + (gd > 0 ? '+' : '') + gd + '</td><td class="pts">' + esc(x.intPoints || 0) + '</td></tr>';
             }).join('') + '</tbody></table></div><p class="nf-note">Top four are highlighted. Data from TheSportsDB; standings refresh every few minutes.</p>';
         }).catch(function () { box.innerHTML = '<p class="nf-note">The table feed is unreachable right now. Try again in a minute.</p>'; });
         return;
@@ -5765,7 +5866,10 @@ const Live = {
   var CATS = ['All', 'News', 'Soaps', 'Entertainment', 'Regional', 'International'];
   var cat7 = 'All';
 
-  function tierNow() { try { return NF6.tier(); } catch (e) { return 'free'; } }
+  function tierNow() {
+    try { if (typeof adminOn === 'function' && adminOn()) return 'super'; } catch (e) {}
+    try { return NF6.tier(); } catch (e) { return 'free'; }
+  }
 
   /* self-drawn brand marks (vector monograms, no licensed artwork) */
   var MARKS = {
@@ -5796,10 +5900,10 @@ const Live = {
   }
 
   function cardHTML(c, idx) {
-    var locked = RANK[tierNow()] < RANK[c.tier];
+    var locked = false; /* public broadcaster feeds: open to everyone */
     var src = c.feeds.some(function (f) { return f.type === 'hls'; }) ? 'Direct' : 'YouTube';
     return '<button class="ch nf7 ' + (locked ? 'locked' : '') + '" data-ch7="' + idx + '" aria-label="' + esc(c.name + (locked ? ' — needs Plus' : '')) + '">' +
-      '<span class="top"><span class="nf7-logo">' + markSVG(c) + brandImg(c) + '</span><span class="nm">' + esc(c.name) + '</span><span class="nf-badge ' + (c.tier === 'free' ? '' : 'plus') + '">' + (c.tier === 'free' ? 'FREE' : 'PLUS') + '</span></span>' +
+      '<span class="top"><span class="nf7-logo">' + markSVG(c) + brandImg(c) + '</span><span class="nm">' + esc(c.name) + '</span><span class="nf-badge">OPEN</span></span>' +
       '<span class="note">' + esc(c.cc + ' · ' + c.note) + '</span>' +
       '<span class="foot">' + (locked
         ? '<span class="unlock">' + ic('lock') + 'Unlock</span>'
@@ -5811,15 +5915,14 @@ const Live = {
     var body = Q('#liveBody'); if (!body) return;
     var list = CH7.filter(function (c) { return cat7 === 'All' || c.groups.indexOf(cat7) >= 0; });
     var open = CH7.filter(function (c) { return RANK[tierNow()] >= RANK[c.tier]; }).length;
-    body.innerHTML = '<div class="nf7-foot-head"><p class="live-note" style="margin:0">Free-to-air channels from Kenya, Uganda and Tanzania, plus world news. ' + open + ' of ' + CH7.length + ' channels are open on your plan.</p></div>' +
+    body.innerHTML = '<div class="nf7-foot-head"><p class="live-note" style="margin:0">Every free-to-air channel from Kenya, Uganda and Tanzania, plus world news — all ' + CH7.length + ' channels are open to watch inside the app.</p></div>' +
       '<div class="nf-cats">' + CATS.map(function (c) { return '<button data-cat7="' + c + '" class="' + (cat7 === c ? 'on' : '') + '">' + c + '</button>'; }).join('') + '</div>' +
       '<div class="ch-grid nf7">' + list.map(function (c) { return cardHTML(c, CH7.indexOf(c)); }).join('') + '</div>' +
-      '<p class="nf-note">Feeds are official broadcaster streams. A channel can be between bulletins or off air — the player tells you instead of showing a dead screen. Free includes Citizen TV, Inooro TV, K24 and France 24.</p>';
+      '<p class="nf-note">Feeds are official broadcaster streams. A channel can be between bulletins or off air — the player checks first and offers a direct YouTube link instead of showing a dead screen.</p>';
     QA('[data-cat7]', body).forEach(function (b) { b.onclick = function () { cat7 = b.dataset.cat7; renderTV7(); }; });
     QA('[data-ch7]', body).forEach(function (b) {
       b.onclick = function () {
         var c = CH7[+b.dataset.ch7];
-        if (RANK[tierNow()] < RANK[c.tier]) { NF6.upsell('“' + c.name + '” is included from Plus upward. Free keeps Citizen TV, Inooro TV, K24 and France 24.'); return; }
         openChannel(c);
       };
     });
@@ -5874,14 +5977,47 @@ const Live = {
     var box = Q('.nf7-screen', host); if (!box) return;
     box.innerHTML = '<div class="msg">' + ic('signal') + '<h4>' + esc(title) + '</h4><p>' + esc(body) + '</p>' + (extra || '') + '</div>';
   }
+  function ytFrame(id, label) {
+    var src = id
+      ? 'https://www.youtube.com/embed/' + encodeURIComponent(id) + '?autoplay=1&playsinline=1&rel=0&modestbranding=1'
+      : 'https://www.youtube.com/embed/live_stream?channel=' + encodeURIComponent(label) + '&autoplay=1&playsinline=1&rel=0&modestbranding=1';
+    return '<iframe src="' + src + '" title="' + esc(label) + ' live" allow="autoplay; encrypted-media; picture-in-picture; fullscreen" allowfullscreen referrerpolicy="strict-origin-when-cross-origin"></iframe>';
+  }
+  function ytFallback(c, feed, host, why) {
+    var live = 'https://www.youtube.com/channel/' + encodeURIComponent(feed.id) + '/live';
+    var find = 'https://www.youtube.com/results?search_query=' + encodeURIComponent(c.name + ' live') + '&sp=EgJAAQ%253D%253D';
+    msg(host, 'Not live right now',
+      why || (c.name + ' is not streaming on YouTube at this minute. The channel goes live for its next bulletin — try again shortly, or open the channel directly.'),
+      '<div class="nf6-fb-btns" style="margin-top:10px"><a class="btn sm" href="' + esc(live) + '" target="_blank" rel="noopener noreferrer">Open channel on YouTube</a>' +
+      '<a class="btn sm ghost" href="' + esc(find) + '" target="_blank" rel="noopener noreferrer">Find the live stream</a>' +
+      '<button class="btn sm ghost" data-recheck="1">Check again</button></div>');
+    var again = Q('[data-recheck]', host);
+    if (again) again.onclick = function () { playFeed(c, feed, host); };
+  }
+  function playYouTube(c, feed, host) {
+    var box = Q('.nf7-screen', host); if (!box) return;
+    box.innerHTML = '<div class="msg"><h4>Checking whether ' + esc(c.name) + ' is live…</h4><p>One moment — we ask the broadcaster’s channel before showing a dead black frame.</p></div>';
+    var settled = false;
+    var finish = function (html) { if (settled) return; settled = true; box.innerHTML = html; };
+    var timer = setTimeout(function () { finish(ytFrame('', feed.id)); }, 4200);
+    try {
+      fetch('/api/livecheck?channel=' + encodeURIComponent(feed.id), { cache: 'no-store' })
+        .then(function (r) { return r.ok ? r.json() : null; })
+        .then(function (j) {
+          clearTimeout(timer);
+          if (settled) return;
+          if (!j || typeof j.live !== 'boolean') { finish(ytFrame('', feed.id)); return; }
+          if (j.live) { finish(ytFrame(j.videoId || '', feed.id)); }
+          else { settled = true; ytFallback(c, feed, host, j.reason === 'not-found' ? 'That YouTube channel could not be found — it may have moved to a new address.' : ''); }
+        })
+        .catch(function () { clearTimeout(timer); finish(ytFrame('', feed.id)); });
+    } catch (e) { clearTimeout(timer); finish(ytFrame('', feed.id)); }
+  }
+
   function playFeed(c, feed, host) {
     var box = Q('.nf7-screen', host); if (!box) return;
     box.innerHTML = '';
-    if (feed.type === 'yt') {
-      var url = 'https://www.youtube.com/embed/live_stream?channel=' + encodeURIComponent(feed.id) + '&autoplay=1&playsinline=1&rel=0&modestbranding=1';
-      box.innerHTML = '<iframe src="' + url + '" title="' + esc(c.name) + ' live" allow="autoplay; encrypted-media; picture-in-picture; fullscreen" allowfullscreen referrerpolicy="strict-origin-when-cross-origin"></iframe>';
-      return;
-    }
+    if (feed.type === 'yt') { playYouTube(c, feed, host); return; }
     var video = document.createElement('video');
     video.id = 'nf7Vid'; video.controls = true; video.playsInline = true; video.autoplay = true; video.muted = false;
     video.setAttribute('playsinline', '');
@@ -5965,6 +6101,54 @@ const Live = {
       return y.pts - x.pts || (y.gf - y.ga) - (x.gf - x.ga) || y.gf - x.gf || x.team.localeCompare(y.team);
     }).map(function (r, i) { r.rank = i + 1; return r; });
   }
+
+  /* club crests: cached lookup, with a clean monogram chip while it loads */
+  var CREST_KEY = 'nfxCrests';
+  var crestCache = {};
+  try { crestCache = LS.get(CREST_KEY, {}) || {}; } catch (e) {}
+  function initialsOf(name) {
+    var w = String(name || '').replace(/[^A-Za-z0-9 ]/g, ' ').trim().split(/\s+/).filter(Boolean);
+    if (!w.length) return 'FC';
+    if (w.length === 1) return w[0].slice(0, 2).toUpperCase();
+    return (w[0][0] + w[w.length - 1][0]).toUpperCase();
+  }
+  function crestHTML(team) {
+    return '<span class="nf-crest" data-crest="' + encodeURIComponent(team) + '"><b>' + esc(initialsOf(team)) + '</b></span>';
+  }
+  function fetchCrest(team) {
+    if (crestCache[team] !== undefined) return Promise.resolve(crestCache[team]);
+    var url = 'https://www.thesportsdb.com/api/v1/json/3/searchteams.php?t=' + encodeURIComponent(team);
+    return fetch(url).then(function (r) { return r.ok ? r.json() : null; }).then(function (j) {
+      var arr = (j && j.teams) || [];
+      var hit = arr.filter(function (x) { return x.strSport === 'Soccer' && (x.strBadge || x.strTeamBadge); })[0] || arr[0];
+      var badge = hit ? (hit.strBadge || hit.strTeamBadge || '') : '';
+      crestCache[team] = badge;
+      try { LS.set(CREST_KEY, crestCache); } catch (e) {}
+      return badge;
+    }).catch(function () { crestCache[team] = ''; return ''; });
+  }
+  function paintCrests(scope) {
+    QA('.nf-crest', scope).forEach(function (el, i) {
+      if (el.getAttribute('data-done')) return;
+      var team = '';
+      try { team = decodeURIComponent(el.getAttribute('data-crest') || ''); } catch (e) { team = el.getAttribute('data-crest') || ''; }
+      if (!team) return;
+      el.setAttribute('data-done', '1');
+      setTimeout(function () {
+        fetchCrest(team).then(function (badge) {
+          if (!badge || !el.isConnected) return;
+          var img = document.createElement('img');
+          img.src = badge; img.alt = ''; img.loading = 'lazy'; img.referrerPolicy = 'no-referrer';
+          img.className = 'nf-crest-img';
+          el.innerHTML = ''; el.appendChild(img);
+        });
+      }, i * 140);
+    });
+  }
+  document.addEventListener('error', function (e) {
+    var t = e.target;
+    if (t && t.classList && t.classList.contains('nf-crest-img')) t.style.display = 'none';
+  }, true);
   function fmtDate(d) {
     if (!d) return 'Date to be confirmed';
     var dt = new Date(d + 'T12:00:00');
@@ -6042,7 +6226,8 @@ const Live = {
           var rows = tableOf(data, lg);
           if (!rows.length) { box.innerHTML = '<div class="nf7-empty">No matches played yet this season, so there is no table to calculate.</div>'; return; }
           box.innerHTML = '<p class="nf-note" style="margin:0 0 8px">' + esc(lg.name) + ' · calculated from ' + data.matches.filter(function (m) { return m.score && m.score.ft; }).length + ' played matches</p><div style="overflow:auto"><table class="nf-tbl"><thead><tr><th>#</th><th>Team</th><th>P</th><th>W</th><th>D</th><th>L</th><th>GF</th><th>GA</th><th>GD</th><th>Pts</th></tr></thead><tbody>' +
-            rows.map(function (x) { var gd = x.gf - x.ga; return '<tr class="' + (x.rank <= 4 ? 'me' : '') + '"><td>' + x.rank + '</td><td class="nm"><span>' + esc(x.team) + '</span></td><td>' + x.p + '</td><td>' + x.w + '</td><td>' + x.d + '</td><td>' + x.l + '</td><td>' + x.gf + '</td><td>' + x.ga + '</td><td>' + (gd > 0 ? '+' : '') + gd + '</td><td class="pts">' + x.pts + '</td></tr>'; }).join('') + '</tbody></table></div>';
+            rows.map(function (x) { var gd = x.gf - x.ga; return '<tr class="' + (x.rank <= 4 ? 'me' : '') + '"><td>' + x.rank + '</td><td class="nm">' + crestHTML(x.team) + '<span>' + esc(x.team) + '</span></td><td>' + x.p + '</td><td>' + x.w + '</td><td>' + x.d + '</td><td>' + x.l + '</td><td>' + x.gf + '</td><td>' + x.ga + '</td><td>' + (gd > 0 ? '+' : '') + gd + '</td><td class="pts">' + x.pts + '</td></tr>'; }).join('') + '</tbody></table></div>';
+          paintCrests(box);
           return;
         }
         var up = upcoming(data, lg), done = results(data, lg);
@@ -7222,6 +7407,25 @@ if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',
         throw new Error(friendly(e));
       }
     },
+    async sendCode(email){
+      email = (email||'').toLowerCase().trim();
+      if(!email) throw new Error('Enter your email first.');
+      await call('/auth/v1/otp',{method:'POST',token:'',body:{email:email,create_user:true}});
+      return true;
+    },
+    async verifyCode(email,code){
+      email = (email||'').toLowerCase().trim();
+      var res = await call('/auth/v1/verify',{method:'POST',token:'',body:{type:'email',email:email,token:String(code||'').trim()}});
+      if(!res || !res.access_token) throw new Error('That code did not work. Ask for a new one.');
+      saveSession(res);
+      var u = res.user || await call('/auth/v1/user',{token:res.access_token});
+      var prof = await profileRow(u.id);
+      var user = displayUser(u,prof);
+      user.isAdmin = (CONFIG.ADMIN_EMAILS || []).indexOf((user.email || '').toLowerCase()) >= 0 || !!user.isAdmin;
+      if(!prof) await upsertProfile(user);
+      Auth._enter(user); Store.log('login', user.email);
+      return user;
+    },
     oauth(provider){
       var redirect = location.origin + location.pathname;
       var url = URLB + '/auth/v1/authorize?provider=' + encodeURIComponent(provider || 'google') +
@@ -7414,6 +7618,79 @@ if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',
 })();
 </script>
 
+<script id="nf16-auth-gate">
+(function(){
+  /* ---------- one-time code sign-in ---------- */
+  var send=document.getElementById('otpSend'), ver=document.getElementById('otpVerify');
+  var row=document.getElementById('otpRow'), code=document.getElementById('otpCode');
+  var email=document.getElementById('otpEmail'), hint=document.getElementById('otpHint');
+  function say(t){ if(hint) hint.textContent=t; }
+  if(send) send.onclick=function(){
+    var e=(email.value||'').trim();
+    if(!/^[^@\s]+@[^@\s]+\.[^@\s]+$/.test(e)){ authMsg('Enter a valid email to get a code.'); return; }
+    if(!(HAS_BACKEND && window.SBX && SBX.sendCode)){ authMsg('One-time codes need cloud sign-in switched on. Use “Continue on this device” instead.','info'); return; }
+    send.disabled=true; say('Sending your code…');
+    SBX.sendCode(e).then(function(){
+      row.hidden=false; code.focus(); say('Code sent to '+e+'. It expires in about an hour.');
+    }).catch(function(err){
+      say('Could not send a code: '+String(err && err.message || err));
+    }).then(function(){ send.disabled=false; });
+  };
+  if(ver) ver.onclick=function(){
+    var e=(email.value||'').trim(), c=(code.value||'').replace(/\D/g,'');
+    if(c.length<6){ say('Enter the 6-digit code from the email.'); return; }
+    ver.disabled=true; say('Checking the code…');
+    SBX.verifyCode(e,c).then(function(){
+      say('Signed in. Loading your library…');
+    }).catch(function(err){
+      say('Sign-in failed: '+String(err && err.message || err));
+      ver.disabled=false;
+    });
+  };
+  if(code) code.addEventListener('keydown',function(ev){ if(ev.key==='Enter'){ ev.preventDefault(); if(ver) ver.click(); } });
+
+  /* ---------- continue on this device (no password) ---------- */
+  var dev=document.getElementById('deviceBtn');
+  if(dev) dev.onclick=function(){
+    try{
+      var sid=Store.session();
+      var u=sid?Store.users().find(function(x){return x.id===sid;}):null;
+      if(!u) u=Store.users().find(function(x){return x.email==='device@nancyflix.local';});
+      if(!u){
+        u={id:(typeof uid==='function'?uid():'u'+Date.now()),name:'My device',email:'device@nancyflix.local',gender:'',avatar:null,
+           createdAt:Date.now(),lastLogin:Date.now(),pwHash:'',isAdmin:false,settings:Settings.defaults()};
+        var us=Store.users(); us.push(u); Store.saveUsers(us);
+      }
+      Auth._enter(u); Store.log('login','device');
+      Toast.show('You are in','This device keeps your watchlist and settings. Add an email later from Profile to sync.','ok',5200);
+    }catch(e){ authMsg('Could not open the app on this device: '+String(e && e.message || e)); }
+  };
+
+  /* ---------- terms gate ---------- */
+  var body=document.getElementById('lawGateBody'), agree=document.getElementById('rgAgree');
+  var btn=document.getElementById('regSubmit'), state=document.getElementById('lawGateState');
+  if(body && agree && btn){
+    function atEnd(){ return body.scrollTop + body.clientHeight >= body.scrollHeight - 14; }
+    function unlock(){ if(atEnd()){ agree.disabled=false; if(state && !agree.checked) state.textContent='Tick to agree'; } }
+    body.addEventListener('scroll',unlock,{passive:true});
+    body.addEventListener('wheel',function(){ setTimeout(unlock,60); },{passive:true});
+    setTimeout(function(){ if(body.scrollHeight<=body.clientHeight+6){ agree.disabled=false; if(state) state.textContent='Tick to agree'; } else unlock(); },350);
+    agree.addEventListener('change',function(){
+      btn.disabled=!agree.checked;
+      if(state) state.textContent=agree.checked?'Agreed':'Tick to agree';
+      if(!agree.checked) authMsg('Read the notice to the end and tick the box to create an account.','info');
+    });
+    document.querySelectorAll('[data-lawdoc]').forEach(function(b){
+      b.onclick=function(){ try{ Legal.open(b.dataset.lawdoc); }catch(e){} };
+    });
+  }
+  var reg=document.getElementById('regForm');
+  if(reg) reg.addEventListener('submit',function(ev){
+    var ok=document.getElementById('rgAgree');
+    if(!ok || !ok.checked){ ev.preventDefault(); ev.stopImmediatePropagation(); authMsg('Please scroll the Terms and Privacy notice to the end, then tick the box.','err'); }
+  },true);
+})();
+</script>
 </body>
 </html>
 
