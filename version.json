@@ -1,13 +1,12 @@
 {
-  "version": "8.4.1",
+  "version": "8.5.0",
   "build": "2026-11-22",
   "notes": [
-    "Splash is centred on every screen, with the HUD and the loading card on the same centre line",
-    "The loading bar now always reaches 100% instead of waiting on a slow network call",
-    "Real club crests in every standings table, with a clean letter chip when a crest is missing",
-    "A visible LIVE banner at the top of the Live tab and a live dot on the Live menu item",
-    "Every free-to-air channel is open to watch, with a live check before a YouTube embed",
-    "You stay signed in after an update, and you can now sign in with a one-time email code or just this device",
-    "Terms of Use and Privacy must be read to the end before the Create account button unlocks"
+    "Live is football-first: compact Live football bar, TV channels in their own tab",
+    "New Rose, Violet, Ocean and Sunset themes; Light mode text is readable again",
+    "Match cards are back on every fixture and free to use",
+    "Live TV has an always-visible Open on YouTube button when a channel blocks embeds",
+    "No false Offline mode pop-up when cloud sync is slow",
+    "Text no longer touches card edges"
   ]
 }

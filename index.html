@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover, maximum-scale=5" />
-<meta name="description" content="NANCYFLIX by Dev Brian Studios — Every story deserves a screen. Premium movie discovery." />
+<meta name="description" content="NANCYFLIX by Dev Brian + Dev Nancy — Every story deserves a screen. Premium movie discovery." />
 <title>NANCYFLIX — Every Story Deserves A Screen</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -1639,6 +1639,7 @@ select,input,textarea{font-size:16px} /* stops iOS zoom-on-focus */
 .fbw-opt .go{margin-inline-start:auto;color:#ff6272;font-size:11px;font-weight:800;white-space:nowrap}
 .fbw-legal{margin-top:14px;font-size:10.5px;line-height:1.6;color:#6f6f84}
 </style>
+<!-- ===== v8.5.0 : football-first live / themes / cards / contrast ===== -->
 <!-- ===== v8.4.1 : splash centring · crests · live banner · terms gate · quick sign-in ===== -->
 <style id="nf16-fixes">
 /* ---- splash: one centred column, HUD and card locked to the same centre line ---- */
@@ -1648,11 +1649,11 @@ select,input,textarea{font-size:16px} /* stops iOS zoom-on-focus */
 @keyframes nf16hud{from{opacity:0}to{opacity:.95}}
 #splash.nfx-splash .nfx-core{grid-area:1/1;position:relative;z-index:2;width:100%;max-width:100%;margin:0 auto;padding:0 18px;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center}
 #splash.nfx-splash .nfx-word{width:100%;justify-content:center;text-align:center}
-#splash.nfx-splash .nfx-foot{position:absolute;left:0;right:0;margin-inline:auto;bottom:calc(26px + var(--safe-b,0px));transform:none;width:min(420px,calc(100vw - 30px));animation:nf16foot .8s 1s both}
+#splash.nfx-splash .nfx-foot{position:absolute;left:50%;right:auto;bottom:calc(26px + var(--safe-b,0px));transform:translateX(-50%);width:min(420px,calc(100vw - 28px));animation:nf16foot .8s 1s both}
 @keyframes nf16foot{from{opacity:0}to{opacity:1}}
 @keyframes nf16fade{from{opacity:0}to{opacity:1}}
 @media(max-height:640px){#splash.nfx-splash .nfx-hud{width:min(66vmin,420px)}#splash.nfx-splash .nfx-foot{bottom:calc(10px + var(--safe-b,0px))}}
-@media(prefers-reduced-motion:reduce){#splash.nfx-splash .nfx-hud,#splash.nfx-splash .nfx-foot{animation:none!important}#splash.nfx-splash .nfx-hud{opacity:.95;transform:translate(-50%,-50%)}#splash.nfx-splash .nfx-foot{opacity:1;transform:none}}
+@media(prefers-reduced-motion:reduce){#splash.nfx-splash .nfx-hud,#splash.nfx-splash .nfx-foot{animation:none!important}#splash.nfx-splash .nfx-hud{opacity:.95;transform:translate(-50%,-50%)}#splash.nfx-splash .nfx-foot{opacity:1;transform:translateX(-50%)}}
 
 /* ---- club crests in calculated standings ---- */
 .nf-crest{display:inline-grid;place-items:center;width:20px;height:20px;border-radius:50%;background:rgba(255,255,255,.07);border:1px solid rgba(255,255,255,.10);overflow:hidden;flex:0 0 auto;vertical-align:-5px;margin-inline-end:8px}
@@ -1696,6 +1697,66 @@ nav .nav button[data-view="live"],#mainNav button[data-view="live"],#bottomNav b
 .otp-row[hidden]{display:none}
 .otp-hint{margin:8px 0 0;font-size:10px;line-height:1.5;color:#8b8b9f}
 </style>
+<style id="nf17-850">
+/* ===== v8.5.0: new themes, compact football bar, readable light mode ===== */
+[data-theme=rose]{--bg:#1a0710;--bg-2:#260b18;--surface:#321020;--surface-2:#40162a;--text:#fff1f6;--muted:#e0a3ba;--border:#632742;--accent:#ff4d8d;--accent-2:#ffa6c8;--neon:#ffc2da;--accent-soft:rgba(255,77,141,.16);--shadow:0 18px 50px rgba(70,0,30,.6);--glass:rgba(255,255,255,.05);--glass-br:rgba(255,166,200,.14)}
+[data-theme=violet]{--bg:#0b0718;--bg-2:#140d29;--surface:#1b1236;--surface-2:#261a4a;--text:#f5f1ff;--muted:#b9a9e6;--border:#3c2b6b;--accent:#8b5cf6;--accent-2:#c4b5fd;--neon:#d8ccff;--accent-soft:rgba(139,92,246,.18);--shadow:0 18px 50px rgba(30,10,80,.6);--glass:rgba(255,255,255,.05);--glass-br:rgba(196,181,253,.14)}
+[data-theme=ocean]{--bg:#03121a;--bg-2:#06202b;--surface:#082a37;--surface-2:#0c3848;--text:#eafaff;--muted:#8fc4d4;--border:#154b5e;--accent:#06b6d4;--accent-2:#67e8f9;--neon:#a5f3fc;--accent-soft:rgba(6,182,212,.16);--shadow:0 18px 50px rgba(0,30,45,.6);--glass:rgba(255,255,255,.05);--glass-br:rgba(103,232,249,.14)}
+[data-theme=sunset]{--bg:#1a0d06;--bg-2:#261208;--surface:#30180c;--surface-2:#40210f;--text:#fff4ea;--muted:#d9a98a;--border:#5e3218;--accent:#ff6b35;--accent-2:#ffcc66;--neon:#ffd9a8;--accent-soft:rgba(255,107,53,.16);--shadow:0 18px 50px rgba(60,20,0,.6);--glass:rgba(255,255,255,.05);--glass-br:rgba(255,204,102,.14)}
+
+/* compact football-only live bar */
+.nf-livebanner.sm{padding:9px 11px;margin:0 0 12px;gap:9px;border-radius:12px;background:linear-gradient(110deg,rgba(225,29,46,.16),rgba(255,255,255,.03));border-color:rgba(225,29,46,.38)}
+.nf-livebanner.sm .lb-txt{flex:1;min-width:0;flex-direction:row;align-items:center;gap:7px;overflow:hidden}
+.nf-livebanner.sm .lb-txt b{font-size:10px;letter-spacing:.12em;white-space:nowrap;color:var(--accent-2)}
+.nf-livebanner.sm .lb-txt span{font-size:11px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;color:var(--muted)}
+.nf-livebanner.sm .lb-go{padding:7px 14px;font-size:10.5px}
+.nf-livebanner .lb-txt b{color:var(--accent-2)}
+.nf-livebanner .lb-txt span{color:var(--muted)}
+@media(max-width:420px){.nf-livebanner.sm .lb-txt span{display:none}}
+
+/* light-mode contrast on controls that sit on the page */
+[data-theme=light] .fb-tabs{background:rgba(20,20,30,.05);border-color:#c3c6d4}
+[data-theme=light] .fb-tabs button{color:#3f3f55}
+[data-theme=light] .fb-tabs button.on{color:#fff}
+[data-theme=light] .fb-lgs button{background:#fff;color:#3a3a48;border-color:#c3c6d4}
+[data-theme=light] .fb-lgs button.on{color:#fff;background:rgba(225,29,46,.9);border-color:#e11d2e}
+[data-theme=light] .fb-pill{color:#4f4f63}
+[data-theme=light] .fbw-opt{background:#fff;border-color:#c9ccd8;color:#20202a}
+[data-theme=light] .fbw-opt small,[data-theme=light] .fbw-legal{color:#5c5c70}
+[data-theme=light] .nf-livebanner.sm{background:linear-gradient(110deg,rgba(225,29,46,.10),#f7f8fb)}
+
+/* open on YouTube link inside the player */
+.nf7-yt{margin-inline-start:auto;display:inline-flex;align-items:center;gap:6px;padding:6px 11px;border-radius:999px;border:1px solid rgba(225,29,46,.5);background:rgba(225,29,46,.12);color:var(--text);font-size:10.5px;font-weight:800;text-decoration:none}
+.nf7-yt .nf-svg{width:12px;height:12px}
+
+/* card action on every fixture */
+.fbr-cta{flex-wrap:wrap}
+.fbr-card{margin-inline-start:auto;display:inline-flex;align-items:center;gap:6px;padding:7px 12px;border-radius:99px;font-size:10.5px;font-weight:800;background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.14);color:#e6e6f0;cursor:pointer;white-space:nowrap}
+.fbr-card:hover{border-color:rgba(255,204,102,.6);color:#ffcc66}
+.fbr-card svg{width:13px;height:13px}
+.fbm-cardrow{display:flex;gap:8px;flex-wrap:wrap;margin-top:14px}
+.fbm-cardrow .btn{flex:1;justify-content:center}
+
+/* text never touches a card edge */
+.fbr-top,.fbr-main,.fbr-bot,.fbr-cta{padding-inline:18px}
+.fbr-top b,.fbr-side b,.fbr-bot .ven,.fx-t,.fx-m{overflow-wrap:anywhere;word-break:break-word}
+.fbr-main{gap:10px}
+.fx-card.nf7 .body{padding:8px 12px 12px}
+.fx-card.nf7 .fx{padding:10px 12px;line-height:1.4}
+.card .info{padding:10px 12px 12px}
+
+/* match card preview */
+.overlay.nfcard-ov{padding:14px;z-index:1500}
+.nfcard-sheet{width:min(430px,100%);max-height:92vh;overflow:auto;background:var(--surface);border:1px solid var(--border);border-radius:18px;padding:14px;box-shadow:var(--shadow)}
+.nfcard-sheet .hd{display:flex;align-items:flex-start;gap:10px}
+.nfcard-sheet .hd b{display:block;font-size:14px}
+.nfcard-sheet .hd span{display:block;font-size:11px;color:var(--muted);margin-top:2px}
+.nfcard-x{margin-inline-start:auto;width:32px;height:32px;border-radius:50%;display:grid;place-items:center;background:var(--surface-2);border:1px solid var(--border);color:var(--text)}
+.nfcard-sheet img{width:100%;border-radius:12px;border:1px solid var(--border);margin:10px 0;background:#0a0a12}
+.nfcard-sheet .btns{display:flex;gap:8px;flex-wrap:wrap}
+.nfcard-sheet .btns .btn{flex:1;justify-content:center}
+.nfcard-sheet .fine{font-size:10.5px;color:var(--muted);line-height:1.55;margin-top:10px}
+</style>
 </head>
 <body class="noscroll">
 <!-- ============ SPLASH ============ -->
@@ -1731,14 +1792,14 @@ nav .nav button[data-view="live"],#mainNav button[data-view="live"],#bottomNav b
   </svg>
   <div class="nfx-scan" aria-hidden="true"></div>
   <div class="nfx-core">
-    <div class="nfx-kicker"><i></i><span>DEV BRIAN STUDIOS</span><i></i></div>
+    <div class="nfx-kicker"><i></i><span>DEV BRIAN + DEV NANCY</span><i></i></div>
     <div class="nfx-word" id="splashWord" aria-label="NANCYFLIX"><span style="--i:0">N</span><span style="--i:1">A</span><span style="--i:2">N</span><span style="--i:3">C</span><span style="--i:4">Y</span><span style="--i:5">F</span><span style="--i:6">L</span><span style="--i:7">I</span><span style="--i:8">X</span></div>
     <div class="nfx-tag">EVERY STORY DESERVES A SCREEN</div>
   </div>
   <div class="nfx-foot">
     <div class="nfx-now"><span class="nfx-dot"></span><span id="splashStage">LOADING YOUR WATCHLIST</span></div>
     <div class="nfx-meter"><i id="splashBar"></i></div>
-    <div class="nfx-meta"><b id="splashPct">0%</b><em id="splashStat">BOOT</em><span>V8.4.1</span></div>
+    <div class="nfx-meta"><b id="splashPct">0%</b><em id="splashStat">BOOT</em><span>V8.5.0</span></div>
   </div>
 </div>
 
@@ -1749,7 +1810,7 @@ nav .nav button[data-view="live"],#mainNav button[data-view="live"],#bottomNav b
     <div class="auth-head">
       <svg width="48" height="48" viewBox="0 0 64 64" style="margin:0 auto"><rect width="64" height="64" rx="14" fill="#12121c" stroke="#24242f"/><rect x="11" y="26" width="42" height="25" rx="3" fill="#e11d2e"/><g transform="rotate(-9 32 20)"><rect x="10" y="14" width="44" height="10" rx="2" fill="#f5f5fa"/><path d="M20 14l-5 10M30 14l-5 10M40 14l-5 10M50 14l-5 10" stroke="#12121c" stroke-width="3" stroke-linecap="round"/></g></svg>
       <h1>NANCYFLIX</h1>
-      <p>DEV BRIAN STUDIOS</p>
+      <p>DEV BRIAN + DEV NANCY</p>
     </div>
     <div class="auth-tabs">
       <button id="tabLogin" class="active">Log in</button>
@@ -1781,7 +1842,7 @@ nav .nav button[data-view="live"],#mainNav button[data-view="live"],#bottomNav b
         <div class="lawgate-h"><span>Terms of Use and Privacy</span><em id="lawGateState">Scroll to read</em></div>
         <div class="lawgate-body" id="lawGateBody" tabindex="0" role="region" aria-label="Terms of Use and Privacy summary">
           <h4>Welcome to NANCYFLIX</h4>
-          <p>NANCYFLIX is a discovery app for films and sport, made by Dev Brian Studios. By creating an account you agree to use it lawfully, keep your login private, and accept that catalogue data, posters and trailers come from TMDB and other public sources.</p>
+          <p>NANCYFLIX is a discovery app for films and sport, made by Dev Brian + Dev Nancy. By creating an account you agree to use it lawfully, keep your login private, and accept that catalogue data, posters and trailers come from TMDB and other public sources.</p>
           <h4>1 · Your account</h4>
           <p>You are responsible for activity on your account and for the accuracy of the email you register. One person per account. You may delete your account at any time from Profile, which removes your saved watchlist and preferences.</p>
           <h4>2 · Acceptable use</h4>
@@ -1869,7 +1930,7 @@ nav .nav button[data-view="live"],#mainNav button[data-view="live"],#bottomNav b
           <li><a onclick="switchView('profile')" data-i18n="footProfile">Profile</a></li>
           <li><a onclick="switchView('feedback')" data-i18n="feedback">Feedback</a></li>
           <li><a onclick="Settings.openModal()" data-i18n="settings">Settings</a></li>
-          <li><a href="#" onclick="Legal.open('about');return false" data-i18n="footAbout">About Dev Brian Studios</a></li>
+          <li><a href="#" onclick="Legal.open('about');return false" data-i18n="footAbout">About Dev Brian + Dev Nancy</a></li>
         </ul>
       </div>
       <div class="foot-col">
@@ -1883,7 +1944,7 @@ nav .nav button[data-view="live"],#mainNav button[data-view="live"],#bottomNav b
       </div>
     </div>
     <div class="foot-bar">
-      <span data-i18n="footRights">© 2026–2027 NANCYFLIX · Dev Brian Studios. All rights reserved.</span>
+      <span data-i18n="footRights">© 2026–2027 NANCYFLIX · Dev Brian + Dev Nancy. All rights reserved.</span>
       <span class="foot-meta" data-i18n="footMeta">Edition 2026/27 · This product uses the TMDB API but is not endorsed or certified by TMDB.</span>
     </div>
   </footer>
@@ -1973,7 +2034,7 @@ nav .nav button[data-view="live"],#mainNav button[data-view="live"],#bottomNav b
 <div id="toasts" aria-live="polite"></div>
 <script>
 /* =====================================================================
-   NANCYFLIX  —  Dev Brian Studios  —  single-file frontend
+   NANCYFLIX  —  Dev Brian + Dev Nancy  —  single-file frontend
    Modules below are organized by responsibility. Search for  ===  headers.
    ===================================================================== */
 
@@ -2086,13 +2147,13 @@ const I18N={
 function t(k){const L=(State.settings&&State.settings.lang)||'en';const d=I18N.dict;return (d[L]&&d[L][k])||d.en[k]||k;}
 /* extended chrome strings: full Settings panel + site footer, all languages */
 const SET_I18N={
- en:{setTitle:'Settings',setIntro:'Every control below changes real behavior.',setSearchPh:'Search settings…',grpAppearance:'Appearance',grpTypography:'Typography',grpLang:'Language & region',grpPremium:'Premium experience',grpAnimation:'Animation',grpNoti:'Notifications',grpData:'Data management',accentColor:'Accent color',accentDesc:'Personalize buttons & highlights',themeDefault:'Theme default',fontFamily:'Font family',appliesApp:'Applies across the app',appLang:'App language',appLangDesc:'Interface & movie info follow your choice',defaultCat:'Default browse category',defaultCatDesc:'What Home opens with',density:'Interface density',densityDesc:'Comfortable spacing or a tighter, pro layout',comfortable:'Comfortable',compact:'Compact',posterQuality:'Poster quality',posterQualityDesc:'High detail, or data-saver for less bandwidth & storage',highQuality:'High quality',dataSaver:'Data saver',autoplay:'Trailer autoplay',autoplayDesc:'Auto-start trailers in the player',transitions:'Interface transitions',transitionsDesc:'Smooth view & modal animations',hoverFx:'Poster hover effects',hoverFxDesc:'Scale & reveal on hover',splashAnim:'Splash animation',splashAnimDesc:'Show the cinematic intro',reducedMotion:'Reduced motion',reducedMotionDesc:'Minimise animations (also respects your OS setting)',inAppNoti:'In-app notifications',inAppNotiDesc:'Toasts & notification center',soundFx:'Sound effects',soundFxDesc:'Play a soft tone on alerts',soundVolume:'Sound volume',browserNoti:'Browser notifications',browserNotiDesc:'Requires explicit permission',onDeviceStorage:'On-device storage',cachedOffline:'Cached for offline',watchlistItems:'Watchlist items',dataNote:'Your account, watchlist, settings and cached movies are stored only on this device and stay available offline. Nothing is cleared automatically — your saved information is never reset in the background.',exportMyData:'Export my data',exportMyDataDesc:'Download your profile, watchlist & settings (JSON)',exportBtn:'Export',footBrandDesc:'Every story deserves a screen. Discover trending films, browse by genre, build your watchlist and play official trailers — all powered by live TMDB data.',footBrowse:'Browse',footStudio:'Studio',footLegal:'Legal',footProfile:'Profile',footAbout:'About Dev Brian Studios',footTerms:'Terms of Use',footPrivacy:'Privacy Policy',footCookies:'Cookie Preferences',footTmdb:'Data by TMDB',footRights:'© 2026–2027 NANCYFLIX · Dev Brian Studios. All rights reserved.',footMeta:'Edition 2026/27 · This product uses the TMDB API but is not endorsed or certified by TMDB.'},
- sw:{setTitle:'Mipangilio',setIntro:'Kila kidhibiti hapa chini hubadilisha tabia halisi.',setSearchPh:'Tafuta mipangilio…',grpAppearance:'Mwonekano',grpTypography:'Uchapaji',grpLang:'Lugha na eneo',grpPremium:'Uzoefu wa kifahari',grpAnimation:'Mwendo',grpNoti:'Arifa',grpData:'Usimamizi wa data',accentColor:'Rangi ya msisitizo',accentDesc:'Binafsisha vitufe na vivutio',themeDefault:'Mandhari chaguo-msingi',fontFamily:'Aina ya fonti',appliesApp:'Inatumika programu nzima',appLang:'Lugha ya programu',appLangDesc:'Kiolesura na maelezo ya filamu hufuata chaguo lako',defaultCat:'Kategoria chaguo-msingi',defaultCatDesc:'Nyumbani hufunguliwa na nini',density:'Msongamano wa kiolesura',densityDesc:'Nafasi rahisi au mpangilio wa kitaalamu',comfortable:'Rahisi',compact:'Finyu',posterQuality:'Ubora wa bango',posterQualityDesc:'Ubora wa juu au kuokoa data kwa matumizi kidogo',highQuality:'Ubora wa juu',dataSaver:'Kuokoa data',autoplay:'Kucheza trela moja kwa moja',autoplayDesc:'Anzisha trela kiotomatiki',transitions:'Mabadiliko ya kiolesura',transitionsDesc:'Mwendo laini wa mionekano',hoverFx:'Athari za kuelea bango',hoverFxDesc:'Kuza na funua unapoelea',splashAnim:'Mwendo wa utangulizi',splashAnimDesc:'Onyesha utangulizi wa kisinema',reducedMotion:'Punguza mwendo',reducedMotionDesc:'Punguza mwendo (pia huheshimu mfumo wako)',inAppNoti:'Arifa ndani ya programu',inAppNotiDesc:'Arifa na kituo cha arifa',soundFx:'Athari za sauti',soundFxDesc:'Cheza toni laini kwenye arifa',soundVolume:'Sauti',browserNoti:'Arifa za kivinjari',browserNotiDesc:'Zinahitaji ruhusa wazi',onDeviceStorage:'Hifadhi ya kifaa',cachedOffline:'Zilizohifadhiwa nje ya mtandao',watchlistItems:'Vipengele vya orodha',dataNote:'Akaunti, orodha, mipangilio na filamu zako zimehifadhiwa kwenye kifaa hiki pekee na zinapatikana nje ya mtandao. Hakuna kinachofutwa kiotomatiki.',exportMyData:'Hamisha data yangu',exportMyDataDesc:'Pakua wasifu, orodha na mipangilio (JSON)',exportBtn:'Hamisha',footBrandDesc:'Kila hadithi inastahili skrini. Gundua filamu zinazovuma, vinjari kwa aina, jenga orodha yako na ucheze trela rasmi — zote zikitumia data ya moja kwa moja ya TMDB.',footBrowse:'Vinjari',footStudio:'Studio',footLegal:'Kisheria',footProfile:'Wasifu',footAbout:'Kuhusu Dev Brian Studios',footTerms:'Masharti ya Matumizi',footPrivacy:'Sera ya Faragha',footCookies:'Mapendeleo ya Vidakuzi',footTmdb:'Data kutoka TMDB',footRights:'© 2026–2027 NANCYFLIX · Dev Brian Studios. Haki zote zimehifadhiwa.',footMeta:'Toleo 2026/27 · Bidhaa hii hutumia API ya TMDB lakini haijaidhinishwa na TMDB.'},
- fr:{setTitle:'Paramètres',setIntro:'Chaque réglage ci-dessous modifie un comportement réel.',setSearchPh:'Rechercher dans les paramètres…',grpAppearance:'Apparence',grpTypography:'Typographie',grpLang:'Langue et région',grpPremium:'Expérience premium',grpAnimation:'Animation',grpNoti:'Notifications',grpData:'Gestion des données',accentColor:'Couleur d’accent',accentDesc:'Personnalisez boutons et surbrillances',themeDefault:'Thème par défaut',fontFamily:'Police',appliesApp:'S’applique à toute l’app',appLang:'Langue de l’app',appLangDesc:'L’interface et les infos films suivent votre choix',defaultCat:'Catégorie par défaut',defaultCatDesc:'Ce que l’Accueil ouvre',density:'Densité de l’interface',densityDesc:'Espacement confortable ou disposition compacte',comfortable:'Confortable',compact:'Compact',posterQuality:'Qualité des affiches',posterQualityDesc:'Haute définition ou économie de données',highQuality:'Haute qualité',dataSaver:'Économie de données',autoplay:'Lecture auto des bandes-annonces',autoplayDesc:'Démarrer automatiquement les bandes-annonces',transitions:'Transitions de l’interface',transitionsDesc:'Animations fluides des vues',hoverFx:'Effets de survol des affiches',hoverFxDesc:'Agrandir et révéler au survol',splashAnim:'Animation d’intro',splashAnimDesc:'Afficher l’intro cinématique',reducedMotion:'Mouvement réduit',reducedMotionDesc:'Réduire les animations (respecte aussi votre OS)',inAppNoti:'Notifications dans l’app',inAppNotiDesc:'Toasts et centre de notifications',soundFx:'Effets sonores',soundFxDesc:'Jouer un son doux lors des alertes',soundVolume:'Volume sonore',browserNoti:'Notifications du navigateur',browserNotiDesc:'Nécessite une autorisation explicite',onDeviceStorage:'Stockage sur l’appareil',cachedOffline:'En cache hors ligne',watchlistItems:'Éléments de la liste',dataNote:'Votre compte, votre liste, vos réglages et les films en cache sont stockés uniquement sur cet appareil et restent disponibles hors ligne. Rien n’est effacé automatiquement.',exportMyData:'Exporter mes données',exportMyDataDesc:'Télécharger profil, liste et réglages (JSON)',exportBtn:'Exporter',footBrandDesc:'Chaque histoire mérite un écran. Découvrez les films tendance, parcourez par genre, créez votre liste et lisez les bandes-annonces officielles — le tout avec les données en direct de TMDB.',footBrowse:'Parcourir',footStudio:'Studio',footLegal:'Légal',footProfile:'Profil',footAbout:'À propos de Dev Brian Studios',footTerms:'Conditions d’utilisation',footPrivacy:'Politique de confidentialité',footCookies:'Préférences de cookies',footTmdb:'Données par TMDB',footRights:'© 2026–2027 NANCYFLIX · Dev Brian Studios. Tous droits réservés.',footMeta:'Édition 2026/27 · Ce produit utilise l’API TMDB mais n’est ni approuvé ni certifié par TMDB.'},
- es:{setTitle:'Ajustes',setIntro:'Cada control de abajo cambia el comportamiento real.',setSearchPh:'Buscar ajustes…',grpAppearance:'Apariencia',grpTypography:'Tipografía',grpLang:'Idioma y región',grpPremium:'Experiencia premium',grpAnimation:'Animación',grpNoti:'Notificaciones',grpData:'Gestión de datos',accentColor:'Color de acento',accentDesc:'Personaliza botones y resaltados',themeDefault:'Tema predeterminado',fontFamily:'Tipo de letra',appliesApp:'Se aplica a toda la app',appLang:'Idioma de la app',appLangDesc:'La interfaz y la info de películas siguen tu elección',defaultCat:'Categoría predeterminada',defaultCatDesc:'Con qué abre Inicio',density:'Densidad de la interfaz',densityDesc:'Espaciado cómodo o diseño compacto',comfortable:'Cómodo',compact:'Compacto',posterQuality:'Calidad de pósteres',posterQualityDesc:'Alta definición o ahorro de datos',highQuality:'Alta calidad',dataSaver:'Ahorro de datos',autoplay:'Reproducción automática de tráilers',autoplayDesc:'Iniciar tráilers automáticamente',transitions:'Transiciones de interfaz',transitionsDesc:'Animaciones suaves de vistas',hoverFx:'Efectos al pasar el cursor',hoverFxDesc:'Ampliar y revelar al pasar el cursor',splashAnim:'Animación de intro',splashAnimDesc:'Mostrar la intro cinematográfica',reducedMotion:'Movimiento reducido',reducedMotionDesc:'Reducir animaciones (respeta tu sistema)',inAppNoti:'Notificaciones en la app',inAppNotiDesc:'Avisos y centro de notificaciones',soundFx:'Efectos de sonido',soundFxDesc:'Reproducir un tono suave en las alertas',soundVolume:'Volumen',browserNoti:'Notificaciones del navegador',browserNotiDesc:'Requiere permiso explícito',onDeviceStorage:'Almacenamiento del dispositivo',cachedOffline:'En caché sin conexión',watchlistItems:'Elementos de la lista',dataNote:'Tu cuenta, lista, ajustes y películas en caché se guardan solo en este dispositivo y siguen disponibles sin conexión. Nada se borra automáticamente.',exportMyData:'Exportar mis datos',exportMyDataDesc:'Descargar perfil, lista y ajustes (JSON)',exportBtn:'Exportar',footBrandDesc:'Cada historia merece una pantalla. Descubre películas en tendencia, explora por género, crea tu lista y reproduce tráilers oficiales — todo con datos en vivo de TMDB.',footBrowse:'Explorar',footStudio:'Estudio',footLegal:'Legal',footProfile:'Perfil',footAbout:'Sobre Dev Brian Studios',footTerms:'Términos de uso',footPrivacy:'Política de privacidad',footCookies:'Preferencias de cookies',footTmdb:'Datos de TMDB',footRights:'© 2026–2027 NANCYFLIX · Dev Brian Studios. Todos los derechos reservados.',footMeta:'Edición 2026/27 · Este producto usa la API de TMDB pero no está avalado ni certificado por TMDB.'},
- de:{setTitle:'Einstellungen',setIntro:'Jede Einstellung unten ändert echtes Verhalten.',setSearchPh:'Einstellungen suchen…',grpAppearance:'Darstellung',grpTypography:'Typografie',grpLang:'Sprache & Region',grpPremium:'Premium-Erlebnis',grpAnimation:'Animation',grpNoti:'Benachrichtigungen',grpData:'Datenverwaltung',accentColor:'Akzentfarbe',accentDesc:'Buttons und Hervorhebungen anpassen',themeDefault:'Standard-Theme',fontFamily:'Schriftart',appliesApp:'Gilt für die ganze App',appLang:'App-Sprache',appLangDesc:'Oberfläche und Film-Infos folgen deiner Wahl',defaultCat:'Standard-Kategorie',defaultCatDesc:'Womit die Startseite öffnet',density:'Oberflächendichte',densityDesc:'Angenehme Abstände oder kompaktes Layout',comfortable:'Komfortabel',compact:'Kompakt',posterQuality:'Posterqualität',posterQualityDesc:'Hohe Details oder Datensparmodus',highQuality:'Hohe Qualität',dataSaver:'Datensparmodus',autoplay:'Trailer-Autoplay',autoplayDesc:'Trailer automatisch starten',transitions:'Oberflächenübergänge',transitionsDesc:'Sanfte Ansichtsanimationen',hoverFx:'Poster-Hover-Effekte',hoverFxDesc:'Beim Überfahren vergrößern',splashAnim:'Intro-Animation',splashAnimDesc:'Das filmische Intro zeigen',reducedMotion:'Reduzierte Bewegung',reducedMotionDesc:'Animationen reduzieren (beachtet auch dein OS)',inAppNoti:'In-App-Benachrichtigungen',inAppNotiDesc:'Toasts und Benachrichtigungszentrum',soundFx:'Soundeffekte',soundFxDesc:'Sanften Ton bei Hinweisen abspielen',soundVolume:'Lautstärke',browserNoti:'Browser-Benachrichtigungen',browserNotiDesc:'Erfordert ausdrückliche Erlaubnis',onDeviceStorage:'Speicher auf dem Gerät',cachedOffline:'Offline zwischengespeichert',watchlistItems:'Merklisten-Einträge',dataNote:'Dein Konto, deine Merkliste, Einstellungen und zwischengespeicherte Filme werden nur auf diesem Gerät gespeichert und bleiben offline verfügbar. Nichts wird automatisch gelöscht.',exportMyData:'Meine Daten exportieren',exportMyDataDesc:'Profil, Merkliste und Einstellungen herunterladen (JSON)',exportBtn:'Exportieren',footBrandDesc:'Jede Geschichte verdient eine Leinwand. Entdecke angesagte Filme, stöbere nach Genre, baue deine Merkliste auf und spiele offizielle Trailer — alles mit Live-Daten von TMDB.',footBrowse:'Stöbern',footStudio:'Studio',footLegal:'Rechtliches',footProfile:'Profil',footAbout:'Über Dev Brian Studios',footTerms:'Nutzungsbedingungen',footPrivacy:'Datenschutz',footCookies:'Cookie-Einstellungen',footTmdb:'Daten von TMDB',footRights:'© 2026–2027 NANCYFLIX · Dev Brian Studios. Alle Rechte vorbehalten.',footMeta:'Edition 2026/27 · Dieses Produkt nutzt die TMDB-API, ist aber nicht von TMDB unterstützt oder zertifiziert.'},
- pt:{setTitle:'Configurações',setIntro:'Cada controle abaixo muda o comportamento real.',setSearchPh:'Buscar configurações…',grpAppearance:'Aparência',grpTypography:'Tipografia',grpLang:'Idioma e região',grpPremium:'Experiência premium',grpAnimation:'Animação',grpNoti:'Notificações',grpData:'Gerenciamento de dados',accentColor:'Cor de destaque',accentDesc:'Personalize botões e destaques',themeDefault:'Tema padrão',fontFamily:'Fonte',appliesApp:'Aplica-se a todo o app',appLang:'Idioma do app',appLangDesc:'A interface e as infos de filmes seguem sua escolha',defaultCat:'Categoria padrão',defaultCatDesc:'Com o que o Início abre',density:'Densidade da interface',densityDesc:'Espaçamento confortável ou layout compacto',comfortable:'Confortável',compact:'Compacto',posterQuality:'Qualidade dos pôsteres',posterQualityDesc:'Alta definição ou economia de dados',highQuality:'Alta qualidade',dataSaver:'Economia de dados',autoplay:'Reprodução automática de trailers',autoplayDesc:'Iniciar trailers automaticamente',transitions:'Transições da interface',transitionsDesc:'Animações suaves de telas',hoverFx:'Efeitos ao passar o cursor',hoverFxDesc:'Ampliar e revelar ao passar o cursor',splashAnim:'Animação de abertura',splashAnimDesc:'Mostrar a abertura cinematográfica',reducedMotion:'Movimento reduzido',reducedMotionDesc:'Reduzir animações (respeita seu sistema)',inAppNoti:'Notificações no app',inAppNotiDesc:'Avisos e central de notificações',soundFx:'Efeitos sonoros',soundFxDesc:'Tocar um tom suave nos alertas',soundVolume:'Volume',browserNoti:'Notificações do navegador',browserNotiDesc:'Requer permissão explícita',onDeviceStorage:'Armazenamento no dispositivo',cachedOffline:'Em cache offline',watchlistItems:'Itens da lista',dataNote:'Sua conta, lista, configurações e filmes em cache são armazenados apenas neste dispositivo e ficam disponíveis offline. Nada é apagado automaticamente.',exportMyData:'Exportar meus dados',exportMyDataDesc:'Baixar perfil, lista e configurações (JSON)',exportBtn:'Exportar',footBrandDesc:'Toda história merece uma tela. Descubra filmes em alta, explore por gênero, monte sua lista e reproduza trailers oficiais — tudo com dados ao vivo do TMDB.',footBrowse:'Explorar',footStudio:'Estúdio',footLegal:'Legal',footProfile:'Perfil',footAbout:'Sobre a Dev Brian Studios',footTerms:'Termos de uso',footPrivacy:'Política de privacidade',footCookies:'Preferências de cookies',footTmdb:'Dados do TMDB',footRights:'© 2026–2027 NANCYFLIX · Dev Brian Studios. Todos os direitos reservados.',footMeta:'Edição 2026/27 · Este produto usa a API do TMDB mas não é endossado nem certificado pelo TMDB.'},
- ar:{setTitle:'الإعدادات',setIntro:'كل عنصر تحكم أدناه يغيّر سلوكًا حقيقيًا.',setSearchPh:'ابحث في الإعدادات…',grpAppearance:'المظهر',grpTypography:'الخطوط',grpLang:'اللغة والمنطقة',grpPremium:'تجربة مميزة',grpAnimation:'الحركة',grpNoti:'الإشعارات',grpData:'إدارة البيانات',accentColor:'لون التمييز',accentDesc:'خصّص الأزرار والإبرازات',themeDefault:'السمة الافتراضية',fontFamily:'نوع الخط',appliesApp:'يُطبّق على التطبيق كله',appLang:'لغة التطبيق',appLangDesc:'تتبع الواجهة ومعلومات الأفلام اختيارك',defaultCat:'الفئة الافتراضية',defaultCatDesc:'بماذا تُفتح الصفحة الرئيسية',density:'كثافة الواجهة',densityDesc:'تباعد مريح أو تخطيط مضغوط',comfortable:'مريح',compact:'مضغوط',posterQuality:'جودة الملصقات',posterQualityDesc:'دقة عالية أو توفير البيانات',highQuality:'جودة عالية',dataSaver:'توفير البيانات',autoplay:'تشغيل الإعلانات تلقائيًا',autoplayDesc:'بدء الإعلانات تلقائيًا',transitions:'انتقالات الواجهة',transitionsDesc:'حركات سلسة للعروض',hoverFx:'تأثيرات تمرير الملصق',hoverFxDesc:'تكبير وكشف عند التمرير',splashAnim:'حركة المقدمة',splashAnimDesc:'عرض المقدمة السينمائية',reducedMotion:'حركة مخفّضة',reducedMotionDesc:'تقليل الحركات (يحترم نظامك أيضًا)',inAppNoti:'إشعارات داخل التطبيق',inAppNotiDesc:'التنبيهات ومركز الإشعارات',soundFx:'المؤثرات الصوتية',soundFxDesc:'تشغيل نغمة هادئة عند التنبيهات',soundVolume:'مستوى الصوت',browserNoti:'إشعارات المتصفح',browserNotiDesc:'تتطلب إذنًا صريحًا',onDeviceStorage:'تخزين على الجهاز',cachedOffline:'مخزّن للعمل دون اتصال',watchlistItems:'عناصر القائمة',dataNote:'يتم تخزين حسابك وقائمتك وإعداداتك والأفلام المخزنة على هذا الجهاز فقط وتبقى متاحة دون اتصال. لا يُحذف شيء تلقائيًا.',exportMyData:'تصدير بياناتي',exportMyDataDesc:'تنزيل الملف الشخصي والقائمة والإعدادات (JSON)',exportBtn:'تصدير',footBrandDesc:'كل قصة تستحق شاشة. اكتشف الأفلام الرائجة، وتصفح حسب النوع، وأنشئ قائمتك وشغّل الإعلانات الرسمية — كل ذلك ببيانات TMDB المباشرة.',footBrowse:'تصفح',footStudio:'الاستوديو',footLegal:'قانوني',footProfile:'الملف الشخصي',footAbout:'حول Dev Brian Studios',footTerms:'شروط الاستخدام',footPrivacy:'سياسة الخصوصية',footCookies:'تفضيلات ملفات تعريف الارتباط',footTmdb:'البيانات من TMDB',footRights:'© 2026–2027 NANCYFLIX · Dev Brian Studios. جميع الحقوق محفوظة.',footMeta:'إصدار 2026/27 · يستخدم هذا المنتج واجهة TMDB لكنه غير معتمد من TMDB.'}
+ en:{setTitle:'Settings',setIntro:'Every control below changes real behavior.',setSearchPh:'Search settings…',grpAppearance:'Appearance',grpTypography:'Typography',grpLang:'Language & region',grpPremium:'Premium experience',grpAnimation:'Animation',grpNoti:'Notifications',grpData:'Data management',accentColor:'Accent color',accentDesc:'Personalize buttons & highlights',themeDefault:'Theme default',fontFamily:'Font family',appliesApp:'Applies across the app',appLang:'App language',appLangDesc:'Interface & movie info follow your choice',defaultCat:'Default browse category',defaultCatDesc:'What Home opens with',density:'Interface density',densityDesc:'Comfortable spacing or a tighter, pro layout',comfortable:'Comfortable',compact:'Compact',posterQuality:'Poster quality',posterQualityDesc:'High detail, or data-saver for less bandwidth & storage',highQuality:'High quality',dataSaver:'Data saver',autoplay:'Trailer autoplay',autoplayDesc:'Auto-start trailers in the player',transitions:'Interface transitions',transitionsDesc:'Smooth view & modal animations',hoverFx:'Poster hover effects',hoverFxDesc:'Scale & reveal on hover',splashAnim:'Splash animation',splashAnimDesc:'Show the cinematic intro',reducedMotion:'Reduced motion',reducedMotionDesc:'Minimise animations (also respects your OS setting)',inAppNoti:'In-app notifications',inAppNotiDesc:'Toasts & notification center',soundFx:'Sound effects',soundFxDesc:'Play a soft tone on alerts',soundVolume:'Sound volume',browserNoti:'Browser notifications',browserNotiDesc:'Requires explicit permission',onDeviceStorage:'On-device storage',cachedOffline:'Cached for offline',watchlistItems:'Watchlist items',dataNote:'Your account, watchlist, settings and cached movies are stored only on this device and stay available offline. Nothing is cleared automatically — your saved information is never reset in the background.',exportMyData:'Export my data',exportMyDataDesc:'Download your profile, watchlist & settings (JSON)',exportBtn:'Export',footBrandDesc:'Every story deserves a screen. Discover trending films, browse by genre, build your watchlist and play official trailers — all powered by live TMDB data.',footBrowse:'Browse',footStudio:'Studio',footLegal:'Legal',footProfile:'Profile',footAbout:'About Dev Brian + Dev Nancy',footTerms:'Terms of Use',footPrivacy:'Privacy Policy',footCookies:'Cookie Preferences',footTmdb:'Data by TMDB',footRights:'© 2026–2027 NANCYFLIX · Dev Brian + Dev Nancy. All rights reserved.',footMeta:'Edition 2026/27 · This product uses the TMDB API but is not endorsed or certified by TMDB.'},
+ sw:{setTitle:'Mipangilio',setIntro:'Kila kidhibiti hapa chini hubadilisha tabia halisi.',setSearchPh:'Tafuta mipangilio…',grpAppearance:'Mwonekano',grpTypography:'Uchapaji',grpLang:'Lugha na eneo',grpPremium:'Uzoefu wa kifahari',grpAnimation:'Mwendo',grpNoti:'Arifa',grpData:'Usimamizi wa data',accentColor:'Rangi ya msisitizo',accentDesc:'Binafsisha vitufe na vivutio',themeDefault:'Mandhari chaguo-msingi',fontFamily:'Aina ya fonti',appliesApp:'Inatumika programu nzima',appLang:'Lugha ya programu',appLangDesc:'Kiolesura na maelezo ya filamu hufuata chaguo lako',defaultCat:'Kategoria chaguo-msingi',defaultCatDesc:'Nyumbani hufunguliwa na nini',density:'Msongamano wa kiolesura',densityDesc:'Nafasi rahisi au mpangilio wa kitaalamu',comfortable:'Rahisi',compact:'Finyu',posterQuality:'Ubora wa bango',posterQualityDesc:'Ubora wa juu au kuokoa data kwa matumizi kidogo',highQuality:'Ubora wa juu',dataSaver:'Kuokoa data',autoplay:'Kucheza trela moja kwa moja',autoplayDesc:'Anzisha trela kiotomatiki',transitions:'Mabadiliko ya kiolesura',transitionsDesc:'Mwendo laini wa mionekano',hoverFx:'Athari za kuelea bango',hoverFxDesc:'Kuza na funua unapoelea',splashAnim:'Mwendo wa utangulizi',splashAnimDesc:'Onyesha utangulizi wa kisinema',reducedMotion:'Punguza mwendo',reducedMotionDesc:'Punguza mwendo (pia huheshimu mfumo wako)',inAppNoti:'Arifa ndani ya programu',inAppNotiDesc:'Arifa na kituo cha arifa',soundFx:'Athari za sauti',soundFxDesc:'Cheza toni laini kwenye arifa',soundVolume:'Sauti',browserNoti:'Arifa za kivinjari',browserNotiDesc:'Zinahitaji ruhusa wazi',onDeviceStorage:'Hifadhi ya kifaa',cachedOffline:'Zilizohifadhiwa nje ya mtandao',watchlistItems:'Vipengele vya orodha',dataNote:'Akaunti, orodha, mipangilio na filamu zako zimehifadhiwa kwenye kifaa hiki pekee na zinapatikana nje ya mtandao. Hakuna kinachofutwa kiotomatiki.',exportMyData:'Hamisha data yangu',exportMyDataDesc:'Pakua wasifu, orodha na mipangilio (JSON)',exportBtn:'Hamisha',footBrandDesc:'Kila hadithi inastahili skrini. Gundua filamu zinazovuma, vinjari kwa aina, jenga orodha yako na ucheze trela rasmi — zote zikitumia data ya moja kwa moja ya TMDB.',footBrowse:'Vinjari',footStudio:'Studio',footLegal:'Kisheria',footProfile:'Wasifu',footAbout:'Kuhusu Dev Brian + Dev Nancy',footTerms:'Masharti ya Matumizi',footPrivacy:'Sera ya Faragha',footCookies:'Mapendeleo ya Vidakuzi',footTmdb:'Data kutoka TMDB',footRights:'© 2026–2027 NANCYFLIX · Dev Brian + Dev Nancy. Haki zote zimehifadhiwa.',footMeta:'Toleo 2026/27 · Bidhaa hii hutumia API ya TMDB lakini haijaidhinishwa na TMDB.'},
+ fr:{setTitle:'Paramètres',setIntro:'Chaque réglage ci-dessous modifie un comportement réel.',setSearchPh:'Rechercher dans les paramètres…',grpAppearance:'Apparence',grpTypography:'Typographie',grpLang:'Langue et région',grpPremium:'Expérience premium',grpAnimation:'Animation',grpNoti:'Notifications',grpData:'Gestion des données',accentColor:'Couleur d’accent',accentDesc:'Personnalisez boutons et surbrillances',themeDefault:'Thème par défaut',fontFamily:'Police',appliesApp:'S’applique à toute l’app',appLang:'Langue de l’app',appLangDesc:'L’interface et les infos films suivent votre choix',defaultCat:'Catégorie par défaut',defaultCatDesc:'Ce que l’Accueil ouvre',density:'Densité de l’interface',densityDesc:'Espacement confortable ou disposition compacte',comfortable:'Confortable',compact:'Compact',posterQuality:'Qualité des affiches',posterQualityDesc:'Haute définition ou économie de données',highQuality:'Haute qualité',dataSaver:'Économie de données',autoplay:'Lecture auto des bandes-annonces',autoplayDesc:'Démarrer automatiquement les bandes-annonces',transitions:'Transitions de l’interface',transitionsDesc:'Animations fluides des vues',hoverFx:'Effets de survol des affiches',hoverFxDesc:'Agrandir et révéler au survol',splashAnim:'Animation d’intro',splashAnimDesc:'Afficher l’intro cinématique',reducedMotion:'Mouvement réduit',reducedMotionDesc:'Réduire les animations (respecte aussi votre OS)',inAppNoti:'Notifications dans l’app',inAppNotiDesc:'Toasts et centre de notifications',soundFx:'Effets sonores',soundFxDesc:'Jouer un son doux lors des alertes',soundVolume:'Volume sonore',browserNoti:'Notifications du navigateur',browserNotiDesc:'Nécessite une autorisation explicite',onDeviceStorage:'Stockage sur l’appareil',cachedOffline:'En cache hors ligne',watchlistItems:'Éléments de la liste',dataNote:'Votre compte, votre liste, vos réglages et les films en cache sont stockés uniquement sur cet appareil et restent disponibles hors ligne. Rien n’est effacé automatiquement.',exportMyData:'Exporter mes données',exportMyDataDesc:'Télécharger profil, liste et réglages (JSON)',exportBtn:'Exporter',footBrandDesc:'Chaque histoire mérite un écran. Découvrez les films tendance, parcourez par genre, créez votre liste et lisez les bandes-annonces officielles — le tout avec les données en direct de TMDB.',footBrowse:'Parcourir',footStudio:'Studio',footLegal:'Légal',footProfile:'Profil',footAbout:'À propos de Dev Brian + Dev Nancy',footTerms:'Conditions d’utilisation',footPrivacy:'Politique de confidentialité',footCookies:'Préférences de cookies',footTmdb:'Données par TMDB',footRights:'© 2026–2027 NANCYFLIX · Dev Brian + Dev Nancy. Tous droits réservés.',footMeta:'Édition 2026/27 · Ce produit utilise l’API TMDB mais n’est ni approuvé ni certifié par TMDB.'},
+ es:{setTitle:'Ajustes',setIntro:'Cada control de abajo cambia el comportamiento real.',setSearchPh:'Buscar ajustes…',grpAppearance:'Apariencia',grpTypography:'Tipografía',grpLang:'Idioma y región',grpPremium:'Experiencia premium',grpAnimation:'Animación',grpNoti:'Notificaciones',grpData:'Gestión de datos',accentColor:'Color de acento',accentDesc:'Personaliza botones y resaltados',themeDefault:'Tema predeterminado',fontFamily:'Tipo de letra',appliesApp:'Se aplica a toda la app',appLang:'Idioma de la app',appLangDesc:'La interfaz y la info de películas siguen tu elección',defaultCat:'Categoría predeterminada',defaultCatDesc:'Con qué abre Inicio',density:'Densidad de la interfaz',densityDesc:'Espaciado cómodo o diseño compacto',comfortable:'Cómodo',compact:'Compacto',posterQuality:'Calidad de pósteres',posterQualityDesc:'Alta definición o ahorro de datos',highQuality:'Alta calidad',dataSaver:'Ahorro de datos',autoplay:'Reproducción automática de tráilers',autoplayDesc:'Iniciar tráilers automáticamente',transitions:'Transiciones de interfaz',transitionsDesc:'Animaciones suaves de vistas',hoverFx:'Efectos al pasar el cursor',hoverFxDesc:'Ampliar y revelar al pasar el cursor',splashAnim:'Animación de intro',splashAnimDesc:'Mostrar la intro cinematográfica',reducedMotion:'Movimiento reducido',reducedMotionDesc:'Reducir animaciones (respeta tu sistema)',inAppNoti:'Notificaciones en la app',inAppNotiDesc:'Avisos y centro de notificaciones',soundFx:'Efectos de sonido',soundFxDesc:'Reproducir un tono suave en las alertas',soundVolume:'Volumen',browserNoti:'Notificaciones del navegador',browserNotiDesc:'Requiere permiso explícito',onDeviceStorage:'Almacenamiento del dispositivo',cachedOffline:'En caché sin conexión',watchlistItems:'Elementos de la lista',dataNote:'Tu cuenta, lista, ajustes y películas en caché se guardan solo en este dispositivo y siguen disponibles sin conexión. Nada se borra automáticamente.',exportMyData:'Exportar mis datos',exportMyDataDesc:'Descargar perfil, lista y ajustes (JSON)',exportBtn:'Exportar',footBrandDesc:'Cada historia merece una pantalla. Descubre películas en tendencia, explora por género, crea tu lista y reproduce tráilers oficiales — todo con datos en vivo de TMDB.',footBrowse:'Explorar',footStudio:'Estudio',footLegal:'Legal',footProfile:'Perfil',footAbout:'Sobre Dev Brian + Dev Nancy',footTerms:'Términos de uso',footPrivacy:'Política de privacidad',footCookies:'Preferencias de cookies',footTmdb:'Datos de TMDB',footRights:'© 2026–2027 NANCYFLIX · Dev Brian + Dev Nancy. Todos los derechos reservados.',footMeta:'Edición 2026/27 · Este producto usa la API de TMDB pero no está avalado ni certificado por TMDB.'},
+ de:{setTitle:'Einstellungen',setIntro:'Jede Einstellung unten ändert echtes Verhalten.',setSearchPh:'Einstellungen suchen…',grpAppearance:'Darstellung',grpTypography:'Typografie',grpLang:'Sprache & Region',grpPremium:'Premium-Erlebnis',grpAnimation:'Animation',grpNoti:'Benachrichtigungen',grpData:'Datenverwaltung',accentColor:'Akzentfarbe',accentDesc:'Buttons und Hervorhebungen anpassen',themeDefault:'Standard-Theme',fontFamily:'Schriftart',appliesApp:'Gilt für die ganze App',appLang:'App-Sprache',appLangDesc:'Oberfläche und Film-Infos folgen deiner Wahl',defaultCat:'Standard-Kategorie',defaultCatDesc:'Womit die Startseite öffnet',density:'Oberflächendichte',densityDesc:'Angenehme Abstände oder kompaktes Layout',comfortable:'Komfortabel',compact:'Kompakt',posterQuality:'Posterqualität',posterQualityDesc:'Hohe Details oder Datensparmodus',highQuality:'Hohe Qualität',dataSaver:'Datensparmodus',autoplay:'Trailer-Autoplay',autoplayDesc:'Trailer automatisch starten',transitions:'Oberflächenübergänge',transitionsDesc:'Sanfte Ansichtsanimationen',hoverFx:'Poster-Hover-Effekte',hoverFxDesc:'Beim Überfahren vergrößern',splashAnim:'Intro-Animation',splashAnimDesc:'Das filmische Intro zeigen',reducedMotion:'Reduzierte Bewegung',reducedMotionDesc:'Animationen reduzieren (beachtet auch dein OS)',inAppNoti:'In-App-Benachrichtigungen',inAppNotiDesc:'Toasts und Benachrichtigungszentrum',soundFx:'Soundeffekte',soundFxDesc:'Sanften Ton bei Hinweisen abspielen',soundVolume:'Lautstärke',browserNoti:'Browser-Benachrichtigungen',browserNotiDesc:'Erfordert ausdrückliche Erlaubnis',onDeviceStorage:'Speicher auf dem Gerät',cachedOffline:'Offline zwischengespeichert',watchlistItems:'Merklisten-Einträge',dataNote:'Dein Konto, deine Merkliste, Einstellungen und zwischengespeicherte Filme werden nur auf diesem Gerät gespeichert und bleiben offline verfügbar. Nichts wird automatisch gelöscht.',exportMyData:'Meine Daten exportieren',exportMyDataDesc:'Profil, Merkliste und Einstellungen herunterladen (JSON)',exportBtn:'Exportieren',footBrandDesc:'Jede Geschichte verdient eine Leinwand. Entdecke angesagte Filme, stöbere nach Genre, baue deine Merkliste auf und spiele offizielle Trailer — alles mit Live-Daten von TMDB.',footBrowse:'Stöbern',footStudio:'Studio',footLegal:'Rechtliches',footProfile:'Profil',footAbout:'Über Dev Brian + Dev Nancy',footTerms:'Nutzungsbedingungen',footPrivacy:'Datenschutz',footCookies:'Cookie-Einstellungen',footTmdb:'Daten von TMDB',footRights:'© 2026–2027 NANCYFLIX · Dev Brian + Dev Nancy. Alle Rechte vorbehalten.',footMeta:'Edition 2026/27 · Dieses Produkt nutzt die TMDB-API, ist aber nicht von TMDB unterstützt oder zertifiziert.'},
+ pt:{setTitle:'Configurações',setIntro:'Cada controle abaixo muda o comportamento real.',setSearchPh:'Buscar configurações…',grpAppearance:'Aparência',grpTypography:'Tipografia',grpLang:'Idioma e região',grpPremium:'Experiência premium',grpAnimation:'Animação',grpNoti:'Notificações',grpData:'Gerenciamento de dados',accentColor:'Cor de destaque',accentDesc:'Personalize botões e destaques',themeDefault:'Tema padrão',fontFamily:'Fonte',appliesApp:'Aplica-se a todo o app',appLang:'Idioma do app',appLangDesc:'A interface e as infos de filmes seguem sua escolha',defaultCat:'Categoria padrão',defaultCatDesc:'Com o que o Início abre',density:'Densidade da interface',densityDesc:'Espaçamento confortável ou layout compacto',comfortable:'Confortável',compact:'Compacto',posterQuality:'Qualidade dos pôsteres',posterQualityDesc:'Alta definição ou economia de dados',highQuality:'Alta qualidade',dataSaver:'Economia de dados',autoplay:'Reprodução automática de trailers',autoplayDesc:'Iniciar trailers automaticamente',transitions:'Transições da interface',transitionsDesc:'Animações suaves de telas',hoverFx:'Efeitos ao passar o cursor',hoverFxDesc:'Ampliar e revelar ao passar o cursor',splashAnim:'Animação de abertura',splashAnimDesc:'Mostrar a abertura cinematográfica',reducedMotion:'Movimento reduzido',reducedMotionDesc:'Reduzir animações (respeita seu sistema)',inAppNoti:'Notificações no app',inAppNotiDesc:'Avisos e central de notificações',soundFx:'Efeitos sonoros',soundFxDesc:'Tocar um tom suave nos alertas',soundVolume:'Volume',browserNoti:'Notificações do navegador',browserNotiDesc:'Requer permissão explícita',onDeviceStorage:'Armazenamento no dispositivo',cachedOffline:'Em cache offline',watchlistItems:'Itens da lista',dataNote:'Sua conta, lista, configurações e filmes em cache são armazenados apenas neste dispositivo e ficam disponíveis offline. Nada é apagado automaticamente.',exportMyData:'Exportar meus dados',exportMyDataDesc:'Baixar perfil, lista e configurações (JSON)',exportBtn:'Exportar',footBrandDesc:'Toda história merece uma tela. Descubra filmes em alta, explore por gênero, monte sua lista e reproduza trailers oficiais — tudo com dados ao vivo do TMDB.',footBrowse:'Explorar',footStudio:'Estúdio',footLegal:'Legal',footProfile:'Perfil',footAbout:'Sobre a Dev Brian + Dev Nancy',footTerms:'Termos de uso',footPrivacy:'Política de privacidade',footCookies:'Preferências de cookies',footTmdb:'Dados do TMDB',footRights:'© 2026–2027 NANCYFLIX · Dev Brian + Dev Nancy. Todos os direitos reservados.',footMeta:'Edição 2026/27 · Este produto usa a API do TMDB mas não é endossado nem certificado pelo TMDB.'},
+ ar:{setTitle:'الإعدادات',setIntro:'كل عنصر تحكم أدناه يغيّر سلوكًا حقيقيًا.',setSearchPh:'ابحث في الإعدادات…',grpAppearance:'المظهر',grpTypography:'الخطوط',grpLang:'اللغة والمنطقة',grpPremium:'تجربة مميزة',grpAnimation:'الحركة',grpNoti:'الإشعارات',grpData:'إدارة البيانات',accentColor:'لون التمييز',accentDesc:'خصّص الأزرار والإبرازات',themeDefault:'السمة الافتراضية',fontFamily:'نوع الخط',appliesApp:'يُطبّق على التطبيق كله',appLang:'لغة التطبيق',appLangDesc:'تتبع الواجهة ومعلومات الأفلام اختيارك',defaultCat:'الفئة الافتراضية',defaultCatDesc:'بماذا تُفتح الصفحة الرئيسية',density:'كثافة الواجهة',densityDesc:'تباعد مريح أو تخطيط مضغوط',comfortable:'مريح',compact:'مضغوط',posterQuality:'جودة الملصقات',posterQualityDesc:'دقة عالية أو توفير البيانات',highQuality:'جودة عالية',dataSaver:'توفير البيانات',autoplay:'تشغيل الإعلانات تلقائيًا',autoplayDesc:'بدء الإعلانات تلقائيًا',transitions:'انتقالات الواجهة',transitionsDesc:'حركات سلسة للعروض',hoverFx:'تأثيرات تمرير الملصق',hoverFxDesc:'تكبير وكشف عند التمرير',splashAnim:'حركة المقدمة',splashAnimDesc:'عرض المقدمة السينمائية',reducedMotion:'حركة مخفّضة',reducedMotionDesc:'تقليل الحركات (يحترم نظامك أيضًا)',inAppNoti:'إشعارات داخل التطبيق',inAppNotiDesc:'التنبيهات ومركز الإشعارات',soundFx:'المؤثرات الصوتية',soundFxDesc:'تشغيل نغمة هادئة عند التنبيهات',soundVolume:'مستوى الصوت',browserNoti:'إشعارات المتصفح',browserNotiDesc:'تتطلب إذنًا صريحًا',onDeviceStorage:'تخزين على الجهاز',cachedOffline:'مخزّن للعمل دون اتصال',watchlistItems:'عناصر القائمة',dataNote:'يتم تخزين حسابك وقائمتك وإعداداتك والأفلام المخزنة على هذا الجهاز فقط وتبقى متاحة دون اتصال. لا يُحذف شيء تلقائيًا.',exportMyData:'تصدير بياناتي',exportMyDataDesc:'تنزيل الملف الشخصي والقائمة والإعدادات (JSON)',exportBtn:'تصدير',footBrandDesc:'كل قصة تستحق شاشة. اكتشف الأفلام الرائجة، وتصفح حسب النوع، وأنشئ قائمتك وشغّل الإعلانات الرسمية — كل ذلك ببيانات TMDB المباشرة.',footBrowse:'تصفح',footStudio:'الاستوديو',footLegal:'قانوني',footProfile:'الملف الشخصي',footAbout:'حول Dev Brian + Dev Nancy',footTerms:'شروط الاستخدام',footPrivacy:'سياسة الخصوصية',footCookies:'تفضيلات ملفات تعريف الارتباط',footTmdb:'البيانات من TMDB',footRights:'© 2026–2027 NANCYFLIX · Dev Brian + Dev Nancy. جميع الحقوق محفوظة.',footMeta:'إصدار 2026/27 · يستخدم هذا المنتج واجهة TMDB لكنه غير معتمد من TMDB.'}
 };
 Object.keys(SET_I18N).forEach(l=>{I18N.dict[l]=Object.assign(I18N.dict[l]||{},SET_I18N[l]);});
 /* strings for Continue Watching, Discover filters, sharing & the mini trailer player */
@@ -3177,13 +3238,16 @@ const THEMES=[
   ['light','Light',['#eef0f5','#ffffff','#e11d2e'],'linear-gradient(135deg,#ffffff,#eef0f5)'],
   ['romantic','Romantic',['#1a0810','#3b1429','#ff5d8f'],'linear-gradient(135deg,#3b1429,#1a0810)'],
   ['amazing','Amazing',['#06050f','#1e1744','#7c5cff'],'linear-gradient(135deg,#7c5cff,#1e1744 60%,#ffcc66)'],
-  ['dim','Dim · easy on eyes',['#141418','#2a2a34','#c2606c'],'linear-gradient(135deg,#2a2a34,#141418)']
+  ['dim','Dim · easy on eyes',['#141418','#2a2a34','#c2606c'],'linear-gradient(135deg,#2a2a34,#141418)'],
+  ['rose','Rose',['#1a0710','#40162a','#ff4d8d'],'linear-gradient(135deg,#ff4d8d,#40162a 60%,#1a0710)'],
+  ['violet','Violet',['#0b0718','#22164a','#8b5cf6'],'linear-gradient(135deg,#8b5cf6,#22164a 60%,#0b0718)'],
+  ['ocean','Ocean',['#03121a','#0a2f3d','#06b6d4'],'linear-gradient(135deg,#06b6d4,#0a2f3d 60%,#03121a)'],
+  ['sunset','Sunset',['#1a0d06','#3a1a0a','#ff6b35'],'linear-gradient(135deg,#ffcc66,#ff6b35 45%,#2a1409)']
 ];
 const FONTS=[['Inter',"'Inter',system-ui,sans-serif"],['System UI','system-ui,-apple-system,sans-serif'],['Arial','Arial,Helvetica,sans-serif'],['Georgia','Georgia,serif'],['Verdana','Verdana,sans-serif'],['Trebuchet MS','\"Trebuchet MS\",sans-serif'],['Courier New','\"Courier New\",monospace']];
 const Theme={
   _norm(id){const ids=THEMES.map(t=>t[0]);if(ids.includes(id))return id;return (id==='daylight'||id==='silver')?'light':(id==='cosmic'?'amazing':(id==='romantic'?'romantic':'dark'));},
   apply(id){id=this._norm(id);
-    if(id==='amazing'&&typeof Premium!=='undefined'&&!Premium.isActive()){Premium.upsell('theme');return;}
     State.theme=id;document.documentElement.setAttribute('data-theme',id);State.settings.theme=id;this.accent(State.settings.accent);this.save();},
   font(name){const f=FONTS.find(x=>x[0]===name);if(f)document.documentElement.style.setProperty('--font',f[1]);State.settings.font=name;this.save();},
   accent(hex){
@@ -3557,12 +3621,12 @@ const Sync={
 
 /* ============ LEGAL / ABOUT DOCUMENT CENTER ============
    Full, readable policy + about pages rendered into a shared modal. These are
-   realistic template documents for NANCYFLIX by Dev Brian Studios — adapt the
+   realistic template documents for NANCYFLIX by Dev Brian + Dev Nancy — adapt the
    contact addresses / jurisdiction to your real entity before going live. */
 const LEGAL_DOCS={};
 const Legal={
   order:['terms','privacy','cookies','about'],
-  labels:{terms:'Terms of Use',privacy:'Privacy Policy',cookies:'Cookie Preferences',about:'About Dev Brian Studios'},
+  labels:{terms:'Terms of Use',privacy:'Privacy Policy',cookies:'Cookie Preferences',about:'About Dev Brian + Dev Nancy'},
   open(key){this.cur=key||'terms';this._paint();openOverlay('legalOverlay');},
   _paint(){
     const d=LEGAL_DOCS[this.cur];const m=document.getElementById('legalModal');
@@ -3620,7 +3684,7 @@ LEGAL_DOCS.terms={
   title:'Terms of Use',
   meta:'Last updated 12 October 2026 · Effective immediately',
   icon:'<svg class="icon" viewBox="0 0 24 24"><path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z"/><path d="M14 2v6h6M9 13h6M9 17h6"/></svg>',
-  body:`<p>Welcome to <b>NANCYFLIX</b>, a movie-discovery platform operated by <b>Dev Brian Studios</b> (“we”, “us”, “our”). By creating an account, browsing as a guest, or otherwise using the service, you agree to these Terms of Use. Please read them carefully — they form a binding agreement between you and Dev Brian Studios.</p>
+  body:`<p>Welcome to <b>NANCYFLIX</b>, a movie-discovery platform operated by <b>Dev Brian + Dev Nancy</b> (“we”, “us”, “our”). By creating an account, browsing as a guest, or otherwise using the service, you agree to these Terms of Use. Please read them carefully — they form a binding agreement between you and Dev Brian + Dev Nancy.</p>
     <h3><span class="n">1</span>Eligibility &amp; accounts</h3>
     <ul>
       <li>You must be at least <b>13 years old</b> (or the minimum digital-consent age in your country) to create an account.</li>
@@ -3636,22 +3700,22 @@ LEGAL_DOCS.terms={
       <li>Don’t impersonate others or attempt to access another member’s account or admin tooling.</li>
     </ul>
     <h3><span class="n">4</span>User content &amp; feedback</h3>
-    <p>Feedback, ratings and watchlists you submit remain yours, but you grant Dev Brian Studios a worldwide, royalty-free licence to use them to operate and improve the service. We may remove content that violates these terms.</p>
+    <p>Feedback, ratings and watchlists you submit remain yours, but you grant Dev Brian + Dev Nancy a worldwide, royalty-free licence to use them to operate and improve the service. We may remove content that violates these terms.</p>
     <h3><span class="n">5</span>Intellectual property</h3>
-    <p>The NANCYFLIX name, clapperboard logo, interface and original design are property of Dev Brian Studios. Film posters, artwork, titles and descriptions belong to their respective owners and are provided via <a class="inl" href="https://www.themoviedb.org" target="_blank" rel="noopener noreferrer">TMDB</a> under their terms.</p>
+    <p>The NANCYFLIX name, clapperboard logo, interface and original design are property of Dev Brian + Dev Nancy. Film posters, artwork, titles and descriptions belong to their respective owners and are provided via <a class="inl" href="https://www.themoviedb.org" target="_blank" rel="noopener noreferrer">TMDB</a> under their terms.</p>
     <h3><span class="n">6</span>Disclaimers &amp; liability</h3>
-    <p>The service is provided “as is” without warranties of any kind. Catalogue data may be incomplete or inaccurate. To the maximum extent permitted by law, Dev Brian Studios is not liable for indirect or consequential damages arising from your use of the service.</p>
+    <p>The service is provided “as is” without warranties of any kind. Catalogue data may be incomplete or inaccurate. To the maximum extent permitted by law, Dev Brian + Dev Nancy is not liable for indirect or consequential damages arising from your use of the service.</p>
     <h3><span class="n">7</span>Termination</h3>
     <p>You may delete your account at any time from <b>Profile → Delete account</b>. We may suspend or terminate access for violations of these terms. Some provisions survive termination (IP, disclaimers, liability).</p>
     <h3><span class="n">8</span>Changes &amp; contact</h3>
-    <p>We may update these terms; material changes will be announced in-app. Questions? Reach us via the <a class="inl" onclick="closeOverlay('legalOverlay');switchView('feedback')">Feedback</a> page or at <b>legal@devbrianstudios.example</b>.</p>
+    <p>We may update these terms; material changes will be announced in-app. Questions? Reach us via the <a class="inl" onclick="closeOverlay('legalOverlay');switchView('feedback')">Feedback</a> page or at <b>devbriannova@gmail.com</b>.</p>
     <div class="doc-note">This document is a realistic template for a portfolio project and is not legal advice. Replace the entity name, jurisdiction and contact details with your own before publishing publicly.</div>`
 };
 LEGAL_DOCS.privacy={
   title:'Privacy Policy',
   meta:'Last updated 12 October 2026 · GDPR &amp; CCPA aligned',
   icon:'<svg class="icon" viewBox="0 0 24 24"><path d="M12 2l8 4v6c0 5-3.5 8-8 10-4.5-2-8-5-8-10V6z"/><path d="M9 12l2 2 4-4"/></svg>',
-  body:`<p>Your privacy matters to <b>Dev Brian Studios</b>. This policy explains what we collect when you use <b>NANCYFLIX</b>, why we collect it, and the control you have over it.</p>
+  body:`<p>Your privacy matters to <b>Dev Brian + Dev Nancy</b>. This policy explains what we collect when you use <b>NANCYFLIX</b>, why we collect it, and the control you have over it.</p>
     <div class="stat-row">
       <div class="st"><div class="k">0</div><div class="l">Ad-trackers or data brokers</div></div>
       <div class="st"><div class="k">On-device</div><div class="l">Where your watchlist lives by default</div></div>
@@ -3681,7 +3745,7 @@ LEGAL_DOCS.privacy={
     <h3><span class="n">7</span>Children</h3>
     <p>NANCYFLIX is not directed to children under 13. If you believe a child has provided personal data, contact us and we will remove it.</p>
     <h3><span class="n">8</span>Contact</h3>
-    <p>Privacy questions or requests: <b>privacy@devbrianstudios.example</b>, or use the <a class="inl" onclick="closeOverlay('legalOverlay');switchView('feedback')">Feedback</a> page.</p>
+    <p>Privacy questions or requests: <b>devbriannova@gmail.com</b>, or use the <a class="inl" onclick="closeOverlay('legalOverlay');switchView('feedback')">Feedback</a> page.</p>
     <div class="doc-note">Template for demonstration purposes. Align retention periods, your legal basis for processing, and your Data Protection contact with your real operations before going live.</div>`
 };
 LEGAL_DOCS.cookies={
@@ -3706,10 +3770,10 @@ LEGAL_DOCS.cookies={
     <div class="doc-note">Because everything is stored on your device, clearing your browser data fully resets NANCYFLIX on this device. A full consent banner with granular toggles can be wired up for a production, cookie-based deployment.</div>`
 };
 LEGAL_DOCS.about={
-  title:'About Dev Brian Studios',
+  title:'About Dev Brian + Dev Nancy',
   meta:'Independent studio · Est. 2024 · Crafting delightful web apps',
   icon:'<svg class="icon" viewBox="0 0 24 24"><rect x="3" y="5" width="18" height="14" rx="3"/><path d="M7 5l2 4M12 5l2 4M17 5l2 4"/></svg>',
-  body:`<p><b>Dev Brian Studios</b> is an independent software studio building polished, human-centred web experiences. <b>NANCYFLIX</b> is our love letter to cinema — a fast, beautiful way to discover films, follow what’s trending, and keep a personal watchlist, all powered by live TMDB data.</p>
+  body:`<p><b>Dev Brian + Dev Nancy</b> is an independent software studio building polished, human-centred web experiences. <b>NANCYFLIX</b> is our love letter to cinema — a fast, beautiful way to discover films, follow what’s trending, and keep a personal watchlist, all powered by live TMDB data.</p>
     <div class="stat-row">
       <div class="st"><div class="k">2026/27</div><div class="l">Current edition</div></div>
       <div class="st"><div class="k">19+</div><div class="l">Genres with infinite scroll</div></div>
@@ -3727,8 +3791,8 @@ LEGAL_DOCS.about={
     <h3><span class="n">✦</span>The tech</h3>
     <p>NANCYFLIX ships as a single, self-contained web app — no heavy frameworks — with local accounts, an admin studio, and an optional backend for cross-device sync. Movie data courtesy of <a class="inl" href="https://www.themoviedb.org" target="_blank" rel="noopener noreferrer">TMDB</a>.</p>
     <h3><span class="n">✦</span>Say hello</h3>
-    <p>We’d love your feedback. Drop us a note via the <a class="inl" onclick="closeOverlay('legalOverlay');switchView('feedback')">Feedback</a> page or email <b>hello@devbrianstudios.example</b>.</p>
-    <div class="doc-note">NANCYFLIX uses the TMDB API but is not endorsed or certified by TMDB. © 2026–2027 Dev Brian Studios.</div>`
+    <p>We’d love your feedback. Drop us a note via the <a class="inl" onclick="closeOverlay('legalOverlay');switchView('feedback')">Feedback</a> page or email <b>devbriannova@gmail.com</b>.</p>
+    <div class="doc-note">NANCYFLIX uses the TMDB API but is not endorsed or certified by TMDB. © 2026–2027 Dev Brian + Dev Nancy.</div>`
 };
 </script>
 <script>
@@ -4307,7 +4371,7 @@ async function resumeSession(){
     /* an update or a flaky network must never sign you out: keep the saved device session */
     if(local){
       try{ Auth._enter(local); }catch(e){ backToAuth('login'); return; }
-      try{ Toast.show('Offline mode','Cloud sync did not answer, so NANCYFLIX opened your saved session on this device.','warn',5200); }catch(e){}
+      /* Saved device session restored silently. A slow cloud answer is not an offline state. */
       return;
     }
     backToAuth('login'); return;
@@ -4320,8 +4384,14 @@ async function resumeSession(){
    v5 — soft light theme helpers · update centre · 3-tier Premium ·
         Live TV · Live Football · cross-device entitlement · test mode
    ===================================================================== */
-const APP_VERSION = '8.4.1';
+const APP_VERSION = '8.5.0';
 const WHATS_NEW = [
+  'Live is now football-first: a compact Live football bar, and TV channels sit quietly in their own tab',
+  'New Rose, Violet, Ocean and Sunset themes, plus readable text in Light mode',
+  'Match cards are back for every fixture and free to use - share or save straight from a match',
+  'Live TV now has an always-visible Open on YouTube button when a channel blocks the in-app player',
+  'No more false Offline mode pop-up when the cloud is slow - your saved session just opens',
+  'Text no longer touches card edges, and long team names wrap cleanly',
   'Splash is centred on every screen and always finishes loading',
   'Real club crests in the standings tables',
   'Live banner on the Live tab; every channel is open to watch',
@@ -4551,18 +4621,23 @@ const LEAGUES = [
 ];
 
 const Live = {
-  tab: 'tv', cache: {},
+  tab: 'footy', cache: {},
   async render() {
     const host = document.getElementById('view-live');
     if (!host) return;
+    var footy = this.tab === 'footy';
     host.innerHTML =
-      '<div class="live-head"><span class="live-dot"></span><h1>Live</h1><span class="live-sub">Free channels & football fixtures</span></div>' +
-      '<div class="live-tabs"><button data-ltab="tv" class="' + (this.tab === 'tv' ? 'on' : '') + '">TV channels</button><button data-ltab="footy" class="' + (this.tab === 'footy' ? 'on' : '') + '">Football</button></div>' +
-      '<div class="nf-livebanner"><span class="lb-pulse"></span><div class="lb-txt"><b>Live now</b><span>' + (this.tab === 'tv' ? 'Channels are on air — tap any card to watch inside the app' : 'Fixtures and scores update live — open any match for the broadcast options') + '</span></div><button class="lb-go" data-lbgo>' + (this.tab === 'tv' ? 'Watch live' : 'Live TV') + '</button></div>' +
+      '<div class="live-head"><span class="live-dot"></span><h1>' + (footy ? 'Live football' : 'Live TV') + '</h1><span class="live-sub">' + (footy ? 'Scores, fixtures and where to watch' : 'Free-to-air channels') + '</span></div>' +
+      '<div class="live-tabs"><button data-ltab="footy" class="' + (footy ? 'on' : '') + '">Football</button><button data-ltab="tv" class="' + (footy ? '' : 'on') + '">TV channels</button></div>' +
+      (footy ? '<div class="nf-livebanner sm"><span class="lb-pulse"></span><div class="lb-txt"><b>Live football</b><span>Tap a match for the score and where to watch</span></div><button class="lb-go" data-lbgo>Watch</button></div>' : '') +
       '<div id="liveBody" class="live-body"></div>';
     host.querySelectorAll('[data-ltab]').forEach(b => { b.onclick = () => { this.tab = b.dataset.ltab; this.render(); }; });
     var lbg = host.querySelector('[data-lbgo]');
-    if (lbg) lbg.onclick = () => { this.tab = 'tv'; this.render(); try { window.scrollTo({ top: 0, behavior: 'smooth' }); } catch (e) { window.scrollTo(0, 0); } };
+    if (lbg) lbg.onclick = () => {
+      this.tab = 'footy'; this.render();
+      var liveTab = document.querySelector('[data-fbt="live"]'); if (liveTab) liveTab.click();
+      try { document.getElementById('liveBody').scrollIntoView({ behavior: 'smooth', block: 'start' }); } catch (e) {}
+    };
     if (this.tab === 'tv') this.renderTV(); else this.renderFooty();
   },
   renderTV() {
@@ -4665,7 +4740,7 @@ const Live = {
   if (nav && !nav.querySelector('[data-view="live"]')) {
     const b = document.createElement('button');
     b.dataset.view = 'live';
-    b.innerHTML = '<svg class="icon sm" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="7" width="20" height="13" rx="2"/><path d="M8 3l2 4M16 3l-2 4M7 12h4M7 16h7"/></svg><span>Live</span><span class="nf-livedot" aria-hidden="true"></span>';
+    b.innerHTML = '<svg class="icon sm" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="7" width="20" height="13" rx="2"/><path d="M8 3l2 4M16 3l-2 4M7 12h4M7 16h7"/></svg><span>Live</span>';
     const prem = nav.querySelector('[data-view="premium"]');
     nav.insertBefore(b, prem || null);
     b.onclick = () => switchView('live');
@@ -4674,7 +4749,7 @@ const Live = {
   if (bn && !bn.querySelector('[data-bnav="live"]')) {
     const b = document.createElement('button');
     b.dataset.bnav = 'live';
-    b.innerHTML = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="7" width="20" height="13" rx="2"/><path d="M8 3l2 4M16 3l-2 4M7 12h4M7 16h7"/></svg><span>Live</span><span class="nf-livedot" aria-hidden="true"></span>';
+    b.innerHTML = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="7" width="20" height="13" rx="2"/><path d="M8 3l2 4M16 3l-2 4M7 12h4M7 16h7"/></svg><span>Live</span>';
     const wl = bn.querySelector('[data-bnav="watchlist"]');
     bn.insertBefore(b, wl || null);
   }
@@ -4727,7 +4802,7 @@ const Live = {
 
   /* ---------------- plans that are actually enforced ---------------- */
   var LIMITS = {
-    free:    { name: 'Free',    dl: 10,       queue: 3,        hist: 15,  themes: ['dark', 'light', 'dim'], channels: 1,  sounds: ['soft', 'silent'], banners: ['compact'], ics: false, card: false },
+    free:    { name: 'Free',    dl: 10,       queue: 3,        hist: 15,       themes: 'all',                    channels: 1,  sounds: ['soft', 'silent'], banners: ['compact'], ics: false, card: true },
     plus:    { name: 'Plus',    dl: 50,       queue: 60,       hist: 60,  themes: 'all',                    channels: 99, sounds: ['soft', 'silent', 'chime'], banners: ['compact'], ics: false, card: false },
     premium: { name: 'Premium', dl: Infinity, queue: Infinity, hist: 200, themes: 'all',                    channels: 99, sounds: ['soft', 'silent', 'chime', 'pop'], banners: ['compact', 'rich'], ics: true, card: false },
     super:   { name: 'Super',   dl: Infinity, queue: Infinity, hist: 300, themes: 'all',                    channels: 99, sounds: ['soft', 'silent', 'chime', 'pop'], banners: ['compact', 'rich'], ics: true, card: true }
@@ -4806,17 +4881,7 @@ const Live = {
 
   /* themes: 3 on Free, all five once you pay */
   var baseTheme = Theme.apply.bind(Theme);
-  Theme.apply = function (id) {
-    var norm = Theme._norm(id);
-    var l = limits();
-    var ok = l.themes === 'all' || l.themes.indexOf(norm) >= 0;
-    if (!ok) {
-      var inSettings = !!(Q('#settingsOverlay.show') || Q('#profileOverlay.show'));
-      if (inSettings) { NF6.upsell('Theme "' + norm + '" comes with Plus and above. Free keeps Dark, Light and Dim.'); return; }
-      norm = 'dark';
-    }
-    return baseTheme(norm);
-  };
+  Theme.apply = function (id) { return baseTheme(Theme._norm(id)); };
 
   /* ---------------- downloads ---------------- */
   var DL = NF6.Downloads = {
@@ -5955,7 +6020,16 @@ const Live = {
     Q('[data-x7]', ov).onclick = closeStream;
     var srcBox = Q('.nf7-src', ov), note = Q('.nf-note', ov);
     srcBox.innerHTML = c.feeds.map(function (f, i) { return '<button data-f7="' + i + '">' + esc(f.label) + '</button>'; }).join('');
-    note.innerHTML = 'Broadcast by ' + esc(c.name) + '. If the picture does not start, the channel is between programmes or the feed moved — switch source or open the broadcaster page.';
+    var ytFeed = c.feeds.filter(function (f) { return f.type === 'yt'; })[0];
+    if (ytFeed) {
+      var ytLink = document.createElement('a');
+      ytLink.className = 'nf7-yt';
+      ytLink.href = 'https://www.youtube.com/channel/' + encodeURIComponent(ytFeed.id) + '/live';
+      ytLink.target = '_blank'; ytLink.rel = 'noopener noreferrer';
+      ytLink.innerHTML = ic('out') + 'Open on YouTube';
+      srcBox.appendChild(ytLink);
+    }
+    note.innerHTML = 'Broadcast by ' + esc(c.name) + '. If it plays on YouTube but stays black here, the channel blocks embedded players — use Open on YouTube. If the picture still does not start, the channel is between programmes or the feed moved.';
     QA('[data-f7]', ov).forEach(function (b) {
       b.onclick = function () { QA('[data-f7]', ov).forEach(function (x) { x.classList.toggle('on', x === b); }); playFeed(c, c.feeds[+b.dataset.f7], ov); };
     });
@@ -6911,7 +6985,7 @@ if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',
         '<div class="fbr-side away">' + crest(r.away.logo) + '<b>' + esc(r.away.name) + '</b></div>' +
       '</div>' +
       '<div class="fbr-bot"><span class="ven">' + esc(venue || 'Venue to be confirmed') + '</span><span class="ko">' + esc(when) + '</span></div>' +
-      '<div class="fbr-cta">' + cta + '</div>' +
+      '<div class="fbr-cta">' + cta + '<button class="fbr-card" type="button" data-fbcard="' + i + '" aria-label="Create a match card">' + ic('image') + 'Card</button></div>' +
     '</div>';
   }
 
@@ -6988,6 +7062,9 @@ if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',
     QA('[data-fbr]', body).forEach(function (b) { b.onclick = function () { load(true); }; });
     QA('[data-fbretry]', body).forEach(function (b) { b.onclick = function () { ST.configured = null; paint(); load(true); }; });
     QA('[data-fboffline]', body).forEach(function (b) { b.onclick = function () { if (F.offline) F.offline(); }; });
+    QA('[data-fbcard]', body).forEach(function (b) {
+      b.onclick = function (e) { e.stopPropagation(); var r = ST.rows[+b.dataset.fbcard]; if (r && NF6.rowCard) NF6.rowCard(r); };
+    });
   }
 
   function schedule() {
@@ -7046,6 +7123,7 @@ if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',
         '<h4 class="fbm-h">Match events</h4><div class="fbm-ev" id="fbmEvents"><div class="fbm-load">Loading the timeline…</div></div>' +
         '<p class="nf-note" style="margin-top:14px">NANCYFLIX does not host or rebroadcast matches. Watch through the official broadcaster for your country.</p>' +
         '<div class="nf8-official"><a href="' + esc(lg.site) + '" target="_blank" rel="noopener noreferrer">' + ic('out') + esc(lg.siteName) + '</a><a href="https://www.livesoccertv.com/" target="_blank" rel="noopener noreferrer">' + ic('out') + 'Global TV listings</a></div>' +
+        '<div class="fbm-cardrow"><button class="btn primary" type="button" data-fbcardbtn="' + ST.rows.indexOf(r) + '">' + ic('image') + ' Create match card</button><button class="btn" type="button" data-fbwatchbtn="' + ST.rows.indexOf(r) + '">' + ic('play') + ' Where to watch</button></div>' +
       '</div></div>';
   }
 
@@ -7068,6 +7146,10 @@ if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',
     ov.classList.add('show'); document.body.classList.add('noscroll');
     ov.onclick = function (e) { if (e.target === ov) closeDetail(); };
     var x = Q('[data-fbx]', ov); if (x) x.onclick = closeDetail;
+    var cardBtn = Q('[data-fbcardbtn]', ov);
+    if (cardBtn) cardBtn.onclick = function () { if (NF6.rowCard) NF6.rowCard(r); };
+    var watchBtn = Q('[data-fbwatchbtn]', ov);
+    if (watchBtn) watchBtn.onclick = function () { openWatch(r); };
     api({ ep: 'fixtures/events', fixture: r.id }).then(function (j) {
       var box = document.getElementById('fbmEvents'); if (!box) return;
       var list = (j.response || []).filter(function (e) { return e.type === 'Goal' || e.type === 'Card'; }).map(function (e) {
@@ -7131,6 +7213,118 @@ if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',
     ov.classList.add('show'); document.body.classList.add('noscroll');
     var x = Q('.fbw-x', ov); if (x) x.onclick = closeWatch;
   }
+
+  /* ---------- shareable match card ---------- */
+  function cardRoundRect(x, X, Y, W, H, R) {
+    x.beginPath(); x.moveTo(X + R, Y); x.lineTo(X + W - R, Y); x.quadraticCurveTo(X + W, Y, X + W, Y + R);
+    x.lineTo(X + W, Y + H - R); x.quadraticCurveTo(X + W, Y + H, X + W - R, Y + H); x.lineTo(X + R, Y + H);
+    x.quadraticCurveTo(X, Y + H, X, Y + H - R); x.lineTo(X, Y + R); x.quadraticCurveTo(X, Y, X + R, Y); x.closePath();
+  }
+  function cardWrap(x, text, X, Y, max, size, lh, maxLines) {
+    x.font = '800 ' + size + 'px Inter, Arial, sans-serif';
+    var words = String(text || '').split(/\s+/), line = '', lines = [];
+    for (var i = 0; i < words.length; i++) {
+      var test = (line ? line + ' ' : '') + words[i];
+      if (x.measureText(test).width > max && line) { lines.push(line); line = words[i]; } else { line = test; }
+      if (lines.length >= maxLines) break;
+    }
+    if (line) lines.push(line);
+    for (var j = 0; j < lines.length && j < maxLines; j++) x.fillText(lines[j], X, Y + j * lh);
+    return Y + Math.min(lines.length, maxLines) * lh;
+  }
+  function cardInitials(name) {
+    return String(name || '').replace(/[^A-Za-z0-9 ]/g, '').split(' ').filter(Boolean).slice(0, 2).map(function (w) { return w[0]; }).join('').toUpperCase() || 'FC';
+  }
+  function cardName(r) {
+    return (r.home.name || 'Home') + '-vs-' + (r.away.name || 'Away');
+  }
+  function cardSave(blob, name) {
+    var a = document.createElement('a'); a.href = URL.createObjectURL(blob); a.download = name + '.png';
+    document.body.appendChild(a); a.click(); setTimeout(function () { URL.revokeObjectURL(a.href); a.remove(); }, 5000);
+  }
+  function cardPreview(blob, name, title) {
+    var ov = document.createElement('div');
+    ov.className = 'overlay nfcard-ov show';
+    var url = URL.createObjectURL(blob);
+    ov.innerHTML = '<div class="nfcard-sheet" role="dialog" aria-modal="true" aria-label="Match card">' +
+      '<div class="hd"><div><b>Match card ready</b><span>Post it on WhatsApp, X or your status.</span></div><button class="nfcard-x" type="button" aria-label="Close">' + ic('x') + '</button></div>' +
+      '<img src="' + url + '" alt="' + esc(title) + ' match card">' +
+      '<div class="btns"><button class="btn primary" type="button" data-cshare>Share</button><a class="btn" data-csave download="' + esc(name) + '.png" href="' + url + '">Save image</a></div>' +
+      '<p class="fine">Free to use. The card carries the score, competition, date and venue. NANCYFLIX never re-streams matches.</p></div>';
+    document.body.appendChild(ov);
+    document.body.classList.add('noscroll');
+    function close() { ov.classList.remove('show'); document.body.classList.remove('noscroll'); setTimeout(function () { URL.revokeObjectURL(url); ov.remove(); }, 250); }
+    ov.querySelector('.nfcard-x').onclick = close;
+    ov.addEventListener('click', function (e) { if (e.target === ov) close(); });
+    var share = ov.querySelector('[data-cshare]');
+    share.onclick = function () {
+      var file = new File([blob], name + '.png', { type: 'image/png' });
+      if (navigator.canShare && navigator.canShare({ files: [file] })) {
+        navigator.share({ files: [file], title: title, text: title + ' - live on NANCYFLIX' }).catch(function () {});
+      } else {
+        cardSave(blob, name); try { Toast.show('Card saved', 'Sharing files is not available in this browser, so the image was saved.', 'ok', 3600); } catch (e) {}
+      }
+    };
+  }
+  function matchCard(r) {
+    if (!r) return;
+    var W = 1080, H = 1350, c = document.createElement('canvas'); c.width = W; c.height = H;
+    var x = c.getContext('2d'); if (!x) { try { Toast.show('Card not available', 'This browser cannot draw the card. Try Chrome or Safari.', 'warn'); } catch (e) {} return; }
+    var g = x.createLinearGradient(0, 0, W, H);
+    g.addColorStop(0, '#12040a'); g.addColorStop(.5, '#0a0a12'); g.addColorStop(1, '#200711');
+    x.fillStyle = g; x.fillRect(0, 0, W, H);
+    var glow = x.createRadialGradient(930, 120, 20, 930, 120, 520);
+    glow.addColorStop(0, 'rgba(225,29,46,.42)'); glow.addColorStop(1, 'rgba(225,29,46,0)');
+    x.fillStyle = glow; x.fillRect(0, 0, W, 700);
+    x.strokeStyle = 'rgba(255,255,255,.055)'; x.lineWidth = 2;
+    for (var gy = 420; gy < 1040; gy += 38) { x.beginPath(); x.moveTo(56, gy); x.lineTo(1024, gy); x.stroke(); }
+    x.fillStyle = '#e11d2e'; x.fillRect(0, 0, W, 10);
+    x.fillStyle = '#ffcc66'; x.font = '900 30px Inter, Arial, sans-serif'; x.fillText('NANCYFLIX', 70, 112);
+    x.fillStyle = '#8f8fa4'; x.font = '800 20px Inter, Arial, sans-serif'; x.fillText('LIVE FOOTBALL  /  MATCH CARD', 70, 150);
+    x.textAlign = 'right'; x.fillStyle = '#6f6f84'; x.font = '700 20px Inter, Arial, sans-serif'; x.fillText('V8.5', 1010, 112); x.textAlign = 'left';
+    x.fillStyle = '#ff8d99'; x.font = '800 24px Inter, Arial, sans-serif';
+    x.fillText(String(r.lg.name || 'FOOTBALL').toUpperCase(), 70, 232);
+    x.fillStyle = '#d9d9e6'; x.font = '900 42px Inter, Arial, sans-serif';
+    cardWrap(x, r.lg.round || 'Match day', 70, 292, 760, 42, 50, 2);
+    var isLive = live(r), isDone = finished(r);
+    var stText = isLive ? ((r.status && r.status.min != null ? r.status.min + "'" : 'LIVE') + '  LIVE') : isDone ? 'FULL TIME' : (r.when ? hhmm(r.when) : 'KICK-OFF TBC');
+    x.font = '900 22px Inter, Arial, sans-serif'; var stW = x.measureText(stText).width + 44;
+    x.fillStyle = isLive ? 'rgba(225,29,46,.92)' : 'rgba(255,255,255,.10)';
+    cardRoundRect(x, 1010 - stW, 206, stW, 48, 24); x.fill();
+    x.fillStyle = isLive ? '#fff' : '#cfcfdd'; x.textAlign = 'center'; x.fillText(stText, 1010 - stW / 2, 238); x.textAlign = 'left';
+    var cy = 610;
+    x.fillStyle = 'rgba(255,255,255,.055)'; x.beginPath(); x.arc(210, cy, 128, 0, Math.PI * 2); x.fill();
+    x.beginPath(); x.arc(870, cy, 128, 0, Math.PI * 2); x.fill();
+    x.strokeStyle = 'rgba(255,204,102,.32)'; x.lineWidth = 2; x.beginPath(); x.arc(210, cy, 128, 0, Math.PI * 2); x.stroke(); x.beginPath(); x.arc(870, cy, 128, 0, Math.PI * 2); x.stroke();
+    x.fillStyle = '#f5f5fa'; x.font = '900 62px Inter, Arial, sans-serif'; x.textAlign = 'center';
+    x.fillText(cardInitials(r.home.name), 210, cy + 22); x.fillText(cardInitials(r.away.name), 870, cy + 22);
+    x.textAlign = 'left';
+    x.fillStyle = '#ffffff'; x.textAlign = 'center'; x.font = '900 108px Inter, Arial, sans-serif';
+    var score = (isLive || isDone) ? String(r.home.goals == null ? 0 : r.home.goals) + ' - ' + String(r.away.goals == null ? 0 : r.away.goals) : 'VS';
+    x.fillText(score, W / 2, cy + 36);
+    x.fillStyle = '#7f7f94'; x.font = '800 18px Inter, Arial, sans-serif'; x.fillText(isLive ? 'SCORE' : isDone ? 'RESULT' : 'KICK-OFF', W / 2, cy + 78);
+    x.textAlign = 'left';
+    x.fillStyle = '#f5f5fa'; x.font = '900 38px Inter, Arial, sans-serif';
+    cardWrap(x, r.home.name, 60, 792, 360, 38, 46, 2);
+    cardWrap(x, r.away.name, 660, 792, 360, 38, 46, 2);
+    x.fillStyle = '#ffcc66'; x.fillRect(70, 930, 940, 2);
+    x.fillStyle = '#a9a9bb'; x.font = '700 24px Inter, Arial, sans-serif';
+    var dateLine = r.when ? dmy(r.when) + '  /  ' + hhmm(r.when) : 'Date to be confirmed';
+    cardWrap(x, dateLine, 70, 1000, 920, 24, 32, 1);
+    x.fillStyle = '#8a8a9e'; x.font = '600 24px Inter, Arial, sans-serif';
+    cardWrap(x, [r.venue, r.city].filter(Boolean).join('  /  ') || 'Venue to be confirmed', 70, 1050, 920, 24, 32, 1);
+    x.fillStyle = '#5f5f74'; x.font = '700 20px Inter, Arial, sans-serif';
+    x.fillText('Shared from NANCYFLIX  /  Dev Brian + Dev Nancy', 70, 1280);
+    x.textAlign = 'right'; x.fillStyle = '#ff8d99'; x.fillText('nancyflix.app', 1010, 1280); x.textAlign = 'left';
+    var name = 'NANCYFLIX-' + cardName(r).replace(/[^A-Za-z0-9]+/g, '-').replace(/^-|-$/g, '');
+    var title = r.home.name + ' vs ' + r.away.name;
+    try {
+      c.toBlob(function (b) { if (!b) return; cardPreview(b, name, title); }, 'image/png');
+    } catch (e) {
+      try { Toast.show('Card not available', 'The image could not be created on this device.', 'warn'); } catch (e2) {}
+    }
+  }
+  NF6.rowCard = matchCard;
 
   /* ---------- wiring into the Live view ---------- */
   var F = {
