@@ -1,42 +1,32 @@
-# NANCYFLIX — Dev Brian Studios
+# NANCYFLIX v8.6.0
 
-A single-file movie discovery PWA (HTML + CSS + JS), plus real PWA assets and a Stripe verification endpoint.
+Dev Brian + Dev Nancy · Contact: devbriannova@gmail.com
 
-## Files
+## What changed
 
-| Path | What it is |
-|---|---|
-| `index.html` | The whole app (UI, 7 languages, splash, player, watchlist, ratings, Premium) |
-| `manifest.webmanifest` | PWA manifest (standalone, icons, shortcuts) |
-| `sw.js` | Service worker: app shell offline cache + poster cache |
-| `icons/` | 192 / 512 / maskable / apple-touch icons |
-| `api/stripe-verify.js` | Serverless endpoint that confirms a Stripe Checkout was really paid |
-| `docs/PAYMENTS.md` | Step-by-step Stripe setup (Payment Links, keys, portal) |
+- New 1080 × 1350 match posters: matchday, live-score snapshot and full-time result designs, club/competition crests, venue, local kickoff time and scorer details when provided by the football feed. No invented player photos or results.
+- Quick image sharing, PNG download and WhatsApp/X/Facebook match-link sharing. Sharing an image depends on the phone/browser; Instagram and Status need you to save and attach it.
+- Transparent PNG/SVG app icons, including a standalone 512px PNG.
+- Offline panel, manual retry and automatic connectivity checks after reconnection. A retry checks the server, not a cached page. Saved content remains; internet is required for streams/live data.
+- No Google registration/sign-in button. Email login and guest/device browsing remain.
+- Light-mode fixes across movie cards, hero, football controls, Premium, settings and dialogs.
+- Removed public tester unlock, blocked stale guest membership and unverified checkout fallback. Admin tools require a verified owner cloud account; ordinary users retain personal settings.
 
-## Run locally
+## Start here
 
-Open `index.html` in a browser and it works. The install prompt and the service worker only activate on HTTPS or on `localhost`, so to test those, serve the folder with any static server (VS Code **Live Server**, `npx serve`, Vercel preview) and open the localhost URL it prints.
+1. Back up your current deployed files and database.
+2. Read **docs/DEPLOYMENT.md** and **docs/SECURITY.md** before deployment.
+3. Upload ALL files/folders from this archive to the root of the existing GitHub app repository, not just index.html.
+4. Keep the existing public Supabase configuration; configure private keys in the host dashboard only.
+5. In Supabase, run **docs/SUPABASE-SYNC.sql**, then **docs/SECURITY-UPDATE.sql**. The security update replaces policies on four app tables; review it if you have custom policies.
+6. Redeploy. Open the site online once, accept the update, then test as guest/member/verified owner separately.
 
-## Deploy (free)
+## Free hosting
 
-**Vercel** (recommended — hosts `index.html` *and* `api/stripe-verify.js`):
+The app can run on an eligible free Vercel/Supabase plan within their quotas. Provider limits change; do not select a paid plan just to test this update. API-Football data availability depends on the provider plan and quotas. Stripe payment processing is optional and has fees for real transactions.
 
-1. Push this folder to a GitHub repo (keep it private if it ever holds keys).
-2. vercel.com → Add New → Project → import → Deploy (no build step needed).
-3. Settings → Environment Variables → `STRIPE_SECRET_KEY = sk_live_...` → Redeploy.
+## Verification and limits
 
-**Netlify / Cloudflare Pages** — static upload works too; move `api/stripe-verify.js` to `netlify/functions/` and point `CONFIG.STRIPE.VERIFY_ENDPOINT` at the function URL.
+See **docs/TESTING_REPORT.md**. Browser tests used mocked feeds/auth/sharing. There has been no deployment, real phone sharing, live payment, live stream or Supabase SQL execution verification. Screenshots used test fixtures and sample scorers, not real match results.
 
-## Languages
-
-English (default), Kiswahili, Français, Español, Deutsch, Português, العربية (RTL). The app never guesses from the browser — first launch opens the chooser, then the choice is saved per account.
-
-## Premium
-
-$4.99 / month or $39.99 / year. Paste your two Stripe Payment Links into `CONFIG.STRIPE` (search for `LINK_MONTHLY`). Full steps: `docs/PAYMENTS.md`.
-
-## Honest limits
-
-- The install prompt only appears on HTTPS (or localhost); on iPhone use Share → *Add to Home Screen*.
-- Entitlement is cached per account in the browser. Add the verify endpoint plus Stripe webhooks + Supabase for cross-device, tamper-proof subscriptions.
-- Accounts, ratings and watchlists live in `localStorage` until Supabase credentials are added.
+Offline support caches the app shell and permitted metadata/posters, NOT full movies or protected football streams. All themes and football posters are intentionally Free; their availability alone is not proof that Premium is active.

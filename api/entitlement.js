@@ -1,3 +1,4 @@
+const {authenticate}=require('./lib/security');
 /**
  * NANCYFLIX — cross-device entitlement lookup (Vercel / Netlify function).
  *
@@ -23,7 +24,7 @@
 const CORS = {
   'Access-Control-Allow-Origin': '*',
   'Access-Control-Allow-Methods': 'GET,OPTIONS',
-  'Access-Control-Allow-Headers': 'Content-Type',
+  'Access-Control-Allow-Headers': 'Content-Type,Authorization',
   'Cache-Control': 'no-store'
 };
 
@@ -39,7 +40,9 @@ module.exports = async (req, res) => {
     return;
   }
 
-  const email = String((req.query && req.query.email) || '').trim().toLowerCase();
+  const actor=await authenticate(req);
+  if(!actor){res.status(401).json({active:false,reason:'sign_in_required'});return;}
+  const email=String(actor.email).toLowerCase();
   if (!/^[^@\s]+@[^@\s]+\.[^@\s]+$/.test(email)) {
     res.status(400).json({ active: false, reason: 'bad_email' });
     return;
@@ -61,7 +64,7 @@ module.exports = async (req, res) => {
     const status = String(row.status || 'active').toLowerCase();
     const expires = row.expires || null;
     const notExpired = !expires || new Date(expires).getTime() > Date.now();
-    const active = ['active', 'trialing', 'past_due'].includes(status) && notExpired;
+    const active = ['active', 'trialing'].includes(status) && notExpired;
 
     res.status(200).json({
       active,

@@ -1,12 +1,12 @@
 {
-  "version": "8.5.0",
-  "build": "2026-11-22",
+  "version": "8.6.0",
+  "build": "2026-11-24",
   "notes": [
-    "Live is football-first: compact Live football bar, TV channels in their own tab",
-    "New Rose, Violet, Ocean and Sunset themes; Light mode text is readable again",
-    "Match cards are back on every fixture and free to use",
-    "Live TV has an always-visible Open on YouTube button when a channel blocks embeds",
-    "No false Offline mode pop-up when cloud sync is slow",
-    "Text no longer touches card edges"
+    "Detailed branded match posters with club crests and quick sharing",
+    "Transparent standalone app icon",
+    "Smart offline panel with connection retry",
+    "Google registration removed",
+    "Light theme contrast improvements",
+    "Admin tools restricted; guest testing unlock removed"
   ]
 }

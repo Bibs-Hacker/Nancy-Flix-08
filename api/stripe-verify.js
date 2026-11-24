@@ -1,3 +1,4 @@
+const {authenticate}=require('./lib/security');
 /**
  * NANCYFLIX — Stripe Checkout verification endpoint (Vercel / Netlify function).
  *
@@ -14,9 +15,12 @@ module.exports = async (req, res) => {
   res.setHeader('Access-Control-Allow-Origin', '*');
   res.setHeader('Access-Control-Allow-Methods', 'GET,OPTIONS');
   res.setHeader('Cache-Control', 'no-store');
+  res.setHeader('Access-Control-Allow-Headers','Authorization,Content-Type');
   if (req.method === 'OPTIONS') { res.status(204).end(); return; }
   if (req.method !== 'GET') { res.status(405).json({ active: false, reason: 'method_not_allowed' }); return; }
 
+  const actor=await authenticate(req);
+  if(!actor){res.status(401).json({active:false,reason:'sign_in_required'});return;}
   const key = process.env.STRIPE_SECRET_KEY;
   if (!key) { res.status(200).json({ active: false, reason: 'not_configured' }); return; }
 
@@ -34,7 +38,7 @@ module.exports = async (req, res) => {
   };
 
   try {
-    const s = await stripe('checkout/sessions/' + encodeURIComponent(sid) + '?expand[]=subscription&expand[]=customer');
+    const s = await stripe('checkout/sessions/' + encodeURIComponent(sid) + '?expand[]=subscription&expand[]=customer&expand[]=payment_link');
 
     const paid = s.payment_status === 'paid' || s.payment_status === 'no_payment_required';
     if (s.status !== 'complete' || !paid) {
@@ -45,9 +49,14 @@ module.exports = async (req, res) => {
     const sub = (s.subscription && typeof s.subscription === 'object') ? s.subscription : null;
     const cust = (s.customer && typeof s.customer === 'object') ? s.customer : null;
 
-    let plan = (s.metadata && s.metadata.plan) ||
-      (s.client_reference_id && /^(plus|premium|super)/i.test(s.client_reference_id) ? s.client_reference_id : '') ||
-      '';
+    const link = s.payment_link && typeof s.payment_link === 'object' ? s.payment_link : null;
+    const itemPrice = sub && sub.items && sub.items.data && sub.items.data[0] && sub.items.data[0].price;
+    let plan = String((s.metadata && s.metadata.plan) || (link && link.metadata && link.metadata.plan) ||
+      (sub && sub.metadata && sub.metadata.plan) || (itemPrice && itemPrice.metadata && itemPrice.metadata.plan) || '').toLowerCase();
+    if (!['plus','premium','super'].includes(plan)) {
+      // Never trust URL/query parameters to choose the paid tier.
+      res.status(200).json({ active:false, reason:'plan_metadata_missing' }); return;
+    }
     let expires = null;
     let status = 'active';
 
@@ -60,12 +69,13 @@ module.exports = async (req, res) => {
     } else {
       // one-off payment link (no subscription): grant a 31-day pass
       plan = plan || (Number(s.amount_total) >= 3000 ? 'yearly' : 'monthly');
-      expires = new Date(Date.now() + 31 * 864e5).toISOString();
+      expires = new Date(Number(s.created) * 1000 + 31 * 864e5).toISOString();
     }
 
-    const active = ['active', 'trialing'].indexOf(status) >= 0;
+    const active = ['active', 'trialing'].includes(status) && (!expires || new Date(expires).getTime()>Date.now());
     const email = (cust && cust.email) || (s.customer_details && s.customer_details.email) || null;
 
+    if((s.client_reference_id && s.client_reference_id!==actor.id)||!email||String(email).toLowerCase()!==String(actor.email).toLowerCase()){res.status(403).json({active:false,reason:'checkout_owner_mismatch'});return;}
     /* ---- remember the membership server-side so other devices can restore it ---- */
     if (active && email) {
       try { await saveEntitlement({ email, plan: plan || 'premium', status, expires, customer: (cust && cust.id) || (typeof s.customer === 'string' ? s.customer : null), session: s.id }); } catch (e) {}

@@ -1799,7 +1799,7 @@ nav .nav button[data-view="live"],#mainNav button[data-view="live"],#bottomNav b
   <div class="nfx-foot">
     <div class="nfx-now"><span class="nfx-dot"></span><span id="splashStage">LOADING YOUR WATCHLIST</span></div>
     <div class="nfx-meter"><i id="splashBar"></i></div>
-    <div class="nfx-meta"><b id="splashPct">0%</b><em id="splashStat">BOOT</em><span>V8.5.0</span></div>
+    <div class="nfx-meta"><b id="splashPct">0%</b><em id="splashStat">BOOT</em><span>V8.6.0</span></div>
   </div>
 </div>
 
@@ -1808,7 +1808,7 @@ nav .nav button[data-view="live"],#mainNav button[data-view="live"],#bottomNav b
   <div class="auth-card">
     <button class="auth-lang" id="authLang" aria-label="Change language"><span class="flag" id="authLangFlag">🇬🇧</span><span id="authLangName">English</span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="12" cy="12" r="9"/><path d="M3 12h18M12 3c2.5 2.6 2.5 15.4 0 18M12 3c-2.5 2.6-2.5 15.4 0 18"/></svg></button>
     <div class="auth-head">
-      <svg width="48" height="48" viewBox="0 0 64 64" style="margin:0 auto"><rect width="64" height="64" rx="14" fill="#12121c" stroke="#24242f"/><rect x="11" y="26" width="42" height="25" rx="3" fill="#e11d2e"/><g transform="rotate(-9 32 20)"><rect x="10" y="14" width="44" height="10" rx="2" fill="#f5f5fa"/><path d="M20 14l-5 10M30 14l-5 10M40 14l-5 10M50 14l-5 10" stroke="#12121c" stroke-width="3" stroke-linecap="round"/></g></svg>
+      <svg width="48" height="48" viewBox="0 0 64 64" style="margin:0 auto"><rect x="11" y="26" width="42" height="25" rx="3" fill="#e11d2e"/><g transform="rotate(-9 32 20)"><rect x="10" y="14" width="44" height="10" rx="2" fill="#f5f5fa"/><path d="M20 14l-5 10M30 14l-5 10M40 14l-5 10M50 14l-5 10" stroke="#12121c" stroke-width="3" stroke-linecap="round"/></g></svg>
       <h1>NANCYFLIX</h1>
       <p>DEV BRIAN + DEV NANCY</p>
     </div>
@@ -1828,7 +1828,7 @@ nav .nav button[data-view="live"],#mainNav button[data-view="live"],#bottomNav b
         <div class="auth-or">or sign in with a one-time code</div>
         <div class="otp-row"><input type="email" id="otpEmail" inputmode="email" autocomplete="email" placeholder="Your email"><button type="button" id="otpSend">Email me a code</button></div>
         <div class="otp-row" id="otpRow" hidden><input type="text" id="otpCode" inputmode="numeric" autocomplete="one-time-code" maxlength="6" placeholder="6-digit code"><button type="button" id="otpVerify">Sign in</button></div>
-        <p class="otp-hint" id="otpHint">No password to remember and no Google setup. We email a 6-digit code — it works as soon as email sign-in is switched on for the project.</p>
+        <p class="otp-hint" id="otpHint">No password to remember. We email a 6-digit code — it works as soon as email sign-in is switched on for the project.</p>
       </div>
     </form>
     <!-- register -->
@@ -1862,10 +1862,7 @@ nav .nav button[data-view="live"],#mainNav button[data-view="live"],#bottomNav b
       <button type="submit" class="btn primary block" id="regSubmit" style="margin-top:8px" disabled>Create account</button>
     </form>
     <div class="auth-or">or</div>
-    <button type="button" class="auth-oauth" id="googleBtn" aria-label="Continue with Google">
-      <svg viewBox="0 0 48 48" aria-hidden="true"><path fill="#EA4335" d="M24 9.5c3.5 0 6.6 1.2 9 3.5l6.7-6.7C35.6 2.4 30.2 0 24 0 14.6 0 6.5 5.4 2.6 13.2l7.8 6.1C12.3 13.2 17.6 9.5 24 9.5z"/><path fill="#4285F4" d="M46.1 24.6c0-1.6-.1-3.1-.4-4.6H24v8.7h12.4c-.5 2.8-2.1 5.2-4.4 6.8l7.6 5.9c4.4-4.1 6.5-10.1 6.5-16.8z"/><path fill="#FBBC05" d="M10.4 28.7c-.5-1.5-.8-3-.8-4.7s.3-3.2.8-4.7l-7.8-6.1C1 16.2 0 20 0 24s1 7.8 2.6 10.8l7.8-6.1z"/><path fill="#34A853" d="M24 48c6.2 0 11.4-2 15.2-5.5l-7.6-5.9c-2.1 1.4-4.8 2.3-7.6 2.3-6.4 0-11.7-3.7-13.6-9.2l-7.8 6.1C6.5 42.6 14.6 48 24 48z"/></svg>
-      <span>Continue with Google</span>
-    </button>
+
     <button type="button" class="btn block" id="deviceBtn" style="margin-top:10px">Continue on this device — no password</button>
     <div class="auth-alt">or <button type="button" id="guestBtn">browse as guest ›</button></div>
     <div class="demo-note" id="demoNote">Your account, watchlist and settings are saved on this device and stay available offline. With cloud sign-in on, they also follow you to every device you sign in on. Movies, posters and trailers stream live from TMDB.</div>
@@ -1875,9 +1872,9 @@ nav .nav button[data-view="live"],#mainNav button[data-view="live"],#bottomNav b
 <div id="app">
   <header class="topbar">
     <button class="icon-btn menu-toggle" id="menuBtn" aria-label="Menu"><svg class="icon" viewBox="0 0 24 24"><path d="M3 6h18M3 12h18M3 18h18"/></svg></button>
-    <div class="brand"><svg width="26" height="26" viewBox="0 0 64 64" aria-hidden="true"><rect width="64" height="64" rx="14" fill="#12121c"/><rect x="11" y="26" width="42" height="25" rx="3" fill="#e11d2e"/><g transform="rotate(-9 32 20)"><rect x="10" y="14" width="44" height="10" rx="2" fill="#f5f5fa"/><path d="M20 14l-5 10M30 14l-5 10M40 14l-5 10M50 14l-5 10" stroke="#12121c" stroke-width="3" stroke-linecap="round"/></g></svg><span class="t">NANCYFLIX</span></div>
+    <div class="brand"><svg width="26" height="26" viewBox="0 0 64 64" aria-hidden="true"><rect x="11" y="26" width="42" height="25" rx="3" fill="#e11d2e"/><g transform="rotate(-9 32 20)"><rect x="10" y="14" width="44" height="10" rx="2" fill="#f5f5fa"/><path d="M20 14l-5 10M30 14l-5 10M40 14l-5 10M50 14l-5 10" stroke="#12121c" stroke-width="3" stroke-linecap="round"/></g></svg><span class="t">NANCYFLIX</span></div>
     <nav class="nav" id="mainNav">
-      <div class="drawer-head"><div class="brand"><svg width="24" height="24" viewBox="0 0 64 64" aria-hidden="true"><rect width="64" height="64" rx="14" fill="#12121c"/><rect x="11" y="26" width="42" height="25" rx="3" fill="#e11d2e"/><g transform="rotate(-9 32 20)"><rect x="10" y="14" width="44" height="10" rx="2" fill="#f5f5fa"/><path d="M20 14l-5 10M30 14l-5 10M40 14l-5 10M50 14l-5 10" stroke="#12121c" stroke-width="3" stroke-linecap="round"/></g></svg><span class="t">NANCYFLIX</span></div><button class="drawer-close" id="drawerClose" aria-label="Close menu"><svg class="icon sm" viewBox="0 0 24 24"><path d="M18 6L6 18M6 6l12 12"/></svg></button></div>
+      <div class="drawer-head"><div class="brand"><svg width="24" height="24" viewBox="0 0 64 64" aria-hidden="true"><rect x="11" y="26" width="42" height="25" rx="3" fill="#e11d2e"/><g transform="rotate(-9 32 20)"><rect x="10" y="14" width="44" height="10" rx="2" fill="#f5f5fa"/><path d="M20 14l-5 10M30 14l-5 10M40 14l-5 10M50 14l-5 10" stroke="#12121c" stroke-width="3" stroke-linecap="round"/></g></svg><span class="t">NANCYFLIX</span></div><button class="drawer-close" id="drawerClose" aria-label="Close menu"><svg class="icon sm" viewBox="0 0 24 24"><path d="M18 6L6 18M6 6l12 12"/></svg></button></div>
       <button data-view="home" class="active"><svg class="icon sm" viewBox="0 0 24 24"><path d="M3 12l9-9 9 9M5 10v10h14V10"/></svg><span data-i18n="home">Home</span></button>
       <button data-view="genres"><svg class="icon sm" viewBox="0 0 24 24"><path d="M4 6h16M4 12h16M4 18h10"/></svg><span data-i18n="genres">Genres</span></button>
       <button data-view="discover"><svg class="icon sm" viewBox="0 0 24 24"><circle cx="11" cy="11" r="7"/><path d="M21 21l-4-4M11 8v6M8 11h6"/></svg><span data-i18n="discover">Discover</span></button>
@@ -1910,7 +1907,7 @@ nav .nav button[data-view="live"],#mainNav button[data-view="live"],#bottomNav b
   <footer class="site-footer">
     <div class="foot-grid">
       <div class="foot-brand">
-        <div class="brand"><svg width="26" height="26" viewBox="0 0 64 64" aria-hidden="true"><rect width="64" height="64" rx="14" fill="#12121c"/><rect x="11" y="26" width="42" height="25" rx="3" fill="#e11d2e"/><g transform="rotate(-9 32 20)"><rect x="10" y="14" width="44" height="10" rx="2" fill="#f5f5fa"/><path d="M20 14l-5 10M30 14l-5 10M40 14l-5 10M50 14l-5 10" stroke="#12121c" stroke-width="3" stroke-linecap="round"/></g></svg><span class="t">NANCYFLIX</span></div>
+        <div class="brand"><svg width="26" height="26" viewBox="0 0 64 64" aria-hidden="true"><rect x="11" y="26" width="42" height="25" rx="3" fill="#e11d2e"/><g transform="rotate(-9 32 20)"><rect x="10" y="14" width="44" height="10" rx="2" fill="#f5f5fa"/><path d="M20 14l-5 10M30 14l-5 10M40 14l-5 10M50 14l-5 10" stroke="#12121c" stroke-width="3" stroke-linecap="round"/></g></svg><span class="t">NANCYFLIX</span></div>
         <p data-i18n="footBrandDesc">Every story deserves a screen. Discover trending films, browse by genre, build your watchlist and play official trailers — all powered by live TMDB data.</p>
         <div class="foot-social"><a href="https://x.com/devbriann" target="_blank" rel="noopener noreferrer" aria-label="X" title="X · @devbriann"><svg class="icon sm" viewBox="0 0 24 24" fill="currentColor"><path d="M17.53 3H20.5l-6.49 7.42L21.5 21h-5.9l-4.6-6.02L5.7 21H2.72l6.94-7.94L2.5 3h6.05l4.16 5.5L17.53 3zm-1.03 16.1h1.64L7.4 4.8H5.64l10.86 14.3z"/></svg></a><a href="https://www.instagram.com/_.encrypted_soul/" target="_blank" rel="noopener noreferrer" aria-label="Instagram" title="Instagram · @_.encrypted_soul"><svg class="icon sm" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="18" height="18" rx="5.2"/><circle cx="12" cy="12" r="4.1"/><circle cx="17.4" cy="6.6" r="1.1" fill="currentColor" stroke="none"/></svg></a><a href="https://www.threads.net/@_.encrypted_soul" target="_blank" rel="noopener noreferrer" aria-label="Threads" title="Threads · @_.encrypted_soul"><svg class="icon sm" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M12.3 21c-4.6 0-7.8-3-7.8-8.1S7.8 4.8 12.3 4.8c3.4 0 5.9 1.7 6.8 4.6"/><path d="M12.2 17.9c-2 0-3.4-.9-3.4-2.3 0-1.5 1.6-2.4 3.6-2.4 2.6 0 4.2 1.3 4.2 3.3 0 1.8-1.5 3.1-3.6 3.1-2.5 0-4.2-1.9-4.2-4.8"/><path d="M15.5 9.3c2.4 0 4 1.4 4.4 3.7"/></svg></a><a class="mail-link" href="mailto:devbriannova@gmail.com?subject=NANCYFLIX%20support" aria-label="Email" title="Email us"><svg class="icon sm" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="2.5" y="5" width="19" height="14" rx="2.5"/><path d="M3 7l9 6.5L21 7"/></svg></a></div>
               </div>
@@ -1979,7 +1976,7 @@ nav .nav button[data-view="live"],#mainNav button[data-view="live"],#bottomNav b
 <!-- ============ LANGUAGE CHOOSER ============ -->
 <div id="langPanel" role="dialog" aria-modal="true" aria-labelledby="langTitle">
   <div class="lp-wrap">
-    <div class="lp-brand"><svg viewBox="0 0 64 64" aria-hidden="true"><rect width="64" height="64" rx="14" fill="#0a0a0f" stroke="#24242f"/><rect x="11" y="26" width="42" height="25" rx="3" fill="#e11d2e"/><g transform="rotate(-9 32 20)"><rect x="10" y="14" width="44" height="10" rx="2" fill="#f5f5fa"/><path d="M20 14l-5 10M30 14l-5 10M40 14l-5 10M50 14l-5 10" stroke="#0a0a0f" stroke-width="3" stroke-linecap="round"/></g></svg><span class="t">NANCYFLIX</span></div>
+    <div class="lp-brand"><svg viewBox="0 0 64 64" aria-hidden="true"><rect x="11" y="26" width="42" height="25" rx="3" fill="#e11d2e"/><g transform="rotate(-9 32 20)"><rect x="10" y="14" width="44" height="10" rx="2" fill="#f5f5fa"/><path d="M20 14l-5 10M30 14l-5 10M40 14l-5 10M50 14l-5 10" stroke="#0a0a0f" stroke-width="3" stroke-linecap="round"/></g></svg><span class="t">NANCYFLIX</span></div>
     <div class="lp-head"><h2 id="langTitle">Choose your <span>language</span></h2><p id="langDesc">Pick the language for the interface and movie details. You can change it any time from the globe button.</p></div>
     <div class="lp-search"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="11" cy="11" r="7"/><path d="M21 21l-4-4"/></svg><input id="langSearch" type="search" placeholder="Search languages…" autocomplete="off" aria-label="Search languages"></div>
     <div class="lp-grid" id="langGrid"></div>
@@ -4124,7 +4121,7 @@ const Premium={
     const base=(CONFIG.STRIPE.VERIFY_ENDPOINT||'').trim();
     if(!base)return {ok:false,reason:'not_configured'};
     try{
-      const r=await fetch(base+(base.indexOf('?')>=0?'&':'?')+'session_id='+encodeURIComponent(sessionId||''),{headers:{Accept:'application/json'}});
+      const r=await fetch(base+(base.indexOf('?')>=0?'&':'?')+'session_id='+encodeURIComponent(sessionId||''),{headers:{Accept:'application/json',Authorization:'Bearer '+(State.accessToken||'')}});
       if(!r.ok)return {ok:false,reason:'http_'+r.status};
       const j=await r.json();
       if(!j||!j.active)return {ok:false,reason:(j&&j.reason)||'inactive'};
@@ -4134,24 +4131,17 @@ const Premium={
   async handleReturn(){
     const q=new URLSearchParams(location.search);
     const state=q.get('checkout');
-    if(!state)return;
+    if(!state&&!q.get('session_id'))return;
     const sid=q.get('session_id')||'';
     const clean=()=>{try{const u=new URL(location.href);['checkout','plan','session_id'].forEach(k=>u.searchParams.delete(k));history.replaceState({},'',u.pathname+(u.searchParams.toString()?'?'+u.searchParams.toString():'')+u.hash);}catch(e){}};
-    if(state==='success'){
+    if(state==='success'||(!state&&sid)){
       this._pending={session:sid,plan:q.get('plan')||'monthly',ts:Date.now()};
       LS.set('pendingCheckout',this._pending);
       try{Toast.show(t('pvLoading'),'','info',5000);}catch(e){}
       const res=await this.verify(sid);
       clean();
       if(res.ok){this.activate({plan:res.plan||this._pending.plan,expires:res.expires,customer:res.customer,session:sid});switchView('premium');}
-      else if(/^cs_[A-Za-z0-9_]{20,}$/.test(sid)&&['not_configured','network','http_404','http_500','http_502','http_503'].indexOf(res.reason)>=0){
-        // Payment page said success but the server checker is not deployed yet:
-        // unlock locally so a paying customer is never locked out, and say so plainly.
-        this.activate({plan:this._pending.plan,source:'client'});
-        try{Toast.show(t('pvActivated'),'Confirmed on this device. Add /api/stripe-verify + STRIPE_SECRET_KEY for server-side proof.','ok',8000);}catch(e){}
-        switchView('premium');
-      }
-      else{switchView('premium');}
+      else { Toast.show('Payment verification pending','The server has not verified this payment. Use Restore purchase after setup; no membership was granted.','warn',7000); switchView('premium'); }
     } else if(state==='cancel'){
       clean();
       try{Toast.show(t('pvCancelled'),t('pvCancelledD'),'info',6000);}catch(e){}
@@ -4259,7 +4249,7 @@ function priceBase(p){return String(p||'').replace(/\s*\/\s*(mo|month|yr|year|an
 /* ---------- 22. APP CHROME WIRING ---------- */
 (function(){const bn=document.getElementById('bottomNav');if(!bn)return;bn.addEventListener('click',e=>{
   const b=e.target.closest('[data-bnav]'); if(!b)return;
-  if((b.dataset.bnav==='watchlist'||b.dataset.bnav==='premium'||b.dataset.bnav==='profile')&&!State.user){backToAuth('login');return;}
+  if((b.dataset.bnav==='watchlist'||b.dataset.bnav==='profile')&&!State.user){backToAuth('login');return;}
   switchView(b.dataset.bnav);
 });})();
 /* ============ app enter / return to auth ============ */
@@ -4364,6 +4354,7 @@ function finishSplash(){
 }
 
 async function resumeSession(){
+  if(State.guest)return;
   const sid=Store.session();
   const local=(sid&&Store.users().find(x=>x.id===sid))||null;
   if(HAS_BACKEND&&window.SBX){
@@ -4374,6 +4365,7 @@ async function resumeSession(){
       /* Saved device session restored silently. A slow cloud answer is not an offline state. */
       return;
     }
+    if(State.guest)return;
     backToAuth('login'); return;
   }
   if(local){Auth._enter(local);return;}
@@ -4384,8 +4376,11 @@ async function resumeSession(){
    v5 — soft light theme helpers · update centre · 3-tier Premium ·
         Live TV · Live Football · cross-device entitlement · test mode
    ===================================================================== */
-const APP_VERSION = '8.5.0';
+const APP_VERSION = '8.6.0';
 const WHATS_NEW = [
+  'Detailed match posters with real crests and quick social sharing',
+  'Google registration removed; admin tools restricted; guests stay on Free',
+  'Transparent app icon, smart offline status and stronger Light theme contrast',
   'Live is now football-first: a compact Live football bar, and TV channels sit quietly in their own tab',
   'New Rose, Violet, Ocean and Sunset themes, plus readable text in Light mode',
   'Match cards are back for every fixture and free to use - share or save straight from a match',
@@ -4396,7 +4391,6 @@ const WHATS_NEW = [
   'Real club crests in the standings tables',
   'Live banner on the Live tab; every channel is open to watch',
   'No more re-login after an update, plus a passwordless sign-in option',
-  'Sign up or in with Google in one tap',
   'Redesigned fixture cards with one-tap Where to watch',
   'Live TV players now explain a black frame and offer a direct YouTube fallback',
   'Live Football now shows live scores, today and upcoming fixtures with real crests',
@@ -4493,10 +4487,10 @@ const Entitlement = {
     if (!State.user || !State.user.email) return false;
     if (typeof Premium === 'undefined' || Premium.isActive()) return false;
     try {
-      const r = await fetch(this.endpoint() + '?email=' + encodeURIComponent(State.user.email), { headers: { Accept: 'application/json' } });
+      const r = await fetch(this.endpoint() + '?email=' + encodeURIComponent(State.user.email), { headers: { Accept: 'application/json', Authorization:'Bearer '+(State.accessToken||'') } });
       if (!r.ok) return false;
       const j = await r.json();
-      if (j && j.active && j.expires && new Date(j.expires).getTime() > Date.now()) {
+      if (j && j.active && (!j.expires || new Date(j.expires).getTime() > Date.now())) {
         Premium.activate({ plan: j.plan || 'premium', expires: j.expires, customer: j.customer, source: 'server' });
         if (!silent) { try { Toast.show('Membership restored', 'Your ' + (j.plan || 'premium') + ' plan is active on this device too.', 'ok', 5000); } catch (e) {} }
         return true;
@@ -4725,6 +4719,7 @@ const Live = {
   startPoll() { /* reserved for a future live-score ticker */ }
 };
 
+window.Live = Live;
 /* ---------- 6. Nav + views wiring ---------- */
 (function liveChrome() {
   const main = document.querySelector('main');
@@ -4762,6 +4757,7 @@ const Live = {
     base();
     const m = document.getElementById('settingsModal');
     if (!m || m.querySelector('.tester-box')) return;
+    if (!State.user || !State.user.isAdmin) return;
     const active = Premium.isActive(), d = Premium.get();
     const box = document.createElement('div');
     box.className = 'tester-box set-group';
@@ -4771,7 +4767,7 @@ const Live = {
       '<div class="set-row" style="border:0"><div class="lbl"><div class="t">App version</div><div class="d">v' + APP_VERSION + ' · ' + WHATS_NEW.length + ' new items</div></div><button class="btn sm" id="testerUpdate">Check for update</button></div>';
     m.appendChild(box);
     const on = box.querySelector('#testerOn');
-    if (on) on.onclick = () => { Premium.activate({ plan: 'premium', source: 'test', expires: new Date(Date.now() + 7 * 864e5).toISOString() }); Settings.openModal(); };
+    if (on) on.onclick = () => { if (!State.user || !State.user.isAdmin) return; Premium.activate({ plan: 'premium', source: 'test', expires: new Date(Date.now() + 7 * 864e5).toISOString() }); Settings.openModal(); };
     const off = box.querySelector('#testerOff');
     if (off) off.onclick = () => { LS.set(Premium.key(), { status: 'free' }); Premium.refreshChrome(); Toast.show('Test unlock ended', 'Back to the Free plan.', 'info'); Settings.openModal(); };
     const up = box.querySelector('#testerUpdate');
@@ -4803,8 +4799,8 @@ const Live = {
   /* ---------------- plans that are actually enforced ---------------- */
   var LIMITS = {
     free:    { name: 'Free',    dl: 10,       queue: 3,        hist: 15,       themes: 'all',                    channels: 1,  sounds: ['soft', 'silent'], banners: ['compact'], ics: false, card: true },
-    plus:    { name: 'Plus',    dl: 50,       queue: 60,       hist: 60,  themes: 'all',                    channels: 99, sounds: ['soft', 'silent', 'chime'], banners: ['compact'], ics: false, card: false },
-    premium: { name: 'Premium', dl: Infinity, queue: Infinity, hist: 200, themes: 'all',                    channels: 99, sounds: ['soft', 'silent', 'chime', 'pop'], banners: ['compact', 'rich'], ics: true, card: false },
+    plus:    { name: 'Plus',    dl: 50,       queue: 60,       hist: 60,  themes: 'all',                    channels: 99, sounds: ['soft', 'silent', 'chime'], banners: ['compact'], ics: false, card: true },
+    premium: { name: 'Premium', dl: Infinity, queue: Infinity, hist: 200, themes: 'all',                    channels: 99, sounds: ['soft', 'silent', 'chime', 'pop'], banners: ['compact', 'rich'], ics: true, card: true },
     super:   { name: 'Super',   dl: Infinity, queue: Infinity, hist: 300, themes: 'all',                    channels: 99, sounds: ['soft', 'silent', 'chime', 'pop'], banners: ['compact', 'rich'], ics: true, card: true }
   };
   var RANK = { free: 0, plus: 1, premium: 2, super: 3 };
@@ -5138,9 +5134,10 @@ const Live = {
   };
 
   NF6.resendWelcome = function (btn) {
+    if(btn&&btn.disabled)return;
     if (!State.user) { backToAuth('login'); return; }
     if (btn) { btn.disabled = true; btn.textContent = 'Sending…'; }
-    fetch('/api/welcome', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ email: State.user.email, name: State.user.name }) })
+    fetch('/api/welcome', { method: 'POST', headers: { 'Content-Type': 'application/json', Authorization: 'Bearer '+(State.accessToken||'') }, body: JSON.stringify({ email: State.user.email, name: State.user.name }) })
       .then(function (r) { return r.json().catch(function () { return {}; }).then(function (j) { return { ok: r.ok, j: j }; }); })
       .then(function (o) {
         if (o.ok && o.j && o.j.sent) Toast.show('Welcome email sent', 'Check ' + State.user.email + '.', 'ok');
@@ -5534,7 +5531,7 @@ const Live = {
       Toast.show('Calendar file saved', 'Open it to add the match to your calendar.', 'ok');
     };
     Q('#nfCardM', ov).onclick = function () {
-      if (!NF6.has('card')) { NF6.upsell('Shareable fixture cards are a Super extra.'); return; }
+      
       NF6.fixtureCard(ev, lg);
     };
     var jump = Q('#nfLgJump', ov); if (jump) jump.onclick = function () { NF6.close('nfMatch'); Live.openLeague(lg.id, 'tbl'); };
@@ -5697,8 +5694,8 @@ const Live = {
   try{Sync.start();}catch(e){}
   try{Lang.init();}catch(e){}
   try{PWA.init();}catch(e){}
-  window.addEventListener('offline',()=>Toast.show('Offline mode','You can keep browsing cached movies and posters. Trailers and playback need a connection.','warn'));
-  window.addEventListener('online',()=>Toast.show('Back online','Live data restored.','ok'));
+
+
   try{Premium.refreshChrome();}catch(e){}
   runSplash();
   setTimeout(async()=>{
@@ -5846,7 +5843,7 @@ const Live = {
     try {
       var u = (typeof State !== 'undefined') && State.user;
       if (!u) return false;
-      return !!(u.isAdmin || ADMIN.indexOf(String(u.email || '').toLowerCase()) >= 0);
+      return !!(u.isAdmin && u.cloudVerified && State.accessToken && ADMIN.indexOf(String(u.email || '').toLowerCase()) >= 0);
     } catch (e) { return false; }
   }
   function unlockAdmin() {
@@ -5855,7 +5852,7 @@ const Live = {
       var d = Premium.get() || {};
       var isSuper = Premium.isActive() && String(d.tier || '').indexOf('super') === 0;
       if (!isSuper) {
-        Premium.activate({ plan: 'super', tier: 'super', billing: 'y', expires: '2099-12-31T00:00:00.000Z', comp: true });
+        Premium.activate({ plan: 'super', tier: 'super', billing: 'y', expires: '2099-12-31T00:00:00.000Z', source: 'developer', comp: true });
         try { Toast.show('Developer access', 'Every feature is unlocked on this account for testing.', 'ok'); } catch (e) {}
       }
     } catch (e) {}
@@ -6940,7 +6937,7 @@ if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',
       when: when,
       venue: (fx.venue && fx.venue.name) || '',
       city: (fx.venue && fx.venue.city) || '',
-      ref: (fx.referee && fx.referee.name) || '',
+      ref: (typeof fx.referee==='string'?fx.referee:(fx.referee&&fx.referee.name)) || '',
       status: { short: (fx.status && fx.status.short) || '', long: (fx.status && fx.status.long) || '', min: fx.status ? fx.status.elapsed : null },
       lg: { id: lg.id, name: lg.name || '', country: lg.country || '', logo: lg.logo || '', round: lg.round || '', season: lg.season },
       home: { id: (tm.home || {}).id, name: (tm.home || {}).name || '', logo: (tm.home || {}).logo || '', goals: gl.home },
@@ -6985,7 +6982,7 @@ if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',
         '<div class="fbr-side away">' + crest(r.away.logo) + '<b>' + esc(r.away.name) + '</b></div>' +
       '</div>' +
       '<div class="fbr-bot"><span class="ven">' + esc(venue || 'Venue to be confirmed') + '</span><span class="ko">' + esc(when) + '</span></div>' +
-      '<div class="fbr-cta">' + cta + '<button class="fbr-card" type="button" data-fbcard="' + i + '" aria-label="Create a match card">' + ic('image') + 'Card</button></div>' +
+      '<div class="fbr-cta">' + cta + '<button class="fbr-card" type="button" data-fbcard="' + i + '" aria-label="Create a match card">' + ic('image') + 'Card</button><button class="fbr-card" type="button" data-fbquick="' + i + '">Share</button></div>' +
     '</div>';
   }
 
@@ -7056,12 +7053,13 @@ if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',
     QA('[data-fblg]', body).forEach(function (b) { b.onclick = function () { var v = b.dataset.fblg; ST.lg = v === 'all' ? 'all' : Number(v); ST.err = ''; ST.rows = []; load(true); }; });
     QA('[data-fbw]', body).forEach(function (b) { b.onclick = function (e) { e.stopPropagation(); openWatch(ST.rows[Number(b.dataset.fbw)]); }; });
     QA('[data-fbi]', body).forEach(function (b) {
-      b.onclick = function (e) { if (e.target && e.target.closest && e.target.closest('[data-fbw]')) return; openDetail(Number(b.dataset.fbi)); };
-      b.onkeydown = function (e) { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); openDetail(Number(b.dataset.fbi)); } };
+      b.onclick = function (e) { if (e.target && e.target.closest && e.target.closest('[data-fbw],[data-fbcard],[data-fbquick]')) return; openDetail(Number(b.dataset.fbi)); };
+      b.onkeydown = function (e) { if(e.target!==b)return; if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); openDetail(Number(b.dataset.fbi)); } };
     });
     QA('[data-fbr]', body).forEach(function (b) { b.onclick = function () { load(true); }; });
     QA('[data-fbretry]', body).forEach(function (b) { b.onclick = function () { ST.configured = null; paint(); load(true); }; });
     QA('[data-fboffline]', body).forEach(function (b) { b.onclick = function () { if (F.offline) F.offline(); }; });
+    QA('[data-fbquick]', body).forEach(function(b){b.onclick=function(e){e.stopPropagation();NF6.rowCard(ST.rows[+b.dataset.fbquick],true);};});
     QA('[data-fbcard]', body).forEach(function (b) {
       b.onclick = function (e) { e.stopPropagation(); var r = ST.rows[+b.dataset.fbcard]; if (r && NF6.rowCard) NF6.rowCard(r); };
     });
@@ -7123,7 +7121,7 @@ if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',
         '<h4 class="fbm-h">Match events</h4><div class="fbm-ev" id="fbmEvents"><div class="fbm-load">Loading the timeline…</div></div>' +
         '<p class="nf-note" style="margin-top:14px">NANCYFLIX does not host or rebroadcast matches. Watch through the official broadcaster for your country.</p>' +
         '<div class="nf8-official"><a href="' + esc(lg.site) + '" target="_blank" rel="noopener noreferrer">' + ic('out') + esc(lg.siteName) + '</a><a href="https://www.livesoccertv.com/" target="_blank" rel="noopener noreferrer">' + ic('out') + 'Global TV listings</a></div>' +
-        '<div class="fbm-cardrow"><button class="btn primary" type="button" data-fbcardbtn="' + ST.rows.indexOf(r) + '">' + ic('image') + ' Create match card</button><button class="btn" type="button" data-fbwatchbtn="' + ST.rows.indexOf(r) + '">' + ic('play') + ' Where to watch</button></div>' +
+        '<div class="fbm-cardrow"><button class="btn primary" type="button" data-fbcardbtn="' + ST.rows.indexOf(r) + '">' + ic('image') + ' Create match card</button><button class="btn" type="button" data-fbquickbtn="1">Quick share</button><button class="btn" type="button" data-fbwatchbtn="' + ST.rows.indexOf(r) + '">' + ic('play') + ' Where to watch</button></div>' +
       '</div></div>';
   }
 
@@ -7148,10 +7146,12 @@ if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',
     var x = Q('[data-fbx]', ov); if (x) x.onclick = closeDetail;
     var cardBtn = Q('[data-fbcardbtn]', ov);
     if (cardBtn) cardBtn.onclick = function () { if (NF6.rowCard) NF6.rowCard(r); };
+    var quickBtn=Q('[data-fbquickbtn]',ov);if(quickBtn)quickBtn.onclick=function(){NF6.rowCard(r,true);};
     var watchBtn = Q('[data-fbwatchbtn]', ov);
     if (watchBtn) watchBtn.onclick = function () { openWatch(r); };
     api({ ep: 'fixtures/events', fixture: r.id }).then(function (j) {
       var box = document.getElementById('fbmEvents'); if (!box) return;
+      r.cardEvents=j.response||[];
       var list = (j.response || []).filter(function (e) { return e.type === 'Goal' || e.type === 'Card'; }).map(function (e) {
         return { minute: e.time ? e.time.elapsed : null, extra: e.time ? e.time.extra : null, type: e.type, detail: e.detail, player: e.player ? e.player.name : '', assist: e.assist ? e.assist.name : '' };
       });
@@ -7214,117 +7214,104 @@ if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',
     var x = Q('.fbw-x', ov); if (x) x.onclick = closeWatch;
   }
 
-  /* ---------- shareable match card ---------- */
-  function cardRoundRect(x, X, Y, W, H, R) {
-    x.beginPath(); x.moveTo(X + R, Y); x.lineTo(X + W - R, Y); x.quadraticCurveTo(X + W, Y, X + W, Y + R);
-    x.lineTo(X + W, Y + H - R); x.quadraticCurveTo(X + W, Y + H, X + W - R, Y + H); x.lineTo(X + R, Y + H);
-    x.quadraticCurveTo(X, Y + H, X, Y + H - R); x.lineTo(X, Y + R); x.quadraticCurveTo(X, Y, X + R, Y); x.closePath();
+  /* v8.6 poster builder: fixture, live and result templates. */
+  var crestCache = {};
+  function loadCardCrest(url) {
+    if (!url || !/^https:\/\//i.test(url)) return Promise.resolve(null);
+    if (crestCache[url]) return crestCache[url];
+    return crestCache[url] = new Promise(function(resolve) {
+      var img = new Image(), done = false;
+      var end = function(v) { if(done)return; done=true; resolve(v); };
+      img.crossOrigin = 'anonymous'; img.onload = function(){end(img);}; img.onerror = function(){end(null);};
+      img.src=url; setTimeout(function(){end(null);},4500);
+    });
   }
-  function cardWrap(x, text, X, Y, max, size, lh, maxLines) {
-    x.font = '800 ' + size + 'px Inter, Arial, sans-serif';
-    var words = String(text || '').split(/\s+/), line = '', lines = [];
-    for (var i = 0; i < words.length; i++) {
-      var test = (line ? line + ' ' : '') + words[i];
-      if (x.measureText(test).width > max && line) { lines.push(line); line = words[i]; } else { line = test; }
-      if (lines.length >= maxLines) break;
+  function cardRoundRect(x,X,Y,W,H,R) { x.beginPath(); x.roundRect(X,Y,W,H,R); }
+  function posterText(x, text, cx, y, width, size, lines, color) {
+    text=String(text||''); x.fillStyle=color||'#ffffff'; x.textAlign='center';
+    var wrapped=[];
+    for(var fs=size;fs>=18;fs-=2){
+      x.font='800 '+fs+'px Inter, Arial, sans-serif'; wrapped=[]; var line='';
+      // Split exceptionally long tokens too; no silent truncation of team names.
+      var words=text.split(/\s+/); var expanded=[];
+      words.forEach(function(w){if(x.measureText(w).width<=width)expanded.push(w);else{var chunk='';Array.from(w).forEach(function(ch){if(x.measureText(chunk+ch).width>width){expanded.push(chunk);chunk=ch;}else chunk+=ch;});if(chunk)expanded.push(chunk);}});
+      expanded.forEach(function(w){var t=line?line+' '+w:w;if(x.measureText(t).width>width&&line){wrapped.push(line);line=w;}else line=t;});if(line)wrapped.push(line);
+      if(wrapped.length<=lines)break;
     }
-    if (line) lines.push(line);
-    for (var j = 0; j < lines.length && j < maxLines; j++) x.fillText(lines[j], X, Y + j * lh);
-    return Y + Math.min(lines.length, maxLines) * lh;
+    wrapped.forEach(function(t,i){x.fillText(t,cx,y+i*(fs+9));});
+    return wrapped.length*(fs+9);
   }
-  function cardInitials(name) {
-    return String(name || '').replace(/[^A-Za-z0-9 ]/g, '').split(' ').filter(Boolean).slice(0, 2).map(function (w) { return w[0]; }).join('').toUpperCase() || 'FC';
+  function cardSave(blob,name) { var a=document.createElement('a'),url=URL.createObjectURL(blob); a.href=url;a.download=name+'.png';document.body.appendChild(a);a.click();a.remove();setTimeout(function(){URL.revokeObjectURL(url);},6000); }
+  function matchShareURL(r) {
+    var u=new URL(location.href);u.search='';u.hash='live';
+    u.searchParams.set('invite','1');u.searchParams.set('match',String(r.id||''));u.searchParams.set('h',r.home.name);u.searchParams.set('a',r.away.name);
+    if(r.when)u.searchParams.set('d',new Date(r.when).toISOString());if(r.venue)u.searchParams.set('v',r.venue);
+    return u.toString();
   }
-  function cardName(r) {
-    return (r.home.name || 'Home') + '-vs-' + (r.away.name || 'Away');
+  function cardPreview(blob,name,title,r,quick) {
+    var old=document.querySelector('.nfcard-ov');if(old)old.remove();
+    var ov=document.createElement('div');ov.className='overlay nfcard-ov show';
+    var sheet=document.createElement('div');sheet.className='nfcard-sheet';sheet.setAttribute('role','dialog');sheet.setAttribute('aria-modal','true');sheet.setAttribute('aria-label','Share match poster');ov.appendChild(sheet);
+    var hd=document.createElement('div');hd.className='hd';sheet.appendChild(hd);
+    var label=document.createElement('div');var b=document.createElement('b');b.textContent='Your match poster';label.appendChild(b);var sub=document.createElement('span');sub.textContent='NANCYFLIX • Matchday / Live / Full time';label.appendChild(sub);hd.appendChild(label);
+    var close=document.createElement('button');close.className='nfcard-x';close.textContent='×';close.setAttribute('aria-label','Close');hd.appendChild(close);
+    var url=URL.createObjectURL(blob),im=document.createElement('img');im.src=url;im.alt=title+' — branded match poster';sheet.appendChild(im);
+    var acts=document.createElement('div');acts.className='btns';sheet.appendChild(acts);
+    var share=document.createElement('button');share.className='btn primary';share.textContent='Quick share image';acts.appendChild(share);
+    var save=document.createElement('a');save.className='btn';save.textContent='Save poster';save.href=url;save.download=name+'.png';acts.appendChild(save);
+    var links=document.createElement('div');links.className='poster-social';sheet.appendChild(links);
+    var matchURL=matchShareURL(r),text=title+' • '+r.lg.name+' • NANCYFLIX';
+    [['WhatsApp','https://wa.me/?text='+encodeURIComponent(text+' '+matchURL)],['X','https://twitter.com/intent/tweet?text='+encodeURIComponent(text)+'&url='+encodeURIComponent(matchURL)],['Facebook','https://www.facebook.com/sharer/sharer.php?u='+encodeURIComponent(matchURL)]].forEach(function(v){var a=document.createElement('a');a.textContent=v[0]+' link';a.href=v[1];a.target='_blank';a.rel='noopener noreferrer';links.appendChild(a);});
+    var note=document.createElement('p');note.className='fine';note.textContent='Quick share sends the PNG to supported apps on your phone. Instagram/Status: save the poster and upload it. The buttons below share a match link, not the image. Missing feed details are marked unavailable.';sheet.appendChild(note);
+    function dismiss(){ov.remove();URL.revokeObjectURL(url);if(!document.querySelector('.overlay.show'))document.body.classList.remove('noscroll');document.removeEventListener('keydown',escClose);}
+    function escClose(e){if(e.key==='Escape')dismiss();}
+    close.onclick=dismiss;ov.addEventListener('click',function(e){if(e.target===ov)dismiss();});document.addEventListener('keydown',escClose);
+    async function send(){try{var f=new File([blob],name+'.png',{type:'image/png'});if(navigator.share&&navigator.canShare&&navigator.canShare({files:[f]})){await navigator.share({files:[f],title:title,text:title+' • NANCYFLIX'});}else{cardSave(blob,name);note.textContent='This browser cannot share image files directly. The poster was saved—attach it in your social app.';}}catch(e){if(e.name!=='AbortError')note.textContent='Sharing did not open. Tap Save poster, then attach it in your social app.';}}
+    share.onclick=send;document.body.appendChild(ov);document.body.classList.add('noscroll');if(quick)send();
   }
-  function cardSave(blob, name) {
-    var a = document.createElement('a'); a.href = URL.createObjectURL(blob); a.download = name + '.png';
-    document.body.appendChild(a); a.click(); setTimeout(function () { URL.revokeObjectURL(a.href); a.remove(); }, 5000);
+  async function matchCard(r,quick) {
+    if(!r)return;
+    var isLive=live(r),isDone=finished(r),events=r.cardEvents;
+    if((isLive||isDone)&&!events&&r.id){try{var j=await api({ep:'fixtures/events',fixture:r.id});events=j.response||[];r.cardEvents=events;}catch(e){events=null;}}
+    var assets=await Promise.all([loadCardCrest(r.home.logo),loadCardCrest(r.away.logo),loadCardCrest(r.lg.logo)]);
+    var c=document.createElement('canvas');c.width=1080;c.height=1350;var x=c.getContext('2d');if(!x)return;
+    var g=x.createLinearGradient(0,0,0,1350);g.addColorStop(0,'#070b13');g.addColorStop(.58,'#111a24');g.addColorStop(1,'#05080e');x.fillStyle=g;x.fillRect(0,0,1080,1350);
+    // Original drawn stadium silhouette, not invented player photography.
+    x.strokeStyle='#293746';x.lineWidth=3;
+    for(var y=355;y<780;y+=28){x.beginPath();x.ellipse(540,700,680,y/2,0,Math.PI,Math.PI*2);x.stroke();}
+    x.fillStyle='rgba(225,29,46,.22)';x.beginPath();x.moveTo(0,190);x.lineTo(350,730);x.lineTo(0,890);x.fill();
+    x.fillStyle='rgba(40,100,180,.20)';x.beginPath();x.moveTo(1080,190);x.lineTo(730,730);x.lineTo(1080,890);x.fill();
+    x.fillStyle='#e11d2e';x.fillRect(0,0,1080,12);
+    x.fillStyle='#fff';x.textAlign='left';x.font='900 38px Inter, Arial';x.fillText('NANCYFLIX',62,88);
+    x.fillStyle='#ffcc66';x.textAlign='right';x.font='800 20px Inter, Arial';x.fillText('LIVE FOOTBALL CENTRE',1018,85);
+    posterText(x,isDone?'FULL TIME':isLive?'LIVE SCORE':'MATCHDAY',540,215,956,92,1);
+    if(assets[2])x.drawImage(assets[2],506,245,68,68);
+    posterText(x,r.lg.name||'Football',540,352,948,30,2,'#ffcc66');
+    posterText(x,[r.lg.country,r.lg.round].filter(Boolean).join(' • ')||'Fixture details',540,400,948,22,2,'#b7c5d3');
+    function club(im,team,cx){x.fillStyle='rgba(255,255,255,.035)';cardRoundRect(x,cx-138,465,276,254,24);x.fill();if(im){var scale=Math.min(206/im.width,206/im.height),w=im.width*scale,h=im.height*scale;x.drawImage(im,cx-w/2,590-h/2,w,h);}else{posterText(x,team.name,cx,566,244,36,3);posterText(x,'Crest unavailable',cx,704,260,16,1,'#b7c5d3');}}
+    club(assets[0],r.home,245);club(assets[1],r.away,835);
+    var score=(isLive||isDone)?(r.home.goals==null?'—':r.home.goals)+' : '+(r.away.goals==null?'—':r.away.goals):'VS';
+    posterText(x,score,540,610,280,88,1);posterText(x,isLive?(r.status.short==='HT'?'HALF TIME':(r.status.min==null?'IN PLAY':r.status.min+"′ IN PLAY")):isDone?'FINAL SCORE':'KICK-OFF',540,658,280,19,1,'#ffcc66');
+    posterText(x,r.home.name,245,790,406,37,3);posterText(x,r.away.name,835,790,406,37,3);
+    x.fillStyle='rgba(5,8,14,.88)';cardRoundRect(x,48,918,984,316,22);x.fill();
+    var date=r.when?new Date(r.when):null;
+    posterText(x,date&&!isNaN(date)?date.toLocaleDateString(undefined,{weekday:'short',day:'numeric',month:'long',year:'numeric'}):'Date to be confirmed',540,969,910,28,1);
+    posterText(x,date&&!isNaN(date)?date.toLocaleTimeString(undefined,{hour:'2-digit',minute:'2-digit',timeZoneName:'short'}):'Kick-off to be confirmed',540,1010,910,24,1,'#ffcc66');
+    posterText(x,[r.venue,r.city].filter(Boolean).join(' • ')||'Venue to be confirmed',540,1055,910,24,2,'#d8e2ec');
+    if(isLive||isDone){
+      var goals=events&&events.filter(function(e){return e.type==='Goal'&&e.detail!=='Missed Penalty';});
+      function scorers(id){return goals&&goals.filter(function(e){return e.team&&e.team.id===id;}).map(function(e){return(e.player&&e.player.name||'Scorer unavailable')+' '+(e.time&&e.time.elapsed!=null?e.time.elapsed:'?')+(e.time&&e.time.extra?'+'+e.time.extra:'')+'′'+(e.detail==='Own Goal'?' (OG)':'');}).join(' • ');}
+      posterText(x,'GOAL SCORERS',540,1120,910,17,1,'#ffcc66');
+      posterText(x,events?scorers(r.home.id)||(r.home.goals===0?'No goals':'Scorers not listed'):'Scorer data unavailable',285,1161,432,22,2);
+      posterText(x,events?scorers(r.away.id)||(r.away.goals===0?'No goals':'Scorers not listed'):'Scorer data unavailable',795,1161,432,22,2);
+    }else posterText(x,r.ref?'Referee: '+r.ref:'Follow the fixture and official watch links on NANCYFLIX',540,1150,910,22,2,'#b7c5d3');
+    var site=location.protocol==='file:'?'NANCYFLIX':location.host;
+    posterText(x,site,540,1276,940,30,1,'#ffcc66');posterText(x,'Dev Brian + Dev Nancy • '+(isLive?'Score snapshot — '+new Date().toLocaleTimeString():'Football, brought together.'),540,1314,940,18,1,'#b7c5d3');
+    var name='NANCYFLIX-'+(r.home.name+'-vs-'+r.away.name).replace(/[^A-Za-z0-9]+/g,'-');
+    c.toBlob(function(blob){if(blob)cardPreview(blob,name,r.home.name+' vs '+r.away.name,r,quick);},'image/png');
   }
-  function cardPreview(blob, name, title) {
-    var ov = document.createElement('div');
-    ov.className = 'overlay nfcard-ov show';
-    var url = URL.createObjectURL(blob);
-    ov.innerHTML = '<div class="nfcard-sheet" role="dialog" aria-modal="true" aria-label="Match card">' +
-      '<div class="hd"><div><b>Match card ready</b><span>Post it on WhatsApp, X or your status.</span></div><button class="nfcard-x" type="button" aria-label="Close">' + ic('x') + '</button></div>' +
-      '<img src="' + url + '" alt="' + esc(title) + ' match card">' +
-      '<div class="btns"><button class="btn primary" type="button" data-cshare>Share</button><a class="btn" data-csave download="' + esc(name) + '.png" href="' + url + '">Save image</a></div>' +
-      '<p class="fine">Free to use. The card carries the score, competition, date and venue. NANCYFLIX never re-streams matches.</p></div>';
-    document.body.appendChild(ov);
-    document.body.classList.add('noscroll');
-    function close() { ov.classList.remove('show'); document.body.classList.remove('noscroll'); setTimeout(function () { URL.revokeObjectURL(url); ov.remove(); }, 250); }
-    ov.querySelector('.nfcard-x').onclick = close;
-    ov.addEventListener('click', function (e) { if (e.target === ov) close(); });
-    var share = ov.querySelector('[data-cshare]');
-    share.onclick = function () {
-      var file = new File([blob], name + '.png', { type: 'image/png' });
-      if (navigator.canShare && navigator.canShare({ files: [file] })) {
-        navigator.share({ files: [file], title: title, text: title + ' - live on NANCYFLIX' }).catch(function () {});
-      } else {
-        cardSave(blob, name); try { Toast.show('Card saved', 'Sharing files is not available in this browser, so the image was saved.', 'ok', 3600); } catch (e) {}
-      }
-    };
-  }
-  function matchCard(r) {
-    if (!r) return;
-    var W = 1080, H = 1350, c = document.createElement('canvas'); c.width = W; c.height = H;
-    var x = c.getContext('2d'); if (!x) { try { Toast.show('Card not available', 'This browser cannot draw the card. Try Chrome or Safari.', 'warn'); } catch (e) {} return; }
-    var g = x.createLinearGradient(0, 0, W, H);
-    g.addColorStop(0, '#12040a'); g.addColorStop(.5, '#0a0a12'); g.addColorStop(1, '#200711');
-    x.fillStyle = g; x.fillRect(0, 0, W, H);
-    var glow = x.createRadialGradient(930, 120, 20, 930, 120, 520);
-    glow.addColorStop(0, 'rgba(225,29,46,.42)'); glow.addColorStop(1, 'rgba(225,29,46,0)');
-    x.fillStyle = glow; x.fillRect(0, 0, W, 700);
-    x.strokeStyle = 'rgba(255,255,255,.055)'; x.lineWidth = 2;
-    for (var gy = 420; gy < 1040; gy += 38) { x.beginPath(); x.moveTo(56, gy); x.lineTo(1024, gy); x.stroke(); }
-    x.fillStyle = '#e11d2e'; x.fillRect(0, 0, W, 10);
-    x.fillStyle = '#ffcc66'; x.font = '900 30px Inter, Arial, sans-serif'; x.fillText('NANCYFLIX', 70, 112);
-    x.fillStyle = '#8f8fa4'; x.font = '800 20px Inter, Arial, sans-serif'; x.fillText('LIVE FOOTBALL  /  MATCH CARD', 70, 150);
-    x.textAlign = 'right'; x.fillStyle = '#6f6f84'; x.font = '700 20px Inter, Arial, sans-serif'; x.fillText('V8.5', 1010, 112); x.textAlign = 'left';
-    x.fillStyle = '#ff8d99'; x.font = '800 24px Inter, Arial, sans-serif';
-    x.fillText(String(r.lg.name || 'FOOTBALL').toUpperCase(), 70, 232);
-    x.fillStyle = '#d9d9e6'; x.font = '900 42px Inter, Arial, sans-serif';
-    cardWrap(x, r.lg.round || 'Match day', 70, 292, 760, 42, 50, 2);
-    var isLive = live(r), isDone = finished(r);
-    var stText = isLive ? ((r.status && r.status.min != null ? r.status.min + "'" : 'LIVE') + '  LIVE') : isDone ? 'FULL TIME' : (r.when ? hhmm(r.when) : 'KICK-OFF TBC');
-    x.font = '900 22px Inter, Arial, sans-serif'; var stW = x.measureText(stText).width + 44;
-    x.fillStyle = isLive ? 'rgba(225,29,46,.92)' : 'rgba(255,255,255,.10)';
-    cardRoundRect(x, 1010 - stW, 206, stW, 48, 24); x.fill();
-    x.fillStyle = isLive ? '#fff' : '#cfcfdd'; x.textAlign = 'center'; x.fillText(stText, 1010 - stW / 2, 238); x.textAlign = 'left';
-    var cy = 610;
-    x.fillStyle = 'rgba(255,255,255,.055)'; x.beginPath(); x.arc(210, cy, 128, 0, Math.PI * 2); x.fill();
-    x.beginPath(); x.arc(870, cy, 128, 0, Math.PI * 2); x.fill();
-    x.strokeStyle = 'rgba(255,204,102,.32)'; x.lineWidth = 2; x.beginPath(); x.arc(210, cy, 128, 0, Math.PI * 2); x.stroke(); x.beginPath(); x.arc(870, cy, 128, 0, Math.PI * 2); x.stroke();
-    x.fillStyle = '#f5f5fa'; x.font = '900 62px Inter, Arial, sans-serif'; x.textAlign = 'center';
-    x.fillText(cardInitials(r.home.name), 210, cy + 22); x.fillText(cardInitials(r.away.name), 870, cy + 22);
-    x.textAlign = 'left';
-    x.fillStyle = '#ffffff'; x.textAlign = 'center'; x.font = '900 108px Inter, Arial, sans-serif';
-    var score = (isLive || isDone) ? String(r.home.goals == null ? 0 : r.home.goals) + ' - ' + String(r.away.goals == null ? 0 : r.away.goals) : 'VS';
-    x.fillText(score, W / 2, cy + 36);
-    x.fillStyle = '#7f7f94'; x.font = '800 18px Inter, Arial, sans-serif'; x.fillText(isLive ? 'SCORE' : isDone ? 'RESULT' : 'KICK-OFF', W / 2, cy + 78);
-    x.textAlign = 'left';
-    x.fillStyle = '#f5f5fa'; x.font = '900 38px Inter, Arial, sans-serif';
-    cardWrap(x, r.home.name, 60, 792, 360, 38, 46, 2);
-    cardWrap(x, r.away.name, 660, 792, 360, 38, 46, 2);
-    x.fillStyle = '#ffcc66'; x.fillRect(70, 930, 940, 2);
-    x.fillStyle = '#a9a9bb'; x.font = '700 24px Inter, Arial, sans-serif';
-    var dateLine = r.when ? dmy(r.when) + '  /  ' + hhmm(r.when) : 'Date to be confirmed';
-    cardWrap(x, dateLine, 70, 1000, 920, 24, 32, 1);
-    x.fillStyle = '#8a8a9e'; x.font = '600 24px Inter, Arial, sans-serif';
-    cardWrap(x, [r.venue, r.city].filter(Boolean).join('  /  ') || 'Venue to be confirmed', 70, 1050, 920, 24, 32, 1);
-    x.fillStyle = '#5f5f74'; x.font = '700 20px Inter, Arial, sans-serif';
-    x.fillText('Shared from NANCYFLIX  /  Dev Brian + Dev Nancy', 70, 1280);
-    x.textAlign = 'right'; x.fillStyle = '#ff8d99'; x.fillText('nancyflix.app', 1010, 1280); x.textAlign = 'left';
-    var name = 'NANCYFLIX-' + cardName(r).replace(/[^A-Za-z0-9]+/g, '-').replace(/^-|-$/g, '');
-    var title = r.home.name + ' vs ' + r.away.name;
-    try {
-      c.toBlob(function (b) { if (!b) return; cardPreview(b, name, title); }, 'image/png');
-    } catch (e) {
-      try { Toast.show('Card not available', 'The image could not be created on this device.', 'warn'); } catch (e2) {}
-    }
-  }
-  NF6.rowCard = matchCard;
+  NF6.rowCard=matchCard;
+  NF6.fixtureCard=function(ev,lg){var st=ev.strStatus||'NS';matchCard({id:ev.idEvent,when:ev.strTimestamp||ev.dateEvent,venue:ev.strVenue,city:'',ref:'',lg:{name:ev.strLeague||(lg&&lg.name)||'Football',round:ev.intRound?'Round '+ev.intRound:'',logo:ev.strLeagueBadge},status:{short:st,min:null},home:{name:ev.strHomeTeam||'Home',logo:ev.strHomeTeamBadge,goals:ev.intHomeScore},away:{name:ev.strAwayTeam||'Away',logo:ev.strAwayTeamBadge,goals:ev.intAwayScore}});};
 
   /* ---------- wiring into the Live view ---------- */
   var F = {
@@ -7352,8 +7339,7 @@ if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',
     window.NF8 = window.NF8 || {};
     window.NF8.Football = F;
   }
-  mount();
-  if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', mount);
+  if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', mount); else setTimeout(mount,60);
 })();
 
 </script>
@@ -7439,7 +7425,8 @@ if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',
       avatar: prof.avatar || (u.user_metadata&&(u.user_metadata.avatar||u.user_metadata.avatar_url)) || null,
       createdAt: prof.created_at ? new Date(prof.created_at).getTime() : Date.now(),
       lastLogin: Date.now(),
-      isAdmin: !!(prof.is_admin || (CONFIG.ADMIN_EMAILS||[]).indexOf(email)>=0),
+      isAdmin: !!(u.email_confirmed_at && (CONFIG.ADMIN_EMAILS||[]).indexOf(email)>=0),
+      cloudVerified: !!u.email_confirmed_at,
       settings: Object.assign(Settings.defaults(), prof.settings||{}),
       pwHash: ''
     };
@@ -7502,7 +7489,7 @@ if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',
     if (!u) return null;
     if (u.pwHash !== await secureHash(o.password)) return null;
     u.lastLogin = Date.now(); Store.saveUsers(users);
-    Auth._enter(u); Store.log('login', email);
+    u.cloudVerified=false;State.accessToken='';Auth._enter(u); Store.log('login', email);
     return u;
   }
   async function enterCloud(userObj, res, o){
@@ -7648,7 +7635,7 @@ if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',
         user.isAdmin = (CONFIG.ADMIN_EMAILS || []).indexOf((user.email || '').toLowerCase()) >= 0 || !!user.isAdmin;
         Auth._enter(user);
         if (!prof) { try { await upsertProfile(user); } catch (e) {} }
-        if (LS.get('oauthJustIn')) { LS.del('oauthJustIn'); try { Toast.show('Signed in with Google','Welcome, ' + user.name + '.','ok',4200); } catch (e) {} }
+        if (LS.get('oauthJustIn')) { LS.del('oauthJustIn'); try { Toast.show('Signed in','Welcome, ' + user.name + '.','ok',4200); } catch (e) {} }
         return true;
       }catch(e){ return false; }
     },
@@ -7791,22 +7778,7 @@ if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',
   /* admin panel refresh button target */
   window.NFSyncNow = function(){ pullAll().then(function(ok){ if(ok) Toast.show('Synced','Your data is up to date on this device.','ok',2600); else Toast.show('Sync skipped','Sign in with a synced account to pull data.','warn',3200); }); if(State.user&&State.user.isAdmin) pullAdmin(); };
 
-  /* ---------- Google button + return notices ---------- */
-  function wireGoogle(){
-    var b = document.getElementById('googleBtn');
-    if (!b || b.__wired) return;
-    b.__wired = true;
-    b.onclick = function(){
-      if (!HAS_BACKEND || !URLB || !KEY){ try{ authMsg('Cloud sign-in is not configured yet.'); }catch(e){} return; }
-      try { authMsg('Opening Google…','info'); } catch (e) {}
-      try { SBX.oauth('google'); } catch (e) { try { authMsg(friendly(e)); } catch (e2) {} }
-    };
-    var err = LS.get('oauthError');
-    if (err){ LS.del('oauthError'); try { authMsg(/access_denied/.test(err) ? 'Google sign-in was cancelled.' : ('Google sign-in failed: ' + err)); } catch (e) {} }
-  }
-  wireGoogle();
-  if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', wireGoogle);
-
+  /* Google registration removed. */
   /* first pull after boot if a session was restored */
   setTimeout(function(){ if(HAS_BACKEND&&State.user&&State.accessToken) pullAll(); },3000);
 })();
@@ -7891,6 +7863,51 @@ if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',
 <style id="nf13-brand">
 .nf7-logo{position:relative;overflow:hidden}
 .nf7-brand{position:absolute;inset:3px;width:calc(100% - 6px);height:calc(100% - 6px);object-fit:contain;background:#0b0b12;border-radius:8px;padding:2px}
+/* v8.6 daylight system: solid surfaces and high-contrast typography */
+[data-theme=light]{--bg:#eef1f6;--bg-2:#e5eaf2;--surface:#ffffff;--surface-2:#e5eaf2;--text:#172235;--muted:#46556b;--border:#b4c0d1;--accent:#b71229;--accent-2:#a41025;--neon:#a41025;--gold:#775000;--glass:rgba(15,30,50,.05);--glass-br:rgba(15,30,50,.15)}
+[data-theme=light] body{background:#eef1f6;color:var(--text)}
+[data-theme=light] .fbr,[data-theme=light] .fbw-card,[data-theme=light] .nf8-sports,[data-theme=light] .nf8-card,[data-theme=light] .nf8-panel,[data-theme=light] .nfcard-sheet,[data-theme=light] #nf8Update,[data-theme=light] .noti-panel,[data-theme=light] .noti,[data-theme=light] .pv-card,[data-theme=light] .nf8-focus,[data-theme=light] .lawgate,[data-theme=light] .otp-box{background:var(--surface);border-color:var(--border);color:var(--text)}
+[data-theme=light] .fbr-side b,[data-theme=light] .fbr-score,[data-theme=light] .fbr-top b,[data-theme=light] .fbr-bot .ko,[data-theme=light] .fbm-team b,[data-theme=light] .fbm-mid>b,[data-theme=light] .fbw-head h3,[data-theme=light] .nf8-title,[data-theme=light] .noti .nt,[data-theme=light] .noti .nf-act,[data-theme=light] #nf8Update b,[data-theme=light] .lawgate h4,[data-theme=light] .lawgate-body,[data-theme=light] .otp-row input{color:var(--text)}
+[data-theme=light] .pv-sub,[data-theme=light] .fbr-round,[data-theme=light] .fbr-bot,[data-theme=light] .fbr-note,[data-theme=light] .fbr-score.vs,[data-theme=light] .fbr-score em,[data-theme=light] .fbm-facts em,[data-theme=light] .fbm-pill,[data-theme=light] .fbm-ev-row .what,[data-theme=light] .fbm-ev-row .who em,[data-theme=light] .noti .nd,[data-theme=light] #nf8Update .sub,[data-theme=light] .fbw-legal,[data-theme=light] .fbw-sec,[data-theme=light] .lawgate-ok,[data-theme=light] .otp-hint,[data-theme=light] .auth-or{color:var(--muted)}
+[data-theme=light] .fbr-card,[data-theme=light] .fbr-watch.soon,[data-theme=light] .fbr-st,[data-theme=light] .fbm-pill,[data-theme=light] .noti .nf-act,[data-theme=light] .otp-row button.ghost,[data-theme=light] .nfcard-x,[data-theme=light] .fbw-x{background:var(--surface-2);border-color:var(--border);color:var(--text)}
+[data-theme=light] .fbr-st.live,[data-theme=light] .fbm-pill.live,[data-theme=light] .fb-steps a,[data-theme=light] .lawgate-foot button,[data-theme=light] .noti .ni,[data-theme=light] .fbw-opt .go{color:#a41025}
+[data-theme=light] .fb-steps{color:var(--text)}
+[data-theme=light] .fb-steps code{color:#775000;background:#f9efd8}
+[data-theme=light] .nf8-official a,[data-theme=light] .nf-cats button,[data-theme=light] .nf8-pill,[data-theme=light] .nf8-tab,[data-theme=light] .nf8-note,[data-theme=light] .nf8-sub,[data-theme=light] .nf8-stat,[data-theme=light] .nf-chip{color:var(--text);background:var(--surface-2);border-color:var(--border)}
+[data-theme=light] .nf-cats button.on,[data-theme=light] .nf7-src button.on,[data-theme=light] .noti .nf-act.pri{background:#b71229;color:#fff}
+[data-theme=light] #nfMarquee{background:var(--surface);border-color:var(--border);color:var(--text)}
+[data-theme=light] #nfMarquee .tag{background:#b71229;color:#fff}
+[data-theme=light] .btn.primary,[data-theme=light] .lb-go,[data-theme=light] .fbr-watch:not(.soon),[data-theme=light] .live-tabs button.on,[data-theme=light] #nf8Update .go{color:#fff;background:#b71229}
+[data-theme=light] input:not([type=checkbox]):not([type=radio]):not([type=range]),[data-theme=light] textarea,[data-theme=light] select{color:var(--text);background:var(--surface);border-color:var(--border)}
+[data-theme=light] input::placeholder,[data-theme=light] textarea::placeholder{color:#526177;opacity:1}
+[data-theme=light] .badge:not(.admin),[data-theme=light] .pro-tag,[data-theme=light] .nf-chip.gold{color:#624200;background:#fff0c4;border-color:#b89950}
+[data-theme=light] .nfcard-sheet .fine,[data-theme=light] .access-summary p{color:var(--muted)}
+[data-theme=light] .fbr-side .cr,[data-theme=light] .fbm-team .cr{background:#eef1f6}
+/* Media screens, splash and auth hero intentionally remain dark. */
+[data-theme=light] #auth input{background:#171722;color:#f5f5fa;border-color:#56566e}
+[data-theme=light] #auth input::placeholder{color:#b5b5c6}
+[data-theme=light] #auth .lawgate,[data-theme=light] #auth .otp-box{background:#12121c;color:#f5f5fa;border-color:#56566e}
+[data-theme=light] #auth .lawgate h4,[data-theme=light] #auth .lawgate-body,[data-theme=light] #auth .lawgate-ok,[data-theme=light] #auth .otp-hint,[data-theme=light] #auth .auth-or{color:#c9c9da}
+#connectionPanel[hidden],#connectionChip[hidden]{display:none!important}
+#connectionPanel{position:fixed;z-index:1490;left:50%;transform:translateX(-50%);top:calc(var(--nf-top-h,64px) + 12px);width:min(460px,calc(100vw - 24px));padding:18px;border-radius:16px;background:var(--surface);border:1px solid var(--accent);color:var(--text);box-shadow:var(--shadow)}
+#connectionPanel strong{font-size:18px}#connectionPanel p{font-size:13px;line-height:1.55;color:var(--muted);margin:7px 0 14px}#connectionPanel>div{display:flex;gap:8px;flex-wrap:wrap}
+#connectionChip{position:fixed;z-index:1480;right:12px;bottom:calc(82px + var(--safe-b,0px));padding:9px 13px;border-radius:999px;background:var(--surface);color:var(--text);border:1px solid var(--accent);box-shadow:var(--shadow);font-size:12px;font-weight:700}
+.nfcard-sheet{width:min(500px,100%)}.nfcard-sheet img{max-height:57vh;object-fit:contain;background:#070b13}.poster-social{display:flex;flex-wrap:wrap;gap:8px;margin-top:12px}.poster-social a{padding:7px 11px;border:1px solid var(--border);border-radius:9px;font-size:12px;color:var(--text)}
+.fbr-cta{gap:6px}.fbr-card{margin-inline-start:0}.fbr-note{display:none}.access-summary p{font-size:12px;line-height:1.6;color:var(--muted);margin-bottom:12px}.set-row select:disabled{opacity:.7;cursor:not-allowed}
+
+
+[data-theme=light] .hero{background:#101721!important;color:#fff}
+[data-theme=light] .hero .ov{background:linear-gradient(90deg,rgba(6,6,10,.96),rgba(6,6,10,.75)),linear-gradient(0deg,#101721,transparent)}
+[data-theme=light] .hero .chip{background:#202a39;color:#fff;border-color:#65728a}
+[data-theme=light] .hero h2{color:#fff}[data-theme=light] .hero p{color:#e2e8f0}
+[data-theme=light] .hero .btn:not(.primary){background:#263447;color:#fff;border-color:#65728a}
+[data-theme=light] .section-head .live,[data-theme=light] .sec-head .live,[data-theme=light] .nf8-sports-head .live{color:#a41025}
+[data-theme=light] .card .rate{background:#172235;color:#ffdc70}
+[data-theme=light] .fb-tabs button.on{background:#b71229;color:#fff}
+
+[data-theme=light] .pv-title{background:none;-webkit-text-fill-color:#172235;color:#172235}
+[data-theme=light] .pv-hero{background:linear-gradient(135deg,#fceef0,#f3f5fb);border-color:#c5ccd8;box-shadow:none}
+[data-theme=light] .pv-sub,[data-theme=light] .pv-trust{color:#465469}
 </style>
 <script id="nf14-fbalerts">
 (function(){
@@ -7942,4 +7959,40 @@ if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',
   if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',boot); else boot();
   document.addEventListener('visibilitychange',function(){ if(!document.hidden) setTimeout(tick,4000); });
 })();
+/* v8.6: connectivity, role boundaries and plan hygiene. */
+(function(){
+  function admin(){return !!(State.user&&State.user.cloudVerified&&State.accessToken&&State.user.isAdmin&&(CONFIG.ADMIN_EMAILS||[]).includes(String(State.user.email||'').toLowerCase()));}
+  var enter=Auth._enter.bind(Auth);Auth._enter=function(u,remember){u.isAdmin=!!(u.cloudVerified&&State.accessToken&&(CONFIG.ADMIN_EMAILS||[]).includes(String(u.email||'').toLowerCase()));return enter(u,remember);};
+  var oldActive=Premium.isActive.bind(Premium);
+  Premium.isActive=function(){if(State.guest||!State.user)return false;var d=this.get();if((d.source==='test'||d.source==='developer')&&!admin())return false;if(d.source==='client')return false;return oldActive();};
+  var oldActivate=Premium.activate.bind(Premium);
+  Premium.activate=function(d){if(State.guest||!State.user)return false;if(d&&(d.source==='test'||d.source==='developer'||d.comp)&&!admin())return false;if(d&&d.source==='client')return false;return oldActivate(d);};
+  var oldGuest=Auth.guest.bind(Auth);
+  Auth.guest=function(){State.accessToken='';LS.del('sub:guest');State.settings=Object.assign(Settings.defaults(),LS.get('guestSettings',{}));return oldGuest();};
+  Object.keys(Admin).forEach(function(k){if(typeof Admin[k]!=='function')return;var fn=Admin[k];Admin[k]=function(){if(!admin()){Toast.show('Admins only','This action requires an administrator account.','warn');return;}return fn.apply(Admin,arguments);};});
+  var baseSettings=Settings.openModal.bind(Settings);
+  Settings.openModal=function(){baseSettings();var m=document.getElementById('settingsModal');if(!m)return;
+    if(!admin()){['testerOn','testerOff','nfWelcome'].forEach(function(id){var e=m.querySelector('#'+id);if(e){var row=e.closest('.set-row')||e;e.remove();if(row!==e)row.remove();}});var box=m.querySelector('.tester-box');if(box)box.remove();
+      var streams=m.querySelector('#nf8StreamFields');if(streams&&streams.closest('.set-group'))streams.closest('.set-group').remove();}
+    ['setDensity','setPoster'].forEach(function(id){var e=m.querySelector('#'+id);if(!e)return;var paid=admin()||Premium.isActive();e.disabled=!paid;e.title=paid?'':'Requires a paid membership';});
+    var plan=document.createElement('div');plan.className='set-group access-summary';var h=document.createElement('h4');h.textContent=State.guest?'Guest • Free plan':'Your plan • '+(Premium.isActive()?NF6.tier():'Free');plan.appendChild(h);
+    var p=document.createElement('p');p.textContent='Free: movie discovery, trailers, public TV, football fixtures, themes and match posters. Paid: larger queues, more downloads, calendar exports and advanced alerts. Guest access never activates a membership.';plan.appendChild(p);
+    var b=document.createElement('button');b.className='btn sm';b.textContent='Compare Premium plans';b.onclick=function(){closeOverlay('settingsOverlay');switchView('premium');};plan.appendChild(b);m.appendChild(plan);
+  };
+  var resend=NF6.resendWelcome;NF6.resendWelcome=function(btn){if(!admin()){Toast.show('Admins only','Welcome-email tools are managed by administrators.','warn');return;}return resend(btn);};
+  if(window.SBX)SBX.oauth=function(){throw new Error('Google sign-in has been removed. Use email sign-in.');};
+  var oldSync=window.NFSyncNow;window.NFSyncNow=function(){if(!admin()){Toast.show('Admins only','Use your personal account settings instead.','warn');return;}if(oldSync)return oldSync();};
+  var panel=document.createElement('aside');panel.id='connectionPanel';panel.hidden=true;panel.setAttribute('role','status');panel.setAttribute('aria-live','polite');
+  var title=document.createElement('strong');title.textContent='You’re offline';panel.appendChild(title);
+  var msg=document.createElement('p');msg.textContent='Please check your Wi-Fi or mobile data. Saved content stays available; live scores and playback need internet.';panel.appendChild(msg);
+  var actions=document.createElement('div');panel.appendChild(actions);
+  var retry=document.createElement('button');retry.className='btn sm primary';retry.textContent='Check connection';actions.appendChild(retry);
+  var dismiss=document.createElement('button');dismiss.className='btn sm';dismiss.textContent='Keep browsing';actions.appendChild(dismiss);
+  var chip=document.createElement('button');chip.id='connectionChip';chip.hidden=true;chip.textContent='Offline • Check internet';chip.onclick=function(){panel.hidden=false;};document.body.appendChild(panel);document.body.appendChild(chip);
+  dismiss.onclick=function(){panel.hidden=true;};
+  function status(on){panel.hidden=on;chip.hidden=on;document.body.classList.toggle('network-offline',!on);}
+  var checking=false;retry.onclick=async function(){if(checking)return;checking=true;retry.disabled=true;retry.textContent='Checking…';try{if(!navigator.onLine)throw Error('offline');var ctl=new AbortController(),tm=setTimeout(function(){ctl.abort();},6000);try{var r=await fetch('version.json?connection='+Date.now(),{cache:'no-store',signal:ctl.signal});if(!r.ok)throw Error('server');var data=await r.json();if(!data||!data.version)throw Error('server');}finally{clearTimeout(tm);}status(true);Toast.show('Connection restored','Your site is reachable again. Refreshing the current section.','ok');try{switchView(State.view||'home');}catch(e){}}catch(e){status(false);title.textContent=navigator.onLine?'Can’t reach NANCYFLIX':'You’re offline';msg.textContent=navigator.onLine?'Your device has a connection, but the site did not answer. Check internet access or try again shortly.':'Please check your Wi-Fi or mobile data, then tap Check connection.';}finally{checking=false;retry.disabled=false;retry.textContent='Check connection';}};
+  window.addEventListener('offline',function(){title.textContent='You’re offline';status(false);});window.addEventListener('online',function(){retry.click();});if(!navigator.onLine)status(false);
+})();
+
 </script>

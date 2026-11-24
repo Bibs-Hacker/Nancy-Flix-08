@@ -1,71 +1,30 @@
-# NANCYFLIX — Testing Report
+# NANCYFLIX v8.6.0 — verification report
 
-**Honesty note:** I built and statically verified the code. I did **not** deploy
-it, and I did not run it inside a live browser or against live TMDB/Supabase
-credentials. Below I separate what was actually verified from what still needs a
-browser / credentials to confirm.
+Build date: 24 November 2026.
 
-## What I actually executed
+## Executed checks
 
-- **JavaScript syntax validation:** extracted all 19 `<script>` blocks and ran
-  `node --check` over the combined source — **passed, no syntax errors**.
-- **File assembly / integrity:** confirmed the single `index.html` assembled
-  correctly (~122 KB, 19 script blocks, balanced `<script>` tags).
-- **Logic review** of each module against the acceptance list (reading the code,
-  not running it).
+- All **28 inline JavaScript blocks** passed `node --check`.
+- Bundled API helpers/endpoints and service worker passed syntax validation; relative server imports resolved.
+- Manifest/JSON parsed; referenced icon assets existed; archive integrity checked after packaging.
+- Headless Chromium at **390 × 844** using mocked catalogue, fixtures/events and external assets: no uncaught JavaScript page errors, no horizontal overflow in tested views.
+- Visible-text contrast audit found no sub-4.5 contrast ratios against resolved solid backgrounds in Home, Live, Genres, Feedback, Premium and Settings. This is not a complete WCAG audit: gradients and every possible state are not covered automatically.
+- Visual review of Home/Live/Settings/Premium/offline/poster dialog, all three poster styles and transparent icon. A gradient Premium heading contrast defect was corrected and its affected screenshot rechecked.
+- Matchday, live and full-time canvas branches produced **1080 × 1350 PNGs**. Test fixture dates/scores and sample scorers were used, not verified real match results.
+- Keyboard activation of a match-card button did not open a conflicting match-detail dialog.
+- PNG download worked; a mocked native sharing API received a nonempty PNG file; social-link URLs retained the fixture reference.
+- Guest stale subscription remained inactive; guest/local-member settings lacked tester/email tools. A locally typed owner email did not grant admin access. A mocked confirmed owner session received owner tools/developer access.
+- Simulated retry failure kept the panel open and re-enabled Retry; a reachable `version.json` check dismissed it and refreshed the active section. Service worker excludes this check and API data from its static cache.
+- **11 mocked server security tests passed**: unauthenticated requests rejected on configured endpoints, member denied admin email, entitlement query bound to actor email, wrong checkout email rejected, unconfirmed email rejected, missing email-provider setup returned 503, trusted Stripe tier used instead of browser tier, missing metadata and expired subscriptions did not activate.
+- Icon PNGs have real alpha transparency; the standalone icon is 512 × 512.
 
-## Implemented and code-reviewed (needs a browser click-through to fully sign off)
+## Not verified live
 
-| Scenario | Status |
-|---|---|
-| Splash completes (with skip) and never hangs (hard timeout fallback) | Implemented |
-| Splash → auth gate transition | Implemented |
-| Registration validates name/email/password; strength meter | Implemented |
-| Profile picture select + preview + 3 MB size limit | Implemented |
-| Register with no email verification (demo) + welcome notification | Implemented |
-| Login valid/invalid credential feedback; password toggle; remember-me | Implemented |
-| Guest mode browsing, search, movie detail | Implemented |
-| Guest gated before trailer playback; “Keep browsing” always closes gate | Implemented |
-| **Trailers play IN-APP** on a dedicated screen with Close + Back-to-movies (no new tab) | Implemented |
-| **Genres grouped with infinite scroll** (IntersectionObserver, incremental pages) | Implemented |
-| **Feedback / rating / report** form routes to the **admin inbox** | Implemented |
-| **Admin announcements** appear in users’ notifications | Implemented |
-| Watchlist add/remove, empty state, persistence | Implemented |
-| Profile edits persist; cannot self-promote to admin | Implemented |
-| Themes (8) + fonts switch immediately and persist | Implemented |
-| Notification + animation + reduced-motion preferences | Implemented |
-| Logout confirmation (Escape / dismiss cancels) | Implemented |
-| Admin Studio shown only when `is_admin` is true | Implemented (role must be server-verified) |
-| KPI cards + charts from real local data, demo clearly labelled | Implemented |
-| User directory: search / role filter / sort / pagination / detail modal | Implemented |
-| CSV export (users) + JSON export | Implemented |
-| Missing TMDB key → clear demo message; API failures fall back, no crash | Implemented |
-| XSS-safe rendering via `esc()` on all user/content strings | Implemented |
-| Responsive desktop/tablet/mobile layouts | Implemented |
+- No deployment to your Vercel project or phone/device acceptance test.
+- No live Supabase login/SQL migration execution, payment/provider calls, subscription cancellation/refund webhook reconciliation or real email delivery.
+- No real native sharing to WhatsApp/Instagram/Status. Device/browser support must be tested on your phone.
+- No live football provider plan/quotas, real scorer feed or broadcaster playback verified.
+- SQL security migration was reviewed, not run against a live Postgres database.
+- Actual installed-PWA offline navigation/service-worker lifecycle needs a deployed HTTPS browser test. The retry failure/success logic was browser-tested with mocks.
 
-## Requires external setup to be “live” (not a bug)
-
-- **Real movies & official trailers:** need a TMDB key or the `api/tmdb.js` proxy.
-  Until then the demo catalogue is used and labelled as such.
-- **Cross-device sync, secure hashed auth, server-verified admin role, audit
-  persistence across devices:** need Supabase (`backend/schema.sql`).
-- **Welcome email delivery:** needs the `welcome-email` function + provider key.
-  The UI reports the real send status and does not fake success.
-
-## Known honest limitations
-
-- Demo-mode “passwords” use a SHA-256 demo hash in local storage — **not** a
-  substitute for real auth. Backend mode delegates to Supabase Auth.
-- Demo mode cannot truly sync across devices (no server); it is labelled
-  “local only” rather than pretending otherwise.
-- Full PWA offline support needs separate `manifest.webmanifest` + `sw.js`
-  (explained in DEPLOYMENT.md), intentionally omitted to honor single-file delivery.
-
-## Recommended manual pass after deploy
-
-1. Register as a normal email → confirm welcome notification + member (non-admin) UI.
-2. Register/login as `bridah888@gmail.com` (after running schema.sql) → confirm Admin Studio.
-3. Play a trailer → confirm it opens in-app and Back/Close return to movies.
-4. Open Genres → scroll → confirm more cards load automatically.
-5. Submit feedback/report → confirm it appears in Admin → Inbox.
-6. Publish an announcement as admin → confirm it shows in a member’s notifications.
+See DEPLOYMENT.md and SECURITY.md before making the update public. Paid UI state is not tamper-proof authorization for a future server resource.

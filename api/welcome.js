@@ -1,3 +1,4 @@
+const {authenticate,isAdmin}=require('./lib/security');
 /**
  * NANCYFLIX — welcome email endpoint (Vercel / Netlify function).
  * POST { email, name } -> { sent: true } or { sent: false, error }
@@ -10,12 +11,15 @@
 const CORS = {
   'Access-Control-Allow-Origin': '*',
   'Access-Control-Allow-Methods': 'POST,OPTIONS',
-  'Access-Control-Allow-Headers': 'Content-Type'
+  'Access-Control-Allow-Headers': 'Content-Type,Authorization'
 };
 module.exports = async function handler(req, res) {
   Object.entries(CORS).forEach(([k, v]) => res.setHeader(k, v));
   if (req.method === 'OPTIONS') return res.status(204).end();
   if (req.method !== 'POST') return res.status(405).json({ sent: false, error: 'Method not allowed' });
+  const actor=await authenticate(req);
+  if(!actor)return res.status(401).json({sent:false,error:'Verified email sign-in required'});
+  if(!isAdmin(actor))return res.status(403).json({sent:false,error:'Admin-only email tool'});
   let body = req.body;
   if (typeof body === 'string') { try { body = JSON.parse(body); } catch (e) { body = {}; } }
   body = body || {};
@@ -29,7 +33,7 @@ module.exports = async function handler(req, res) {
   const html = '<div style="font-family:Inter,Arial,sans-serif;background:#06060a;color:#f5f5fa;padding:32px">' +
     '<h1 style="font-size:24px;margin:0 0 8px">Welcome to NANCYFLIX, ' + name.replace(/[<>&]/g, '') + '</h1>' +
     '<p style="color:#b9b9c8;line-height:1.6">Your account is ready. Build a watchlist, follow Kenyan live channels, open football fixtures and league tables, and save posters to your phone.</p>' +
-    '<p style="color:#b9b9c8;line-height:1.6">Free plan: 10 poster downloads, 3-trailer queue and 3 themes. Upgrade any time from the Premium tab.</p>' +
+    '<p style="color:#b9b9c8;line-height:1.6">Free plan: 10 poster downloads, 3-trailer queue and all themes and match posters. Upgrade any time from the Premium tab.</p>' +
     (app ? '<p><a href="' + app + '" style="display:inline-block;background:#e11d2e;color:#fff;text-decoration:none;padding:12px 20px;border-radius:8px;font-weight:700">Open NANCYFLIX</a></p>' : '') +
     '<p style="color:#6f6f80;font-size:12px;margin-top:24px">You received this because an account was created with this address. Films and matches are never downloaded or re-streamed.</p></div>';
   try {

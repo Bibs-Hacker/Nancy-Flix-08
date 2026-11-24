@@ -1,42 +1,37 @@
-# NANCYFLIX — Deployment Guide (GitHub + Vercel)
+# Deploy/update NANCYFLIX v8.6.0
 
-The frontend is a single static file: `index.html`. It deploys as a static site.
+## GitHub + Vercel (eligible free tier)
 
-## A. Push to GitHub
+1. Back up your current repository. Keep it private if it ever contained credentials.
+2. Extract this archive. Copy its contents into your existing repository root. Do not place the app one extra folder deep.
+3. Keep `index.html`, `api/` (including `api/lib/security.js`), `icons/`, `audio/`, `manifest.webmanifest`, `sw.js`, `version.json` and `docs/` together. All are included.
+4. In Vercel, import the repository or use the existing project. Select **Other**, project-root directory, no build command, no output-directory override.
+5. Preserve the existing public Supabase project URL and anon/public key in the frontend. Never put a service-role key, Stripe secret or provider secret in browser code.
+6. Add the variables below in Vercel's Environment Variables settings. Redeploy after changing them.
+7. Back up Supabase, then run `SUPABASE-SYNC.sql` followed by `SECURITY-UPDATE.sql`. Keep email confirmation enabled for secure cloud owners.
+8. Deploy and open the site using HTTPS. Check the displayed version is 8.6.0; the updated service worker replaces the old app shell. Do not clear all site data unless you have exported unsynced watchlists.
+9. Test guest access first, then a normal email account, then a confirmed owner email. Local-only owner-email registration does NOT grant administrator privileges.
 
-```bash
-cd nancyflix
-git init
-git add index.html api/ backend/ docs/
-git commit -m "NANCYFLIX initial build"
-git branch -M main
-git remote add origin https://github.com/<you>/nancyflix.git
-git push -u origin main
-```
+## Server environment
 
-> The repo may contain `api/tmdb.js` and `backend/` — these hold **no secrets**.
-> Real secrets live in Vercel/Supabase environment variables, not in the repo.
+| Variable | Purpose |
+|---|---|
+| `TMDB_V3_KEY` | Private movie catalogue proxy key |
+| `API_FOOTBALL_KEY` | Live football/fixture/event data |
+| `SUPABASE_URL` | Supabase project URL, also needed by authenticated APIs |
+| `SUPABASE_ANON_KEY` | Public anon key used to validate user sessions |
+| `SUPABASE_SERVICE_KEY` | Server-only entitlement database access; service-role key |
+| `STRIPE_SECRET_KEY` | Optional Stripe verification, server only |
+| `RESEND_API_KEY` | Optional admin email tool, server only |
+| `WELCOME_FROM` | Verified email sender, if using the email tool |
+| `APP_URL` | Public HTTPS address of your app |
 
-## B. Deploy on Vercel
+`SUPABASE_SERVICE_ROLE_KEY` is also accepted as the service key. Do not publish `.env`, private keys or session tokens to GitHub. Existing private keys never belong in the downloadable app source.
 
-1. Go to vercel.com → **Add New Project** → import your GitHub repo.
-2. Framework preset: **Other**. Root directory: project root. No build command.
-3. If you use the TMDB proxy, add an env var: `TMDB_V3_KEY = <your key>`.
-   Vercel auto-detects `api/tmdb.js` as a serverless function at `/api/tmdb`.
-4. Deploy. Your site is live at `https://<app>.vercel.app` and the proxy at
-   `https://<app>.vercel.app/api/tmdb`.
-5. Put that proxy URL into `CONFIG.TMDB_PROXY` in `index.html`, commit, push.
+## Offline and sharing checks
 
-### Alternative: pure static (no proxy)
-Serve just `index.html` on GitHub Pages / Netlify / any static host. Movie data
-then requires a browser-side `TMDB_KEY` (exposed) or stays in demo mode.
+- Visit online once, then disconnect internet: the offline panel should appear. Retry should fail honestly while offline. Reconnect and retry; it checks `version.json` over the network and refreshes the active section.
+- Open a fixture, create a poster, Save poster and attach it to a social app. Native Quick share works only in supporting HTTPS browsers.
+- Blank/limited live data with a configured key can be a provider quota/season restriction. Missing `API_FOOTBALL_KEY` is a hosting configuration problem, not a poster bug.
 
-## C. PWA / installability (honest scope)
-
-A single HTML file can be added to the home screen, but **full PWA features
-(service worker offline caching, install prompt) require two extra files**:
-`manifest.webmanifest` and `sw.js`, served over HTTPS. They are intentionally
-not bundled because the spec mandates a single-file frontend. If you want them,
-add both files alongside `index.html` and register the service worker. The app
-never claims offline movie streaming — only app shell / permitted metadata would
-be cached.
+Pure static hosting can show the frontend, but it cannot run the bundled authentication/payment/email/API proxies. No full movie or protected-match streaming rights are supplied by this archive.
