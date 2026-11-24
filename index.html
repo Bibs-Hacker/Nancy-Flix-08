@@ -1799,7 +1799,7 @@ nav .nav button[data-view="live"],#mainNav button[data-view="live"],#bottomNav b
   <div class="nfx-foot">
     <div class="nfx-now"><span class="nfx-dot"></span><span id="splashStage">LOADING YOUR WATCHLIST</span></div>
     <div class="nfx-meter"><i id="splashBar"></i></div>
-    <div class="nfx-meta"><b id="splashPct">0%</b><em id="splashStat">BOOT</em><span>V8.6.0</span></div>
+    <div class="nfx-meta"><b id="splashPct">0%</b><em id="splashStat">BOOT</em><span>V8.6.1</span></div>
   </div>
 </div>
 
@@ -2256,35 +2256,27 @@ const Toast = {
   show(title,msg,type="info",ms=null,opts=null){
     opts=opts||{};
     if(State.settings.inApp===false&&!opts.force)return;
-    const st=State.settings.notiStyle||'banner';
-    if(st==='off'&&!opts.force)return;
-    const host=document.getElementById('toasts'); if(!host)return;
-    const pos=State.settings.notiPos||'top-right';
-    host.className='nf8-pos-'+pos;
-    while(host.children.length>=4)host.removeChild(host.firstChild);
-    const banner=(st!=='compact');
-    const el=document.createElement('div');
-    el.className='toast '+(type==='info'?'':type)+(banner?' nf8-banner':'');
-    const icons={
-      ok:'<path d="M20 6L9 17l-5-5"/>',
-      err:'<path d="M12 8v5M12 17h.01"/><circle cx="12" cy="12" r="9"/>',
-      warn:'<path d="M12 9v4M12 17h.01M10.3 3.9L2.6 18a1.6 1.6 0 001.4 2.4h16a1.6 1.6 0 001.4-2.4L13.7 3.9a1.6 1.6 0 00-2.8 0z"/>',
-      info:'<circle cx="12" cy="12" r="9"/><path d="M12 11v5M12 8h.01"/>'
-    };
-    const action=opts.action&&opts.action.label?('<button class="nf8-act" type="button">'+esc(opts.action.label)+'</button>'):'';
-    el.innerHTML=(banner?'<span class="nf8-tic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round">'+(icons[type]||icons.info)+'</svg></span>':'')+
-      '<div style="flex:1;min-width:0"><div class="tt">'+esc(title)+'</div>'+(msg?'<div class="tm">'+esc(msg)+'</div>':'')+action+'</div>'+
-      (banner?'<button class="nf8-x" type="button" aria-label="Dismiss"><svg viewBox="0 0 24 24" width="12" height="12" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><path d="M18 6L6 18M6 6l12 12"/></svg></button><i class="nf8-bar" style="animation-duration:'+(ms||(State.settings.notiDuration||5)*1000)+'ms"></i>':'');
+    const st=State.settings.notiStyle||'banner';if(st==='off'&&!opts.force)return;
+    const host=document.getElementById('toasts');if(!host)return;
+    host.className='nf8-pos-'+(State.settings.notiPos||'top-right');
+    while(host.children.length>=3){const first=host.firstChild;if(first._dispose)first._dispose();else first.remove();}
+    const el=document.createElement('div');el.className='toast '+(type==='info'?'':type)+(st!=='compact'?' nf8-banner':'');el.setAttribute('role','status');
+    const paths={ok:'<path d="M20 6L9 17l-5-5"/>',err:'<path d="M12 8v5M12 17h.01"/><circle cx="12" cy="12" r="9"/>',warn:'<path d="M12 9v4M12 17h.01M10.3 3.9L2.6 18a1.6 1.6 0 001.4 2.4h16a1.6 1.6 0 001.4-2.4L13.7 3.9a1.6 1.6 0 00-2.8 0z"/>',info:'<circle cx="12" cy="12" r="9"/><path d="M12 11v5M12 8h.01"/>'};
+    el.innerHTML='<span class="nf8-tic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round">'+(paths[type]||paths.info)+'</svg></span><div class="nf8-toast-copy"><div class="tt">'+esc(title)+'</div>'+(msg?'<div class="tm">'+esc(msg)+'</div>':'')+'</div><button class="nf8-x" type="button" aria-label="Dismiss notification"><svg viewBox="0 0 24 24" width="13" height="13" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M18 6L6 18M6 6l12 12"/></svg></button>';
     host.appendChild(el);
-    if(State.settings.sound!==false)Sound.ping(type,State.settings.notiSound);
-    const close=()=>{el.style.opacity=0;el.style.transform='translateY(-8px)';setTimeout(()=>el.remove(),220);};
-    const x=el.querySelector('.nf8-x');if(x)x.onclick=close;
-    const act=el.querySelector('.nf8-act');if(act&&opts.action&&typeof opts.action.fn==='function')act.onclick=()=>{try{opts.action.fn();}catch(e){}close();};
-    const life=(ms!=null?ms:(State.settings.notiDuration||5)*1000);
-    if(life>0)el._t=setTimeout(close,life);
-    el.addEventListener('mouseenter',()=>{if(el._t)clearTimeout(el._t);});
-    el.addEventListener('mouseleave',()=>{if(life>0)el._t=setTimeout(close,1800);});
-    return el;
+    let duration=ms==null?Number(State.settings.notiDuration||5)*1000:Number(ms);if(!Number.isFinite(duration))duration=5000;duration=Math.max(0,duration);
+    let remaining=duration,start=performance.now(),timer=null,animation=null,closed=false,hover=false,focus=false;
+    let track=null,bar=null;
+    if(duration>0){track=document.createElement('span');track.className='nf8-progress';track.setAttribute('aria-hidden','true');bar=document.createElement('i');bar.className='nf8-bar';track.appendChild(bar);el.appendChild(track);el.classList.add('timed');if(bar.animate)animation=bar.animate([{transform:'scaleX(1)'},{transform:'scaleX(0)'}],{duration:duration,easing:'linear',fill:'forwards'});}
+    function clear(){if(timer)clearTimeout(timer);timer=null;if(animation)animation.cancel();}
+    function close(){if(closed)return;closed=true;clear();el.style.opacity='0';el.style.transform='translateY(-6px)';setTimeout(()=>el.remove(),200);}
+    el._dispose=()=>{closed=true;clear();el.remove();};el.querySelector('.nf8-x').onclick=close;
+    function pause(){if(closed||!duration||!timer)return;remaining=Math.max(0,remaining-(performance.now()-start));clearTimeout(timer);timer=null;if(animation)animation.pause();}
+    function resume(){if(closed||!duration||hover||focus||timer)return;start=performance.now();if(animation)animation.play();timer=setTimeout(close,remaining);}
+    el.addEventListener('pointerenter',()=>{hover=true;pause();});el.addEventListener('pointerleave',()=>{hover=false;resume();});
+    el.addEventListener('focusin',()=>{focus=true;pause();});el.addEventListener('focusout',()=>{setTimeout(()=>{focus=el.contains(document.activeElement);resume();},0);});
+    if(opts.action&&opts.action.label){const act=document.createElement('button');act.className='nf8-act';act.type='button';act.textContent=opts.action.label;act.onclick=()=>{try{if(typeof opts.action.fn==='function')opts.action.fn();}finally{close();}};el.querySelector('.nf8-toast-copy').appendChild(act);}
+    if(duration>0)timer=setTimeout(close,duration);if(State.settings.sound!==false)Sound.ping(type,State.settings.notiSound);return el;
   }
 };
 
@@ -2392,7 +2384,7 @@ const Noti = {
 <script>
 /* ============ 6. MODAL / CONFIRM / GATE MANAGER ============ */
 function openOverlay(id){const o=document.getElementById(id);o.classList.add('show');document.body.classList.add('noscroll');}
-function closeOverlay(id){const o=document.getElementById(id);o.classList.remove('show');if(!document.querySelector('.overlay.show')&&!document.getElementById('player').classList.contains('show'))document.body.classList.remove('noscroll');}
+function closeOverlay(id){const o=document.getElementById(id);if(!o)return;o.classList.remove('show');if(!document.querySelector('.overlay.show')&&!document.getElementById('player').classList.contains('show'))document.body.classList.remove('noscroll');}
 [['detailOverlay'],['confirmOverlay'],['gateOverlay'],['settingsOverlay']].forEach(([id])=>{
   document.getElementById(id).addEventListener('click',e=>{if(e.target.id===id)closeOverlay(id);});
 });
@@ -4376,7 +4368,7 @@ async function resumeSession(){
    v5 — soft light theme helpers · update centre · 3-tier Premium ·
         Live TV · Live Football · cross-device entitlement · test mode
    ===================================================================== */
-const APP_VERSION = '8.6.0';
+const APP_VERSION = '8.6.1';
 const WHATS_NEW = [
   'Detailed match posters with real crests and quick social sharing',
   'Google registration removed; admin tools restricted; guests stay on Free',
@@ -4623,15 +4615,11 @@ const Live = {
     host.innerHTML =
       '<div class="live-head"><span class="live-dot"></span><h1>' + (footy ? 'Live football' : 'Live TV') + '</h1><span class="live-sub">' + (footy ? 'Scores, fixtures and where to watch' : 'Free-to-air channels') + '</span></div>' +
       '<div class="live-tabs"><button data-ltab="footy" class="' + (footy ? 'on' : '') + '">Football</button><button data-ltab="tv" class="' + (footy ? '' : 'on') + '">TV channels</button></div>' +
-      (footy ? '<div class="nf-livebanner sm"><span class="lb-pulse"></span><div class="lb-txt"><b>Live football</b><span>Tap a match for the score and where to watch</span></div><button class="lb-go" data-lbgo>Watch</button></div>' : '') +
+      (footy ? '<div class="nf-livebanner sm"><span class="lb-pulse"></span><div class="lb-txt"><b>Live football</b><span>Scores &amp; stream options</span></div><button class="lb-go" data-lbgo>Find streams</button></div>' : '') +
       '<div id="liveBody" class="live-body"></div>';
     host.querySelectorAll('[data-ltab]').forEach(b => { b.onclick = () => { this.tab = b.dataset.ltab; this.render(); }; });
     var lbg = host.querySelector('[data-lbgo]');
-    if (lbg) lbg.onclick = () => {
-      this.tab = 'footy'; this.render();
-      var liveTab = document.querySelector('[data-fbt="live"]'); if (liveTab) liveTab.click();
-      try { document.getElementById('liveBody').scrollIntoView({ behavior: 'smooth', block: 'start' }); } catch (e) {}
-    };
+    if(lbg)lbg.onclick=()=>{const alt=document.getElementById('nfAltFootball');if(alt){alt.scrollIntoView({behavior:'smooth',block:'start'});const search=alt.querySelector('input');if(search)search.focus({preventScroll:true});}};
     if (this.tab === 'tv') this.renderTV(); else this.renderFooty();
   },
   renderTV() {
@@ -5813,7 +5801,7 @@ window.Live = Live;
     el.innerHTML = '<span class="tag">' + ic('signal') + 'Now</span><div class="vp"><div class="track" id="nfMarqueeTrack"></div></div>';
     main.parentNode.insertBefore(el, main);
     setMarquee([
-      'NANCYFLIX v7 is live',
+      'NANCYFLIX v8.6.1 is live',
       'Kenyan and East African channels inside Live TV',
       'Fixtures, results and tables open in the app',
       'Share any match with a private invite link',
@@ -6894,7 +6882,7 @@ if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',
   ];
   var BYID = {}; LGS.forEach(function (l) { BYID[l.id] = l; });
   var TABS = [['live', 'Live now'], ['today', 'Today'], ['next', 'Upcoming']];
-  var ST = { tab: 'live', lg: 'all', configured: null, remaining: null, data: {}, busy: false, err: '', timer: null, rows: [] };
+  var ST = { tab: 'live', lg: 'all', configured: null, remaining: null, quotaUntil:Number(LS.get('footballQuotaUntil',0))||0, at:{}, data: {}, busy: false, err: '', timer: null, rows: [] };
 
   function season() { var d = new Date(); return d.getMonth() >= 6 ? d.getFullYear() : d.getFullYear() - 1; }
   function todayISO() { var d = new Date(); return d.getFullYear() + '-' + pad(d.getMonth() + 1) + '-' + pad(d.getDate()); }
@@ -6904,12 +6892,14 @@ if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',
 
   /* ---------- transport ---------- */
   function api(params) {
+    if(ST.quotaUntil>Date.now()){var err=new Error('Live-score quota exhausted');err.code='quota';return Promise.reject(err);}
     var qs = Object.keys(params).filter(function (k) { return params[k] !== '' && params[k] != null; })
       .map(function (k) { return encodeURIComponent(k) + '=' + encodeURIComponent(params[k]); }).join('&');
     return fetch('api/football?' + qs, { headers: { Accept: 'application/json' }, cache: 'no-store' }).then(function (r) {
       return r.text().then(function (t) {
         var j = null; try { j = JSON.parse(t); } catch (e) {}
         if (r.status === 503 || r.status === 404 || r.status === 405) { var e1 = new Error('not configured'); e1.code = 'nocfg'; throw e1; }
+        if(r.status===429||(j&&j._quota)||(j&&/daily|request.*limit|limit.*request|quota/i.test(JSON.stringify(j.errors||{})))){ST.remaining=0;ST.quotaUntil=Date.now()+Math.max(60,Number(j&&j._retryAfter)||3600)*1000;LS.set('footballQuotaUntil',ST.quotaUntil);var quota=new Error('Live-score quota exhausted');quota.code='quota';throw quota;}
         if (!r.ok) { var e2 = new Error((j && j.error) || ('HTTP ' + r.status)); e2.code = r.status === 429 ? 'quota' : 'http'; throw e2; }
         if (!j) { var e3 = new Error('The feed did not answer with data'); e3.code = 'parse'; throw e3; }
         if (j._remaining != null) ST.remaining = j._remaining;
@@ -7028,9 +7018,9 @@ if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',
   }
 
   function shellHTML() {
-    var pill = ST.configured === false
+    var pill = ST.quotaUntil>Date.now()?'<span class="fb-pill off"><i></i>Score limit reached</span>':ST.err?'<span class="fb-pill off"><i></i>Scores unavailable</span>':ST.configured === false
       ? '<span class="fb-pill off"><i></i>Not connected</span>'
-      : '<span class="fb-pill"><i></i>' + (ST.remaining != null ? 'Live feed · ' + ST.remaining + ' calls left' : 'Live feed') + '</span>';
+      : '<span class="fb-pill"><i></i>' + (ST.remaining != null ? 'Score requests · ' + ST.remaining + ' left' : 'Live feed') + '</span>';
     return '<div class="fb-bar"><div class="fb-tabs">' + TABS.map(function (t) {
       return '<button data-fbt="' + t[0] + '" class="' + (ST.tab === t[0] ? 'on' : '') + '" type="button">' + t[1] + '</button>';
     }).join('') + '</div>' + pill + '</div>' +
@@ -7045,7 +7035,7 @@ if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',
       '<p class="nf-note">Scores, minutes and fixtures come from API-Football. Kick-off times are shown in your local time. Tap any match for the full view.</p>';
     body.innerHTML = html;
     wire(body);
-    schedule();
+    schedule();if(window.NFAltFootball)NFAltFootball.mount(body);
   }
 
   function wire(body) {
@@ -7067,18 +7057,21 @@ if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',
 
   function schedule() {
     if (ST.timer) { clearInterval(ST.timer); ST.timer = null; }
-    if (ST.tab !== 'live' || ST.configured === false) return;
+    if(ST.tab!=='live'||ST.configured===false||ST.err||ST.quotaUntil>Date.now()||ST.remaining!==null&&ST.remaining<20)return;
     ST.timer = setInterval(function () {
       if (document.visibilityState !== 'visible') return;
       if (!Q('#view-live.active')) return;
       load(true);
-    }, 45000);
+    }, 180000);
   }
 
   function load(force) {
     var key = ST.tab + '|' + ST.lg;
+    if(ST.busy)return;
+    if(ST.quotaUntil>Date.now()){ST.err='Live-score requests have reached the provider limit. Stream schedules below use a separate feed.';ST.rows=ST.data[key]||[];paint();return;}
+    if(ST.data[key]&&Date.now()-(ST.at[key]||0)<120000){ST.rows=ST.data[key];paint();return;}
     if (!force && ST.data[key]) { ST.rows = ST.data[key]; paint(); return; }
-    if (force) ST.data[key] = null;
+    // Keep the last successful snapshot if a refresh fails.
     ST.busy = true; ST.err = '';
     paint();
     api(query()).then(function (j) {
@@ -7088,12 +7081,12 @@ if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',
         var first = j.errors[Object.keys(j.errors)[0]];
         if (!rows.length) ST.err = String(first || 'The feed returned an error');
       }
-      ST.data[key] = rows; ST.rows = rows; paint();
+      ST.data[key]=rows;ST.at[key]=Date.now();ST.rows=rows;paint();
     }).catch(function (e) {
       ST.busy = false;
       if (e && e.code === 'nocfg') { ST.configured = false; ST.rows = []; paint(); return; }
-      ST.err = (e && e.code === 'quota') ? 'The daily request limit for the free plan is used up. Scores return after the reset.' : ((e && e.message) || 'Could not reach the feed');
-      ST.rows = [];
+      ST.err = (e && e.code === 'quota') ? 'The score provider’s request limit is exhausted. Stream schedules below use a separate feed; scores need the provider reset.' : ((e && e.message) || 'Could not reach the feed');
+      ST.rows=ST.data[key]||[];
       paint();
     });
   }
@@ -7149,6 +7142,7 @@ if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',
     var quickBtn=Q('[data-fbquickbtn]',ov);if(quickBtn)quickBtn.onclick=function(){NF6.rowCard(r,true);};
     var watchBtn = Q('[data-fbwatchbtn]', ov);
     if (watchBtn) watchBtn.onclick = function () { openWatch(r); };
+    if(!live(r)&&!finished(r)){var eventBox=document.getElementById('fbmEvents');if(eventBox)eventBox.textContent='Match events appear after kick-off.';return;}
     api({ ep: 'fixtures/events', fixture: r.id }).then(function (j) {
       var box = document.getElementById('fbmEvents'); if (!box) return;
       r.cardEvents=j.response||[];
@@ -7191,6 +7185,12 @@ if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',
     if (!Q('.overlay.show')) document.body.classList.remove('noscroll');
   }
   function openWatch(r){
+    if(!r)return;
+    if(!window.NFAltFootball){openWatchOfficial(r);return;}
+    NFAltFootball.find(r).then(function(f){if(f&&f.channels&&f.channels.length){NFAltFootball.open(f);}else{openWatchOfficial(r);addAlternateBrowse();}}).catch(function(){openWatchOfficial(r);addAlternateBrowse();});
+  }
+  function addAlternateBrowse(){var host=document.querySelector('#fbWatch .fbw-card');if(!host)return;var b=document.createElement('button');b.type='button';b.className='btn sm';b.textContent='Browse alternative match streams';b.onclick=function(){closeWatch();var alt=document.getElementById('nfAltFootball');if(alt)alt.scrollIntoView({behavior:'smooth',block:'start'});};host.appendChild(b);}
+  function openWatchOfficial(r){
     if (!r) return;
     var ov = ensureWatch();
     var l = BYID[r.lg.id] || {};
@@ -7274,7 +7274,7 @@ if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',
     var isLive=live(r),isDone=finished(r),events=r.cardEvents;
     if((isLive||isDone)&&!events&&r.id){try{var j=await api({ep:'fixtures/events',fixture:r.id});events=j.response||[];r.cardEvents=events;}catch(e){events=null;}}
     var assets=await Promise.all([loadCardCrest(r.home.logo),loadCardCrest(r.away.logo),loadCardCrest(r.lg.logo)]);
-    var c=document.createElement('canvas');c.width=1080;c.height=1350;var x=c.getContext('2d');if(!x)return;
+    var c=document.createElement('canvas');c.width=1080;c.height=1350;var x=c.getContext('2d');if(!x)return;x.save();x.beginPath();x.roundRect(0,0,1080,1350,64);x.clip();
     var g=x.createLinearGradient(0,0,0,1350);g.addColorStop(0,'#070b13');g.addColorStop(.58,'#111a24');g.addColorStop(1,'#05080e');x.fillStyle=g;x.fillRect(0,0,1080,1350);
     // Original drawn stadium silhouette, not invented player photography.
     x.strokeStyle='#293746';x.lineWidth=3;
@@ -7299,16 +7299,19 @@ if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',
     posterText(x,date&&!isNaN(date)?date.toLocaleTimeString(undefined,{hour:'2-digit',minute:'2-digit',timeZoneName:'short'}):'Kick-off to be confirmed',540,1010,910,24,1,'#ffcc66');
     posterText(x,[r.venue,r.city].filter(Boolean).join(' • ')||'Venue to be confirmed',540,1055,910,24,2,'#d8e2ec');
     if(isLive||isDone){
-      var goals=events&&events.filter(function(e){return e.type==='Goal'&&e.detail!=='Missed Penalty';});
-      function scorers(id){return goals&&goals.filter(function(e){return e.team&&e.team.id===id;}).map(function(e){return(e.player&&e.player.name||'Scorer unavailable')+' '+(e.time&&e.time.elapsed!=null?e.time.elapsed:'?')+(e.time&&e.time.extra?'+'+e.time.extra:'')+'′'+(e.detail==='Own Goal'?' (OG)':'');}).join(' • ');}
-      posterText(x,'GOAL SCORERS',540,1120,910,17,1,'#ffcc66');
-      posterText(x,events?scorers(r.home.id)||(r.home.goals===0?'No goals':'Scorers not listed'):'Scorer data unavailable',285,1161,432,22,2);
-      posterText(x,events?scorers(r.away.id)||(r.away.goals===0?'No goals':'Scorers not listed'):'Scorer data unavailable',795,1161,432,22,2);
-    }else posterText(x,r.ref?'Referee: '+r.ref:'Follow the fixture and official watch links on NANCYFLIX',540,1150,910,22,2,'#b7c5d3');
+      var goals=Array.isArray(events)?events.filter(function(e){return e.type==='Goal'&&e.detail!=='Missed Penalty';}):[];
+      if(goals.length){
+        function scorers(id){return goals.filter(function(e){return e.team&&e.team.id===id;}).map(function(e){return(e.player&&e.player.name||'Scorer')+' '+(e.time&&e.time.elapsed!=null?e.time.elapsed:'?')+(e.time&&e.time.extra?'+'+e.time.extra:'')+'′'+(e.detail==='Own Goal'?' (OG)':'');}).join(' • ');}
+        var homeScorers=scorers(r.home.id),awayScorers=scorers(r.away.id);
+        if(homeScorers||awayScorers){posterText(x,'GOAL SCORERS',540,1120,910,17,1,'#ffcc66');
+          if(homeScorers)posterText(x,homeScorers,285,1161,432,22,2);
+          if(awayScorers)posterText(x,awayScorers,795,1161,432,22,2);}
+      }
+    }else if(r.ref)posterText(x,'Referee: '+r.ref,540,1150,910,22,2,'#b7c5d3');
     var site=location.protocol==='file:'?'NANCYFLIX':location.host;
     posterText(x,site,540,1276,940,30,1,'#ffcc66');posterText(x,'Dev Brian + Dev Nancy • '+(isLive?'Score snapshot — '+new Date().toLocaleTimeString():'Football, brought together.'),540,1314,940,18,1,'#b7c5d3');
     var name='NANCYFLIX-'+(r.home.name+'-vs-'+r.away.name).replace(/[^A-Za-z0-9]+/g,'-');
-    c.toBlob(function(blob){if(blob)cardPreview(blob,name,r.home.name+' vs '+r.away.name,r,quick);},'image/png');
+    x.restore();c.toBlob(function(blob){if(blob)cardPreview(blob,name,r.home.name+' vs '+r.away.name,r,quick);},'image/png');
   }
   NF6.rowCard=matchCard;
   NF6.fixtureCard=function(ev,lg){var st=ev.strStatus||'NS';matchCard({id:ev.idEvent,when:ev.strTimestamp||ev.dateEvent,venue:ev.strVenue,city:'',ref:'',lg:{name:ev.strLeague||(lg&&lg.name)||'Football',round:ev.intRound?'Round '+ev.intRound:'',logo:ev.strLeagueBadge},status:{short:st,min:null},home:{name:ev.strHomeTeam||'Home',logo:ev.strHomeTeamBadge,goals:ev.intHomeScore},away:{name:ev.strAwayTeam||'Away',logo:ev.strAwayTeamBadge,goals:ev.intAwayScore}});};
@@ -7318,7 +7321,7 @@ if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',
     render: function () {
       if (ST.configured === false) { paint(); return; }
       var key = ST.tab + '|' + ST.lg;
-      if (ST.data[key]) { ST.rows = ST.data[key]; paint(); } else { load(true); }
+      if(ST.data[key]&&Date.now()-(ST.at[key]||0)<120000){ST.rows=ST.data[key];paint();}else{load(true);}
     },
     open: openDetail,
     offline: null
@@ -7938,11 +7941,11 @@ if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',
     notify(t,m,/red|penalty/i.test((e.detail||'')+t)?'warn':'info');
   }
   async function tick(){
-    if(busy||document.hidden||!navigator.onLine)return; busy=true;
+    if(!(State.settings&&State.settings.liveScoreAlerts===true)||busy||document.hidden||!navigator.onLine||State.view!=='live')return; busy=true;
     try{
       var live=await get('api/football?ep=fixtures&live=all');
       if(!live||live.configured===false||live._configured===false||!live.response)return;
-      var fx=(live.response||[]).slice(0,6);
+      var fx=(live.response||[]).slice(0,1);
       for(var i=0;i<fx.length;i++){
         var f=fx[i]; if(!f.fixture||!f.fixture.id)continue;
         var ev=await get('api/football?ep=fixtures/events&fixture='+f.fixture.id);
@@ -7955,7 +7958,7 @@ if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',
       try{localStorage.setItem('nf8FbEvents',JSON.stringify(seen));}catch(e){}
     }catch(e){} finally{busy=false;}
   }
-  function boot(){ if(started)return; started=true; setTimeout(tick,15000); setInterval(tick,80000); }
+  function boot(){ if(started)return; started=true; setTimeout(tick,15000); setInterval(tick,300000); }
   if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',boot); else boot();
   document.addEventListener('visibilitychange',function(){ if(!document.hidden) setTimeout(tick,4000); });
 })();
@@ -7995,4 +7998,120 @@ if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',
   window.addEventListener('offline',function(){title.textContent='You’re offline';status(false);});window.addEventListener('online',function(){retry.click();});if(!navigator.onLine)status(false);
 })();
 
+</script>
+
+<script>
+/* v8.6.1 alternative schedule and isolated external player. */
+(function(){
+ 'use strict';
+ var rows=null,loaded=0,inflight=null,limit=16,term='',scope='all',player=null;
+ function node(tag,cls,text){var e=document.createElement(tag);if(cls)e.className=cls;if(text!=null)e.textContent=text;return e;}
+ function button(text,fn,cls){var e=node('button',cls||'btn sm',text);e.type='button';e.onclick=fn;return e;}
+ function safePath(path){return typeof path==='string'&&/^\/api\/football-alt\?play=[a-f0-9]{24}&channel=\d+(?:&open=1)?$/.test(path);}
+ function fetchRows(force){
+  if(rows&&Date.now()-loaded<300000&&!force)return Promise.resolve(rows);
+  if(inflight)return inflight;
+  var ctl=new AbortController(),tm=setTimeout(function(){ctl.abort();},18000);
+  inflight=fetch('/api/football-alt',{headers:{Accept:'application/json'},signal:ctl.signal}).then(function(r){if(!r.ok)throw Error('schedule');return r.json();}).then(function(j){if(!j||!j.success||!Array.isArray(j.fixtures))throw Error('schedule');rows=j.fixtures;loaded=Date.now();return rows;}).finally(function(){clearTimeout(tm);inflight=null;});return inflight;
+ }
+ function labelTime(f){var d=new Date(f.kickoff);return isNaN(d)?'Kick-off to be confirmed':d.toLocaleString(undefined,{weekday:'short',day:'numeric',month:'short',hour:'2-digit',minute:'2-digit'});}
+ function matching(f,r){
+  var split=String(f.match||'').split(/\s+(?:vs\.?|v\.?)\s+/i);if(split.length!==2)return false;
+  function clean(s){return String(s).normalize('NFKD').replace(/[\u0300-\u036f]/g,'').toLowerCase().replace(/[^a-z0-9]/g,'');}
+  return clean(split[0])===clean(r.home.name)&&clean(split[1])===clean(r.away.name)&&(!r.when||Math.abs(new Date(f.kickoff)-r.when)<36*3600000);
+ }
+ function mount(body){
+  if(!body||!window.Live||Live.tab!=='footy')return;
+  var previous=body.querySelector('#nfAltFootball');if(previous)previous.remove();
+  var sec=node('section','nf-alt');sec.id='nfAltFootball';body.appendChild(sec);
+  var head=node('div','nf-alt-head');head.appendChild(node('div','',null));head.firstChild.appendChild(node('h3','','Watch matches'));head.firstChild.appendChild(node('p','','Alternative schedule • independent of the live-score quota'));head.appendChild(button('Refresh',function(){if(Date.now()-loaded<60000){Toast.show('Schedule is current','Please wait a minute before refreshing again.','info');return;}rows=null;mount(body);}));sec.appendChild(head);
+  var controls=node('div','nf-alt-controls'),input=node('input');input.type='search';input.placeholder='Find a team or competition';input.setAttribute('aria-label','Search match streams');input.value=term;controls.appendChild(input);
+  var select=node('select');select.setAttribute('aria-label','Match schedule filter');[['all','All fixtures'],['today','Today'],['next','Upcoming']].forEach(function(v){var opt=node('option','',v[1]);opt.value=v[0];select.appendChild(opt);});select.value=scope;controls.appendChild(select);sec.appendChild(controls);
+  var list=node('div','nf-alt-list'),message=node('p','nf-alt-state','Loading match schedule…');list.appendChild(message);sec.appendChild(list);
+  var note=node('p','nf-note','Stream availability is reported by the feed, not proof of working video. Use only streams you are authorized to watch. A broadcaster may block playback or require an account.');sec.appendChild(note);
+  input.oninput=function(){term=input.value;limit=16;paint();};select.onchange=function(){scope=select.value;limit=16;paint();};
+  function paint(){
+   if(!document.body.contains(sec))return;list.replaceChildren();var today=new Date().toDateString(),now=Date.now(),q=term.trim().toLowerCase();
+   var filtered=(rows||[]).filter(function(f){var d=new Date(f.kickoff);return(!q||String(f.match+' '+f.tournament).toLowerCase().includes(q))&&(scope==='all'||scope==='today'&&d.toDateString()===today||scope==='next'&&+d>now);});
+   if(!filtered.length){list.appendChild(node('p','nf-alt-state','No matching fixtures. Try All fixtures or another team.'));return;}
+   filtered.slice(0,limit).forEach(function(f){
+    var row=node('article','nf-alt-match'),meta=node('div','nf-alt-meta');meta.appendChild(node('span','nf-alt-comp',f.tournament||'Football'));meta.appendChild(node('span','nf-alt-time',labelTime(f)));row.appendChild(meta);row.appendChild(node('h4','',f.match));
+    var acts=node('div','nf-alt-actions'),channels=Array.isArray(f.channels)?f.channels.filter(function(c){return safePath(c.playerPath);}):[];
+    acts.appendChild(node('span','nf-alt-availability',channels.length?channels.length+' stream option'+(channels.length===1?'':'s'):'No stream listed'));
+    var b=button(channels.length?'Watch':'Unavailable',function(){open(f);},'btn sm primary');b.disabled=!channels.length;acts.appendChild(b);row.appendChild(acts);list.appendChild(row);
+   });
+   if(filtered.length>limit)list.appendChild(button('Show more matches',function(){limit+=16;paint();},'btn sm nf-alt-more'));
+  }
+  fetchRows(false).then(paint).catch(function(){if(!document.body.contains(sec))return;list.replaceChildren(node('p','nf-alt-state','The alternative schedule could not load. Your saved fixtures are unchanged.'),button('Try again',function(){mount(body);}));});
+ }
+ function close(){if(!player)return;var fr=player.querySelector('iframe');if(fr){fr.src='about:blank';fr.remove();}player.remove();player=null;if(!document.querySelector('.overlay.show'))document.body.classList.remove('noscroll');document.removeEventListener('keydown',escape);}
+ function escape(e){if(e.key==='Escape')close();}
+ function open(f){
+  close();var channels=(f.channels||[]).filter(function(c){return safePath(c.playerPath);});if(!channels.length){Toast.show('No stream available','Try an official broadcaster for this fixture.','warn');return;}
+  var ov=node('div','overlay nf-alt-overlay show'),sheet=node('div','nf-alt-player');sheet.setAttribute('role','dialog');sheet.setAttribute('aria-modal','true');sheet.setAttribute('aria-label','Football player');ov.appendChild(sheet);
+  var head=node('div','nf-alt-player-head'),tx=node('div');tx.appendChild(node('h3','',f.match));tx.appendChild(node('p','',f.tournament+' • '+labelTime(f)));head.appendChild(tx);var x=button('Close',close,'btn sm');head.appendChild(x);sheet.appendChild(head);
+  var channelbar=node('div','nf-alt-channels');sheet.appendChild(channelbar);
+  var screen=node('div','nf-alt-screen');sheet.appendChild(screen);var state=node('p','nf-alt-player-state','Choose a stream to connect.');sheet.appendChild(state);
+  var actions=node('div','nf-alt-player-actions'),again=button('Reload stream',function(){play(chosen);}),next=button('Try next stream',function(){play((chosen+1)%channels.length);}),external=node('a','btn sm','Open player separately');external.target='_blank';external.rel='noopener noreferrer';actions.append(again,next,external);sheet.appendChild(actions);
+  sheet.appendChild(node('p','nf-note','An embedded page loading does not confirm that its video is playing. If the player stays blank, try the next stream or open it separately. No paywall or DRM is bypassed.'));
+  var chosen=0,timeout=null,frameSerial=0;
+  function play(index){
+   clearTimeout(timeout);chosen=index;frameSerial++;var seq=frameSerial,c=channels[index];screen.replaceChildren();state.textContent='Connecting to '+c.label+'…';external.href=safePath(c.openPath)?c.openPath:c.playerPath;
+   channelbar.querySelectorAll('button').forEach(function(b,i){b.classList.toggle('on',i===index);});next.disabled=channels.length<2;
+   var fr=node('iframe');fr.title=f.match+' — '+c.label;fr.setAttribute('sandbox','allow-scripts allow-same-origin allow-presentation');fr.allow='autoplay; encrypted-media; picture-in-picture; fullscreen';fr.setAttribute('allowfullscreen','');fr.referrerPolicy='no-referrer';fr.src=c.playerPath;
+   fr.onload=function(){if(seq!==frameSerial)return;clearTimeout(timeout);state.textContent='Player page opened. Press Play inside the player; if it stays blank, try another stream.';};
+   fr.onerror=function(){if(seq!==frameSerial)return;state.textContent='This player could not open. Try another stream.';};screen.appendChild(fr);
+   timeout=setTimeout(function(){if(seq===frameSerial&&document.body.contains(ov))state.textContent='This stream is taking too long. Try another stream or open the player separately.';},12000);
+  }
+  channels.forEach(function(c,i){channelbar.appendChild(button(c.label,function(){play(i);},'btn sm'));});
+  ov.onclick=function(e){if(e.target===ov)close();};document.body.appendChild(ov);player=ov;document.body.classList.add('noscroll');document.addEventListener('keydown',escape);x.focus();play(0);
+ }
+ window.NFAltFootball={mount:mount,open:open,find:function(r){return fetchRows(false).then(function(fs){return fs.find(function(f){return matching(f,r);})||null;});}};
+})();
+
+</script>
+
+<style id="nf861-refinements">
+/* v8.6.1: contained countdown, compact live chip and match player */
+.toast,.toast.nf8-banner{--toast-tone:var(--accent);position:relative;width:min(410px,calc(100vw - 32px));max-width:100%;overflow:hidden;isolation:isolate;display:flex;align-items:flex-start;gap:12px;padding:16px 48px 16px 16px;border:1px solid var(--border);border-left-width:1px;border-radius:20px;background:linear-gradient(135deg,#202634,#111722);box-shadow:0 16px 45px rgba(0,0,0,.3)}
+.toast.timed{padding-bottom:29px}.toast.ok{--toast-tone:#38d69c}.toast.err{--toast-tone:#ff6175}.toast.warn{--toast-tone:#e8b854}
+.toast .nf8-toast-copy{flex:1;min-width:0;overflow-wrap:anywhere}.toast .tt{font-size:13px;line-height:1.4;color:#f7f9fc}.toast .tm{font-size:12px;line-height:1.5;color:#bac6d8}
+.toast .nf8-tic,.toast.nf8-banner .nf8-tic{width:34px;height:34px;flex:0 0 auto;border-radius:12px;background:color-mix(in srgb,var(--toast-tone) 14%,transparent);color:var(--toast-tone);display:grid;place-items:center}.toast .nf8-tic svg{width:18px;height:18px}
+.toast .nf8-x,.toast.nf8-banner .nf8-x{position:absolute;top:11px;right:auto;inset-inline-end:11px;width:26px;height:26px;border-radius:9px;color:#aebcd0;display:grid;place-items:center;background:rgba(255,255,255,.04)}
+.toast .nf8-progress{position:absolute;inset-inline:16px;bottom:12px;height:3px;border-radius:999px;overflow:hidden;background:rgba(255,255,255,.12);display:block;pointer-events:none}
+.toast .nf8-bar,.toast.nf8-banner .nf8-bar{position:static;display:block;width:100%;height:100%;border-radius:inherit;background:var(--toast-tone);transform-origin:left center;animation:none}
+[dir=rtl] .toast .nf8-bar{transform-origin:right center}
+[data-theme=light] .toast,[data-theme=light] .toast.nf8-banner{background:linear-gradient(135deg,#fff,#f3f6fa);border-color:#c4ccd8;box-shadow:0 12px 36px rgba(25,41,65,.14)}
+[data-theme=light] .toast .tt{color:#172235}[data-theme=light] .toast .tm{color:#465469}[data-theme=light] .toast .nf8-x{color:#465469;background:#e9eef5}
+[data-theme=light] .toast.ok{--toast-tone:#087b57}[data-theme=light] .toast.err{--toast-tone:#b91d38}[data-theme=light] .toast.warn{--toast-tone:#886000}
+[data-theme=light] .toast .nf8-progress{background:#d9e0e9}
+#view-live{min-width:0;max-width:100%}.live-head{flex-wrap:wrap;gap:8px}.live-head h1{font-size:24px}.live-head .live-dot{width:6px;height:6px;flex:0 0 6px;box-shadow:none}.live-head .live-sub{flex-basis:100%;margin-inline-start:14px;font-size:12px}
+.nf-livebanner.sm{display:inline-grid;grid-template-columns:6px minmax(0,1fr) auto;align-items:center;gap:8px;width:fit-content;max-width:calc(100% - 44px);min-width:0;margin:10px 22px 2px;padding:7px 9px;border-radius:999px;overflow:hidden;box-shadow:none}
+.nf-livebanner.sm .lb-pulse{width:5px;height:5px;box-shadow:0 0 0 2px rgba(225,29,46,.12);animation:none}.nf-livebanner.sm .lb-txt{min-width:0;overflow:hidden}.nf-livebanner.sm .lb-txt b{font-size:9px;letter-spacing:.06em;overflow:hidden;text-overflow:ellipsis}.nf-livebanner.sm .lb-txt span{font-size:10px}.nf-livebanner.sm .lb-go{padding:5px 9px;font-size:10px;line-height:1.2;min-width:0;box-shadow:none;margin:0}
+.nf-livedot{width:5px;height:5px;box-shadow:0 0 0 1px var(--bg);animation:none}
+.fb-pill{letter-spacing:.04em;white-space:normal}.fb-pill.off{color:#e9b952}.fb-pill.off i{box-shadow:none}
+.nfcard-sheet img{border-radius:22px;border:0;background:transparent}.nfcard-sheet{border-radius:24px}
+.nf-alt{border:1px solid var(--border);border-radius:22px;margin-top:24px;padding:18px;background:var(--surface);min-width:0;scroll-margin-top:100px}
+.nf-alt-head{display:flex;align-items:flex-start;justify-content:space-between;gap:12px}.nf-alt-head>div{min-width:0;flex:1}.nf-alt-head h3{font-size:18px;margin:0}.nf-alt-head p,.nf-alt-player-head p{font-size:11.5px;line-height:1.5;margin-top:4px;color:var(--muted)}
+.nf-alt-head>button{flex:0 0 auto}.nf-alt-controls{display:flex;gap:8px;margin:16px 0;min-width:0}.nf-alt-controls input,.nf-alt-controls select{padding:10px;border-radius:11px;border:1px solid var(--border);background:var(--surface-2);color:var(--text);font-size:12px;min-width:0}.nf-alt-controls input{flex:1;width:0}.nf-alt-controls select{max-width:40%}
+.nf-alt-list{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,285px),1fr));gap:10px}.nf-alt-match{min-width:0;padding:14px;border-radius:16px;background:var(--surface-2);border:1px solid var(--border)}
+.nf-alt-meta{display:flex;justify-content:space-between;gap:10px;flex-wrap:wrap;font-size:10px;color:var(--muted)}.nf-alt-comp{font-weight:800;color:var(--text)}.nf-alt-match h4{font-size:13px;line-height:1.45;overflow-wrap:anywhere;margin:10px 0 14px}.nf-alt-actions{display:flex;align-items:center;justify-content:space-between;gap:10px}.nf-alt-availability{font-size:10px;color:var(--muted)}.nf-alt-state{padding:14px 0;font-size:12px;color:var(--muted);line-height:1.6}.nf-alt-more{grid-column:1/-1;justify-self:center}
+.nf-alt-overlay{z-index:1600;padding:18px;background:rgba(3,6,13,.84);backdrop-filter:blur(12px);overflow:auto}.nf-alt-player{width:min(920px,100%);max-height:90dvh;overflow:auto;padding:18px;border-radius:24px;background:var(--surface);border:1px solid var(--border);box-shadow:0 25px 80px rgba(0,0,0,.4)}
+.nf-alt-player-head{display:flex;align-items:flex-start;gap:16px}.nf-alt-player-head>div{flex:1;min-width:0}.nf-alt-player-head h3{font-size:16px;line-height:1.4;overflow-wrap:anywhere}.nf-alt-channels{display:flex;gap:8px;flex-wrap:wrap;margin:16px 0}.nf-alt-channels .on{background:var(--accent);color:#fff;border-color:var(--accent)}
+.nf-alt-screen{width:100%;aspect-ratio:16/9;background:#05080f;border-radius:16px;overflow:hidden}.nf-alt-screen iframe{width:100%;height:100%;border:0;display:block}.nf-alt-player-state{font-size:12px;color:var(--muted);line-height:1.55;margin:12px 0}.nf-alt-player-actions{display:flex;gap:8px;flex-wrap:wrap}.nf-alt-player .nf-note{line-height:1.6;margin:14px 0 0}.nf-alt .nf-note{line-height:1.6;margin:14px 0 0}
+[data-theme=light] .fb-pill.off{color:#886000}[data-theme=light] .nf-alt-channels .on{background:#b71229;border-color:#b71229;color:#fff}
+@media(max-width:680px){.nf-livebanner.sm .lb-txt span{display:none}.nf-livebanner.sm{max-width:calc(100% - 32px);margin-inline:16px}.nf-alt{padding:14px}.nf-alt-overlay{padding:12px}.nf-alt-player{padding:14px}.fb-pill{display:inline-flex;font-size:9px;max-width:100%;margin:2px 0}}
+@media(prefers-reduced-motion:reduce){.toast,.toast.nf8-banner{animation:none}.nf-livebanner .lb-pulse{animation:none}}
+
+
+/* Desktop navigation remains contained when all sections are visible. */
+@media(min-width:821px){
+ .topbar{flex-wrap:wrap}
+ .topbar>.nav{order:3;flex:1 1 100%;min-width:0;margin-left:0;flex-wrap:wrap}
+ .topbar>.top-right{flex-shrink:0}
+}
+</style>
+
+<script>
+(function(){var base=Settings.openModal.bind(Settings);Settings.openModal=function(){base();var root=document.getElementById('settingsModal');if(!root)return;var row=document.createElement('div');row.className='set-row';var copy=document.createElement('div');copy.className='lbl';var t=document.createElement('div');t.className='t';t.textContent='Extra live goal alerts';var d=document.createElement('div');d.className='d';d.textContent='Optional extra score checks while Football is open. Off saves your provider quota.';copy.append(t,d);var input=document.createElement('input');input.type='checkbox';input.checked=!!State.settings.liveScoreAlerts;input.setAttribute('aria-label','Enable extra live goal alerts');input.onchange=function(){State.settings.liveScoreAlerts=input.checked;Theme.save();};row.append(copy,input);root.appendChild(row);};})();
 </script>

@@ -1,4 +1,4 @@
-# Deploy/update NANCYFLIX v8.6.0
+# Deploy/update NANCYFLIX v8.6.1
 
 ## GitHub + Vercel (eligible free tier)
 
@@ -9,7 +9,7 @@
 5. Preserve the existing public Supabase project URL and anon/public key in the frontend. Never put a service-role key, Stripe secret or provider secret in browser code.
 6. Add the variables below in Vercel's Environment Variables settings. Redeploy after changing them.
 7. Back up Supabase, then run `SUPABASE-SYNC.sql` followed by `SECURITY-UPDATE.sql`. Keep email confirmation enabled for secure cloud owners.
-8. Deploy and open the site using HTTPS. Check the displayed version is 8.6.0; the updated service worker replaces the old app shell. Do not clear all site data unless you have exported unsynced watchlists.
+8. Deploy and open the site using HTTPS. Check the displayed version is 8.6.1; the updated service worker replaces the old app shell. Do not clear all site data unless you have exported unsynced watchlists.
 9. Test guest access first, then a normal email account, then a confirmed owner email. Local-only owner-email registration does NOT grant administrator privileges.
 
 ## Server environment
@@ -35,3 +35,12 @@
 - Blank/limited live data with a configured key can be a provider quota/season restriction. Missing `API_FOOTBALL_KEY` is a hosting configuration problem, not a poster bug.
 
 Pure static hosting can show the frontend, but it cannot run the bundled authentication/payment/email/API proxies. No full movie or protected-match streaming rights are supplied by this archive.
+
+## v8.6.1 football update
+
+- Upload the new `api/football-alt.js` alongside `api/football.js` and the updated frontend/service worker. Static-only hosting cannot run these server routes.
+- The supplied alternative schedule is configured server-side; no additional provider key is required for that source. Keep `API_FOOTBALL_KEY` for primary live scores/events.
+- Score refresh is opt-in and throttled. When the provider reports exhausted quota, the app shows "Score limit reached" rather than stale remaining credits. A cooldown prevents repeated score calls.
+- Alternative schedules can remain usable during a primary-score quota outage. Stream-page opening and switching do not prove that video will play: provider availability, iframe restrictions, geography and browser/device rules may prevent playback. Use only streams you are authorized to access.
+- Source addresses are hidden from visible UI, not from developer tools or redirect inspection. This build does not proxy/re-stream video or bypass access restrictions.
+- If you already applied the v8.6.0 database changes, this update needs no new SQL migration. Keep existing credentials and user data; upload all app files and redeploy.

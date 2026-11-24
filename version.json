@@ -1,12 +1,11 @@
 {
-  "version": "8.6.0",
+  "version": "8.6.1",
   "build": "2026-11-24",
   "notes": [
-    "Detailed branded match posters with club crests and quick sharing",
-    "Transparent standalone app icon",
-    "Smart offline panel with connection retry",
-    "Google registration removed",
-    "Light theme contrast improvements",
-    "Admin tools restricted; guest testing unlock removed"
+    "Inset notification countdown with synchronized pause/resume",
+    "Rounded transparent PNG poster corners and no empty goal labels",
+    "Compact contained football indicator",
+    "Server-only alternative schedule with stream switching",
+    "Quota-aware score cooldown and reduced background requests"
   ]
 }

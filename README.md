@@ -1,8 +1,17 @@
-# NANCYFLIX v8.6.0
+# NANCYFLIX v8.6.1
 
 Dev Brian + Dev Nancy · Contact: devbriannova@gmail.com
 
-## What changed
+## What changed in v8.6.1
+
+- Notification countdown sits below the message without overlapping it; hovering pauses both the bar and dismissal timer.
+- Exported match posters have genuinely transparent rounded corners. Empty goal-scorer sections and repeated "No goals" labels are omitted.
+- Smaller LIVE indicator keeps its Watch button inside the banner. Desktop navigation wraps instead of overflowing.
+- Exhausted live-score quota overrides misleading remaining-credit headers. Background score requests are reduced, with cached responses and cooldowns.
+- Alternative football schedules and selectable stream-page links are integrated through a server endpoint. Provider addresses are not displayed in the app; this is not a guarantee of playable video or an anonymity feature.
+- Closing temporary overlays with Escape no longer triggers a null-element error.
+
+## Included from v8.6.0
 
 - New 1080 × 1350 match posters: matchday, live-score snapshot and full-time result designs, club/competition crests, venue, local kickoff time and scorer details when provided by the football feed. No invented player photos or results.
 - Quick image sharing, PNG download and WhatsApp/X/Facebook match-link sharing. Sharing an image depends on the phone/browser; Instagram and Status need you to save and attach it.
