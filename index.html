@@ -1311,7 +1311,11 @@ select,input,textarea{font-size:16px} /* stops iOS zoom-on-focus */
 @media(max-width:560px){.nf8-focus-card{padding:17px;border-radius:18px}.nf8-sounds{grid-template-columns:1fr 1fr}.nf8-vol{margin-inline-start:0;width:100%;justify-content:flex-end}}
 
 /* --- update banner --- */
-#nf8Update{position:fixed;z-index:1320;top:calc(10px + var(--safe-t));left:50%;transform:translateX(-50%) translateY(-160%);width:min(560px,calc(100vw - 24px));display:flex;align-items:center;gap:10px;padding:10px 10px 10px 14px;border-radius:14px;background:linear-gradient(120deg,#1b1b26,#101018);border:1px solid rgba(255,204,102,.4);box-shadow:0 18px 55px rgba(0,0,0,.6);transition:transform .4s cubic-bezier(.2,.9,.3,1.05)}
+.nf8-kids-top{display:inline-flex;align-items:center;gap:6px;width:auto;padding:0 11px;color:#ffd47a;border-color:rgba(255,204,102,.34);font-size:12px;font-weight:600;letter-spacing:.3px}
+.nf8-kids-top:hover{background:rgba(255,204,102,.12)}
+@media (max-width:780px){.nf8-kids-top span{display:none}.nf8-kids-top{width:38px;padding:0;justify-content:center}}
+@media (max-width:520px){.nf8-kids-top{display:none}}
+#nf8Update{position:fixed;z-index:1320;top:calc(var(--nf-top-h,64px) + 10px);left:50%;transform:translateX(-50%) translateY(-160%);width:min(560px,calc(100vw - 24px));display:flex;align-items:center;gap:10px;padding:10px 10px 10px 14px;border-radius:14px;background:linear-gradient(120deg,#1b1b26,#101018);border:1px solid rgba(255,204,102,.4);box-shadow:0 18px 55px rgba(0,0,0,.6);transition:transform .4s cubic-bezier(.2,.9,.3,1.05)}
 #nf8Update.show{transform:translateX(-50%) translateY(0)}
 #nf8Update .ic{width:30px;height:30px;border-radius:9px;background:rgba(255,204,102,.14);display:grid;place-items:center;color:#ffcc66;flex:0 0 auto}
 #nf8Update .tx{flex:1;min-width:0}
@@ -1810,7 +1814,7 @@ nav .nav button[data-view="live"],#mainNav button[data-view="live"],#bottomNav b
   <div class="nfx-foot">
     <div class="nfx-now"><span class="nfx-dot"></span><span id="splashStage">LOADING YOUR WATCHLIST</span></div>
     <div class="nfx-meter"><i id="splashBar"></i></div>
-    <div class="nfx-meta"><b id="splashPct">0%</b><em id="splashStat">BOOT</em><span>V8.6.1</span></div>
+    <div class="nfx-meta"><b id="splashPct">0%</b><em id="splashStat">BOOT</em><span>V8.7.0</span></div>
   </div>
 </div>
 
@@ -1888,6 +1892,7 @@ nav .nav button[data-view="live"],#mainNav button[data-view="live"],#bottomNav b
       <div class="drawer-head"><div class="brand"><svg width="24" height="24" viewBox="0 0 64 64" aria-hidden="true"><rect x="11" y="26" width="42" height="25" rx="3" fill="#e11d2e"/><g transform="rotate(-9 32 20)"><rect x="10" y="14" width="44" height="10" rx="2" fill="#f5f5fa"/><path d="M20 14l-5 10M30 14l-5 10M40 14l-5 10M50 14l-5 10" stroke="#12121c" stroke-width="3" stroke-linecap="round"/></g></svg><span class="t">NANCYFLIX</span></div><button class="drawer-close" id="drawerClose" aria-label="Close menu"><svg class="icon sm" viewBox="0 0 24 24"><path d="M18 6L6 18M6 6l12 12"/></svg></button></div>
       <button data-view="home" class="active"><svg class="icon sm" viewBox="0 0 24 24"><path d="M3 12l9-9 9 9M5 10v10h14V10"/></svg><span data-i18n="home">Home</span></button>
       <button data-view="genres"><svg class="icon sm" viewBox="0 0 24 24"><path d="M4 6h16M4 12h16M4 18h10"/></svg><span data-i18n="genres">Genres</span></button>
+      <button data-kidsnav="1" id="navKids"><svg class="icon sm" viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M8 14s1.5 2 4 2 4-2 4-2M9 9h.01M15 9h.01"/></svg><span>Kids</span></button>
       <button data-view="discover"><svg class="icon sm" viewBox="0 0 24 24"><circle cx="11" cy="11" r="7"/><path d="M21 21l-4-4M11 8v6M8 11h6"/></svg><span data-i18n="discover">Discover</span></button>
       <button data-view="watchlist"><svg class="icon sm" viewBox="0 0 24 24"><path d="M19 21l-7-5-7 5V5a2 2 0 012-2h10a2 2 0 012 2z"/></svg><span data-i18n="watchlist">Watchlist</span></button>
       <button data-view="feedback"><svg class="icon sm" viewBox="0 0 24 24"><path d="M21 15a2 2 0 01-2 2H7l-4 4V5a2 2 0 012-2h14a2 2 0 012 2z"/></svg><span data-i18n="feedback">Feedback</span></button>
@@ -1896,6 +1901,7 @@ nav .nav button[data-view="live"],#mainNav button[data-view="live"],#bottomNav b
     </nav>
     <div class="top-right">
       <div class="search-box" id="searchBox"><input type="search" id="searchInput" data-i18n-ph="searchPh" placeholder="Search movies…" aria-label="Search movies"><button class="clr" id="searchClear" aria-label="Clear search" type="button"><svg class="icon sm" viewBox="0 0 24 24"><path d="M18 6L6 18M6 6l12 12"/></svg></button><button class="search-go" id="searchGo" aria-label="Search" type="button"><svg class="icon sm" viewBox="0 0 24 24"><circle cx="11" cy="11" r="7"/><path d="M21 21l-4-4"/></svg></button></div>
+      <button class="icon-btn nf8-kids-top" id="navKidsTop" aria-label="Kids corner" title="Kids corner"><svg class="icon" viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M8 14s1.5 2 4 2 4-2 4-2M9 9h.01M15 9h.01"/></svg><span>Kids</span></button>
       <button class="icon-btn nf8-focus-btn" id="focusBtn" aria-label="Focus timer" title="Focus and sleep timer"><svg class="icon" viewBox="0 0 24 24"><path d="M21 12.8A9 9 0 1111.2 3 7 7 0 0021 12.8z"/></svg></button>
       <button class="lang-btn" id="langBtn" aria-label="Change language" title="Change language"><span class="flag" id="langFlag">🇬🇧</span><span class="code" id="langCode">EN</span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="12" cy="12" r="9"/><path d="M3 12h18M12 3c2.5 2.6 2.5 15.4 0 18M12 3c-2.5 2.6-2.5 15.4 0 18"/></svg></button>
       <button class="icon-btn" id="notiBtn" aria-label="Notifications"><svg class="icon" viewBox="0 0 24 24"><path d="M18 8a6 6 0 00-12 0c0 7-3 9-3 9h18s-3-2-3-9M13.73 21a2 2 0 01-3.46 0"/></svg><span class="dot" id="notiDot">0</span></button>
@@ -4379,7 +4385,7 @@ async function resumeSession(){
    v5 — soft light theme helpers · update centre · 3-tier Premium ·
         Live TV · Live Football · cross-device entitlement · test mode
    ===================================================================== */
-const APP_VERSION = '8.6.1';
+const APP_VERSION = '8.7.0';
 const WHATS_NEW = [
   'Detailed match posters with real crests and quick social sharing',
   'Google registration removed; admin tools restricted; guests stay on Free',
@@ -4647,6 +4653,7 @@ const Live = {
     body.querySelectorAll('[data-ch]').forEach(b => { b.onclick = () => this.open(CHANNELS[+b.dataset.ch]); });
   },
   async renderFooty() {
+    if (this.tab && this.tab !== 'footy') return;
     const body = document.getElementById('liveBody');
     if (!body) return;
     body.innerHTML = '<p class="live-note">Next fixtures per league. Tap a league to see its official schedule.</p><div id="fxGrid" class="fx-grid"><div class="fx-load">Loading fixtures…</div></div>';
@@ -5288,15 +5295,7 @@ window.Live = Live;
   if (!CHANNELS.length) { Array.prototype.push.apply(CHANNELS, CH); }
   NF6.channels = CH;
 
-  var CATS = (function () {
-    var seen = { 'All': 1 }, out = ['All'];
-    ['News', 'Entertainment', 'Movies', 'Documentary', 'Music', 'Relax', 'Regional', 'International', 'Soaps'].forEach(function (c) {
-      var has = CH7.some(function (x) { return x.groups.indexOf(c) >= 0; });
-      if (has && !seen[c]) { seen[c] = 1; out.push(c); }
-    });
-    CH7.forEach(function (x) { x.groups.forEach(function (g) { if (!seen[g]) { seen[g] = 1; out.push(g); } }); });
-    return out;
-  })();
+  var CATS = ['All', 'News', 'Entertainment', 'Movies', 'Documentary', 'Music', 'Relax', 'Regional', 'International', 'Soaps'];
   Live.cat6 = 'All';
   Live.fx6 = {};
 
@@ -5355,6 +5354,7 @@ window.Live = Live;
 
   /* ---------------- football: in-app fixtures + tables ---------------- */
   Live.renderFooty = function () {
+    if (this && this.tab && this.tab !== 'footy') return;
     var body = Q('#liveBody'); if (!body) return;
     body.innerHTML = '<p class="live-note">Next fixtures per league, opened inside NANCYFLIX — no new tabs. Tables show the live standings for the current season.</p>' +
       '<div class="fx-grid">' + LEAGUES.map(function (lg) {
@@ -5824,7 +5824,7 @@ window.Live = Live;
     el.innerHTML = '<span class="tag">' + ic('signal') + 'Now</span><div class="vp"><div class="track" id="nfMarqueeTrack"></div></div>';
     main.parentNode.insertBefore(el, main);
     setMarquee([
-      'NANCYFLIX v8.6.1 is live',
+      'NANCYFLIX v8.7.0 is live',
       'Kenyan and East African channels inside Live TV',
       'Fixtures, results and tables open in the app',
       'Share any match with a private invite link',
@@ -7005,6 +7005,7 @@ if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',
 
   function paint() {
     var body = Q('#liveBody'); if (!body) return;
+    if (window.Live && window.Live.tab && window.Live.tab !== 'footy') return;
     var html = shellHTML();
     if (ST.configured === false) html += setupHTML();
     else html += (ST.fallback ? '<p class="nf-note fb-fallback">' + (ST.fallbackWhy === 'quota' ? 'The score provider limit is used up, so these fixtures come from the free schedule feed. Scores return automatically when the provider resets.' : ST.fallbackWhy === 'plan' ? 'Your provider plan blocks that score filter, so these fixtures come from the free schedule feed.' : 'Live scores are unavailable right now, so these fixtures come from the free schedule feed.') + '</p>' : '') + '<div class="fb-list">' + listHTML() + '</div>' +
@@ -7046,7 +7047,7 @@ if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',
     return fetch('api/football-alt', { headers: { Accept: 'application/json' }, cache: 'no-store' })
       .then(function (r) { if (!r.ok) throw new Error('alt'); return r.json(); })
       .then(function (j) {
-        return (j.fixtures || []).map(function (f) {
+        var rows = (j.fixtures || []).map(function (f) {
           var parts = String(f.match || '').split(/ vs /i);
           var when = new Date(f.kickoff);
           return {
@@ -7060,8 +7061,9 @@ if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',
             alt: true
           };
         }).filter(function (r) { return r.when && !isNaN(r.when.getTime()); })
-          .sort(function (a, b) { return a.when - b.when; })
-          .filter(function (r) { return ST.tab !== 'next' || r.when.getTime() > now - 3 * 3600e3; });
+          .sort(function (a, b) { return a.when - b.when; });
+        var upcoming = rows.filter(function (r) { return r.when.getTime() > now - 3 * 3600e3; });
+        return ST.tab === 'next' && upcoming.length ? upcoming : rows;
       });
   }
 
@@ -7370,8 +7372,8 @@ if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',
     if (!window.Live || window.Live.__fb) return;
     window.Live.__fb = true;
     var prev = window.Live.renderFooty;
-    F.offline = function () { if (prev) prev.call(window.Live); };
-    window.Live.renderFooty = function () { F.render(); };
+    F.offline = function () { if (window.Live.tab && window.Live.tab !== 'footy') return; if (prev) prev.call(window.Live); };
+    window.Live.renderFooty = function () { if (window.Live.tab && window.Live.tab !== 'footy') return; F.render(); };
     window.NF8 = window.NF8 || {};
     window.NF8.Football = F;
   }
@@ -8092,11 +8094,27 @@ if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',
     }
   }
 
+  function openKids(e) {
+    if (e) e.preventDefault();
+    try { if (window.Live) window.Live.tab = 'kids'; } catch (err) {}
+    try { if (typeof switchView === 'function') switchView('live'); } catch (err) {}
+    try { if (window.Live) { window.Live.tab = 'kids'; window.Live.render(); } } catch (err) {}
+    try { if (typeof toggleNav === 'function') toggleNav(false); } catch (err) {}
+    var nav = document.getElementById('mainNav');
+    var btn = document.getElementById('navKids');
+    if (nav && btn) [].forEach.call(nav.querySelectorAll('button'), function (b) { b.classList.toggle('active', b === btn); });
+    try { window.scrollTo({ top: 0, behavior: 'smooth' }); } catch (err) {}
+  }
+
   function boot() {
     try {
       if (window.Live) window.Live.renderKids = render;
     } catch (e) {}
-    window.NFKids = { render: render, live: LIVE };
+    window.NFKids = { render: render, live: LIVE, open: openKids };
+    var kn = document.getElementById('navKids');
+    if (kn) kn.addEventListener('click', openKids);
+    var kt = document.getElementById('navKidsTop');
+    if (kt) kt.addEventListener('click', openKids);
   }
   if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', boot); else boot();
 })();
@@ -8133,6 +8151,16 @@ if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',
       matchId: String(ev.idEvent || ev.id || ''),
       leagueId: String((lg && lg.id) || (ev.lg && ev.lg.id) || '')
     };
+  }
+  function pageUrl(ev, lg) {
+    var o = info(ev, lg);
+    var q = [['h', o.home], ['a', o.away], ['lg', o.comp], ['v', o.venue]];
+    if (o.when) q.push(['d', o.when.toISOString()]);
+    if (o.matchId) q.push(['match', o.matchId]);
+    if (o.leagueId) q.push(['league', o.leagueId]);
+    var qs = q.filter(function (x) { return x[1]; })
+      .map(function (x) { return encodeURIComponent(x[0]) + '=' + encodeURIComponent(x[1]); }).join('&');
+    return location.origin + '/s' + (qs ? '?' + qs : '');
   }
   function key(o) { return o.home + '|' + o.away + '|' + (o.when ? o.when.getTime() : 0); }
 
@@ -8255,7 +8283,7 @@ if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',
     return pending[k];
   }
 
-  function legacy(ev, lg) { return NF6.__matchUrl ? NF6.__matchUrl(ev, lg) : null; }
+  function legacy(ev, lg) { return pageUrl(ev, lg); }
 
   function share(ev, lg) {
     var o = info(ev, lg);
@@ -8297,13 +8325,29 @@ if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',
     NF6.matchUrl = function (ev, lg) {
       var k = key(info(ev, lg));
       if (cache[k]) return cache[k];
-      return NF6.__matchUrl ? NF6.__matchUrl(ev, lg) : location.href;
+      return pageUrl(ev, lg);
     };
     NF6.posterFor = function (ev, lg) {
       var canvas = drawPoster(info(ev, lg));
       return canvas ? toBlob(canvas) : Promise.resolve(null);
     };
   } catch (e) {}
+})();
+</script>
+<script id="nf-tab-guard">
+(function () {
+  function wrap() {
+    var L = window.Live;
+    if (!L || L.__tabGuard || typeof L.renderFooty !== 'function') return;
+    var fn = L.renderFooty;
+    L.__tabGuard = true;
+    L.renderFooty = function () {
+      if (this && this.tab && this.tab !== 'footy') return;
+      return fn.apply(this, arguments);
+    };
+  }
+  function start() { setTimeout(wrap, 500); setTimeout(wrap, 2000); }
+  if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', start); else start();
 })();
 </script>
 </body>
