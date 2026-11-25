@@ -1817,7 +1817,7 @@ nav .nav button[data-view="live"],#mainNav button[data-view="live"],#bottomNav b
   <div class="nfx-foot">
     <div class="nfx-now"><span class="nfx-dot"></span><span id="splashStage">LOADING YOUR WATCHLIST</span></div>
     <div class="nfx-meter"><i id="splashBar"></i></div>
-    <div class="nfx-meta"><b id="splashPct">0%</b><em id="splashStat">BOOT</em><span>V8.7.1</span></div>
+    <div class="nfx-meta"><b id="splashPct">0%</b><em id="splashStat">BOOT</em><span>V8.7.2</span></div>
   </div>
 </div>
 
@@ -1879,6 +1879,7 @@ nav .nav button[data-view="live"],#mainNav button[data-view="live"],#bottomNav b
       </div>
       <button type="submit" class="btn primary block" id="regSubmit" style="margin-top:8px" disabled>Create account</button>
     </form>
+    <div class="auth-alt" style="margin-top:12px">or <button type="button" id="guestBtn">browse as guest ›</button></div>
     <div class="demo-note" id="demoNote">Your account, watchlist and settings are saved on this device and stay available offline. With cloud sign-in on, they also follow you to every device you sign in on. Movies, posters and trailers stream live from TMDB.</div>
   </div>
 </div>
@@ -3667,6 +3668,7 @@ function switchView(name){
 document.getElementById('mainNav').addEventListener('click',e=>{const b=e.target.closest('[data-view]');if(!b)return;const target=b.dataset.view;if((target==='watchlist'||target==='admin')&&!State.user){if(target==='admin'){Toast.show('Admins only','Sign in with an administrator account.','warn');return;}}switchView(target);});
 document.getElementById('profileBtn').onclick=()=>{if(!State.user){backToAuth('login');return;}switchView('profile');};
 document.getElementById('settingsBtn').onclick=()=>Settings.openModal();
+document.getElementById('guestBtn').onclick=()=>Auth.guest();
 document.getElementById('notiBtn').onclick=()=>toggleNoti();
 document.getElementById('notiClose').onclick=()=>toggleNoti(false);
 document.getElementById('markAllRead').onclick=()=>Noti.markAll();
@@ -4388,7 +4390,7 @@ async function resumeSession(){
    v5 — soft light theme helpers · update centre · 3-tier Premium ·
         Live TV · Live Football · cross-device entitlement · test mode
    ===================================================================== */
-const APP_VERSION = '8.7.1';
+const APP_VERSION = '8.7.2';
 const WHATS_NEW = [
   'Detailed match posters with real crests and quick social sharing',
   'Google registration removed; admin tools restricted; guests stay on Free',
@@ -5827,7 +5829,7 @@ window.Live = Live;
     el.innerHTML = '<span class="tag">' + ic('signal') + 'Now</span><div class="vp"><div class="track" id="nfMarqueeTrack"></div></div>';
     main.parentNode.insertBefore(el, main);
     setMarquee([
-      'NANCYFLIX v8.7.1 is live',
+      'NANCYFLIX v8.7.2 is live',
       'Kenyan and East African channels inside Live TV',
       'Fixtures, results and tables open in the app',
       'Share any match with a private invite link',

@@ -1,7 +1,8 @@
 {
-  "version": "8.7.1",
+  "version": "8.7.2",
   "build": "2026-11-25",
   "notes": [
+    "Guest browsing is back; only continue-on-this-device was removed",
     "Sign-in emails now return to this site instead of a localhost address",
     "The one-time code box sends the code request to the right domain",
     "Removed the continue-on-this-device and guest buttons",
