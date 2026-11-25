@@ -1,4 +1,4 @@
-const {authenticate}=require('./lib/security');
+const {authenticate}=require('../lib/security');
 /**
  * NANCYFLIX — cross-device entitlement lookup (Vercel / Netlify function).
  *

@@ -29,6 +29,9 @@
 <meta name="apple-mobile-web-app-capable" content="yes" />
 <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
 <meta name="apple-mobile-web-app-title" content="NANCYFLIX" />
+<link rel="apple-touch-icon" href="icons/apple-touch-icon.png" />
+<link rel="apple-touch-startup-image" href="icons/icon-512.png" />
+<meta name="apple-mobile-web-app-title" content="NANCYFLIX" />
 <meta name="format-detection" content="telephone=no" />
 <link rel="apple-touch-icon" href="icons/apple-touch-icon.png" />
 <link rel="icon" type="image/png" sizes="192x192" href="icons/icon-192.png" />
@@ -1814,7 +1817,7 @@ nav .nav button[data-view="live"],#mainNav button[data-view="live"],#bottomNav b
   <div class="nfx-foot">
     <div class="nfx-now"><span class="nfx-dot"></span><span id="splashStage">LOADING YOUR WATCHLIST</span></div>
     <div class="nfx-meter"><i id="splashBar"></i></div>
-    <div class="nfx-meta"><b id="splashPct">0%</b><em id="splashStat">BOOT</em><span>V8.7.0</span></div>
+    <div class="nfx-meta"><b id="splashPct">0%</b><em id="splashStat">BOOT</em><span>V8.7.1</span></div>
   </div>
 </div>
 
@@ -1876,10 +1879,6 @@ nav .nav button[data-view="live"],#mainNav button[data-view="live"],#bottomNav b
       </div>
       <button type="submit" class="btn primary block" id="regSubmit" style="margin-top:8px" disabled>Create account</button>
     </form>
-    <div class="auth-or">or</div>
-
-    <button type="button" class="btn block" id="deviceBtn" style="margin-top:10px">Continue on this device — no password</button>
-    <div class="auth-alt">or <button type="button" id="guestBtn">browse as guest ›</button></div>
     <div class="demo-note" id="demoNote">Your account, watchlist and settings are saved on this device and stay available offline. With cloud sign-in on, they also follow you to every device you sign in on. Movies, posters and trailers stream live from TMDB.</div>
   </div>
 </div>
@@ -1902,6 +1901,7 @@ nav .nav button[data-view="live"],#mainNav button[data-view="live"],#bottomNav b
     <div class="top-right">
       <div class="search-box" id="searchBox"><input type="search" id="searchInput" data-i18n-ph="searchPh" placeholder="Search movies…" aria-label="Search movies"><button class="clr" id="searchClear" aria-label="Clear search" type="button"><svg class="icon sm" viewBox="0 0 24 24"><path d="M18 6L6 18M6 6l12 12"/></svg></button><button class="search-go" id="searchGo" aria-label="Search" type="button"><svg class="icon sm" viewBox="0 0 24 24"><circle cx="11" cy="11" r="7"/><path d="M21 21l-4-4"/></svg></button></div>
       <button class="icon-btn nf8-kids-top" id="navKidsTop" aria-label="Kids corner" title="Kids corner"><svg class="icon" viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M8 14s1.5 2 4 2 4-2 4-2M9 9h.01M15 9h.01"/></svg><span>Kids</span></button>
+      <button class="icon-btn" id="installBtn" aria-label="Install NANCYFLIX" title="Install NANCYFLIX" style="display:none;color:#ffd47a"><svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3v11M8 11l4 4 4-4M5 20h14"/></svg></button>
       <button class="icon-btn nf8-focus-btn" id="focusBtn" aria-label="Focus timer" title="Focus and sleep timer"><svg class="icon" viewBox="0 0 24 24"><path d="M21 12.8A9 9 0 1111.2 3 7 7 0 0021 12.8z"/></svg></button>
       <button class="lang-btn" id="langBtn" aria-label="Change language" title="Change language"><span class="flag" id="langFlag">🇬🇧</span><span class="code" id="langCode">EN</span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="12" cy="12" r="9"/><path d="M3 12h18M12 3c2.5 2.6 2.5 15.4 0 18M12 3c-2.5 2.6-2.5 15.4 0 18"/></svg></button>
       <button class="icon-btn" id="notiBtn" aria-label="Notifications"><svg class="icon" viewBox="0 0 24 24"><path d="M18 8a6 6 0 00-12 0c0 7-3 9-3 9h18s-3-2-3-9M13.73 21a2 2 0 01-3.46 0"/></svg><span class="dot" id="notiDot">0</span></button>
@@ -3277,6 +3277,10 @@ const Settings={
       <div style="padding:24px 26px 10px"><h3 style="font-size:21px">${t('setTitle')}</h3><p style="color:var(--muted);font-size:13px">${t('setIntro')}</p>
         <input id="setSearch" placeholder="${t('setSearchPh')}" style="width:100%;margin-top:14px;padding:11px 14px;background:var(--bg-2);border:1px solid var(--border);border-radius:10px;color:var(--text)"></div>
       <div style="padding:6px 26px 26px" id="setBody">
+        <div class="set-group" data-s="install app add to home screen pwa shortcut">
+          <h4>App on your phone</h4>
+          <div class="set-row" style="border:0"><div class="lbl"><div class="t">Install NANCYFLIX</div><div class="d" id="setInstallState">Checking this browser…</div></div><button class="btn sm" type="button" id="setInstall">Install</button></div>
+        </div>
         <div class="set-group" data-s="theme appearance color accent look"><h4>${svg(ICON.film,'icon sm')} ${t('grpAppearance')}</h4>
           <div class="theme-grid">${THEMES.map(th=>`<div class="theme-opt ${th[0]===s.theme?'active':''}" data-theme-opt="${th[0]}"><div class="sw"><div class="grad" style="background:${th[3]}"></div><div class="mini-ui" style="background:${th[2][1]}"><span style="width:70%;background:${th[2][2]}"></span><span style="width:45%;background:${th[2][2]};opacity:.5"></span></div><div class="chip">${th[2].map(c=>`<i style="background:${c}"></i>`).join('')}</div></div><div class="meta"><span class="nm">${th[1]}</span><span class="tick">✓</span></div></div>`).join('')}</div>
           <div class="set-row" style="border:0;padding-top:16px"><div class="lbl"><div class="t">${t('accentColor')}</div><div class="d">${t('accentDesc')}</div></div><div class="accent-row" id="accentRow"><button class="acc ${!s.accent?'active':''}" data-acc="" title="${t('themeDefault')}" style="background:linear-gradient(135deg,var(--accent),var(--accent-2))"></button>${['#e11d2e','#ff5d8f','#7c5cff','#17c3d6','#2fbf71','#ffcc66','#ff7849'].map(c=>`<button class="acc ${s.accent===c?'active':''}" data-acc="${c}" style="background:${c}" title="${c}"></button>`).join('')}</div></div></div>
@@ -3816,7 +3820,6 @@ document.getElementById('tabReg').onclick=()=>setTab('reg');
 function authMsg(text,type='err'){const m=document.getElementById('authMsg');if(!text){m.className='form-msg';m.textContent='';return;}m.className='form-msg show '+type;m.textContent=text;}
 document.getElementById('loginForm').addEventListener('submit',async e=>{e.preventDefault();authMsg('');try{await Auth.login({email:liEmail.value,password:liPass.value,remember:liRemember.checked});}catch(err){authMsg(err.message);}});
 document.getElementById('regForm').addEventListener('submit',async e=>{e.preventDefault();authMsg('');const name=rgName.value.trim(),email=rgEmail.value.trim(),pass=rgPass.value;if(!name){authMsg('Please enter your full name.');return;}if(!/^[^@\s]+@[^@\s]+\.[^@\s]+$/.test(email)){authMsg('Please enter a valid email.');return;}if(pass.length<8){authMsg('Password must be at least 8 characters.');return;}try{await Auth.register({name,email,password:pass,gender:rgGender.value,avatar:regAvatar});authMsg('Account created! Welcome to NANCYFLIX.','ok');}catch(err){authMsg(err.message);}});
-document.getElementById('guestBtn').onclick=()=>Auth.guest();
 document.getElementById('forgotBtn').onclick=()=>{if(HAS_BACKEND)Toast.show('Password reset','A reset link will be emailed via your auth provider.','info');else authMsg('Password recovery needs a configured backend. If you’re signed in, you can change your password from your Profile.','info');};
 
 /* =====================================================================
@@ -4385,7 +4388,7 @@ async function resumeSession(){
    v5 — soft light theme helpers · update centre · 3-tier Premium ·
         Live TV · Live Football · cross-device entitlement · test mode
    ===================================================================== */
-const APP_VERSION = '8.7.0';
+const APP_VERSION = '8.7.1';
 const WHATS_NEW = [
   'Detailed match posters with real crests and quick social sharing',
   'Google registration removed; admin tools restricted; guests stay on Free',
@@ -5824,7 +5827,7 @@ window.Live = Live;
     el.innerHTML = '<span class="tag">' + ic('signal') + 'Now</span><div class="vp"><div class="track" id="nfMarqueeTrack"></div></div>';
     main.parentNode.insertBefore(el, main);
     setMarquee([
-      'NANCYFLIX v8.7.0 is live',
+      'NANCYFLIX v8.7.1 is live',
       'Kenyan and East African channels inside Live TV',
       'Fixtures, results and tables open in the app',
       'Share any match with a private invite link',
@@ -7629,7 +7632,8 @@ if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',
     async sendCode(email){
       email = (email||'').toLowerCase().trim();
       if(!email) throw new Error('Enter your email first.');
-      await call('/auth/v1/otp',{method:'POST',token:'',body:{email:email,create_user:true}});
+      var back = location.origin + location.pathname;
+      await call('/auth/v1/otp?redirect_to=' + encodeURIComponent(back),{method:'POST',token:'',body:{email:email,create_user:true,email_redirect_to:back}});
       return true;
     },
     async verifyCode(email,code){
@@ -7655,6 +7659,23 @@ if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',
     async signOut(){
       try{ await call('/auth/v1/logout',{method:'POST'}); }catch(e){}
       LS.del(SKEY); State.accessToken='';
+    },
+    async adoptLink(){
+      var h = String(location.hash || '');
+      if (h.indexOf('access_token=') < 0) return false;
+      var p = new URLSearchParams(h.replace(/^#/, ''));
+      var access = p.get('access_token'), refresh = p.get('refresh_token');
+      if (!access) return false;
+      var ses = saveSession({ access_token: access, refresh_token: refresh, expires_in: +p.get('expires_in') || 3600 });
+      try { history.replaceState(null, '', location.pathname + location.search); } catch (e) {}
+      State.accessToken = ses.access_token;
+      var u = await call('/auth/v1/user', { token: ses.access_token });
+      var prof = await profileRow(u.id);
+      var user = displayUser(u, prof);
+      user.isAdmin = (CONFIG.ADMIN_EMAILS || []).indexOf((user.email || '').toLowerCase()) >= 0 || !!user.isAdmin;
+      if (!prof) { try { await upsertProfile(user); } catch (e) {} }
+      Auth._enter(user); Store.log('login', user.email);
+      return true;
     },
     async resume(){
       var ses = LS.get(SKEY,null);
@@ -7824,6 +7845,23 @@ if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',
 
 <script id="nf16-auth-gate">
 (function(){
+  /* ---------- an emailed sign-in link lands here with tokens in the hash ---------- */
+  (function adoptLink(){
+    try{
+      var h=String(location.hash||'');
+      if(h.indexOf('access_token=')<0) return;
+      if(!(window.SBX && SBX.adoptLink)){
+        if(SBX && SBX.resume){ setTimeout(function(){ SBX.resume().catch(function(){}); },400); }
+        return;
+      }
+      SBX.adoptLink().then(function(ok){
+        if(ok){
+          try{ Toast.show('Signed in','Welcome back to NANCYFLIX.','ok',4000); }catch(e){}
+        }
+      }).catch(function(){});
+    }catch(e){}
+  })();
+
   /* ---------- one-time code sign-in ---------- */
   var send=document.getElementById('otpSend'), ver=document.getElementById('otpVerify');
   var row=document.getElementById('otpRow'), code=document.getElementById('otpCode');
@@ -7832,10 +7870,11 @@ if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',
   if(send) send.onclick=function(){
     var e=(email.value||'').trim();
     if(!/^[^@\s]+@[^@\s]+\.[^@\s]+$/.test(e)){ authMsg('Enter a valid email to get a code.'); return; }
-    if(!(HAS_BACKEND && window.SBX && SBX.sendCode)){ authMsg('One-time codes need cloud sign-in switched on. Use “Continue on this device” instead.','info'); return; }
+    if(!(HAS_BACKEND && window.SBX && SBX.sendCode)){ authMsg('Email sign-in is not configured for this deployment yet.','warn'); return; }
     send.disabled=true; say('Sending your code…');
     SBX.sendCode(e).then(function(){
-      row.hidden=false; code.focus(); say('Code sent to '+e+'. It expires in about an hour.');
+      row.hidden=false; code.focus();
+      say('Email sent to '+e+'. If it shows a 6-digit code, type it below. If it shows a button, tap it and this page opens signed in. Check spam if nothing arrives in a minute.');
     }).catch(function(err){
       say('Could not send a code: '+String(err && err.message || err));
     }).then(function(){ send.disabled=false; });
@@ -7852,23 +7891,6 @@ if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',
     });
   };
   if(code) code.addEventListener('keydown',function(ev){ if(ev.key==='Enter'){ ev.preventDefault(); if(ver) ver.click(); } });
-
-  /* ---------- continue on this device (no password) ---------- */
-  var dev=document.getElementById('deviceBtn');
-  if(dev) dev.onclick=function(){
-    try{
-      var sid=Store.session();
-      var u=sid?Store.users().find(function(x){return x.id===sid;}):null;
-      if(!u) u=Store.users().find(function(x){return x.email==='device@nancyflix.local';});
-      if(!u){
-        u={id:(typeof uid==='function'?uid():'u'+Date.now()),name:'My device',email:'device@nancyflix.local',gender:'',avatar:null,
-           createdAt:Date.now(),lastLogin:Date.now(),pwHash:'',isAdmin:false,settings:Settings.defaults()};
-        var us=Store.users(); us.push(u); Store.saveUsers(us);
-      }
-      Auth._enter(u); Store.log('login','device');
-      Toast.show('You are in','This device keeps your watchlist and settings. Add an email later from Profile to sync.','ok',5200);
-    }catch(e){ authMsg('Could not open the app on this device: '+String(e && e.message || e)); }
-  };
 
   /* ---------- terms gate ---------- */
   var body=document.getElementById('lawGateBody'), agree=document.getElementById('rgAgree');
@@ -8348,6 +8370,95 @@ if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',
   }
   function start() { setTimeout(wrap, 500); setTimeout(wrap, 2000); }
   if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', start); else start();
+})();
+</script>
+<script id="nf-install">
+(function () {
+  var deferred = null;
+  var ua = navigator.userAgent || '';
+  var isIOS = /iPad|iPhone|iPod/.test(ua) || (navigator.platform === 'MacIntel' && navigator.maxTouchPoints > 1);
+  var isAndroid = /Android/.test(ua);
+  var inApp = /(WhatsApp|Instagram|FBAN|FBAV|Messenger|Line\/|Twitter)/i.test(ua);
+  function standaloneNow() {
+    try { if (matchMedia('(display-mode: standalone)').matches) return true; } catch (e) {}
+    return navigator.standalone === true;
+  }
+  function paint() {
+    var head = document.getElementById('installBtn');
+    var state = document.getElementById('setInstallState');
+    var go = document.getElementById('setInstall');
+    var on = standaloneNow();
+    if (head) head.style.display = (!on && deferred) ? '' : 'none';
+    if (go) { go.textContent = on ? 'Installed' : 'Install'; go.style.whiteSpace = 'nowrap'; }
+    if (state) {
+      state.textContent = on ? 'Running as an installed app. It opens without the browser bars.'
+        : inApp ? 'You opened this inside another app. Open it in Chrome or Safari, then install from there.'
+        : deferred ? 'Tap Install and confirm. It then appears in your apps list, not just as a link.'
+        : isIOS ? 'On iPhone use Safari: Share, then Add to Home Screen.'
+        : 'Open this site directly in Chrome, then use the browser menu and choose Install app.';
+    }
+  }
+  window.addEventListener('beforeinstallprompt', function (e) { e.preventDefault(); deferred = e; paint(); });
+  window.addEventListener('appinstalled', function () { deferred = null; paint(); try { Toast.show('NANCYFLIX installed', 'Open it from your apps list like any other app.', 'ok', 5000); } catch (e) {} });
+  document.addEventListener('click', function (e) {
+    var t = e.target.closest ? e.target.closest('#installBtn,#setInstall') : null;
+    if (!t) return;
+    e.preventDefault();
+    if (deferred) {
+      deferred.prompt();
+      deferred.userChoice.then(function () { deferred = null; paint(); }).catch(function () {});
+      return;
+    }
+    help();
+  });
+  function help() {
+    var old = document.getElementById('nfInstallHelp');
+    if (old) old.remove();
+    var ov = document.createElement('div');
+    ov.id = 'nfInstallHelp';
+    ov.className = 'overlay show';
+    ov.innerHTML = '<div class="modal sm" style="max-width:520px;padding:22px 22px 18px;position:relative">' +
+      '<button class="modal-close" data-nfih-close aria-label="Close">\u2715</button>' +
+      '<h3 style="margin:0 28px 6px 0;font-size:18px">Put NANCYFLIX in your apps list</h3>' +
+      '<p style="color:var(--muted);font-size:12.5px;line-height:1.55;margin:0 0 14px">A home-screen link and a real installed app look similar but behave differently. These steps give you the installed app.</p>' +
+      '<div style="display:grid;gap:10px;font-size:12.5px;line-height:1.55">' +
+      '<div><b>Android (Chrome)</b><br>Open this address directly in Chrome, tap the three-dot menu, then <b>Install app</b> or <b>Add to Home screen</b>. If the menu says \u201cInstall app\u201d, Chrome will build a real app that appears in your app drawer.</div>' +
+      '<div><b>iPhone or iPad (Safari)</b><br>Open the site in Safari, tap Share, then <b>Add to Home Screen</b>. Apple always lists web apps on the home screen; iOS has no separate app drawer.</div>' +
+      '<div><b>If you only see \u201cAdd to Home screen\u201d and it makes a shortcut</b><br>That happens when the page is opened inside WhatsApp or Instagram, or from a link preview. Copy the address, paste it into Chrome or Safari, and install from there.</div>' +
+      '</div>' +
+      '<button class="btn primary block" style="margin-top:16px" data-nfih-close>Got it</button></div>';
+    document.body.appendChild(ov);
+    ov.addEventListener('click', function (e) { if (e.target === ov || e.target.closest('[data-nfih-close]')) ov.remove(); });
+  }
+  document.addEventListener('visibilitychange', paint);
+  try {
+    var sm = document.getElementById('settingsModal');
+    if (sm && window.MutationObserver) new MutationObserver(function () { paint(); }).observe(sm, { childList: true });
+  } catch (e) {}
+  try {
+    if (window.Settings && typeof Settings.openModal === 'function') {
+      var baseOpen = Settings.openModal.bind(Settings);
+      Settings.openModal = function () { baseOpen.apply(null, arguments); paint(); setTimeout(paint, 60); };
+    }
+  } catch (e) {}
+  document.addEventListener('click', function (e) {
+    if (e.target.closest && e.target.closest('#settingsBtn,[onclick*="Settings.openModal"]')) setTimeout(paint, 80);
+  }, true);
+  paint();
+  setTimeout(paint, 1500);
+
+  /* shortcuts in the installed app: ?to=live|kids|tv */
+  try {
+    var to = new URLSearchParams(location.search).get('to');
+    if (to) setTimeout(function () {
+      if (to === 'kids' && window.NFKids) { window.NFKids.open(); return; }
+      if (to === 'live' || to === 'tv') {
+        if (window.Live) window.Live.tab = to === 'tv' ? 'tv' : 'footy';
+        if (typeof switchView === 'function') switchView('live');
+        if (to === 'tv' && window.Live) window.Live.render();
+      }
+    }, 1200);
+  } catch (e) {}
 })();
 </script>
 </body>

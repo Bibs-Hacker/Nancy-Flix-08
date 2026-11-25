@@ -39,12 +39,19 @@
       "sizes": "180x180",
       "type": "image/png",
       "purpose": "any"
+    },
+    {
+      "src": "icons/maskable-512.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "maskable"
     }
   ],
   "shortcuts": [
     {
-      "name": "Discover",
-      "url": "./#discover",
+      "name": "Live football",
+      "short_name": "Football",
+      "url": "./?source=shortcut&to=live",
       "icons": [
         {
           "src": "icons/icon-192.png",
@@ -53,8 +60,20 @@
       ]
     },
     {
-      "name": "Premium",
-      "url": "./#premium",
+      "name": "Kids corner",
+      "short_name": "Kids",
+      "url": "./?source=shortcut&to=kids",
+      "icons": [
+        {
+          "src": "icons/icon-192.png",
+          "sizes": "192x192"
+        }
+      ]
+    },
+    {
+      "name": "TV channels",
+      "short_name": "TV",
+      "url": "./?source=shortcut&to=tv",
       "icons": [
         {
           "src": "icons/icon-192.png",
@@ -62,5 +81,9 @@
         }
       ]
     }
-  ]
+  ],
+  "prefer_related_applications": false,
+  "launch_handler": {
+    "client_mode": "navigate-existing"
+  }
 }

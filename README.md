@@ -1,10 +1,18 @@
-# NANCYFLIX v8.7.0
+# NANCYFLIX v8.7.1
 
 Dev Brian + Dev Nancy · Contact: devbriannova@gmail.com
 
-Current version is written in three places and all three say 8.7.0: the splash screen, the footer/settings line (APP_VERSION) and `version.json`. If your live site still shows 8.6.1, the old file set is still deployed — see "The site still shows the old build" below.
+Current version is written in three places and all three say 8.7.1: the splash screen, the footer/settings line (APP_VERSION) and `version.json`. If your live site still shows 8.6.1, the old file set is still deployed — see "The site still shows the old build" below.
 
-## What is new in v8.7.0
+## What is new in v8.7.1
+
+- **The free-plan deployment limit is fixed.** The build had 13 serverless functions and Vercel's free plan allows 12, so the deploy was rejected at "Deploying outputs…" and the old 8.6.1 site stayed live. Helper modules moved to `lib/` and the poster endpoint merged into `api/share.js`, leaving 10 functions. Delete `api/share-image.js`, `api/share-card.js` and `api/lib/security.js` when you upload.
+- **Sign-in emails return to your site.** The code request now carries the site address, so Supabase no longer falls back to a localhost redirect. If the email contains a link, opening it signs you in; if it contains a 6-digit code, type it in the box.
+- **The "continue on this device" and "browse as guest" buttons are gone.** Signing in is the only way in, as requested.
+- **Install is a real app path, not guesswork.** Install button in the header when the browser offers it, a Settings row with the right steps, maskable icon, app shortcuts, and a clear explanation when a phone can only make a shortcut.
+- Kids entry in the menu and header, from 8.7.0.
+
+## What was new in v8.7.0
 
 - **Kids corner is easy to find.** It has its own entry in the menu and a yellow Kids button in the header (desktop), and it stays as a third tab inside Live (football / TV channels / kids). The page has live children's channels plus a free cartoon, story-time and learning library from the Internet Archive.
 - **Share links carry the match poster.** Sharing a fixture now gives a link to a small poster page (`/s/...`). WhatsApp, Telegram, X and Facebook read that page and show the match title plus a 1080 x 1080 poster, with no manual image attach. If the poster upload is unavailable the link still resolves to the same page with a default NANCYFLIX card, so a picture always appears.
@@ -34,8 +42,8 @@ Current version is written in three places and all three say 8.7.0: the splash s
 
 A clean build log with no error only means the files you uploaded compiled. Check these in order:
 
-1. Open `https://your-domain/version.json` in a browser. It must say `8.7.0`. If it says 8.6.x, the new `version.json` was never uploaded, so the rest of the old files are live too.
-2. The splash screen prints the version it is running. v8.7 prints `V8.7.0`; 8.6.1 printed `V8.6.1`.
+1. Open `https://your-domain/version.json` in a browser. It must say `8.7.1`. If it says 8.6.x, the new `version.json` was never uploaded, so the rest of the old files are live too.
+2. The splash screen prints the version it is running. v8.7.1 prints `V8.7.1`.
 3. `vercel.json` must sit at the repository root next to `index.html`, and the `api` folder must be at the root too (not inside `public` or `dist`). In the Vercel project, the Functions tab should list `api/share`, `api/share-image`, `api/kids` and the other routes after a successful deploy.
 4. If the files are correct but the browser still shows the old page, hard refresh once (Ctrl+Shift+R, or close the tab on a phone). The service worker keeps the last working copy by design; it swaps after one reload.
 
@@ -48,3 +56,10 @@ Everything here runs on free tiers: Vercel for the site and `api/` routes, Supab
 ## Verification and limits
 
 See `docs/TESTING_REPORT.md`. Browser tests used mocked feeds, auth and sharing on a local copy; there was no real deployment, phone share, payment, live-stream or Supabase SQL run. Screenshots used test fixtures, not real results. The cartoon library plays in the archive's own player and shows whatever that collection offers — it is not a licensed streaming catalogue.
+
+## Two dashboard settings this build needs
+
+`docs/AUTH-AND-INSTALL.md` explains both with exact click paths:
+
+1. Supabase → Authentication → URL Configuration: set the Site URL to your domain and allow it in Redirect URLs. Without this, emailed links open localhost.
+2. Supabase → Authentication → Email Templates → Magic Link: add `{{ .Token }}` so the email contains a code as well as a link.

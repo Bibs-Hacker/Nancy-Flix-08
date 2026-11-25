@@ -1,13 +1,12 @@
 {
-  "version": "8.7.0",
+  "version": "8.7.1",
   "build": "2026-11-25",
   "notes": [
-    "Match links now carry the match poster as a link preview",
-    "Upcoming fixtures work on the free score plan",
-    "Free schedule fallback when score quota or plan limits hit",
-    "New Kids tab with free cartoons, stories and live children's channels",
-    "28 additional free channels across news, movies, music and documentaries",
-    "Fifteen separate focus and sleep recordings instead of one reused sound",
-    "Mobile card layout tightened for small phones"
+    "Sign-in emails now return to this site instead of a localhost address",
+    "The one-time code box sends the code request to the right domain",
+    "Removed the continue-on-this-device and guest buttons",
+    "Install button and honest install help, so the app lands in the apps list",
+    "Fewer serverless functions so the free Vercel plan accepts the deployment",
+    "Kids entry in the menu and header"
   ]
 }

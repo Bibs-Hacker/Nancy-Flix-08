@@ -3,7 +3,7 @@
  * Telegram, X and Facebook can render the match title and poster image,
  * then sends real visitors into the app.
  */
-const store = require('./share-card.js');
+const store = require('../lib/share-card.js');
 
 const MONTHS = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
 const DAYS = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'];
@@ -31,6 +31,55 @@ function baseUrl(req) {
   return host ? proto + '://' + host : '';
 }
 
+/* Poster bytes for a stored card, or a redirect to the bundled default card.
+   Kept inside this file so the deployment stays within the free function limit. */
+async function sendImage(req, res, rawId) {
+  const id = /^[A-Za-z0-9_-]{6,32}$/.test(String(rawId || '')) ? String(rawId) : '';
+  const fallback = () => {
+    res.statusCode = 302;
+    res.setHeader('Location', '/og-share.jpg');
+    res.setHeader('Cache-Control', 'public, max-age=300');
+    res.end();
+  };
+  if (!id) return fallback();
+
+  const hit = store._cards.get(id);
+  if (hit && Date.now() - hit.at < 7 * 24 * 3600e3) {
+    res.statusCode = 200;
+    res.setHeader('Content-Type', hit.type);
+    res.setHeader('Content-Length', hit.buf.length);
+    res.setHeader('Cache-Control', 'public, max-age=31536000, immutable');
+    res.setHeader('X-Robots-Tag', 'noindex');
+    if (req.method === 'HEAD') return res.end();
+    return res.end(hit.buf);
+  }
+
+  const url = String(process.env.SUPABASE_URL || '').replace(/\/+$/, '');
+  const key = process.env.SUPABASE_SERVICE_KEY || process.env.SUPABASE_SERVICE_ROLE_KEY || '';
+  if (url && key) {
+    for (const ext of ['jpg', 'png']) {
+      try {
+        const r = await fetch(url + '/storage/v1/object/share-cards/' + id + '.' + ext, {
+          headers: { Authorization: 'Bearer ' + key, apikey: key }
+        });
+        if (r.ok) {
+          const buf = Buffer.from(await r.arrayBuffer());
+          if (buf.length > 2000) {
+            res.statusCode = 200;
+            res.setHeader('Content-Type', ext === 'png' ? 'image/png' : 'image/jpeg');
+            res.setHeader('Content-Length', buf.length);
+            res.setHeader('Cache-Control', 'public, max-age=31536000, immutable');
+            res.setHeader('X-Robots-Tag', 'noindex');
+            if (req.method === 'HEAD') return res.end();
+            return res.end(buf);
+          }
+        }
+      } catch (e) { /* try the next extension */ }
+    }
+  }
+  return fallback();
+}
+
 module.exports = async function handler(req, res) {
   res.setHeader('X-Content-Type-Options', 'nosniff');
   if (req.method !== 'GET' && req.method !== 'HEAD') {
@@ -41,6 +90,7 @@ module.exports = async function handler(req, res) {
 
   let q;
   try { q = new URL(req.url, 'https://nancyflix.invalid').searchParams; } catch (e) { q = new URLSearchParams(); }
+  if (q.get('img') === '1') return sendImage(req, res, q.get('id'));
   const id = /^[A-Za-z0-9_-]{6,32}$/.test(q.get('id') || '') ? q.get('id') : '';
   const home = clean(q.get('h'), 60) || 'Football match';
   const away = clean(q.get('a'), 60) || '';
@@ -52,7 +102,7 @@ module.exports = async function handler(req, res) {
   const description = bits.join(' \u00b7 ');
   const base = baseUrl(req);
   const card = id && store._cards.get(id) ? store._cards.get(id) : null;
-  const image = card ? base + '/api/share-image?id=' + encodeURIComponent(id) + '&v=1' : base + '/og-share.jpg';
+  const image = card ? base + '/api/share?img=1&id=' + encodeURIComponent(id) + '&v=1' : base + '/og-share.jpg';
   const pageUrl = base + (id ? '/s/' + id : '/s') + (req.url.includes('?') && !id ? '?' + String(req.url).split('?')[1] : '');
 
   const target = new URLSearchParams();

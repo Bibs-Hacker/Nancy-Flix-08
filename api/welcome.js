@@ -1,4 +1,4 @@
-const {authenticate,isAdmin}=require('./lib/security');
+const {authenticate,isAdmin}=require('../lib/security');
 /**
  * NANCYFLIX — welcome email endpoint (Vercel / Netlify function).
  * POST { email, name } -> { sent: true } or { sent: false, error }

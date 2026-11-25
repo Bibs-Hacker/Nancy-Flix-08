@@ -1,4 +1,4 @@
-const {authenticate}=require('./lib/security');
+const {authenticate}=require('../lib/security');
 /**
  * NANCYFLIX — Stripe Checkout verification endpoint (Vercel / Netlify function).
  *
