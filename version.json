@@ -1,11 +1,13 @@
 {
-  "version": "8.6.1",
-  "build": "2026-11-24",
+  "version": "8.7.0",
+  "build": "2026-11-25",
   "notes": [
-    "Inset notification countdown with synchronized pause/resume",
-    "Rounded transparent PNG poster corners and no empty goal labels",
-    "Compact contained football indicator",
-    "Server-only alternative schedule with stream switching",
-    "Quota-aware score cooldown and reduced background requests"
+    "Match links now carry the match poster as a link preview",
+    "Upcoming fixtures work on the free score plan",
+    "Free schedule fallback when score quota or plan limits hit",
+    "New Kids tab with free cartoons, stories and live children's channels",
+    "28 additional free channels across news, movies, music and documentaries",
+    "Fifteen separate focus and sleep recordings instead of one reused sound",
+    "Mobile card layout tightened for small phones"
   ]
 }

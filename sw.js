@@ -1,9 +1,9 @@
 /* NANCYFLIX service worker — app shell + offline + poster cache */
-const VERSION = 'nancyflix-v8.6.1';
+const VERSION = 'nancyflix-v8.7.0';
 const CORE = [
   './', './index.html', './manifest.webmanifest',
   './icons/icon-192.png', './icons/icon-512.png',
-  './icons/maskable-512.png', './icons/apple-touch-icon.png', './audio/splash.mp3'
+  './icons/maskable-512.png', './icons/apple-touch-icon.png', './og-share.jpg', './audio/splash.mp3'
 ];
 
 self.addEventListener('install', e => {
@@ -31,7 +31,7 @@ self.addEventListener('fetch', e => {
   if (url.protocol !== 'http:' && url.protocol !== 'https:') return;
 
   // Live data must never be served from the shell cache.
-  if (url.pathname.indexOf('/api/') >= 0 || url.pathname.endsWith('/version.json')) return;
+  if (url.pathname.indexOf('/api/') >= 0 || url.pathname.indexOf('/s/') === 0 || url.pathname === '/s' || url.pathname.endsWith('/version.json')) return;
 
   // App navigation: network first, fall back to cached shell so the app opens offline.
   if (req.mode === 'navigate') {

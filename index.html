@@ -4,6 +4,17 @@
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover, maximum-scale=5" />
 <meta name="description" content="NANCYFLIX by Dev Brian + Dev Nancy — Every story deserves a screen. Premium movie discovery." />
+<meta property="og:site_name" content="NANCYFLIX" />
+<meta property="og:type" content="website" />
+<meta property="og:title" content="NANCYFLIX — live football, free TV and a kids corner" />
+<meta property="og:description" content="Scores, fixtures, stream options, free-to-air TV and free cartoons for children. Every story deserves a screen." />
+<meta property="og:image" content="og-share.jpg" />
+<meta property="og:image:width" content="1200" />
+<meta property="og:image:height" content="630" />
+<meta name="twitter:card" content="summary_large_image" />
+<meta name="twitter:title" content="NANCYFLIX — live football, free TV and a kids corner" />
+<meta name="twitter:description" content="Scores, fixtures, stream options, free-to-air TV and free cartoons for children." />
+<meta name="twitter:image" content="og-share.jpg" />
 <title>NANCYFLIX — Every Story Deserves A Screen</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -4611,16 +4622,20 @@ const Live = {
   async render() {
     const host = document.getElementById('view-live');
     if (!host) return;
-    var footy = this.tab === 'footy';
+    var tabs = [['footy', 'Football'], ['tv', 'TV channels'], ['kids', 'Kids']];
+    if (!tabs.some(function (t) { return t[0] === this.tab; }, this)) this.tab = 'footy';
+    var head = this.tab === 'footy' ? ['Live football', 'Scores, fixtures and where to watch']
+      : this.tab === 'kids' ? ['Kids corner', 'Free cartoons, stories and learning']
+      : ['Live TV', 'Free-to-air channels'];
     host.innerHTML =
-      '<div class="live-head"><span class="live-dot"></span><h1>' + (footy ? 'Live football' : 'Live TV') + '</h1><span class="live-sub">' + (footy ? 'Scores, fixtures and where to watch' : 'Free-to-air channels') + '</span></div>' +
-      '<div class="live-tabs"><button data-ltab="footy" class="' + (footy ? 'on' : '') + '">Football</button><button data-ltab="tv" class="' + (footy ? '' : 'on') + '">TV channels</button></div>' +
-      (footy ? '<div class="nf-livebanner sm"><span class="lb-pulse"></span><div class="lb-txt"><b>Live football</b><span>Scores &amp; stream options</span></div><button class="lb-go" data-lbgo>Find streams</button></div>' : '') +
+      '<div class="live-head"><span class="live-dot"></span><h1>' + head[0] + '</h1><span class="live-sub">' + head[1] + '</span></div>' +
+      '<div class="live-tabs">' + tabs.map(function (t) { return '<button data-ltab="' + t[0] + '" class="' + (this.tab === t[0] ? 'on' : '') + '">' + t[1] + '</button>'; }, this).join('') + '</div>' +
+      (this.tab === 'footy' ? '<div class="nf-livebanner sm"><span class="lb-pulse"></span><div class="lb-txt"><b>Live football</b><span>Scores &amp; stream options</span></div><button class="lb-go" data-lbgo>Find streams</button></div>' : '') +
       '<div id="liveBody" class="live-body"></div>';
-    host.querySelectorAll('[data-ltab]').forEach(b => { b.onclick = () => { this.tab = b.dataset.ltab; this.render(); }; });
+    host.querySelectorAll('[data-ltab]').forEach(function (b) { b.onclick = function () { this.tab = b.dataset.ltab; this.render(); }.bind(this); }, this);
     var lbg = host.querySelector('[data-lbgo]');
-    if(lbg)lbg.onclick=()=>{const alt=document.getElementById('nfAltFootball');if(alt){alt.scrollIntoView({behavior:'smooth',block:'start'});const search=alt.querySelector('input');if(search)search.focus({preventScroll:true});}};
-    if (this.tab === 'tv') this.renderTV(); else this.renderFooty();
+    if(lbg)lbg.onclick=function(){var alt=document.getElementById('nfAltFootball');if(alt){alt.scrollIntoView({behavior:'smooth',block:'start'});var search=alt.querySelector('input');if(search)search.focus({preventScroll:true});}};
+    if (this.tab === 'tv') this.renderTV(); else if (this.tab === 'kids' && this.renderKids) this.renderKids(); else this.renderFooty();
   },
   renderTV() {
     const body = document.getElementById('liveBody');
@@ -5273,7 +5288,15 @@ window.Live = Live;
   if (!CHANNELS.length) { Array.prototype.push.apply(CHANNELS, CH); }
   NF6.channels = CH;
 
-  var CATS = ['All', 'News', 'Soaps', 'Entertainment', 'Regional', 'International'];
+  var CATS = (function () {
+    var seen = { 'All': 1 }, out = ['All'];
+    ['News', 'Entertainment', 'Movies', 'Documentary', 'Music', 'Relax', 'Regional', 'International', 'Soaps'].forEach(function (c) {
+      var has = CH7.some(function (x) { return x.groups.indexOf(c) >= 0; });
+      if (has && !seen[c]) { seen[c] = 1; out.push(c); }
+    });
+    CH7.forEach(function (x) { x.groups.forEach(function (g) { if (!seen[g]) { seen[g] = 1; out.push(g); } }); });
+    return out;
+  })();
   Live.cat6 = 'All';
   Live.fx6 = {};
 
@@ -5909,7 +5932,25 @@ window.Live = Live;
     { name: 'TBC 2', cc: 'TZ', groups: ['Entertainment'], note: 'Tanzania · entertainment', tier: 'plus', feeds: [{ label: 'Official stream', type: 'hls', url: 'https://stream-134630.castr.net/5fe35eae8c53540cab83659a/live_44ed95e05b6d11f18d5d85805abbdd6f/index.m3u8' }] },
     { name: 'France 24 English', cc: 'FR', groups: ['International', 'News'], note: 'World news', tier: 'free', feeds: [{ label: 'Official stream', type: 'hls', url: 'https://static.france24.com/live/F24_EN_LO_HLS/live_web.m3u8' }] },
     { name: 'DW English', cc: 'DE', groups: ['International', 'News'], note: 'World news', tier: 'plus', feeds: [{ label: 'Official stream', type: 'hls', url: 'https://dwamdstream102.akamaized.net/hls/live/2015525/dwstream102/index.m3u8' }] },
-    { name: 'Al Jazeera English', cc: 'QA', groups: ['International', 'News'], note: 'World news', tier: 'plus', feeds: [{ label: 'Official stream', type: 'hls', url: 'https://live-hls-apps-aje-fa.getaj.net/AJE/index.m3u8' }] }
+    { name: 'Al Jazeera English', cc: 'QA', groups: ['International', 'News'], note: 'World news', tier: 'plus', feeds: [{ label: 'Official stream', type: 'hls', url: 'https://live-hls-apps-aje-fa.getaj.net/AJE/index.m3u8' }] },
+    /* v8.7: official free ad-supported channels. Availability can vary by country. */
+    { name: 'ABC News Live', cc: 'US', groups: ['International', 'News'], note: 'US · rolling news', tier: 'free', feeds: [{ label: 'Official stream', type: 'hls', url: 'https://abcnews-streams.akamaized.net/hls/live/2023560/abcnewshudson1/master.m3u8' }] },
+    { name: 'TRT World', cc: 'TR', groups: ['International', 'News'], note: 'Türkiye · world news', tier: 'free', feeds: [{ label: 'Official stream', type: 'hls', url: 'https://tv-trtworld.medya.trt.com.tr/master.m3u8' }] },
+    { name: 'Arirang TV', cc: 'KR', groups: ['International', 'News'], note: 'Korea · culture and news', tier: 'free', feeds: [{ label: 'Official stream', type: 'hls', url: 'https://amdlive-ch01-ctnd-com.akamaized.net/arirang_1ch/smil:arirang_1ch.smil/playlist.m3u8' }] },
+    { name: 'Sky News Arabia', cc: 'AE', groups: ['International', 'News'], note: 'Arabic · rolling news', tier: 'free', feeds: [{ label: 'Official stream', type: 'hls', url: 'https://live-stream.skynewsarabia.com/c-horizontal-channel/horizontal-stream/index.m3u8' }] },
+    { name: 'Euronews English', cc: 'EU', groups: ['International', 'News'], note: 'Europe · world news', tier: 'free', feeds: [{ label: 'Official stream', type: 'hls', url: 'https://jmp2.uk/plu-61de96114757070008d33cae.m3u8' }] },
+    { name: 'DUST', cc: 'US', groups: ['Movies'], note: 'Science-fiction shorts and films', tier: 'free', feeds: [{ label: 'Official stream', type: 'hls', url: 'https://dqi7ayt2o24fn.cloudfront.net/playlist.m3u8' }] },
+    { name: 'Nosey', cc: 'US', groups: ['Entertainment'], note: 'Daytime talk and court shows', tier: 'free', feeds: [{ label: 'Official stream', type: 'hls', url: 'https://nosey-intl-1-samsungau.amagi.tv/playlist.m3u8' }] },
+    { name: 'BBC Drama', cc: 'GB', groups: ['Movies', 'Entertainment'], note: 'British drama channel', tier: 'free', feeds: [{ label: 'Official stream', type: 'hls', url: 'https://linear-938.frequency.stream/mt/vizio/938/hls/master/playlist.m3u8' }] },
+    { name: 'Tastemade', cc: 'US', groups: ['Documentary'], note: 'Food and travel films', tier: 'free', feeds: [{ label: 'Official stream', type: 'hls', url: 'https://tastemade-tdint-rakuten.amagi.tv/playlist.m3u8' }] },
+    { name: 'BBC Food', cc: 'GB', groups: ['Documentary'], note: 'Cooking and recipes', tier: 'free', feeds: [{ label: 'Official stream', type: 'hls', url: 'https://d1e9r0b71zfwk7.cloudfront.net/playlist.m3u8' }] },
+    { name: 'PBS Nature', cc: 'US', groups: ['Documentary'], note: 'Wildlife documentaries', tier: 'free', feeds: [{ label: 'Official stream', type: 'hls', url: 'https://d3mr43kyql7wgk.cloudfront.net/PBS_Nature.m3u8' }] },
+    { name: 'CGTN Documentary', cc: 'CN', groups: ['Documentary'], note: 'Documentary channel', tier: 'free', feeds: [{ label: 'Official stream', type: 'hls', url: 'https://amg00405-rakutentv-cgtndocumentary-rakuten-0ql8j.amagi.tv/master.m3u8' }] },
+    { name: 'Vevo Hip Hop', cc: 'US', groups: ['Music'], note: 'Music videos', tier: 'free', feeds: [{ label: 'Official stream', type: 'hls', url: 'https://d3vgs3ro3x6v8a.cloudfront.net/Vevo_Hip_Hop.m3u8' }] },
+    { name: 'Stingray Karaoke', cc: 'CA', groups: ['Music'], note: 'Sing-along karaoke', tier: 'free', feeds: [{ label: 'Official stream', type: 'hls', url: 'https://lotus.stingray.com/manifest/karaoke-kar000-montreal/samsungtvplus/master.m3u8' }] },
+    { name: 'Stingray Smooth Jazz', cc: 'CA', groups: ['Music'], note: 'Smooth jazz radio', tier: 'free', feeds: [{ label: 'Official stream', type: 'hls', url: 'https://lotus.stingray.com/manifest/ose-140ads-montreal/samsungtvplus/master.m3u8' }] },
+    { name: 'Qello Concerts', cc: 'CA', groups: ['Music'], note: 'Full-length concerts', tier: 'free', feeds: [{ label: 'Official stream', type: 'hls', url: 'https://lotus.stingray.com/manifest/qello-qello001-montreal/samsungtvplus/master.m3u8' }] },
+    { name: 'Stingray Naturescape', cc: 'CA', groups: ['Relax'], note: 'Quiet scenery loops', tier: 'free', feeds: [{ label: 'Official stream', type: 'hls', url: 'https://lotus.stingray.com/manifest/naturescape-a003-montreal/samsungtvplus/master.m3u8' }] }
   ];
 
   var RANK = { free: 0, plus: 1, premium: 2, super: 3 };
@@ -6493,9 +6534,29 @@ const NF8={
   },
 
   /* ---------- 2. focus / sleep timer ---------- */
-  focus:{theme:'midnight',min:25,left:0,timer:null,running:false,paused:false,vol:0.45,master:null,ctx:null,channels:{},wake:null,
-    NAMES:[['rain','Rain','soft rainfall'],['ocean','Ocean','slow waves'],['forest','Forest','wind & birds'],['fire','Fireplace','warm crackle'],['night','Night','crickets & hum'],['brown','Brown noise','deep masking'],
-      ['river','Flowing river','water over stones'],['birds','Morning birdsong','dawn chorus'],['piano','Soft piano','gentle keys'],['space','Deep space','low cosmic drone'],['city','Rainy city','streets & tyres'],['bells','Meditation bells','singing bowls'],['wolves','Distant wolves','far-off howls'],['lake','Lake waves','lapping shore'],['thunder','Distant thunder','rolling rumbles']],
+  focus:{theme:'midnight',min:25,left:0,timer:null,running:false,paused:false,vol:0.45,master:null,ctx:null,layers:{},buf:{},els:{},wake:null,set:'focus',
+    SETS:{
+      focus:{label:'Focus',hint:'Steady, brighter textures that mask distractions.',items:[
+        ['brown','Brown noise','deep masking','Brown noise rolls off the high frequencies, so it hides background talk without sounding sharp.'],
+        ['rain','Rain','soft rainfall','Steady rain with individual drops on glass and a low, even body underneath.'],
+        ['piano','Soft piano','gentle keys','A slow arpeggio of felted piano notes with a long room reverb.'],
+        ['space','Deep space','low cosmic drone','Detuned low drones with a faint high shimmer. No melody, just a wide bed.'],
+        ['river','Flowing river','water over stones','Running water with bubbling eddies and small stones turning.'],
+        ['birds','Morning birds','dawn chorus','Layered warbles and answering calls over a quiet outdoor room tone.'],
+        ['forest','Forest','wind and leaves','Wind moving through branches with leaves rustling and the odd distant bird.'],
+        ['city','Rainy city','streets and tyres','Rain on the street with tyres passing and a distant crossing signal.']
+      ]},
+      sleep:{label:'Sleep',hint:'Warmer, slower beds that fade into the background.',items:[
+        ['ocean','Ocean','slow waves','Long swells breaking into foam, roughly every nine seconds.'],
+        ['lake','Lake waves','lapping shore','Small laps against a shoreline with a soft low body of water.'],
+        ['fire','Fireplace','warm crackle','A low fire bed with pops and crackles of splitting wood.'],
+        ['night','Night','crickets and hum','Crickets in short bursts over a very low night hum.'],
+        ['thunder','Distant thunder','rolling rumbles','Far-off rolling thunder with a quiet rain bed.'],
+        ['wolves','Distant wolves','far-off howls','Two distant howls with a natural rise and fall, well back in the mix.'],
+        ['bells','Meditation bells','singing bowls','Struck bowls with inharmonic partials and a long decay.']
+      ]}
+    },
+    items(){return this.SETS[this.set].items;},
     open(){
       let ov=document.getElementById('nf8Focus');
       if(!ov){ov=document.createElement('div');ov.id='nf8Focus';document.body.appendChild(ov);}
@@ -6505,205 +6566,120 @@ const NF8={
     },
     close(){const ov=document.getElementById('nf8Focus');if(ov)ov.classList.remove('show');if(!document.querySelector('.overlay.show'))document.body.classList.remove('noscroll');},
     paint(ov){
-      ov.innerHTML='<div class="nf8-focus-card"><div class="nf8-focus-top"><span class="ic">'+IC('clock')+'</span><div><h3>Focus &amp; sleep timer</h3><p>Pick a length, then layer the ambient channels you want. Every channel can be stopped on its own, and the whole mix fades out at the end.</p></div><button class="nf8-focus-x" data-fx="close" aria-label="Close">'+IC('x')+'</button></div>'+
+      const self=this;
+      ov.innerHTML='<div class="nf8-focus-card"><div class="nf8-focus-top"><span class="ic">'+IC('clock')+'</span><div><h3>Focus &amp; sleep timer</h3><p>Choose focus or sleep, then layer the channels you want. Every channel is a separate recording and can be stopped on its own. The whole mix fades out when the timer ends.</p></div><button class="nf8-focus-x" data-fx="close" aria-label="Close">'+IC('x')+'</button></div>'+
         '<div class="nf8-focus-clock"><b id="nf8Clock">25:00</b><span>remaining</span></div><div class="nf8-focus-state" id="nf8State">Ready when you are</div>'+
         '<div class="nf8-chips">'+[5,15,25,45,60,90].map(n=>'<button class="nf8-chip'+(n===this.min?' on':'')+'" data-min="'+n+'">'+n+' min</button>').join('')+'</div>'+
         '<div class="nf8-themes">'+[['midnight','#e11d2e','Midnight'],['ember','#ff7a18','Ember'],['forest','#1faa6b','Forest'],['aurora','#7c5cff','Aurora'],['mono','#8c8c9c','Mono']].map(t=>'<button class="nf8-theme'+(this.theme===t[0]?' on':'')+'" data-fx-theme="'+t[0]+'" style="background:'+t[1]+'" aria-label="'+t[2]+' theme" title="'+t[2]+'"></button>').join('')+'</div>'+
-        '<p class="nf8-focus-label">Ambient channels</p><div class="nf8-sounds">'+this.NAMES.map(s=>'<button class="nf8-snd" data-ch="'+s[0]+'"><span class="dot">'+IC('signal')+'</span><span class="nm">'+s[1]+'<small>'+s[2]+'</small></span><span class="bars"><i></i><i></i><i></i></span></button>').join('')+'</div>'+
+        '<div class="nf8-focus-sets" role="tablist">'+Object.keys(this.SETS).map(k=>'<button role="tab" aria-selected="'+(this.set===k)+'" data-fxset="'+k+'" class="'+(this.set===k?'on':'')+'">'+this.SETS[k].label+'</button>').join('')+'</div>'+
+        '<p class="nf8-focus-label">'+this.SETS[this.set].label+' sounds <span style="text-transform:none;letter-spacing:0;color:#6d6d82">\u2014 '+this.SETS[this.set].hint+'</span></p>'+
+        '<div class="nf8-sounds">'+this.items().map(s=>'<button class="nf8-snd'+(this.layers[s[0]]?' on':'')+'" data-ch="'+s[0]+'" title="'+String(s[3]).replace(/"/g,'&quot;')+'"><span class="dot">'+IC('signal')+'</span><span class="nm">'+s[1]+'<small>'+s[2]+'</small></span><span class="bars"><i></i><i></i><i></i></span></button>').join('')+'</div>'+
         '<div class="nf8-focus-actions"><button class="btn" data-fx="start" id="nf8Start">Start</button><button class="btn ghost" data-fx="pause">Pause</button><button class="btn ghost" data-fx="stop">Stop all</button><span class="nf8-vol">'+IC('signal')+'<input type="range" min="0" max="100" value="'+Math.round(this.vol*100)+'" id="nf8Vol" aria-label="Master volume"></span></div>'+
-        '<p class="nf8-focus-note">Sounds are generated in your browser with the Web Audio API, so nothing is downloaded and no audio files are hosted. Screen wake-lock is requested while the timer runs; the timer keeps counting even if you switch tabs.</p></div>';
-      const self=this;
+        '<p class="nf8-focus-note">Each channel is a bundled recording, so the mix stays the same offline after the first load. Tap a channel to preview it before you start. Screen wake-lock is requested while the timer runs; the timer keeps counting if you switch tabs.</p></div>';
       ov.querySelector('[data-fx="close"]').onclick=()=>self.close();
       ov.querySelectorAll('[data-fx-theme]').forEach(b=>b.onclick=()=>{self.theme=b.dataset.fxTheme;ov.dataset.fx=self.theme;LS.set('nf8fx',self.theme);ov.querySelectorAll('[data-fx-theme]').forEach(x=>x.classList.toggle('on',x===b));});
+      ov.querySelectorAll('[data-fxset]').forEach(b=>b.onclick=()=>{
+        if(self.set===b.dataset.fxset)return;
+        self.stopAll(true);self.set=b.dataset.fxset;LS.set('nf8fxset',self.set);self.paint(ov);
+      });
       ov.querySelectorAll('[data-min]').forEach(b=>b.onclick=()=>{self.min=+b.dataset.min;if(!self.running){self.left=self.min*60;}self.paintClock();ov.querySelectorAll('[data-min]').forEach(x=>x.classList.toggle('on',x===b));});
-      ov.querySelectorAll('[data-ch]').forEach(b=>b.onclick=()=>{self.toggle(b.dataset.ch);b.classList.toggle('on',!!self.channels[b.dataset.ch]);});
+      ov.querySelectorAll('[data-ch]').forEach(b=>b.onclick=()=>{self.toggle(b.dataset.ch);b.classList.toggle('on',!!self.layers[b.dataset.ch]);});
       ov.querySelector('[data-fx="start"]').onclick=()=>self.start();
       ov.querySelector('[data-fx="pause"]').onclick=()=>self.pause();
       ov.querySelector('[data-fx="stop"]').onclick=()=>self.stopAll();
       ov.querySelector('#nf8Vol').oninput=e=>{self.vol=+e.target.value/100;self.applyVol();};
       this.paintClock();
     },
-    paintClock(){const c=document.getElementById('nf8Clock');if(!c)return;const s=Math.max(0,Math.ceil(this.left||this.min*60));c.textContent=String(Math.floor(s/60)).padStart(2,'0')+':'+String(s%60).padStart(2,'0');const st=document.getElementById('nf8State');if(st)st.textContent=this.running?(this.paused?'Paused':'Focusing · '+(Object.keys(this.channels).length||0)+' channel(s)'):'Ready when you are';},
+    paintClock(){const c=document.getElementById('nf8Clock');if(!c)return;const s=Math.max(0,Math.ceil(this.left||this.min*60));c.textContent=String(Math.floor(s/60)).padStart(2,'0')+':'+String(s%60).padStart(2,'0');const st=document.getElementById('nf8State');if(st){const n=Object.keys(this.layers).length;st.textContent=this.running?((this.paused?'Paused':'Running')+' \u00b7 '+(this.set==='sleep'?'Sleeping':'Focusing')+(n?' \u00b7 '+n+' channel'+(n===1?'':'s'):' \u00b7 no channels yet')):'Ready when you are';}},
     ac(){if(!this.ctx){const C=window.AudioContext||window.webkitAudioContext;if(!C)return null;this.ctx=new C();this.master=this.ctx.createGain();this.master.gain.value=this.vol;this.master.connect(this.ctx.destination);}if(this.ctx.state==='suspended')this.ctx.resume().catch(()=>{});return this.ctx;},
-    applyVol(){if(this.master)this.master.gain.value=this.vol;},
-    start(){
-      const c=this.ac(); if(!c)return Toast.show('Audio unavailable','This browser blocked Web Audio.','err');
+    applyVol(){if(this.master)this.master.gain.value=this.paused?0:this.vol;Object.keys(this.els).forEach(k=>{try{this.els[k].volume=Math.min(1,this.vol*0.95);}catch(e){}});},
+    url(id){return 'audio/amb/'+id+'.mp3';},
+    async buffer(c,id){if(this.buf[id])return this.buf[id];const r=await fetch(this.url(id),{cache:'force-cache'});if(!r.ok)throw new Error('audio unavailable');const a=await r.arrayBuffer();return (this.buf[id]=await c.decodeAudioData(a));},
+    async chime(name){
+      try{
+        const c=this.ac(); if(!c)return;
+        const key='ui:'+name;
+        if(!this.buf[key]){
+          const r=await fetch('audio/ui/'+name+'.mp3',{cache:'force-cache'});
+          if(!r.ok)return;
+          this.buf[key]=await c.decodeAudioData(await r.arrayBuffer());
+        }
+        const src=c.createBufferSource();const g=c.createGain();g.gain.value=0.5;
+        src.buffer=this.buf[key];src.connect(g);g.connect(c.destination);src.start();
+      }catch(e){}
+    },
+    async start(){
+      const c=this.ac(); if(!c)return Toast.show('Audio unavailable','This browser blocked audio playback.','err');
       this.running=true;this.paused=false;
       if(!this.left||this.left<=0)this.left=this.min*60;
       clearInterval(this.timer);
+      this.chime('focus-start');
       this.timer=setInterval(()=>{
         if(this.paused)return;
         this.left-=1;
-        if(this.left<=8&&this.master&&!this._fading){this._fading=true;}
-        if(this._fading&&this.master){this.master.gain.value=Math.max(0,this.vol*(this.left/8));}
+        if(this.left<=5&&this.master&&!this._fading){this._fading=true;const t0=c.currentTime;this.master.gain.cancelScheduledValues(t0);this.master.gain.setValueAtTime(this.master.gain.value,t0);this.master.gain.linearRampToValueAtTime(0,t0+5);}
         if(this.left<=0){this.finish();return;}
         this.paintClock();
       },1000);
       this.paintClock();
       this.lock();
-      Toast.show('Focus timer started',this.min+' minutes · the mix will fade out at the end.','ok',2600);
+      Toast.show(this.set==='sleep'?'Sleep timer started':'Focus timer started',this.min+' minutes \u00b7 the mix fades out at the end.','ok',2600);
     },
-    pause(){if(!this.running)return;this.paused=!this.paused;const b=document.querySelector('#nf8Focus [data-fx="pause"]');if(b)b.textContent=this.paused?'Resume':'Pause';if(this.paused){this._duck();}else{if(this.master)this.master.gain.value=this.vol;this.ac();}this.paintClock();},
-    _duck(){if(this.master)this.master.gain.value=0;},
-    finish(){clearInterval(this.timer);this.running=false;this.paused=false;this._fading=false;this.left=0;this.stopAll(true);this.paintClock();
-      try{Toast.show('Session complete','Timer finished — the ambient mix has faded out.','ok',6000);}catch(e){}
-      try{new Notification('NANCYFLIX · focus session complete',{body:'Your timer finished. Take a break.'});}catch(e){}
+    pause(){if(!this.running)return;this.paused=!this.paused;const b=document.querySelector('#nf8Focus [data-fx="pause"]');if(b)b.textContent=this.paused?'Resume':'Pause';
+      if(this.ctx){if(this.paused)this.ctx.suspend().catch(()=>{});else this.ctx.resume().catch(()=>{});}
+      Object.keys(this.els).forEach(k=>{try{if(this.paused)this.els[k].pause();else this.els[k].play().catch(()=>{});}catch(e){}});
+      if(this.master)this.master.gain.value=this.paused?0:this.vol;
+      this.paintClock();},
+    finish(){
+      clearInterval(this.timer);this.running=false;this.paused=false;this._fading=false;this.left=0;
+      const c=this.ctx;
+      if(this.master&&c){try{const t0=c.currentTime;this.master.gain.cancelScheduledValues(t0);this.master.gain.setValueAtTime(this.master.gain.value,t0);this.master.gain.linearRampToValueAtTime(0,t0+2.5);}catch(e){}}
+      setTimeout(()=>{this.stopAll(true);this.chime('focus-end');},2600);
+      this.paintClock();
+      try{Toast.show('Session complete','Timer finished \u2014 the mix has faded out.','ok',6000);}catch(e){}
+      try{new Notification('NANCYFLIX \u00b7 timer complete',{body:'Your '+this.SETS[this.set].label.toLowerCase()+' session finished. Take a break.'});}catch(e){}
       this.release();
     },
-    toggle(id){
-      if(this.channels[id]){this.stopCh(id);return;}
+    async toggle(id){
+      if(this.layers[id]){this.stopLayer(id);return;}
       const c=this.ac(); if(!c)return;
       const g=c.createGain(); g.gain.value=0; g.connect(this.master);
-      const nodes=[]; const src=this.build(id,c,g);
-      if(src)nodes.push(src);
-      g.gain.linearRampToValueAtTime(1, c.currentTime+0.9);
-      this.channels[id]={g:g,nodes:nodes};
+      this.layers[id]={g:g,node:null};
+      this.paintClock();
+      try{
+        const b=await this.buffer(c,id);
+        if(!this.layers[id])return;
+        const src=c.createBufferSource(); src.buffer=b; src.loop=true; src.connect(g); src.start();
+        g.gain.setValueAtTime(0.0001,c.currentTime); g.gain.exponentialRampToValueAtTime(1,c.currentTime+1.4);
+        this.layers[id].node=src;
+      }catch(e){
+        const el=new Audio(this.url(id)); el.loop=true; el.volume=Math.min(1,this.vol*0.95); el.play().catch(()=>{});
+        this.els[id]=el; this.layers[id].g.gain.value=1;
+        Toast.show('Playing with the basic player','This browser could not mix the recording, so it plays on its own.','info',3200);
+      }
     },
-    build(id,c,g){
-      const t0=c.currentTime;
-      const noise=()=>{
-        const len=c.sampleRate*4, buf=c.createBuffer(1,len,c.sampleRate), d=buf.getChannelData(0);
-        let last=0;
-        for(let i=0;i<len;i++){const w=Math.random()*2-1;last=(last+0.02*w)/1.02;d[i]=w*0.6+last*2.2;}
-        const src=c.createBufferSource(); src.buffer=buf; src.loop=true; return src;
-      };
-      const chain=(type,freq,q,vol)=>{
-        const src=noise(), f=c.createBiquadFilter(), vg=c.createGain();
-        f.type=type; f.frequency.value=freq; if(q)f.Q.value=q;
-        vg.gain.value=vol==null?0.32:vol;
-        src.connect(f); f.connect(vg); vg.connect(g); src.start();
-        return {src:src,f:f,vg:vg};
-      };
-      const lfo=(param,rate,depth,type)=>{
-        const o=c.createOscillator(), gg=c.createGain();
-        o.type=type||'sine'; o.frequency.value=rate; gg.gain.value=depth;
-        o.connect(gg); gg.connect(param); o.start(); return o;
-      };
-      const after=(fn,min,max)=>{
-        let t=null, dead=false;
-        const next=()=>{ if(dead)return; const d=(min+Math.random()*(max-min))*1000; t=setTimeout(()=>{ if(dead)return; try{fn();}catch(e){} next(); },d); };
-        next();
-        return {stop(){dead=true;clearTimeout(t);}};
-      };
-      const blip=(freq,when,dur,type,peak,glide)=>{
-        const o=c.createOscillator(), gg=c.createGain(), st=t0+when;
-        o.type=type||'sine'; o.frequency.setValueAtTime(freq,st);
-        if(glide)o.frequency.exponentialRampToValueAtTime(glide,st+dur*0.6);
-        gg.gain.setValueAtTime(0.0001,st);
-        gg.gain.exponentialRampToValueAtTime(peak||0.2,st+Math.min(0.09,dur*0.25));
-        gg.gain.exponentialRampToValueAtTime(0.0001,st+dur);
-        o.connect(gg); gg.connect(g); o.start(st); o.stop(st+dur+0.06);
-        return o;
-      };
-      const kill=(list)=>({stop(){list.forEach(x=>{try{x.stop();}catch(e){}})}});
-
-      if(id==='rain')  return chain('highpass',900,null,0.32).src;
-      if(id==='forest')return chain('bandpass',1900,0.6,0.30).src;
-      if(id==='fire')  return chain('bandpass',480,0.7,0.32).src;
-      if(id==='night') return chain('bandpass',3400,2.2,0.26).src;
-      if(id==='brown') return chain('lowpass',260,null,0.55).src;
-
-      if(id==='ocean'){
-        const n=chain('lowpass',700,null,0.34);
-        return kill([lfo(n.f.frequency,0.09,320), n.src]);
-      }
-      if(id==='river'){
-        const n=chain('bandpass',1150,0.8,0.26);
-        return kill([lfo(n.f.frequency,0.21,420), lfo(n.vg.gain,0.13,0.10), n.src]);
-      }
-      if(id==='lake'){
-        const n=chain('lowpass',520,null,0.30);
-        return kill([lfo(n.vg.gain,0.11,0.19), lfo(n.f.frequency,0.07,120), n.src]);
-      }
-      if(id==='city'){
-        const n=chain('lowpass',430,null,0.24);
-        const sw=after(()=>{blip(1300+Math.random()*1000,0.02,0.55,'bandpass',0.05,600+Math.random()*400);},5,13);
-        return kill([lfo(n.f.frequency,0.07,150), n.src, sw]);
-      }
-      if(id==='space'){
-        const o1=c.createOscillator(), o2=c.createOscillator(), o3=c.createOscillator();
-        o1.type='sine'; o1.frequency.value=55;
-        o2.type='sine'; o2.frequency.value=82.4; o2.detune.value=6;
-        o3.type='triangle'; o3.frequency.value=110; o3.detune.value=-8;
-        const gg=c.createGain(); gg.gain.value=0.17;
-        const f=c.createBiquadFilter(); f.type='lowpass'; f.frequency.value=420;
-        o1.connect(gg); o2.connect(gg); o3.connect(gg); gg.connect(f); f.connect(g);
-        [o1,o2,o3].forEach(o=>o.start());
-        return kill([lfo(f.frequency,0.035,200), o1, o2, o3]);
-      }
-      if(id==='birds'){
-        const n=chain('highpass',2400,null,0.045);
-        const chirp=()=>{
-          const f=2300+Math.random()*1700, o=c.createOscillator(), gg=c.createGain(), st=t0+0.03;
-          o.type='sine';
-          o.frequency.setValueAtTime(f,st);
-          o.frequency.exponentialRampToValueAtTime(f*1.45,st+0.07);
-          o.frequency.exponentialRampToValueAtTime(f*0.9,st+0.16);
-          gg.gain.setValueAtTime(0.0001,st);
-          gg.gain.exponentialRampToValueAtTime(0.13,st+0.04);
-          gg.gain.exponentialRampToValueAtTime(0.0001,st+0.21);
-          o.connect(gg); gg.connect(g); o.start(st); o.stop(st+0.26);
-        };
-        const a=after(chirp,2.2,5.2), b=after(chirp,3.4,6.6), d=after(chirp,6,11);
-        return kill([a,b,d,n.src]);
-      }
-      if(id==='piano'){
-        const scale=[261.63,293.66,329.63,392.0,440.0,523.25,587.33];
-        const play=()=>{
-          const f=scale[Math.floor(Math.random()*scale.length)]*(Math.random()<0.25?2:1);
-          blip(f,0.02,3.4,'sine',0.13);
-          blip(f*2,0.02,2.2,'triangle',0.035);
-        };
-        return kill([after(play,2.8,6.2), after(play,5.5,9)]);
-      }
-      if(id==='bells'){
-        const base=[528,396,660];
-        const strike=()=>{
-          const f=base[Math.floor(Math.random()*base.length)];
-          blip(f,0.02,7,'sine',0.15);
-          blip(f*2.01,0.02,4.2,'sine',0.045);
-          blip(f*2.98,0.02,2.6,'sine',0.018);
-        };
-        return kill([after(strike,7,15)]);
-      }
-      if(id==='wolves'){
-        const howl=()=>{
-          const o=c.createOscillator(), gg=c.createGain(), v=c.createOscillator(), vg=c.createGain();
-          const st=t0+0.05;
-          o.type='sine'; o.frequency.setValueAtTime(290,st);
-          o.frequency.linearRampToValueAtTime(430,st+1.1);
-          o.frequency.linearRampToValueAtTime(365,st+2.5);
-          o.frequency.linearRampToValueAtTime(240,st+3.7);
-          v.type='sine'; v.frequency.value=5.4; vg.gain.value=7;
-          v.connect(vg); vg.connect(o.frequency);
-          gg.gain.setValueAtTime(0.0001,st);
-          gg.gain.exponentialRampToValueAtTime(0.085,st+1.0);
-          gg.gain.exponentialRampToValueAtTime(0.0001,st+3.9);
-          o.connect(gg); gg.connect(g);
-          o.start(st); o.stop(st+4); v.start(st); v.stop(st+4);
-        };
-        return kill([after(howl,16,30)]);
-      }
-      if(id==='thunder'){
-        const rumble=()=>{
-          const src=noise(), f=c.createBiquadFilter(), gg=c.createGain(), st=t0+0.05;
-          f.type='lowpass'; f.frequency.value=110;
-          gg.gain.setValueAtTime(0.0001,st);
-          gg.gain.exponentialRampToValueAtTime(0.5,st+0.4);
-          gg.gain.exponentialRampToValueAtTime(0.0001,st+4.4);
-          src.connect(f); f.connect(gg); gg.connect(g);
-          src.start(st); src.stop(st+4.5);
-        };
-        return kill([after(rumble,12,26)]);
-      }
-      return chain('lowpass',260,null,0.32).src;
+    stopLayer(id){
+      const ch=this.layers[id]; if(!ch)return;
+      delete this.layers[id];
+      if(this.els[id]){try{this.els[id].pause();}catch(e){}delete this.els[id];}
+      const c=this.ctx;
+      if(c&&ch.g){try{const t0=c.currentTime;ch.g.gain.cancelScheduledValues(t0);ch.g.gain.setValueAtTime(Math.max(ch.g.gain.value,0.0001),t0);ch.g.gain.exponentialRampToValueAtTime(0.0001,t0+0.7);}catch(e){}}
+      setTimeout(()=>{try{if(ch.node)ch.node.stop();}catch(e){}try{ch.g.disconnect();}catch(e){}},800);
+      this.paintClock();
     },
-    stopCh(id){const ch=this.channels[id];if(!ch)return;try{ch.g.gain.cancelScheduledValues(this.ctx.currentTime);ch.g.gain.setTargetAtTime(0,this.ctx.currentTime,0.12);}catch(e){}const t=setTimeout(()=>{try{ch.nodes.forEach(n=>n.stop&&n.stop());}catch(e){}},500);if(ch.nodes)ch.nodes.push({stop:()=>clearTimeout(t)});delete this.channels[id];},
-    stopAll(silent){Object.keys(this.channels).forEach(k=>{if(k!=='_lfo')this.stopCh(k);});clearInterval(this.timer);this.running=false;this.paused=false;this.left=this.min*60;const b=document.querySelector('#nf8Focus [data-fx="pause"]');if(b)b.textContent='Pause';document.querySelectorAll('#nf8Focus .nf8-snd').forEach(x=>x.classList.remove('on'));this.paintClock();if(!silent)this.release();},
+    stopAll(silent){
+      Object.keys(this.layers).forEach(k=>this.stopLayer(k));
+      Object.keys(this.els).forEach(k=>{try{this.els[k].pause();}catch(e){}delete this.els[k];});
+      clearInterval(this.timer);this.running=false;this.paused=false;this._fading=false;this.left=this.min*60;
+      if(this.master)this.master.gain.value=this.vol;
+      const b=document.querySelector('#nf8Focus [data-fx="pause"]');if(b)b.textContent='Pause';
+      document.querySelectorAll('#nf8Focus .nf8-snd').forEach(x=>x.classList.remove('on'));
+      this.paintClock();
+      if(!silent)this.release();
+    },
     async lock(){try{if('wakeLock' in navigator){this.wake=await navigator.wakeLock.request('screen');}}catch(e){}},
     release(){try{this.wake&&this.wake.release();}catch(e){}this.wake=null;}
   },
-
   /* ---------- 3. notification preferences ---------- */
   notiOpen(){
     let ov=document.getElementById('nf8Noti');
@@ -6882,7 +6858,7 @@ if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',
   ];
   var BYID = {}; LGS.forEach(function (l) { BYID[l.id] = l; });
   var TABS = [['live', 'Live now'], ['today', 'Today'], ['next', 'Upcoming']];
-  var ST = { tab: 'live', lg: 'all', configured: null, remaining: null, quotaUntil:Number(LS.get('footballQuotaUntil',0))||0, at:{}, data: {}, busy: false, err: '', timer: null, rows: [] };
+  var ST = { tab: 'live', lg: 'all', configured: null, remaining: null, fallback: false, fallbackWhy: '', quotaUntil:Number(LS.get('footballQuotaUntil',0))||0, at:{}, data: {}, busy: false, err: '', timer: null, rows: [] };
 
   function season() { var d = new Date(); return d.getMonth() >= 6 ? d.getFullYear() : d.getFullYear() - 1; }
   function todayISO() { var d = new Date(); return d.getFullYear() + '-' + pad(d.getMonth() + 1) + '-' + pad(d.getDate()); }
@@ -6913,7 +6889,7 @@ if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',
     var p = { ep: 'fixtures', timezone: 'Africa/Nairobi' };
     if (ST.tab === 'live') { p.live = 'all'; if (ST.lg !== 'all') p.league = ST.lg; }
     else if (ST.tab === 'today') { p.date = todayISO(); if (ST.lg !== 'all') { p.league = ST.lg; p.season = season(); } }
-    else { p.next = 20; if (ST.lg !== 'all') { p.league = ST.lg; p.season = season(); } }
+    else { p.dates = 3; if (ST.lg !== 'all') { p.league = ST.lg; p.season = season(); } }
     return p;
   }
 
@@ -7018,7 +6994,7 @@ if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',
   }
 
   function shellHTML() {
-    var pill = ST.quotaUntil>Date.now()?'<span class="fb-pill off"><i></i>Score limit reached</span>':ST.err?'<span class="fb-pill off"><i></i>Scores unavailable</span>':ST.configured === false
+    var pill = ST.fallback?'<span class="fb-pill off"><i></i>Free schedule</span>':ST.quotaUntil>Date.now()?'<span class="fb-pill off"><i></i>Score limit reached</span>':ST.err?'<span class="fb-pill off"><i></i>Scores unavailable</span>':ST.configured === false
       ? '<span class="fb-pill off"><i></i>Not connected</span>'
       : '<span class="fb-pill"><i></i>' + (ST.remaining != null ? 'Score requests · ' + ST.remaining + ' left' : 'Live feed') + '</span>';
     return '<div class="fb-bar"><div class="fb-tabs">' + TABS.map(function (t) {
@@ -7031,7 +7007,7 @@ if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',
     var body = Q('#liveBody'); if (!body) return;
     var html = shellHTML();
     if (ST.configured === false) html += setupHTML();
-    else html += '<div class="fb-list">' + listHTML() + '</div>' +
+    else html += (ST.fallback ? '<p class="nf-note fb-fallback">' + (ST.fallbackWhy === 'quota' ? 'The score provider limit is used up, so these fixtures come from the free schedule feed. Scores return automatically when the provider resets.' : ST.fallbackWhy === 'plan' ? 'Your provider plan blocks that score filter, so these fixtures come from the free schedule feed.' : 'Live scores are unavailable right now, so these fixtures come from the free schedule feed.') + '</p>' : '') + '<div class="fb-list">' + listHTML() + '</div>' +
       '<p class="nf-note">Scores, minutes and fixtures come from API-Football. Kick-off times are shown in your local time. Tap any match for the full view.</p>';
     body.innerHTML = html;
     wire(body);
@@ -7065,14 +7041,61 @@ if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',
     }, 180000);
   }
 
+  function altRows() {
+    var now = Date.now();
+    return fetch('api/football-alt', { headers: { Accept: 'application/json' }, cache: 'no-store' })
+      .then(function (r) { if (!r.ok) throw new Error('alt'); return r.json(); })
+      .then(function (j) {
+        return (j.fixtures || []).map(function (f) {
+          var parts = String(f.match || '').split(/ vs /i);
+          var when = new Date(f.kickoff);
+          return {
+            id: 'alt-' + f.id,
+            when: when,
+            venue: '',
+            status: { short: 'NS', long: 'Scheduled' },
+            lg: { id: 'alt', name: f.tournament || 'Football', country: '', logo: '', round: '' },
+            home: { name: parts[0] || 'Home' },
+            away: { name: parts[1] || 'Away' },
+            alt: true
+          };
+        }).filter(function (r) { return r.when && !isNaN(r.when.getTime()); })
+          .sort(function (a, b) { return a.when - b.when; })
+          .filter(function (r) { return ST.tab !== 'next' || r.when.getTime() > now - 3 * 3600e3; });
+      });
+  }
+
+  function useAlt(key, reason, keep) {
+    altRows().then(function (rows) {
+      ST.busy = false;
+      ST.fallback = true;
+      ST.fallbackWhy = reason || '';
+      ST.rows = rows.length ? rows : (keep || []);
+      ST.err = '';
+      if (rows.length) { ST.data['alt|' + key] = rows; }
+      paint();
+    }).catch(function () {
+      ST.busy = false;
+      ST.rows = keep || [];
+      paint();
+    });
+  }
+
   function load(force) {
     var key = ST.tab + '|' + ST.lg;
-    if(ST.busy)return;
-    if(ST.quotaUntil>Date.now()){ST.err='Live-score requests have reached the provider limit. Stream schedules below use a separate feed.';ST.rows=ST.data[key]||[];paint();return;}
-    if(ST.data[key]&&Date.now()-(ST.at[key]||0)<120000){ST.rows=ST.data[key];paint();return;}
+    if (ST.busy) return;
+    if (ST.quotaUntil > Date.now()) {
+      ST.err = '';
+      if (!ST.data[key] || !ST.data[key].length) { useAlt(key, 'quota', ST.data[key]); return; }
+      ST.fallback = true;
+      ST.fallbackWhy = 'quota';
+      ST.rows = ST.data[key];
+      paint();
+      return;
+    }
+    if (ST.data[key] && Date.now() - (ST.at[key] || 0) < 120000) { ST.rows = ST.data[key]; paint(); return; }
     if (!force && ST.data[key]) { ST.rows = ST.data[key]; paint(); return; }
-    // Keep the last successful snapshot if a refresh fails.
-    ST.busy = true; ST.err = '';
+    ST.busy = true; ST.err = ''; ST.fallback = false;
     paint();
     api(query()).then(function (j) {
       var rows = (j.response || []).map(norm).filter(function (r) { return r.home.name && r.away.name; });
@@ -7081,12 +7104,21 @@ if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',
         var first = j.errors[Object.keys(j.errors)[0]];
         if (!rows.length) ST.err = String(first || 'The feed returned an error');
       }
-      ST.data[key]=rows;ST.at[key]=Date.now();ST.rows=rows;paint();
+      if (j._remaining != null) ST.remaining = j._remaining;
+      if (!rows.length && (j._plan || j._fallback === 'football-alt' || ST.tab === 'next')) {
+        useAlt(key, j._plan ? 'plan' : 'empty', ST.data[key]);
+        return;
+      }
+      ST.data[key] = rows; ST.at[key] = Date.now(); ST.rows = rows; paint();
     }).catch(function (e) {
       ST.busy = false;
       if (e && e.code === 'nocfg') { ST.configured = false; ST.rows = []; paint(); return; }
-      ST.err = (e && e.code === 'quota') ? 'The score provider’s request limit is exhausted. Stream schedules below use a separate feed; scores need the provider reset.' : ((e && e.message) || 'Could not reach the feed');
-      ST.rows=ST.data[key]||[];
+      if (e && (e.code === 'quota' || e.code === 'http' || e.code === 'parse')) {
+        useAlt(key, e.code === 'quota' ? 'quota' : 'error', ST.data[key]);
+        return;
+      }
+      ST.err = (e && e.message) || 'Could not reach the feed';
+      ST.rows = ST.data[key] || [];
       paint();
     });
   }
@@ -7142,6 +7174,7 @@ if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',
     var quickBtn=Q('[data-fbquickbtn]',ov);if(quickBtn)quickBtn.onclick=function(){NF6.rowCard(r,true);};
     var watchBtn = Q('[data-fbwatchbtn]', ov);
     if (watchBtn) watchBtn.onclick = function () { openWatch(r); };
+    if(r.alt){var eb=document.getElementById('fbmEvents');if(eb)eb.innerHTML='<p class="nf-note" style="margin:0">This fixture comes from the free schedule feed. Use Where to watch to see its stream options.</p>';return;}
     if(!live(r)&&!finished(r)){var eventBox=document.getElementById('fbmEvents');if(eventBox)eventBox.textContent='Match events appear after kick-off.';return;}
     api({ ep: 'fixtures/events', fixture: r.id }).then(function (j) {
       var box = document.getElementById('fbmEvents'); if (!box) return;
@@ -7860,6 +7893,419 @@ if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',
   },true);
 })();
 </script>
+<script id="nf12-kids">
+/* ================= NANCYFLIX v8.7 · Kids corner ================= */
+(function () {
+  'use strict';
+  var Q = function (s, r) { return (r || document).querySelector(s); };
+  var QA = function (s, r) { return Array.prototype.slice.call((r || document).querySelectorAll(s)); };
+  function esc(s) { return String(s == null ? '' : s).replace(/[&<>"']/g, function (c) { return { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]; }); }
+
+  /* Official free children's channels. Availability varies by country. */
+  var LIVE = [
+    { name: 'PBS Kids', cc: 'US', note: 'Cartoons and learning', groups: ['Kids'], tier: 'free', feeds: [{ label: 'Official stream', type: 'hls', url: 'https://livestream.pbskids.org/out/v1/14507d931bbe48a69287e4850e53443c/est.m3u8' }] },
+    { name: 'Akili Kids', cc: 'KE', note: 'Kenya · children and family', groups: ['Kids'], tier: 'free', feeds: [{ label: 'Official stream', type: 'hls', url: 'https://m6.livecdn.io/akilikids.co.ke/akilikids.smil/playlist.m3u8' }] },
+    { name: 'Kartoon Channel', cc: 'US', note: 'Cartoons for the family', groups: ['Kids'], tier: 'free', feeds: [{ label: 'Official stream', type: 'hls', url: 'https://lightning-fnf-samsungaus.amagi.tv/playlist.m3u8' }] },
+    { name: 'HappyKids', cc: 'US', note: 'Cartoons and songs', groups: ['Kids'], tier: 'free', feeds: [{ label: 'Official stream', type: 'hls', url: 'https://dil9xdvretp0f.cloudfront.net/index.m3u8' }] },
+    { name: 'ZooMoo', cc: 'SG', note: 'Animals for young viewers', groups: ['Kids'], tier: 'free', feeds: [{ label: 'Official stream', type: 'hls', url: 'https://zoomoo-samsungau.amagi.tv/playlist.m3u8' }] },
+    { name: 'Teletubbies', cc: 'GB', note: 'Pre-school favourites', groups: ['Kids'], tier: 'free', feeds: [{ label: 'Official stream', type: 'hls', url: 'https://dv8lsrd8fecw9.cloudfront.net/master.m3u8' }] },
+    { name: 'Baby Shark TV', cc: 'US', note: 'Songs for toddlers', groups: ['Kids'], tier: 'free', feeds: [{ label: 'Official stream', type: 'hls', url: 'https://newidco-babysharktv-1-us.roku.wurl.tv/playlist.m3u8' }] },
+    { name: '4 Fun Kids', cc: 'PL', note: 'Cartoons and music', groups: ['Kids'], tier: 'free', feeds: [{ label: 'Official stream', type: 'hls', url: 'https://stream.4fun.tv:8889/hls/4fk.m3u8' }] },
+    { name: 'EBS Kids', cc: 'KR', note: 'Korea · learning and songs', groups: ['Kids'], tier: 'free', feeds: [{ label: 'Official stream', type: 'hls', url: 'https://ebsonair.ebs.co.kr/ebsufamilypc/familypc1m/playlist.m3u8' }] },
+    { name: 'ABC Kids', cc: 'AU', note: 'Australia · pre-school', groups: ['Kids'], tier: 'free', feeds: [{ label: 'Official stream', type: 'hls', url: 'https://c.mjh.nz/abc-kids.m3u8' }] },
+    { name: 'KidsFlix', cc: 'US', note: 'Free cartoon films', groups: ['Kids'], tier: 'free', feeds: [{ label: 'Official stream', type: 'hls', url: 'https://stream-us-east-1.getpublica.com/playlist.m3u8?network_id=50' }] }
+  ];
+
+  var CATS = [['cartoons', 'Cartoons'], ['classics', 'Classic cartoons'], ['stories', 'Story time'], ['learn', 'Learn and play']];
+  var state = { cat: 'cartoons', q: '', page: 1, items: [], total: 0, hasMore: false, busy: false, error: '', tab: 'live' };
+  var cache = {};
+
+  function liveCard(c, i) {
+    var initials = String(c.name).replace(/[^A-Za-z0-9 ]/g, '').split(' ').filter(Boolean).slice(0, 2).map(function (w) { return w[0]; }).join('').toUpperCase();
+    return '<button class="kids-card" data-kidch="' + i + '" aria-label="Watch ' + esc(c.name) + ' live">' +
+      '<span class="thumb" style="display:grid;place-items:center"><span style="font:900 26px/1 Anton,Impact,sans-serif;letter-spacing:2px;color:#ffd98a">' + esc(initials) + '</span>' +
+      '<span class="badge">LIVE</span></span>' +
+      '<span class="body"><b>' + esc(c.name) + '</b><span>' + esc(c.cc + ' \u00b7 ' + c.note) + '</span><span class="go">Watch live</span></span></button>';
+  }
+
+  function itemCard(it) {
+    return '<button class="kids-card" data-kiditem="' + esc(it.id) + '" aria-label="Play ' + esc(it.title) + '">' +
+      '<span class="thumb"><img src="' + esc(it.thumb) + '" alt="" loading="lazy" decoding="async" referrerpolicy="no-referrer"><span class="badge">FREE</span></span>' +
+      '<span class="body"><b>' + esc(it.title) + '</b><span>' + esc(it.year ? it.year + ' \u00b7 ' + (it.desc || 'Cartoon') : (it.desc || 'Cartoon')) + '</span><span class="go">Play</span></span></button>';
+  }
+
+  function render() {
+    var body = Q('#liveBody'); if (!body) return;
+    var chips = CATS.map(function (c) { return '<button data-kidcat="' + c[0] + '" class="' + (state.cat === c[0] ? 'on' : '') + '">' + c[1] + '</button>'; }).join('');
+    body.innerHTML =
+      '<div class="kids-hero"><h2>A free corner for little ones</h2>' +
+      '<p>Public-domain cartoons, story time and gentle learning films, plus live children\u2019s channels. No card and no paid plan \u2014 pick something and press play.</p>' +
+      '<div class="pills"><span>Free</span><span>Cartoons</span><span>Story time</span><span>Learning</span></div></div>' +
+      '<div class="kids-sec"><h3>Live kids channels</h3><p class="sub">Official broadcaster feeds. Some channels only work in their own country; try another if one does not start.</p>' +
+      '<div class="kids-grid">' + LIVE.map(liveCard).join('') + '</div></div>' +
+      '<div class="kids-sec"><h3>Cartoon library</h3><p class="sub">Animation from the Internet Archive public collections. Playing opens the archive\u2019s own player.</p>' +
+      '<div class="kids-search"><input type="search" id="kidsQ" placeholder="Search cartoons" aria-label="Search cartoons" value="' + esc(state.q) + '"><button class="btn sm" id="kidsGo">Search</button></div>' +
+      '<div class="nf-cats">' + chips + '</div>' +
+      '<div id="kidsGrid" class="kids-grid">' + gridHTML() + '</div>' +
+      '<div id="kidsMoreBar" style="margin-top:12px">' + (state.hasMore ? '<button class="btn sm" id="kidsMore">Load more</button>' : '') + '</div></div>';
+
+    QA('[data-kidch]', body).forEach(function (b) {
+      b.onclick = function () { openChannel(LIVE[+b.dataset.kidch]); };
+    });
+    QA('[data-kidcat]', body).forEach(function (b) {
+      b.onclick = function () { state.cat = b.dataset.kidcat; state.page = 1; state.items = []; load(); };
+    });
+    QA('[data-kiditem]', body).forEach(function (b) {
+      b.onclick = function () { play(b.dataset.kiditem); };
+    });
+    var go = Q('#kidsGo', body), input = Q('#kidsQ', body);
+    if (go) go.onclick = function () { state.q = input ? input.value.trim().slice(0, 50) : ''; state.page = 1; state.items = []; load(); };
+    if (input) input.onkeydown = function (e) { if (e.key === 'Enter') { e.preventDefault(); go.click(); } };
+    var more = Q('#kidsMore', body);
+    if (more) more.onclick = function () { state.page += 1; load(true); };
+    if (!state.items.length && !state.busy && !state.error) load();
+  }
+
+  function gridHTML() {
+    if (state.busy && !state.items.length) return '<div class="nf-kids-state">Loading cartoons\u2026</div>';
+    if (state.error && !state.items.length) {
+      return '<div class="nf-kids-state">' + esc(state.error) + ' <button class="btn sm ghost" id="kidsRetry" style="margin-inline-start:8px">Try again</button></div>';
+    }
+    if (!state.items.length) return '<div class="nf-kids-state">No cartoons matched that search. Try another word.</div>';
+    return state.items.map(itemCard).join('');
+  }
+
+  function paintGrid() {
+    var g = Q('#kidsGrid'); if (!g) return;
+    g.innerHTML = gridHTML();
+    QA('[data-kiditem]', g).forEach(function (b) { b.onclick = function () { play(b.dataset.kiditem); }; });
+    var retry = Q('#kidsRetry', g);
+    if (retry) retry.onclick = function () { state.error = ''; load(true); };
+  }
+
+  function load(more) {
+    if (state.busy) return;
+    var key = state.cat + '|' + state.page + '|' + state.q.toLowerCase();
+    if (cache[key]) {
+      apply(cache[key], more);
+      return;
+    }
+    state.busy = true; state.error = '';
+    if (!more) { paintGrid(); }
+    var url = 'api/kids?cat=' + encodeURIComponent(state.cat) + '&page=' + state.page + (state.q ? '&q=' + encodeURIComponent(state.q) : '');
+    var ctl = new AbortController();
+    var timer = setTimeout(function () { ctl.abort(); }, 12000);
+    fetch(url, { headers: { Accept: 'application/json' }, signal: ctl.signal })
+      .then(function (r) { return r.json().then(function (j) { return { ok: r.ok, j: j }; }); })
+      .then(function (r) {
+        clearTimeout(timer);
+        if (!r.ok || !r.j || r.j.ok === false) throw new Error((r.j && r.j.error) || 'The cartoon library is unavailable right now.');
+        cache[key] = r.j;
+        apply(r.j, more);
+      })
+      .catch(function (e) {
+        clearTimeout(timer);
+        state.busy = false;
+        state.error = e && e.name === 'AbortError' ? 'The cartoon library took too long to answer.' : ((e && e.message) || 'The cartoon library is unavailable right now.');
+        paintGrid();
+      });
+  }
+
+  function apply(j, more) {
+    state.busy = false;
+    state.error = '';
+    var items = (j.items || []).filter(function (x) { return x && x.id; });
+    if (more) {
+      var seen = {};
+      state.items.forEach(function (x) { seen[x.id] = 1; });
+      items.forEach(function (x) { if (!seen[x.id]) { seen[x.id] = 1; state.items.push(x); } });
+    } else {
+      state.items = items;
+    }
+    state.total = j.total || state.items.length;
+    state.hasMore = Boolean(j.hasMore);
+    paintGrid();
+    var bar = Q('#kidsMoreBar');
+    if (bar) {
+      bar.innerHTML = state.hasMore ? '<button class="btn sm" id="kidsMore">Load more</button>' : '';
+      var btn = Q('#kidsMore', bar);
+      if (btn) btn.onclick = function () { state.page += 1; load(true); };
+    }
+  }
+
+  /* Live channel playback uses the existing Live player (HLS plus YouTube fallback). */
+  function openChannel(c) {
+    try {
+      if (window.Live && typeof window.Live.open === 'function') { window.Live.open(c); return; }
+    } catch (e) {}
+    var ov = document.getElementById('nfKidsLive');
+    if (!ov) {
+      ov = document.createElement('div'); ov.id = 'nfKidsLive'; ov.className = 'overlay nf6-ov';
+      document.body.appendChild(ov);
+      ov.addEventListener('click', function (e) { if (e.target === ov) { ov.classList.remove('show'); document.body.classList.remove('noscroll'); } });
+    }
+    ov.innerHTML = '<div class="nf6-modal"><div class="nf6-head"><div class="who"><div class="lg">KIDS \u00b7 LIVE</div><h3>' + esc(c.name) + '</h3><div class="sub">' + esc(c.note) + '</div></div><button class="nf6-x" data-kidx aria-label="Close">\u2715</button></div><div class="nf-kids-screen" id="kidLiveBox"></div><div class="nf-kids-foot"><p>This is the broadcaster\u2019s own free stream. If the picture stays black, the channel may be offline or limited to its own country.</p><a class="btn sm" href="' + esc(c.feeds[0].url) + '" target="_blank" rel="noopener noreferrer">Open stream separately</a></div></div>';
+    ov.classList.add('show'); document.body.classList.add('noscroll');
+    Q('[data-kidx]', ov).onclick = function () { ov.classList.remove('show'); document.body.classList.remove('noscroll'); };
+    var box = Q('#kidLiveBox', ov);
+    var v = document.createElement('video');
+    v.controls = true; v.autoplay = true; v.playsInline = true; v.style.width = '100%'; v.style.height = '100%';
+    box.appendChild(v);
+    var url = c.feeds[0].url;
+    if (v.canPlayType('application/vnd.apple.mpegurl')) { v.src = url; v.play().catch(function () {}); }
+    else {
+      var boot = function () {
+        if (!window.Hls || !window.Hls.isSupported()) return;
+        var h = new window.Hls({ lowLatencyMode: true });
+        h.loadSource(url); h.attachMedia(v);
+        h.on(window.Hls.Events.MANIFEST_PARSED, function () { v.play().catch(function () {}); });
+      };
+      if (window.Hls) boot();
+      else {
+        var sc = document.createElement('script');
+        sc.src = 'https://cdn.jsdelivr.net/npm/hls.js@1.5.13/dist/hls.min.js';
+        sc.onload = boot; document.head.appendChild(sc);
+      }
+    }
+  }
+
+  function play(id) {
+    var item = null;
+    state.items.some(function (x) { if (x.id === id) { item = x; return true; } return false; });
+    if (!item) return;
+    var ov = document.getElementById('nfKidsOv');
+    if (!ov) {
+      ov = document.createElement('div'); ov.id = 'nfKidsOv';
+      document.body.appendChild(ov);
+      ov.addEventListener('click', function (e) { if (e.target === ov) close(); });
+      document.addEventListener('keydown', function (e) { if (e.key === 'Escape' && ov.classList.contains('show')) close(); });
+    }
+    ov.innerHTML = '<div class="nf-kids-modal" role="dialog" aria-modal="true" aria-label="' + esc(item.title) + '">' +
+      '<div class="nf-kids-head"><div><h3>' + esc(item.title) + '</h3><p>' + esc((item.year ? item.year + ' \u00b7 ' : '') + 'Internet Archive \u00b7 free to watch') + '</p></div><div class="spacer"></div><button class="btn sm" data-kclose>Close</button></div>' +
+      '<div class="nf-kids-screen"><iframe src="' + esc(item.embed) + '" title="' + esc(item.title) + '" allow="autoplay; fullscreen; picture-in-picture; encrypted-media" allowfullscreen sandbox="allow-scripts allow-same-origin allow-presentation" referrerpolicy="no-referrer" loading="lazy"></iframe></div>' +
+      '<div class="nf-kids-foot"><p>Played from archive.org in its own player. If the frame is blank, open the item on its archive page.</p><a class="btn sm" href="' + esc(item.page) + '" target="_blank" rel="noopener noreferrer">Open on archive.org</a></div></div>';
+    ov.classList.add('show'); document.body.classList.add('noscroll');
+    Q('[data-kclose]', ov).onclick = close;
+    function close() {
+      ov.classList.remove('show'); ov.innerHTML = '';
+      if (!document.querySelector('.overlay.show')) document.body.classList.remove('noscroll');
+    }
+  }
+
+  function boot() {
+    try {
+      if (window.Live) window.Live.renderKids = render;
+    } catch (e) {}
+    window.NFKids = { render: render, live: LIVE };
+  }
+  if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', boot); else boot();
+})();
+</script>
+<script id="nf13-share">
+/* ================= NANCYFLIX v8.7 · match links that carry the poster ================= */
+(function () {
+  'use strict';
+  if (!window.NF6) return;
+  var MAX = 290000; /* WhatsApp shows previews best under 300 KB */
+  var cache = {};
+  var pending = {};
+
+  function pad(n) { return ('0' + n).slice(-2); }
+  function whenText(d) {
+    if (!d || isNaN(d.getTime())) return 'Kick-off to be confirmed';
+    var days = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'];
+    var months = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
+    return days[d.getDay()] + ' ' + d.getDate() + ' ' + months[d.getMonth()] + ' \u00b7 ' + pad(d.getHours()) + ':' + pad(d.getMinutes());
+  }
+  function info(ev, lg) {
+    ev = ev || {};
+    var home = ev.strHomeTeam || (ev.home && ev.home.name) || 'Home';
+    var away = ev.strAwayTeam || (ev.away && ev.away.name) || 'Away';
+    var when = null;
+    if (ev.when instanceof Date) when = ev.when;
+    else if (ev.strTimestamp) when = new Date(ev.strTimestamp);
+    else if (ev.dateEvent) when = new Date(ev.dateEvent + 'T' + (ev.strTime || '00:00:00') + 'Z');
+    if (when && isNaN(when.getTime())) when = null;
+    return {
+      home: String(home), away: String(away), when: when,
+      comp: String((lg && lg.name) || ev.strLeague || (ev.lg && ev.lg.name) || 'Football'),
+      venue: String(ev.strVenue || ev.venue || ''),
+      matchId: String(ev.idEvent || ev.id || ''),
+      leagueId: String((lg && lg.id) || (ev.lg && ev.lg.id) || '')
+    };
+  }
+  function key(o) { return o.home + '|' + o.away + '|' + (o.when ? o.when.getTime() : 0); }
+
+  function wrap(ctx, text, maxW) {
+    var words = String(text || '').split(/\s+/), lines = [], line = '';
+    for (var i = 0; i < words.length; i++) {
+      var test = (line ? line + ' ' : '') + words[i];
+      if (ctx.measureText(test).width > maxW && line) { lines.push(line); line = words[i]; }
+      else line = test;
+    }
+    if (line) lines.push(line);
+    return lines.slice(0, 3);
+  }
+
+  function drawPoster(o, dpr) {
+    var W = 1080, H = 1080;
+    var c = document.createElement('canvas'); c.width = W; c.height = H;
+    var x = c.getContext('2d');
+    if (!x) return null;
+    var g = x.createLinearGradient(0, 0, W, H);
+    g.addColorStop(0, '#16060c'); g.addColorStop(0.55, '#0a0a12'); g.addColorStop(1, '#25060f');
+    x.fillStyle = g; x.fillRect(0, 0, W, H);
+    var rg = x.createRadialGradient(980, 80, 20, 980, 80, 520);
+    rg.addColorStop(0, 'rgba(225,29,46,.34)'); rg.addColorStop(1, 'rgba(225,29,46,0)');
+    x.fillStyle = rg; x.fillRect(0, 0, W, H);
+    x.strokeStyle = 'rgba(255,255,255,.10)'; x.lineWidth = 3;
+    x.strokeRect(34, 34, W - 68, H - 68);
+
+    x.fillStyle = '#ffcc66'; x.font = '800 25px system-ui, Arial';
+    x.fillText('NANCYFLIX  \u00b7  MATCH CENTRE', 80, 118);
+    x.fillStyle = 'rgba(255,255,255,.5)'; x.font = '600 21px system-ui, Arial';
+    x.fillText(o.comp.toUpperCase().slice(0, 42), 80, 152);
+
+    x.textAlign = 'center';
+    x.fillStyle = '#ffffff'; x.font = '900 78px system-ui, Arial';
+    var lines = wrap(x, o.home, 880);
+    var y = lines.length > 1 ? 330 : 372;
+    lines.forEach(function (l) { x.fillText(l, 540, y); y += 86; });
+
+    x.fillStyle = '#e11d2e'; x.font = '900 46px system-ui, Arial';
+    x.fillText('VS', 540, y + 30);
+    x.fillStyle = 'rgba(255,255,255,.16)'; x.fillRect(300, y + 16, 120, 3); x.fillRect(660, y + 16, 120, 3);
+
+    x.fillStyle = '#ffffff'; x.font = '900 78px system-ui, Arial';
+    var lines2 = wrap(x, o.away, 880);
+    var y2 = y + 150;
+    lines2.forEach(function (l) { x.fillText(l, 540, y2); y2 += 86; });
+
+    x.fillStyle = '#f2f2f8'; x.font = '700 34px system-ui, Arial';
+    x.fillText(whenText(o.when), 540, 852);
+    x.fillStyle = '#9a9aae'; x.font = '600 26px system-ui, Arial';
+    x.fillText((o.comp + (o.venue ? '  \u00b7  ' + o.venue : '')).slice(0, 62), 540, 896);
+    x.fillStyle = 'rgba(255,255,255,.42)'; x.font = '600 22px system-ui, Arial';
+    x.fillText('Tap the link to open this match in NANCYFLIX', 540, 962);
+    x.textAlign = 'start';
+    return c;
+  }
+
+  function toBlob(c) {
+    return new Promise(function (resolve) {
+      var qualities = [0.86, 0.76, 0.66, 0.56];
+      var i = 0;
+      function next() {
+        if (i >= qualities.length) { resolve(null); return; }
+        var q = qualities[i++];
+        c.toBlob(function (b) {
+          if (!b) { next(); return; }
+          if (b.size <= MAX) resolve(b); else next();
+        }, 'image/jpeg', q);
+      }
+      next();
+    });
+  }
+
+  function toDataUrl(blob) {
+    return new Promise(function (resolve, reject) {
+      var r = new FileReader();
+      r.onload = function () { resolve(String(r.result)); };
+      r.onerror = reject;
+      r.readAsDataURL(blob);
+    });
+  }
+
+  function upload(blob) {
+    var ctl = new AbortController();
+    var timer = setTimeout(function () { ctl.abort(); }, 9000);
+    return toDataUrl(blob).then(function (data) {
+      return fetch('api/share-card', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ data: data }),
+        signal: ctl.signal
+      });
+    }).then(function (r) {
+      clearTimeout(timer);
+      return r.json().then(function (j) {
+        if (!r.ok || !j || !j.ok || !j.id) throw new Error((j && j.error) || 'card');
+        return j.id;
+      });
+    }).catch(function (e) { clearTimeout(timer); throw e; });
+  }
+
+  function prepare(ev, lg) {
+    var o = info(ev, lg);
+    var k = key(o);
+    if (cache[k]) return Promise.resolve(cache[k]);
+    if (pending[k]) return pending[k];
+    pending[k] = (async function () {
+      var canvas = drawPoster(o);
+      if (!canvas) throw new Error('canvas');
+      var blob = await toBlob(canvas);
+      if (!blob) throw new Error('encode');
+      var id = await upload(blob);
+      var url = location.origin + '/s/' + id;
+      cache[k] = url;
+      try { NF6._shareCache = cache; } catch (e) {}
+      return url;
+    })();
+    pending[k].catch(function () {}).then(function () { delete pending[k]; });
+    return pending[k];
+  }
+
+  function legacy(ev, lg) { return NF6.__matchUrl ? NF6.__matchUrl(ev, lg) : null; }
+
+  function share(ev, lg) {
+    var o = info(ev, lg);
+    var text = o.home + ' vs ' + o.away + (o.when ? ' \u00b7 ' + whenText(o.when) : '') + ' \u00b7 ' + o.comp;
+    prepare(ev, lg).then(function (url) {
+      if (navigator.share) {
+        navigator.share({ title: o.home + ' vs ' + o.away + ' \u00b7 NANCYFLIX', text: text + ' \u2014 watch on NANCYFLIX', url: url })
+          .catch(function (err) {
+            if (err && err.name === 'AbortError') return;
+            NF6.copy(url).then(function (ok) {
+              if (ok) Toast.show('Invite link copied', 'The match poster travels with this link.', 'ok', 4200);
+            });
+          });
+        return;
+      }
+      NF6.copy(url).then(function (ok) {
+        Toast.show(ok ? 'Invite link copied' : 'Copy this link', ok ? 'Paste it in WhatsApp \u2014 the poster appears with the link.' : url, ok ? 'ok' : 'info', ok ? 4600 : 12000);
+      });
+    }).catch(function () {
+      var url = legacy(ev, lg);
+      if (!url) { Toast.show('Sharing is unavailable', 'This browser blocked the share sheet.', 'warn'); return; }
+      if (navigator.share) {
+        navigator.share({ title: o.home + ' vs ' + o.away, text: text, url: url }).catch(function (err) {
+          if (err && err.name === 'AbortError') return;
+          NF6.copy(url).then(function (ok) { Toast.show(ok ? 'Link copied' : 'Copy this link', ok ? 'Paste it in WhatsApp to share this match.' : url, ok ? 'ok' : 'info', 4600); });
+        });
+        return;
+      }
+      NF6.copy(url).then(function (ok) {
+        Toast.show(ok ? 'Link copied' : 'Copy this link', ok ? 'Paste it in WhatsApp to share this match.' : url, ok ? 'ok' : 'info', 4600);
+      });
+    });
+  }
+
+  try {
+    NF6.__matchUrl = NF6.matchUrl;
+    NF6.prepareMatchShare = prepare;
+    NF6.shareMatch = share;
+    NF6.matchUrl = function (ev, lg) {
+      var k = key(info(ev, lg));
+      if (cache[k]) return cache[k];
+      return NF6.__matchUrl ? NF6.__matchUrl(ev, lg) : location.href;
+    };
+    NF6.posterFor = function (ev, lg) {
+      var canvas = drawPoster(info(ev, lg));
+      return canvas ? toBlob(canvas) : Promise.resolve(null);
+    };
+  } catch (e) {}
+})();
+</script>
 </body>
 </html>
 
@@ -8109,6 +8555,74 @@ if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',
  .topbar{flex-wrap:wrap}
  .topbar>.nav{order:3;flex:1 1 100%;min-width:0;margin-left:0;flex-wrap:wrap}
  .topbar>.top-right{flex-shrink:0}
+}
+
+/* ---------- v8.7 responsive cards, kids corner and sound sets ---------- */
+.kids-hero{position:relative;overflow:hidden;border:1px solid rgba(255,255,255,.08);border-radius:18px;padding:18px 18px 16px;margin:0 0 16px;
+  background:radial-gradient(120% 140% at 12% 0%,rgba(255,204,102,.16),transparent 60%),radial-gradient(110% 130% at 92% 8%,rgba(124,92,255,.18),transparent 62%),linear-gradient(160deg,#15121c,#0b0b12)}
+.kids-hero h2{margin:0 0 6px;font-size:19px;letter-spacing:.2px}
+.kids-hero p{margin:0;color:#b9b9c8;font-size:13px;line-height:1.5;max-width:58ch}
+.kids-hero .pills{display:flex;gap:6px;flex-wrap:wrap;margin-top:12px}
+.kids-hero .pills span{font-size:10.5px;font-weight:800;letter-spacing:.08em;text-transform:uppercase;padding:5px 9px;border-radius:99px;color:#ffd98a;border:1px solid rgba(255,204,102,.32);background:rgba(255,204,102,.08)}
+.kids-sec{margin:20px 0 6px}
+.kids-sec h3{font-size:15px;margin:0 0 4px}
+.kids-sec p.sub{margin:0 0 12px;color:#8c8c9e;font-size:12px}
+.kids-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(196px,1fr));gap:12px}
+.kids-card{display:flex;flex-direction:column;text-align:start;padding:0;overflow:hidden;border-radius:14px;border:1px solid rgba(255,255,255,.08);background:#12121a;color:#f2f2f8;cursor:pointer;transition:transform .16s,border-color .16s,box-shadow .16s}
+.kids-card:hover,.kids-card:focus-visible{transform:translateY(-2px);border-color:rgba(255,204,102,.45);box-shadow:0 12px 26px rgba(0,0,0,.4)}
+.kids-card .thumb{position:relative;width:100%;aspect-ratio:16/10;background:linear-gradient(135deg,#1b1b26,#0e0e15);overflow:hidden}
+.kids-card .thumb img{width:100%;height:100%;object-fit:cover;display:block}
+.kids-card .thumb .badge{position:absolute;left:8px;top:8px;font-size:9px;font-weight:900;letter-spacing:.1em;padding:4px 7px;border-radius:6px;background:rgba(6,6,10,.72);border:1px solid rgba(255,255,255,.16);color:#ffd98a}
+.kids-card .body{padding:10px 11px 12px;display:flex;flex-direction:column;gap:3px;min-width:0}
+.kids-card .body b{font-size:13px;line-height:1.3;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}
+.kids-card .body span{font-size:11px;color:#8c8c9e;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.kids-card .body .go{margin-top:6px;font-size:10.5px;font-weight:800;letter-spacing:.06em;text-transform:uppercase;color:#ff6272}
+.kids-search{display:flex;gap:8px;margin:0 0 12px}
+.kids-search input{flex:1;min-width:0;padding:10px 14px;border-radius:999px;border:1px solid var(--border);background:var(--surface);color:var(--text);font-size:13.5px}
+.kids-search button{flex:0 0 auto}
+#nfKidsOv{position:fixed;inset:0;z-index:1500;display:none;align-items:center;justify-content:center;padding:16px;background:rgba(4,4,8,.84);backdrop-filter:blur(7px)}
+#nfKidsOv.show{display:flex}
+.nf-kids-modal{width:min(960px,100%);max-height:92vh;display:flex;flex-direction:column;background:#0c0c13;border:1px solid rgba(255,255,255,.1);border-radius:18px;overflow:hidden}
+.nf-kids-head{display:flex;align-items:center;gap:12px;padding:13px 15px;border-bottom:1px solid rgba(255,255,255,.08)}
+.nf-kids-head h3{margin:0;font-size:15px;line-height:1.3}
+.nf-kids-head p{margin:2px 0 0;font-size:11.5px;color:#8c8c9e}
+.nf-kids-head .spacer{margin-inline-start:auto}
+.nf-kids-screen{position:relative;background:#000;aspect-ratio:16/9;width:100%}
+.nf-kids-screen iframe{position:absolute;inset:0;width:100%;height:100%;border:0}
+.nf-kids-foot{display:flex;gap:8px;flex-wrap:wrap;align-items:center;padding:11px 15px;border-top:1px solid rgba(255,255,255,.08)}
+.nf-kids-foot p{margin:0;font-size:11.5px;color:#8c8c9e;flex:1 1 220px;line-height:1.45}
+.nf8-focus-sets{display:flex;gap:6px;margin:14px 0 8px;flex-wrap:wrap}
+.nf8-focus-sets button{border:1px solid rgba(255,255,255,.14);background:rgba(255,255,255,.04);color:#c9c9d6;font-weight:800;font-size:12px;padding:7px 14px;border-radius:99px;cursor:pointer}
+.nf8-focus-sets button.on{background:#e11d2e;border-color:transparent;color:#fff}
+.nf8-snd .fmt{font-size:9.5px;letter-spacing:.08em;text-transform:uppercase;color:#7d7d92;margin-inline-start:6px}
+@media(max-width:520px){
+  .kids-grid{grid-template-columns:repeat(2,minmax(0,1fr));gap:9px}
+  .kids-card .body{padding:9px 9px 10px}
+  .kids-card .body b{font-size:12px}
+  .nf-kids-modal{max-height:94vh}
+}
+@media(max-width:430px){
+  .ch-grid,.ch-grid.nf6,.ch-grid.nf7{grid-template-columns:repeat(2,minmax(0,1fr));gap:8px}
+  .ch.nf7{padding:10px}
+  .ch.nf7 .nm{font-size:12px}
+  .fbr-main{padding:11px 12px 7px;gap:6px}
+  .fbr-side{gap:7px}
+  .fbr-side .cr{width:28px;height:28px;border-radius:8px}
+  .fbr-side .cr img{width:21px;height:21px}
+  .fbr-side b{font-size:12px}
+  .fbr-score{font-size:20px;min-width:52px}
+  .fbr-round{display:none}
+  .fbr-bot{padding:0 12px 10px 13px}
+  .fbr-cta{padding:0 12px 11px 13px;gap:6px;flex-wrap:wrap}
+  .fbr-watch{padding:7px 11px;font-size:10.5px}
+  .fbr-card{padding:7px 9px}
+  .fb-list{gap:9px}
+  .nf-alt-match{padding:12px}
+  .nf-alt-actions{gap:6px;flex-wrap:wrap}
+  .fbm-facts{grid-template-columns:1fr 1fr}
+}
+@media(max-width:339px){
+  .ch-grid,.ch-grid.nf6,.ch-grid.nf7,.kids-grid{grid-template-columns:1fr}
 }
 </style>
 
