@@ -3,7 +3,8 @@ service cloud.firestore {
   match /databases/{database}/documents {
 
     function signedIn() { return request.auth != null; }
-    function isAdmin()  { return signedIn() && request.auth.token.admin == true; }
+    function isAdmin() { return signedIn() && request.auth.token.email_verified == true
+      && request.auth.token.email in ['merabnoels@gmail.com', 'bridah888@gmail.com', 'achiengnancy65@gmail.com', 'devbriannova@gmail.com']; }
     function mine(uid)  { return signedIn() && request.auth.uid == uid; }
 
     /* One document per person: profile, settings, notifications, history. */
@@ -54,6 +55,7 @@ service cloud.firestore {
 
     /* Share posters and the 6-digit sign-in codes are written by the server
        (Admin SDK bypasses these rules), so the browser gets no access. */
+    match /entitlements/{uid} { allow read, write: if false; }
     match /shareCards/{id} { allow read: if true; allow write: if false; }
     match /loginCodes/{id} { allow read, write: if false; }
   }

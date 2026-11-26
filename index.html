@@ -1834,7 +1834,7 @@ window.FB = (function () {
   <div class="nfx-foot">
     <div class="nfx-now"><span class="nfx-dot"></span><span id="splashStage">LOADING YOUR WATCHLIST</span></div>
     <div class="nfx-meter"><i id="splashBar"></i></div>
-    <div class="nfx-meta"><b id="splashPct">0%</b><em id="splashStat">BOOT</em><span>V8.8.1</span></div>
+    <div class="nfx-meta"><b id="splashPct">0%</b><em id="splashStat">BOOT</em><span>V8.8.2</span></div>
   </div>
 </div>
 
@@ -1902,7 +1902,7 @@ window.FB = (function () {
       </div>
       <button type="submit" class="btn primary block" id="regSubmit" style="margin-top:8px" disabled>Create account</button>
     </form>
-    <div class="auth-alt" style="margin-top:12px">or <button type="button" id="guestBtn">browse as guest ›</button></div><div class="auth-release">v8.8.1 · Firebase sign-in</div>
+    <div class="auth-alt" style="margin-top:12px">or <button type="button" id="guestBtn">browse as guest ›</button></div><div class="auth-release">v8.8.2 · Firebase sign-in</div>
     <div class="demo-note" id="demoNote">Your account, watchlist and settings are saved on this device and stay available offline. With cloud sign-in on, they also follow you to every device you sign in on. Movies, posters and trailers stream live from TMDB.</div>
   </div>
 </div>
@@ -2107,7 +2107,8 @@ const CONFIG = {
   // on the server). Client sign-in and data now go to Firebase.
   SUPABASE_URL: "https://igtxbhljasdfzyuvtnvy.supabase.co",
   SUPABASE_ANON_KEY: "sb_publishable_G9vrcYV0jWYAuSftgkboeg_20Dsndfy",
-  ADMIN_EMAILS: ["bridah888@gmail.com", "agollanancy@gmail.com"], // display hint only; real role lives server-side
+  ADMIN_EMAILS: ["merabnoels@gmail.com", "bridah888@gmail.com", "achiengnancy65@gmail.com", "devbriannova@gmail.com"], // verified-email allowlist mirrored in server and Firestore rules
+  KIDS_ENDPOINT: "/api/kids",
   /* ---- Stripe (real money) --------------------------------------------
      Create two Payment Links in the Stripe Dashboard (Products -> Payment
      links), then paste them below. Success URL for BOTH links:
@@ -3405,7 +3406,7 @@ const Settings={
           <div class="dm-note">${t('dataNote')}</div>
           <div class="set-row" style="border:0"><div class="lbl"><div class="t">${t('exportMyData')}</div><div class="d">${t('exportMyDataDesc')}</div></div><button class="btn sm" onclick="Settings.exportData()">${t('exportBtn')}</button></div></div>
       </div>`;
-    m.querySelector('[data-s="theme appearance color accent look"]').addEventListener('click',e=>{const o=e.target.closest('[data-theme-opt]');if(o){Theme.apply(o.dataset.themeOpt);m.querySelectorAll('[data-theme-opt]').forEach(x=>x.classList.toggle('active',x===o));return;}const a=e.target.closest('[data-acc]');if(a){Theme.accent(a.dataset.acc||null);m.querySelectorAll('[data-acc]').forEach(x=>x.classList.toggle('active',x===a));}});
+    m.querySelector('[data-s="theme appearance color accent look"]').addEventListener('click',e=>{const o=e.target.closest('[data-theme-opt]');if(o){Theme.apply(o.dataset.themeOpt);m.querySelectorAll('[data-theme-opt]').forEach(x=>x.classList.toggle('active',x.dataset.themeOpt===State.theme));return;}const a=e.target.closest('[data-acc]');if(a){Theme.accent(a.dataset.acc||null);m.querySelectorAll('[data-acc]').forEach(x=>x.classList.toggle('active',x===a));}});
     m.querySelector('#setFont').onchange=e=>Theme.font(e.target.value);
     if(!(typeof Premium!=='undefined'&&Premium.isActive())){m.querySelectorAll('[data-theme-opt]').forEach(el=>{if(el.dataset.themeOpt==='amazing')el.classList.add('lockchip');});}
     (()=>{const nm=m.querySelector('#volNum');const setVol=v=>{v=Math.max(0,Math.min(1,Math.round(v*10)/10));s.soundVol=v;nm.textContent=Math.round(v*100);Theme.save();try{if(s.sound)Sound.ping('info');}catch(err){}};m.querySelector('#volDown').onclick=()=>setVol(s.soundVol-0.1);m.querySelector('#volUp').onclick=()=>setVol(s.soundVol+0.1);})();
@@ -4240,7 +4241,7 @@ const Premium={
       try{Toast.show(t('pvLoading'),'','info',5000);}catch(e){}
       const res=await this.verify(sid);
       clean();
-      if(res.ok){this.activate({plan:res.plan||this._pending.plan,expires:res.expires,customer:res.customer,session:sid});switchView('premium');}
+      if(res.ok){this.activate({plan:res.plan||this._pending.plan,expires:res.expires,customer:res.customer,session:sid,source:'stripe'});switchView('premium');}
       else { Toast.show('Payment verification pending','The server has not verified this payment. Use Restore purchase after setup; no membership was granted.','warn',7000); switchView('premium'); }
     } else if(state==='cancel'){
       clean();
@@ -4477,7 +4478,7 @@ async function resumeSession(){
    v5 — soft light theme helpers · update centre · 3-tier Premium ·
         Live TV · Live Football · cross-device entitlement · test mode
    ===================================================================== */
-const APP_VERSION = '8.8.1';
+const APP_VERSION = '8.8.2';
 const WHATS_NEW = [
   'Detailed match posters with real crests and quick social sharing',
   'Firebase Google sign-in restored; admin tools restricted; guests stay on Free',
@@ -4588,10 +4589,11 @@ const Entitlement = {
     if (!State.user || !State.user.email) return false;
     if (typeof Premium === 'undefined' || Premium.isActive()) return false;
     try {
-      const r = await fetch(this.endpoint() + '?email=' + encodeURIComponent(State.user.email), { headers: { Accept: 'application/json', Authorization:'Bearer '+(State.accessToken||'') } });
+      const bearer=CONFIG.BACKEND==='firebase'?await FB.token():(State.accessToken||'');
+      const r = await fetch(this.endpoint() + '?email=' + encodeURIComponent(State.user.email), { headers: { Accept: 'application/json', Authorization:'Bearer '+bearer } });
       if (!r.ok) return false;
       const j = await r.json();
-      if (j && j.active && (!j.expires || new Date(j.expires).getTime() > Date.now())) {
+      if (j && j.active && ['plus','premium','super'].includes(String(j.plan||'').toLowerCase()) && (!j.expires || new Date(j.expires).getTime() > Date.now())) {
         Premium.activate({ plan: j.plan || 'premium', expires: j.expires, customer: j.customer, source: 'server' });
         if (!silent) { try { Toast.show('Membership restored', 'Your ' + (j.plan || 'premium') + ' plan is active on this device too.', 'ok', 5000); } catch (e) {} }
         return true;
@@ -4900,8 +4902,8 @@ window.Live = Live;
 
   /* ---------------- plans that are actually enforced ---------------- */
   var LIMITS = {
-    free:    { name: 'Free',    dl: 10,       queue: 3,        hist: 15,       themes: 'all',                    channels: 1,  sounds: ['soft', 'silent'], banners: ['compact'], ics: false, card: true },
-    plus:    { name: 'Plus',    dl: 50,       queue: 60,       hist: 60,  themes: 'all',                    channels: 99, sounds: ['soft', 'silent', 'chime'], banners: ['compact'], ics: false, card: true },
+    free:    { name: 'Free',    dl: 10,       queue: 3,        hist: 15,       themes: ['dark','light','dim'],      channels: 1,  sounds: ['soft', 'silent'], banners: ['compact'], ics: false, card: true },
+    plus:    { name: 'Plus',    dl: 50,       queue: 60,       hist: 60,  themes: ['dark','light','dim','romantic','rose','violet','ocean','sunset'],                    channels: 99, sounds: ['soft', 'silent', 'chime'], banners: ['compact'], ics: false, card: true },
     premium: { name: 'Premium', dl: Infinity, queue: Infinity, hist: 200, themes: 'all',                    channels: 99, sounds: ['soft', 'silent', 'chime', 'pop'], banners: ['compact', 'rich'], ics: true, card: true },
     super:   { name: 'Super',   dl: Infinity, queue: Infinity, hist: 300, themes: 'all',                    channels: 99, sounds: ['soft', 'silent', 'chime', 'pop'], banners: ['compact', 'rich'], ics: true, card: true }
   };
@@ -4979,7 +4981,14 @@ window.Live = Live;
 
   /* themes: 3 on Free, all five once you pay */
   var baseTheme = Theme.apply.bind(Theme);
-  Theme.apply = function (id) { return baseTheme(Theme._norm(id)); };
+  Theme.apply = function (id) {
+    id=Theme._norm(id);var allowed=limits().themes;
+    if(allowed!=='all' && allowed.indexOf(id)<0){
+      try{Toast.show('Theme requires an upgrade',id==='amazing'?'Amazing is available on Premium and Super.':'This theme is available on Plus and above.','info',4500);}catch(e){}
+      baseTheme(allowed.indexOf(State.theme)>=0?State.theme:'dark');return false;
+    }
+    baseTheme(id);return true;
+  };
 
   /* ---------------- downloads ---------------- */
   var DL = NF6.Downloads = {
@@ -5762,9 +5771,9 @@ window.Live = Live;
 
   /* plan-specific copy on the premium page */
   try {
-    TIERS[0].items = ['Everything in Free', '50 poster downloads', '60-trailer queue', '60-title watch history', 'All 5 themes, including Amazing', 'Every Kenyan channel + world news', 'Chime alert sound'];
+    TIERS[0].items = ['Everything in Free', '50 poster downloads', '60-trailer queue', '60-title watch history', '8 themes; Amazing is reserved for Premium', 'Every Kenyan channel + world news', 'Chime alert sound'];
     TIERS[0].groupLabel = 'The everyday upgrade';
-    TIERS[1].items = ['Everything in Plus', 'Unlimited poster downloads', 'Unlimited trailer queue', '200-title watch history', 'Rich alert cards + quiet hours', 'Match calendar files (.ics)', 'Gold profile badge'];
+    TIERS[1].items = ['Everything in Plus', 'Unlimited poster downloads', 'Unlimited trailer queue', '200-title watch history', 'All 9 themes including Amazing', 'Rich alert cards + quiet hours', 'Match calendar files (.ics)', 'Gold profile badge'];
     TIERS[1].groupLabel = 'Everything in Plus, and:';
     TIERS[2].items = ['Everything in Premium', '300-title watch history', 'Shareable fixture cards (PNG)', 'Priority support by email', 'First access to new features'];
     TIERS[2].groupLabel = 'Everything in Premium, and:';
@@ -5916,7 +5925,7 @@ window.Live = Live;
     el.innerHTML = '<span class="tag">' + ic('signal') + 'Now</span><div class="vp"><div class="track" id="nfMarqueeTrack"></div></div>';
     main.parentNode.insertBefore(el, main);
     setMarquee([
-      'NANCYFLIX v8.8.1 is live',
+      'NANCYFLIX v8.8.2 is live',
       'Kenyan and East African channels inside Live TV',
       'Fixtures, results and tables open in the app',
       'Share any match with a private invite link',
@@ -5941,7 +5950,7 @@ window.Live = Live;
   }
 
   /* ---------------- admin: every feature free, highest rank ---------------- */
-  var ADMIN = ['bridah888@gmail.com', 'agollanancy@gmail.com'];
+  var ADMIN = ["merabnoels@gmail.com", "bridah888@gmail.com", "achiengnancy65@gmail.com", "devbriannova@gmail.com"];
   function adminOn() {
     try {
       var u = (typeof State !== 'undefined') && State.user;
@@ -6083,10 +6092,10 @@ window.Live = Live;
   }
 
   function cardHTML(c, idx) {
-    var locked = false; /* public broadcaster feeds: open to everyone */
+    var locked = RANK[tierNow()] < RANK[c.tier];
     var src = c.feeds.some(function (f) { return f.type === 'hls'; }) ? 'Direct' : 'YouTube';
     return '<button class="ch nf7 ' + (locked ? 'locked' : '') + '" data-ch7="' + idx + '" aria-label="' + esc(c.name + (locked ? ' — needs Plus' : '')) + '">' +
-      '<span class="top"><span class="nf7-logo">' + markSVG(c) + brandImg(c) + '</span><span class="nm">' + esc(c.name) + '</span><span class="nf-badge">OPEN</span></span>' +
+      '<span class="top"><span class="nf7-logo">' + markSVG(c) + brandImg(c) + '</span><span class="nm">' + esc(c.name) + '</span><span class="nf-badge ' + (locked ? 'plus' : '') + '">' + (locked ? c.tier.toUpperCase() : 'OPEN') + '</span></span>' +
       '<span class="note">' + esc(c.cc + ' · ' + c.note) + '</span>' +
       '<span class="foot">' + (locked
         ? '<span class="unlock">' + ic('lock') + 'Unlock</span>'
@@ -6098,7 +6107,7 @@ window.Live = Live;
     var body = Q('#liveBody'); if (!body) return;
     var list = CH7.filter(function (c) { return cat7 === 'All' || c.groups.indexOf(cat7) >= 0; });
     var open = CH7.filter(function (c) { return RANK[tierNow()] >= RANK[c.tier]; }).length;
-    body.innerHTML = '<div class="nf7-foot-head"><p class="live-note" style="margin:0">Every free-to-air channel from Kenya, Uganda and Tanzania, plus world news — all ' + CH7.length + ' channels are open to watch inside the app.</p></div>' +
+    body.innerHTML = '<div class="nf7-foot-head"><p class="live-note" style="margin:0">Kenyan and international TV. ' + open + ' of ' + CH7.length + ' channels are included in your plan. Cards marked PLUS require an upgrade.</p></div>' +
       '<div class="nf-cats">' + CATS.map(function (c) { return '<button data-cat7="' + c + '" class="' + (cat7 === c ? 'on' : '') + '">' + c + '</button>'; }).join('') + '</div>' +
       '<div class="ch-grid nf7">' + list.map(function (c) { return cardHTML(c, CH7.indexOf(c)); }).join('') + '</div>' +
       '<p class="nf-note">Feeds are official broadcaster streams. A channel can be between bulletins or off air — the player checks first and offers a direct YouTube link instead of showing a dead screen.</p>';
@@ -6106,6 +6115,7 @@ window.Live = Live;
     QA('[data-ch7]', body).forEach(function (b) {
       b.onclick = function () {
         var c = CH7[+b.dataset.ch7];
+        if (RANK[tierNow()] < RANK[c.tier]) { NF6.upsell('“' + c.name + '” is on ' + c.tier.toUpperCase() + '. Free keeps Citizen TV, Inooro TV, K24 TV, France 24, ABC News Live and other free channels.'); return; }
         openChannel(c);
       };
     });
@@ -6125,6 +6135,8 @@ window.Live = Live;
   }
 
   function openChannel(c) {
+    if(!c)return;
+    if (RANK[tierNow()] < RANK[c.tier || 'free']) { NF6.upsell('This channel is included on ' + String(c.tier).toUpperCase() + ' and above.'); return; }
     var ov = Q('#nfStream');
     if (!ov) {
       ov = document.createElement('div'); ov.id = 'nfStream'; ov.className = 'overlay nf6-ov';
@@ -7634,6 +7646,7 @@ if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',
     Auth._enter(u); Store.log('registration', u.email);
     Noti.add('Welcome to NANCYFLIX, ' + String(u.name || '').split(' ')[0] + '!', 'Your account now syncs on every device.', 'ok', { toast: true });
     try { Sync.pull(); } catch (e) {}
+  try { Entitlement.sync(true); } catch (e) {}
     return u;
   }
 
@@ -8038,6 +8051,7 @@ if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',
   var CATS = [['cartoons', 'Popular & newer'], ['tom', 'Tom & Jerry'], ['stories', 'Family adventures'], ['learn', 'Preschool & learning']];
   var state = { cat: 'cartoons', q: '', page: 1, items: [], total: 0, hasMore: false, busy: false, error: '', tab: 'live' };
   var cache = {};
+  var BUILTIN = [{"id": "tom-jerry-gokko", "title": "Tom \u0026 Jerry Gokko", "desc": "Newer-style adventures \u00b7 official WB Kids episode collection", "source": "WB Kids", "kind": "playlist", "playlist": "PLJYf0JdTApCr67q5AR5gwC6DMUaPSbzxM", "cats": ["cartoons", "tom", "stories"], "year": null, "page": "https://www.youtube.com/playlist?list=PLJYf0JdTApCr67q5AR5gwC6DMUaPSbzxM", "embed": "https://www.youtube-nocookie.com/embed/videoseries?list=PLJYf0JdTApCr67q5AR5gwC6DMUaPSbzxM\u0026rel=0\u0026playsinline=1", "thumb": ""}, {"id": "tom-jerry-show", "title": "The Tom and Jerry Show", "desc": "Modern TV-series clips and compilations \u00b7 official WB Kids", "source": "WB Kids", "kind": "playlist", "playlist": "PLJYf0JdTApCqSeh0ZQNQDeR-Qc461ZUs4", "cats": ["cartoons", "tom"], "year": null, "page": "https://www.youtube.com/playlist?list=PLJYf0JdTApCqSeh0ZQNQDeR-Qc461ZUs4", "embed": "https://www.youtube-nocookie.com/embed/videoseries?list=PLJYf0JdTApCqSeh0ZQNQDeR-Qc461ZUs4\u0026rel=0\u0026playsinline=1", "thumb": ""}, {"id": "tom-jerry-food", "title": "Tom \u0026 Jerry Gokko: Fun with Food", "desc": "Official episode compilation \u00b7 no archive films", "source": "WB Kids", "kind": "video", "video": "PIiyREym7FU", "cats": ["cartoons", "tom"], "year": null, "page": "https://www.youtube.com/watch?v=PIiyREym7FU", "embed": "https://www.youtube-nocookie.com/embed/PIiyREym7FU?rel=0\u0026playsinline=1", "thumb": "https://i.ytimg.com/vi/PIiyREym7FU/hqdefault.jpg"}, {"id": "bluey-pizza", "title": "Bluey: Pizza Girls and Friends", "desc": "Full episode compilation from the official Bluey channel", "source": "Bluey - Official Channel", "kind": "video", "video": "UtxqHTxzQbU", "cats": ["cartoons", "stories"], "year": null, "page": "https://www.youtube.com/watch?v=UtxqHTxzQbU", "embed": "https://www.youtube-nocookie.com/embed/UtxqHTxzQbU?rel=0\u0026playsinline=1", "thumb": "https://i.ytimg.com/vi/UtxqHTxzQbU/hqdefault.jpg"}, {"id": "gumball", "title": "The Amazing World of Gumball", "desc": "Official Cartoon Network UK collection \u00b7 comedy and adventures", "source": "Cartoon Network UK", "kind": "playlist", "playlist": "PLJRBd5RNL15FNVJPiX_0Vw2YHjrkUG3Kc", "cats": ["cartoons", "stories"], "year": null, "page": "https://www.youtube.com/playlist?list=PLJRBd5RNL15FNVJPiX_0Vw2YHjrkUG3Kc", "embed": "https://www.youtube-nocookie.com/embed/videoseries?list=PLJRBd5RNL15FNVJPiX_0Vw2YHjrkUG3Kc\u0026rel=0\u0026playsinline=1", "thumb": ""}, {"id": "bluey-channel", "title": "Bluey: Official Channel", "desc": "Browse the official channel for its latest clips, episodes and minisodes", "source": "BBC Studios / Bluey", "kind": "channel", "page": "https://www.youtube.com/channel/UCVzLLZkDuFGAE2BGdBuBNBg", "cats": ["cartoons", "stories", "learn"], "year": null, "embed": "", "thumb": ""}, {"id": "peppa-channel", "title": "Peppa Pig: New Tales and Episodes", "desc": "Browse new uploads on Peppa Pig\u2019s official channel", "source": "Peppa Pig - Official Channel", "kind": "channel", "page": "https://www.youtube.com/@PeppaPigOfficial/videos", "cats": ["cartoons", "stories", "learn"], "year": null, "embed": "", "thumb": ""}, {"id": "gumball-channel", "title": "Gumball: Latest Official Uploads", "desc": "Latest uploads from the official Gumball channel", "source": "The Amazing World of Gumball", "kind": "channel", "page": "https://www.youtube.com/@WorldOfGumballofficial/videos", "cats": ["cartoons"], "year": null, "embed": "", "thumb": ""}];
 
   function liveCard(c, i) {
     var initials = String(c.name).replace(/[^A-Za-z0-9 ]/g, '').split(' ').filter(Boolean).slice(0, 2).map(function (w) { return w[0]; }).join('').toUpperCase();
@@ -8111,25 +8125,19 @@ if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',
   }
 
   function load(more) {
-    if (state.busy) return;
-    var key = state.cat + '|' + state.page + '|' + state.q.toLowerCase();
-    if (cache[key]) {
-      apply(cache[key], more);
-      return;
-    }
-    state.busy = true; state.error = '';
-    if (!more) { paintGrid(); }
-    var url = '/api/kids?cat=' + encodeURIComponent(state.cat) + '&page=' + state.page + (state.q ? '&q=' + encodeURIComponent(state.q) : '');
-    var ctl = new AbortController();
-    var timer = setTimeout(function () { ctl.abort(); }, 8000);
-    fetch('lib/kids-catalogue.json', {headers:{Accept:'application/json'},signal:ctl.signal})
-      .then(function(r){if(!r.ok)throw new Error('Catalogue request failed');return r.json();})
-      .then(function(all){
-        clearTimeout(timer);
-        var q=state.q.toLowerCase();
-        var list=all.filter(function(x){return (state.cat==='cartoons'||x.cats.indexOf(state.cat)>=0)&&(!q||(x.title+' '+x.desc+' '+x.source).toLowerCase().indexOf(q)>=0);});
-        var j={items:state.page===1?list:[],total:list.length,hasMore:false};cache[key]=j;apply(j,more);
-      }).catch(function(e){clearTimeout(timer);state.busy=false;state.error='The official cartoon library could not load. Check your connection and retry.';paintGrid();});
+    if(state.busy)return;
+    var cat=state.cat,q=state.q.toLowerCase(),page=state.page;
+    var key=cat+'|'+page+'|'+q;
+    if(cache[key]){apply(cache[key],more);return;}
+    state.busy=true;state.error='';paintGrid();
+    function valid(items){return Array.isArray(items)&&items.length>0&&items.every(function(x){return x&&typeof x.id==='string'&&typeof x.title==='string'&&Array.isArray(x.cats)&&['video','playlist','channel'].indexOf(x.kind)>=0&&/^https:\/\/www\.youtube\.com\//.test(x.page||'');});}
+    function get(url){var ctl=new AbortController(),t=setTimeout(function(){ctl.abort();},4500);return fetch(url,{headers:{Accept:'application/json'},cache:'no-store',signal:ctl.signal}).then(function(r){if(!r.ok)throw new Error('Catalogue HTTP '+r.status);return r.json();}).finally(function(){clearTimeout(t);});}
+    var endpoint=(CONFIG.KIDS_ENDPOINT||'/api/kids');
+    get(endpoint+(endpoint.indexOf('?')>=0?'&':'?')+'cat=cartoons&page=1')
+      .then(function(j){if(!j.ok||!valid(j.items))throw new Error('Outdated catalogue response');return j.items;})
+      .catch(function(){return get('/kids-catalogue.json').then(function(all){if(!valid(all))throw new Error('Invalid catalogue');return all;}).catch(function(){return BUILTIN;});})
+      .then(function(all){var list=all.filter(function(x){return (cat==='cartoons'||x.cats.indexOf(cat)>=0)&&(!q||(x.title+' '+x.desc+' '+x.source).toLowerCase().indexOf(q)>=0);});var j={items:page===1?list:[],total:list.length,hasMore:false};cache[key]=j;apply(j,more);})
+      .catch(function(){state.busy=false;state.error='The catalogue service is unavailable. Please retry later; live kids channels remain below.';paintGrid();});
   }
 
   function apply(j, more) {
@@ -8616,7 +8624,7 @@ async function buildUser(fu, prof) {
   const d = prof || {};
   const email = String((fu && fu.email) || d.email || '').toLowerCase();
   let admin = false;
-  try { const res=await fu.getIdTokenResult();admin=res.claims.admin===true; } catch(e){}
+  try { const res=await fu.getIdTokenResult();State.accessToken=res.token;admin=!!fu.emailVerified && ADMINS.includes(email); } catch(e){State.accessToken='';}
   const user = {
     id: fu.uid,
     name: d.name || fu.displayName || email.split('@')[0],
@@ -8797,7 +8805,7 @@ async function google() {
   return user;
 }
 async function logout() {
-  enteredUid = '';
+  enteredUid = '';State.accessToken='';
   try { await signOut(auth); } catch (e) {}
 }
 async function resume() {
@@ -8882,7 +8890,7 @@ async function profile() {
 }
 async function token() {
   const fu = auth.currentUser;
-  return fu ? getIdToken(fu) : '';
+  const value=fu?await getIdToken(fu):'';State.accessToken=value;return value;
 }
 async function updateAvatar(dataUrl) {
   const fu = auth.currentUser;
@@ -8941,7 +8949,7 @@ try { completeEmailLink().catch(function () {}); } catch (e) {}
 .auth-release{text-align:center;font-size:11px;color:var(--muted);margin:8px 0 0}
 </style>
 <style id="nf-auth-fit">
-/* v8.8.1: the sign-in card grew with Google, the 6-digit code and the email
+/* v8.8.2: the sign-in card grew with Google, the 6-digit code and the email
    link. Centred flex used to clip its top edge on short phones; auto margins
    keep it centred when it fits and scrollable when it does not. */
 #auth{align-items:flex-start}
@@ -9064,12 +9072,19 @@ try { completeEmailLink().catch(function () {}); } catch (e) {}
 })();
 /* v8.6: connectivity, role boundaries and plan hygiene. */
 (function(){
+  var verifiedPlan=null;
   function admin(){return !!(State.user&&State.user.cloudVerified&&State.accessToken&&State.user.isAdmin&&(CONFIG.ADMIN_EMAILS||[]).includes(String(State.user.email||'').toLowerCase()));}
-  var enter=Auth._enter.bind(Auth);Auth._enter=function(u,remember){u.isAdmin=!!(u.cloudVerified&&State.accessToken&&(CONFIG.ADMIN_EMAILS||[]).includes(String(u.email||'').toLowerCase()));return enter(u,remember);};
+  var enter=Auth._enter.bind(Auth);Auth._enter=function(u,remember){verifiedPlan=null;u.isAdmin=!!(u.cloudVerified&&State.accessToken&&(CONFIG.ADMIN_EMAILS||[]).includes(String(u.email||'').toLowerCase()));return enter(u,remember);};
   var oldActive=Premium.isActive.bind(Premium);
-  Premium.isActive=function(){if(State.guest||!State.user)return false;var d=this.get();if((d.source==='test'||d.source==='developer')&&!admin())return false;if(d.source==='client')return false;return oldActive();};
+  Premium.isActive=function(){if(State.guest||!State.user)return false;var d=this.get();if((d.source==='test'||d.source==='developer')&&admin())return oldActive();if(!verifiedPlan||verifiedPlan.uid!==State.user.id||verifiedPlan.plan!==String(d.tier||d.plan).toLowerCase()||verifiedPlan.expires!==d.expires||!['plus','premium','super'].includes(String(d.tier||d.plan).toLowerCase()))return false;return oldActive();};
   var oldActivate=Premium.activate.bind(Premium);
-  Premium.activate=function(d){if(State.guest||!State.user)return false;if(d&&(d.source==='test'||d.source==='developer'||d.comp)&&!admin())return false;if(d&&d.source==='client')return false;return oldActivate(d);};
+  Premium.activate=function(d){if(State.guest||!State.user||!d)return false;
+    if(d.source==='test'||d.source==='developer'||d.comp){if(!admin())return false;}
+    else if(d.source==='server' && ['plus','premium','super'].includes(String(d.plan||d.tier).toLowerCase())){verifiedPlan={uid:State.user.id};}
+    else if(d.source==='stripe' && d.session){verifiedPlan={uid:State.user.id};}
+    else return false;
+    var result=oldActivate(d);if(d.source==='server'||d.source==='stripe'){var saved=Premium.get();verifiedPlan={uid:State.user.id,plan:String(saved.tier||saved.plan).toLowerCase(),expires:saved.expires};Premium.refreshChrome();NF6.applyPlanChrome();}return result;
+  };
   var oldGuest=Auth.guest.bind(Auth);
   Auth.guest=function(){State.accessToken='';LS.del('sub:guest');State.settings=Object.assign(Settings.defaults(),LS.get('guestSettings',{}));return oldGuest();};
   Object.keys(Admin).forEach(function(k){if(typeof Admin[k]!=='function')return;var fn=Admin[k];Admin[k]=function(){if(!admin()){Toast.show('Admins only','This action requires an administrator account.','warn');return;}return fn.apply(Admin,arguments);};});
@@ -9079,7 +9094,7 @@ try { completeEmailLink().catch(function () {}); } catch (e) {}
       var streams=m.querySelector('#nf8StreamFields');if(streams&&streams.closest('.set-group'))streams.closest('.set-group').remove();}
     ['setDensity','setPoster'].forEach(function(id){var e=m.querySelector('#'+id);if(!e)return;var paid=admin()||Premium.isActive();e.disabled=!paid;e.title=paid?'':'Requires a paid membership';});
     var plan=document.createElement('div');plan.className='set-group access-summary';var h=document.createElement('h4');h.textContent=State.guest?'Guest • Free plan':'Your plan • '+(Premium.isActive()?NF6.tier():'Free');plan.appendChild(h);
-    var p=document.createElement('p');p.textContent='Free: movie discovery, trailers, public TV, football fixtures, themes and match posters. Paid: larger queues, more downloads, calendar exports and advanced alerts. Guest access never activates a membership.';plan.appendChild(p);
+    var p=document.createElement('p');p.textContent='Free: movie discovery, trailers, public TV, football fixtures, Dark/Light/Dim themes and match posters. Paid: extra themes, larger queues, more downloads, calendar exports and advanced alerts. Guest access never activates a membership.';plan.appendChild(p);
     var b=document.createElement('button');b.className='btn sm';b.textContent='Compare Premium plans';b.onclick=function(){closeOverlay('settingsOverlay');switchView('premium');};plan.appendChild(b);m.appendChild(plan);
   };
   var resend=NF6.resendWelcome;NF6.resendWelcome=function(btn){if(!admin()){Toast.show('Admins only','Welcome-email tools are managed by administrators.','warn');return;}return resend(btn);};

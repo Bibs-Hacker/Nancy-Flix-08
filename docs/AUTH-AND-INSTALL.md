@@ -13,7 +13,9 @@ When that limit is crossed the build compiles fine, the log reaches "Deploying o
 
 **Fixed in 8.7.1:** helpers moved to a root `lib/` folder (not counted as functions) and the poster image endpoint was merged into `api/share.js`. The project now has 10 functions:
 
-`entitlement, football, football-alt, kids, live, livecheck, share, stripe-verify, tmdb, welcome`
+`auth-code, entitlement, football, football-alt, kids, live, livecheck, share, stripe-verify, tmdb, welcome`
+
+(8.8.0 adds `auth-code` for the 6-digit email code, so the count is eleven — still inside the free limit of twelve.)
 
 When you upload this build, **delete the three files that no longer exist**, otherwise they come back as functions:
 
@@ -21,7 +23,7 @@ When you upload this build, **delete the three files that no longer exist**, oth
 - `api/share-card.js`
 - `api/lib/security.js` (and the now-empty `api/lib` folder)
 
-Then redeploy. In the Vercel project open the **Functions** tab and count: ten entries means you are inside the free limit. If a deploy still stalls, the reason is the first red line in the log, not the last grey one.
+Then redeploy. In the Vercel project open the **Functions** tab and count: eleven entries means you are inside the free limit. If a deploy still stalls, the reason is the first red line in the log, not the last grey one.
 
 ## 2. No code in the email, and the link went to localhost
 

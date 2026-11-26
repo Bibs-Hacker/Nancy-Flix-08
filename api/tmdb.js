@@ -43,8 +43,14 @@ module.exports = async function handler(req, res) {
     if (k === "api_key" || k === "append_to_response") continue;
     if (typeof v === "string") qs.set(k, v.slice(0, 200));
   }
+  // Only recognised append sections, never arbitrary paths or credentials.
+  if (typeof rest.append_to_response === 'string') {
+    const sections = rest.append_to_response.split(',').filter(x =>
+      ['videos','credits','similar','recommendations','images','release_dates','external_ids'].includes(x));
+    if (sections.length) qs.set('append_to_response', [...new Set(sections)].join(','));
+  }
   qs.set("api_key", KEY);
-  qs.set("language", rest.language || "en-US");
+  qs.set("language", typeof rest.language === "string" ? rest.language.slice(0, 20) : "en-US");
 
   const url = `https://api.themoviedb.org/3${path}?${qs.toString()}`;
   try {

@@ -2,7 +2,7 @@
   {
     "id": "tom-jerry-gokko",
     "title": "Tom & Jerry Gokko",
-    "desc": "Newer-style adventures · official WB Kids episode collection",
+    "desc": "Newer-style adventures \u00b7 official WB Kids episode collection",
     "source": "WB Kids",
     "kind": "playlist",
     "playlist": "PLJYf0JdTApCr67q5AR5gwC6DMUaPSbzxM",
@@ -19,7 +19,7 @@
   {
     "id": "tom-jerry-show",
     "title": "The Tom and Jerry Show",
-    "desc": "Modern TV-series clips and compilations · official WB Kids",
+    "desc": "Modern TV-series clips and compilations \u00b7 official WB Kids",
     "source": "WB Kids",
     "kind": "playlist",
     "playlist": "PLJYf0JdTApCqSeh0ZQNQDeR-Qc461ZUs4",
@@ -35,7 +35,7 @@
   {
     "id": "tom-jerry-food",
     "title": "Tom & Jerry Gokko: Fun with Food",
-    "desc": "Official episode compilation · no archive films",
+    "desc": "Official episode compilation \u00b7 no archive films",
     "source": "WB Kids",
     "kind": "video",
     "video": "PIiyREym7FU",
@@ -67,7 +67,7 @@
   {
     "id": "gumball",
     "title": "The Amazing World of Gumball",
-    "desc": "Official Cartoon Network UK collection · comedy and adventures",
+    "desc": "Official Cartoon Network UK collection \u00b7 comedy and adventures",
     "source": "Cartoon Network UK",
     "kind": "playlist",
     "playlist": "PLJRBd5RNL15FNVJPiX_0Vw2YHjrkUG3Kc",
@@ -99,7 +99,7 @@
   {
     "id": "peppa-channel",
     "title": "Peppa Pig: New Tales and Episodes",
-    "desc": "Browse new uploads on Peppa Pig’s official channel",
+    "desc": "Browse new uploads on Peppa Pig\u2019s official channel",
     "source": "Peppa Pig - Official Channel",
     "kind": "channel",
     "page": "https://www.youtube.com/@PeppaPigOfficial/videos",

@@ -63,8 +63,8 @@ create policy "announcements read" on public.announcements for select to authent
 
 drop policy if exists "announcements admin write" on public.announcements;
 create policy "announcements admin write" on public.announcements for all to authenticated
-  using (lower(coalesce(auth.jwt() ->> 'email','')) in ('bridah888@gmail.com','agollanancy@gmail.com'))
-  with check (lower(coalesce(auth.jwt() ->> 'email','')) in ('bridah888@gmail.com','agollanancy@gmail.com'));
+  using (lower(coalesce(auth.jwt() ->> 'email','')) in ('bridah888@gmail.com','achiengnancy65@gmail.com'))
+  with check (lower(coalesce(auth.jwt() ->> 'email','')) in ('bridah888@gmail.com','achiengnancy65@gmail.com'));
 
 -- feedback: a user writes their own, owners read everything ---
 drop policy if exists "feedback insert own" on public.feedback;
@@ -72,18 +72,18 @@ create policy "feedback insert own" on public.feedback for insert to authenticat
 
 drop policy if exists "feedback admin read" on public.feedback;
 create policy "feedback admin read" on public.feedback for select to authenticated
-  using (lower(coalesce(auth.jwt() ->> 'email','')) in ('bridah888@gmail.com','agollanancy@gmail.com')
+  using (lower(coalesce(auth.jwt() ->> 'email','')) in ('bridah888@gmail.com','achiengnancy65@gmail.com')
          or auth.uid() = user_id);
 
 drop policy if exists "feedback admin write" on public.feedback;
 create policy "feedback admin write" on public.feedback for update to authenticated
-  using (lower(coalesce(auth.jwt() ->> 'email','')) in ('bridah888@gmail.com','agollanancy@gmail.com'))
-  with check (lower(coalesce(auth.jwt() ->> 'email','')) in ('bridah888@gmail.com','agollanancy@gmail.com'));
+  using (lower(coalesce(auth.jwt() ->> 'email','')) in ('bridah888@gmail.com','achiengnancy65@gmail.com'))
+  with check (lower(coalesce(auth.jwt() ->> 'email','')) in ('bridah888@gmail.com','achiengnancy65@gmail.com'));
 
 -- owner accounts can read every profile (admin directory) -----
 drop policy if exists "profiles admin read" on public.profiles;
 create policy "profiles admin read" on public.profiles for select to authenticated
-  using (lower(coalesce(auth.jwt() ->> 'email','')) in ('bridah888@gmail.com','agollanancy@gmail.com'));
+  using (lower(coalesce(auth.jwt() ->> 'email','')) in ('bridah888@gmail.com','achiengnancy65@gmail.com'));
 
 grant usage on schema public to anon, authenticated;
 grant select, insert, update on public.profiles      to authenticated;

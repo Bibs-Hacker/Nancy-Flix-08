@@ -1,10 +1,10 @@
 {
-  "version": "8.8.1",
+  "version": "8.8.2",
   "build": "2026-11-26",
   "notes": [
-    "Fixed TMDB proxy dropping trailer videos",
-    "Trailer retry, alternate clips and YouTube fallback",
-    "Firebase Google button and code routing",
-    "Official Tom & Jerry Gokko, Bluey and contemporary kids collections"
+    "Kids API primary loader, root static and built-in official fallback",
+    "Restored Free / Plus / Premium / Super limits",
+    "Four verified administrator emails in client, server and rules",
+    "Firebase ID token forwarding for admin APIs and entitlements"
   ]
 }
