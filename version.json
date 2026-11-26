@@ -1,13 +1,10 @@
 {
-  "version": "8.7.2",
-  "build": "2026-11-25",
+  "version": "8.8.1",
+  "build": "2026-11-26",
   "notes": [
-    "Guest browsing is back; only continue-on-this-device was removed",
-    "Sign-in emails now return to this site instead of a localhost address",
-    "The one-time code box sends the code request to the right domain",
-    "Removed the continue-on-this-device and guest buttons",
-    "Install button and honest install help, so the app lands in the apps list",
-    "Fewer serverless functions so the free Vercel plan accepts the deployment",
-    "Kids entry in the menu and header"
+    "Fixed TMDB proxy dropping trailer videos",
+    "Trailer retry, alternate clips and YouTube fallback",
+    "Firebase Google button and code routing",
+    "Official Tom & Jerry Gokko, Bluey and contemporary kids collections"
   ]
 }

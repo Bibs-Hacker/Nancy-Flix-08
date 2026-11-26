@@ -1,0 +1,9 @@
+{
+  "name": "nancyflix",
+  "private": true,
+  "description": "NANCYFLIX by Dev Brian + Dev Nancy. Static app plus serverless helpers on Vercel.",
+  "engines": { "node": ">=20" },
+  "dependencies": {
+    "firebase-admin": "^12.7.0"
+  }
+}

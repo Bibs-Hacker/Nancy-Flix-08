@@ -1,0 +1,60 @@
+rules_version = '2';
+service cloud.firestore {
+  match /databases/{database}/documents {
+
+    function signedIn() { return request.auth != null; }
+    function isAdmin()  { return signedIn() && request.auth.token.admin == true; }
+    function mine(uid)  { return signedIn() && request.auth.uid == uid; }
+
+    /* One document per person: profile, settings, notifications, history. */
+    match /users/{uid} {
+      allow get:    if mine(uid) || isAdmin();
+      allow list:   if isAdmin();
+      allow create: if mine(uid)
+                    && request.resource.data.email == request.auth.token.email
+                    && request.resource.data.get('is_admin', false) == false
+                    && !('entitlement' in request.resource.data)
+                    && !('isAdmin' in request.resource.data);
+      /* A member can edit their own profile, but never promote themselves
+         or unlock Premium. Those two fields are server-side only. */
+      allow update: if mine(uid)
+                    && !request.resource.data.diff(resource.data).affectedKeys()
+                         .hasAny(['is_admin', 'isAdmin', 'entitlement']);
+      allow delete: if isAdmin();
+    }
+
+    /* Saved list, one document per person. */
+    match /watchlists/{uid} {
+      allow get, create, update: if mine(uid);
+      allow list: if isAdmin();
+      allow delete: if isAdmin();
+    }
+
+    /* Announcements are read by everybody, written by admins only. */
+    match /announcements/{id} {
+      allow get, list: if true;
+      allow write: if isAdmin();
+    }
+
+    /* Feedback: a member may add and correct their own entries only.
+       Admins read everything; nobody else can read the inbox. */
+    match /feedback/{id} {
+      allow create: if signedIn()
+                    && request.resource.data.user_id == request.auth.uid
+                    && request.resource.data.payload.message is string
+                    && request.resource.data.payload.message.size() <= 2000;
+      allow update: if isAdmin()
+                    || (signedIn() && resource.data.user_id == request.auth.uid
+                    && request.resource.data.user_id == request.auth.uid
+                    && request.resource.data.payload.message is string
+                    && request.resource.data.payload.message.size() <= 2000);
+      allow get, list: if isAdmin();
+      allow delete: if isAdmin();
+    }
+
+    /* Share posters and the 6-digit sign-in codes are written by the server
+       (Admin SDK bypasses these rules), so the browser gets no access. */
+    match /shareCards/{id} { allow read: if true; allow write: if false; }
+    match /loginCodes/{id} { allow read, write: if false; }
+  }
+}

@@ -1777,6 +1777,23 @@ nav .nav button[data-view="live"],#mainNav button[data-view="live"],#bottomNav b
 </style>
 </head>
 <body class="noscroll">
+<script id="nf-firebase-proxy">
+/* Early proxy so any script can call FB.x() before the module below finishes loading. */
+window.__nfFBReady = new Promise(function (res) { window.__nfFBResolve = res; });
+window.FB = (function () {
+  var names = ['register','login','google','logout','resume','sendCode','verifyCode','emailLink','completeEmailLink','rest','reset','profile','token','updateAvatar'];
+  var api = { ready: function () { return window.__nfFBReady; } };
+  names.forEach(function (n) {
+    api[n] = function () {
+      var a = arguments;
+      var timeout = new Promise(function (_, rej) { setTimeout(function () { rej(new Error('Firebase did not load. Check your connection and reload.')); }, 8000); });
+      return Promise.race([window.__nfFBReady, timeout]).then(function (F) { return F[n].apply(F, a); });
+    };
+  });
+  return api;
+})();
+</script>
+
 <!-- ============ SPLASH ============ -->
 <div id="splash" class="nfx-splash" role="status" aria-label="NANCYFLIX is starting">
   <div class="nfx-aura" aria-hidden="true"></div>
@@ -1817,7 +1834,7 @@ nav .nav button[data-view="live"],#mainNav button[data-view="live"],#bottomNav b
   <div class="nfx-foot">
     <div class="nfx-now"><span class="nfx-dot"></span><span id="splashStage">LOADING YOUR WATCHLIST</span></div>
     <div class="nfx-meter"><i id="splashBar"></i></div>
-    <div class="nfx-meta"><b id="splashPct">0%</b><em id="splashStat">BOOT</em><span>V8.7.2</span></div>
+    <div class="nfx-meta"><b id="splashPct">0%</b><em id="splashStat">BOOT</em><span>V8.8.1</span></div>
   </div>
 </div>
 
@@ -1835,6 +1852,11 @@ nav .nav button[data-view="live"],#mainNav button[data-view="live"],#bottomNav b
       <button id="tabReg">Register</button>
     </div>
     <div class="form-msg" id="authMsg"></div>
+    <button type="button" class="btn block" id="googleBtn" style="margin:0 0 10px;display:flex;align-items:center;justify-content:center;gap:9px">
+      <svg width="16" height="16" viewBox="0 0 48 48" aria-hidden="true"><path fill="#EA4335" d="M24 9.5c3.5 0 6.6 1.2 9 3.5l6.7-6.7C35.6 2.4 30.2 0 24 0 14.6 0 6.4 5.4 2.5 13.2l7.8 6.1C12.3 13.2 17.6 9.5 24 9.5z"/><path fill="#4285F4" d="M46.1 24.6c0-1.6-.1-2.8-.4-4.1H24v8.4h12.5c-.3 2.1-1.7 5.2-4.9 7.3l7.6 5.9c4.5-4.2 6.9-10.3 6.9-17.5z"/><path fill="#FBBC05" d="M10.3 28.7a14.5 14.5 0 010-9.4l-7.8-6.1a24 24 0 000 21.6l7.8-6.1z"/><path fill="#34A853" d="M24 48c6.5 0 11.9-2.1 15.9-5.8l-7.6-5.9c-2 1.4-4.7 2.4-8.3 2.4-6.4 0-11.7-3.7-13.7-9.8l-7.8 6.1C6.4 42.6 14.6 48 24 48z"/></svg>
+      Continue with Google
+    </button>
+    <div class="auth-or">or with your email</div>
     <!-- login -->
     <form id="loginForm">
       <div class="field"><label>Email</label><div class="wrap"><input type="email" id="liEmail" autocomplete="email" required></div></div>
@@ -1846,7 +1868,8 @@ nav .nav button[data-view="live"],#mainNav button[data-view="live"],#bottomNav b
         <div class="auth-or">or sign in with a one-time code</div>
         <div class="otp-row"><input type="email" id="otpEmail" inputmode="email" autocomplete="email" placeholder="Your email"><button type="button" id="otpSend">Email me a code</button></div>
         <div class="otp-row" id="otpRow" hidden><input type="text" id="otpCode" inputmode="numeric" autocomplete="one-time-code" maxlength="6" placeholder="6-digit code"><button type="button" id="otpVerify">Sign in</button></div>
-        <p class="otp-hint" id="otpHint">No password to remember. We email a 6-digit code — it works as soon as email sign-in is switched on for the project.</p>
+        <button type="button" class="btn block" id="otpLink" style="margin-top:8px">Email me a sign-in link instead</button>
+        <p class="otp-hint" id="otpHint">Prefer no password? We email a 6-digit code, or a link that signs you in. Codes expire in 10 minutes.</p>
       </div>
     </form>
     <!-- register -->
@@ -1879,7 +1902,7 @@ nav .nav button[data-view="live"],#mainNav button[data-view="live"],#bottomNav b
       </div>
       <button type="submit" class="btn primary block" id="regSubmit" style="margin-top:8px" disabled>Create account</button>
     </form>
-    <div class="auth-alt" style="margin-top:12px">or <button type="button" id="guestBtn">browse as guest ›</button></div>
+    <div class="auth-alt" style="margin-top:12px">or <button type="button" id="guestBtn">browse as guest ›</button></div><div class="auth-release">v8.8.1 · Firebase sign-in</div>
     <div class="demo-note" id="demoNote">Your account, watchlist and settings are saved on this device and stay available offline. With cloud sign-in on, they also follow you to every device you sign in on. Movies, posters and trailers stream live from TMDB.</div>
   </div>
 </div>
@@ -2059,13 +2082,29 @@ nav .nav button[data-view="live"],#mainNav button[data-view="live"],#bottomNav b
    NEVER put a Supabase service-role key, DB password, or private email key
    here — those belong on the server (see /backend). */
 const CONFIG = {
+  // Which backend the app talks to. 'firebase' is the new one; 'supabase'
+  // is kept as a one-line rollback until the migration is fully signed off.
+  BACKEND: "firebase",
   // TMDB: a browser-side key is VISIBLE to visitors. For production prefer the
   // server proxy (set TMDB_PROXY to your deployed function and leave KEY blank).
   TMDB_KEY: "",                       // v8: never shipped in the page — the key lives only in Vercel
   TMDB_PROXY: "/api/tmdb",            // server proxy: TMDB_V3_KEY stays private on Vercel
   TMDB_BASE: "https://api.themoviedb.org/3",
   IMG: "https://image.tmdb.org/t/p/",
-  // Supabase (public anon values are safe to expose; service-role is NOT):
+  // Firebase web config. These values are PUBLIC by design (they ship to every
+  // browser); protection comes from the security rules in firestore.rules and
+  // storage.rules. The service-account key never goes here — it lives in the
+  // host's environment settings for /api/auth-code only.
+  FIREBASE: {
+    apiKey: "AIzaSyC-8kRBCqCK7ROk6Tpgwmq6eJvuc8oOLhU",
+    authDomain: "nancy-flix-a9615.firebaseapp.com",
+    projectId: "nancy-flix-a9615",
+    storageBucket: "nancy-flix-a9615.firebasestorage.app",
+    messagingSenderId: "610493911981",
+    appId: "1:610493911981:web:4f4225152a172150428724"
+  },
+  // Supabase (kept for rollback only: entitlement, Stripe check, share posters
+  // on the server). Client sign-in and data now go to Firebase.
   SUPABASE_URL: "https://igtxbhljasdfzyuvtnvy.supabase.co",
   SUPABASE_ANON_KEY: "sb_publishable_G9vrcYV0jWYAuSftgkboeg_20Dsndfy",
   ADMIN_EMAILS: ["bridah888@gmail.com", "agollanancy@gmail.com"], // display hint only; real role lives server-side
@@ -2093,7 +2132,9 @@ const CONFIG = {
   }
 };
 const HAS_TMDB = !!(CONFIG.TMDB_PROXY || CONFIG.TMDB_KEY);
-const HAS_BACKEND = !!(CONFIG.SUPABASE_URL && CONFIG.SUPABASE_ANON_KEY);
+const HAS_BACKEND = CONFIG.BACKEND === "firebase"
+  ? !!(CONFIG.FIREBASE && CONFIG.FIREBASE.apiKey && CONFIG.FIREBASE.projectId)
+  : !!(CONFIG.SUPABASE_URL && CONFIG.SUPABASE_ANON_KEY);
 const img = (path,size="w500")=>{
   if(!path)return "";
   // Data-saver lowers the default poster resolution to cut bandwidth / storage
@@ -2213,6 +2254,9 @@ const LS = {
 /* thin Supabase REST helpers (only used when HAS_BACKEND). The anon key is a
    public key — Row Level Security on the server is what actually protects data. */
 async function sb(path,opts={}){
+  if(CONFIG.BACKEND==="firebase" && window.FB && String(path).indexOf("/rest/")===0){
+    return window.FB.rest(path, opts);
+  }
   const headers=Object.assign({
     apikey:CONFIG.SUPABASE_ANON_KEY,
     ...(State.accessToken?{Authorization:"Bearer "+State.accessToken}:{}),
@@ -2559,7 +2603,17 @@ const TMDB = {
     if(opts.runtimeTo)p['with_runtime.lte']=opts.runtimeTo;
     const d=await this.call('/discover/movie',p);return {results:d.results||[],pages:d.total_pages||1,total:d.total_results||0};
   },
-  async detail(id){const d=await this.call('/movie/'+id,{append_to_response:'videos,credits,similar'});return d;}
+  async detail(id){
+    const d=await this.call('/movie/'+id,{append_to_response:'videos,credits,similar',include_video_language:'en,null'});
+    // Also works with an older deployed proxy that drops append_to_response.
+    if(!d.videos || !Array.isArray(d.videos.results) || !d.videos.results.length){
+      try { d.videos=await this.call('/movie/'+id+'/videos',{include_video_language:'en,null'}); } catch(e){d.videoLookupError=true;}
+    }
+    if(!d.videos || !d.videos.results || !d.videos.results.length){
+      try { const any=await this.call('/movie/'+id+'/videos',{language:'',include_video_language:'en,null,'+(d.original_language||'en')}); if(any.results && any.results.length)d.videos=any; }catch(e){}
+    }
+    return d;
+  }
 };
 
 /* ---- Standard TMDB movie-genre IDs (real metadata, used only if the
@@ -2848,22 +2902,51 @@ const MovieDetail = {
    This is a discovery platform; no full-length / pirated film playback. */
 const Player = {
   current:null, queue:[], mini:false,
-  _embed(key,title){return `<iframe src="https://www.youtube-nocookie.com/embed/${encodeURIComponent(key)}?autoplay=1&rel=0" title="${esc(title||'')} trailer" allow="autoplay; encrypted-media; fullscreen" allowfullscreen></iframe>`;},
+  _embed(key,title){
+    const origin = /^https?:$/.test(location.protocol) ? '&origin='+encodeURIComponent(location.origin) : '';
+    const auto=State.settings.autoplay===false?0:1;
+    return `<iframe src="https://www.youtube-nocookie.com/embed/${encodeURIComponent(key)}?autoplay=${auto}&rel=0&playsinline=1&enablejsapi=1${origin}" title="${esc(title||'')} trailer" referrerpolicy="strict-origin-when-cross-origin" allow="autoplay; encrypted-media; fullscreen; picture-in-picture" allowfullscreen></iframe>`;
+  },
   open(title,trailer,movie){
     this._hideMini();
+    this._movie=movie||null;
+    const videos=((movie&&movie.videos&&movie.videos.results)||[]).filter(v=>v.site==='YouTube'&&/^[A-Za-z0-9_-]{11}$/.test(v.key||''));
+    this._videos=videos.filter(v=>v.type==='Trailer').concat(videos.filter(v=>v.type!=='Trailer'));
+    if(trailer && !this._videos.some(v=>v.key===trailer.key))this._videos.unshift(trailer);
     const stage=document.getElementById('playerStage');
     document.getElementById('playerTitle').textContent=title||'Trailer';
-    if(trailer&&trailer.site==='YouTube'&&trailer.key){
+    stage.innerHTML='';
+    if(trailer&&trailer.site==='YouTube'&&/^[A-Za-z0-9_-]{11}$/.test(trailer.key||'')){
       this.current={title:title||'Trailer',key:trailer.key,id:movie?movie.id:(this.current&&this.current.id)};
       stage.innerHTML=this._embed(trailer.key,title);
       if(movie)Watched.log(movie,true);
     }else{
       this.current=null;
-      stage.innerHTML=`<div class="player-empty">${svg(ICON.film,'icon lg')}<h4 style="color:var(--text);margin:12px 0 6px">No trailer available</h4><p>We couldn’t find an authorized trailer for “${esc(title)}”.</p><button class="btn" style="margin-top:14px" onclick="Player.close()">Back to movies</button></div>`;
+      const box=document.createElement('div');box.className='player-empty';
+      const h=document.createElement('h4');h.textContent=movie&&movie.videoLookupError?'Trailer lookup failed':'No trailer listed for this title';
+      const msg=document.createElement('p');msg.textContent=movie&&movie.videoLookupError?'Check your connection and retry.':'TMDB has no linked trailer for this film. You can search YouTube; a trailer may not exist yet.';
+      box.append(h,msg);stage.append(box);
     }
-    document.getElementById('player').classList.add('show');
-    document.body.classList.add('noscroll');
-    this.mini=false;
+    let tools=document.getElementById('nfTrailerTools');
+    if(!tools){tools=document.createElement('div');tools.id='nfTrailerTools';stage.after(tools);}
+    tools.replaceChildren();
+    const note=document.createElement('span');note.textContent=this.current?'If playback is blocked, try another video or open YouTube.':'';tools.append(note);
+    if(this._videos.length>1){
+      const select=document.createElement('select');select.setAttribute('aria-label','Choose another trailer or clip');
+      this._videos.forEach(v=>{const option=document.createElement('option');option.value=v.key;option.textContent=(v.type||'Video')+' · '+(v.name||v.key);option.selected=!!(this.current&&this.current.key===v.key);select.append(option);});
+      select.addEventListener('change',()=>this.open(title,this._videos.find(v=>v.key===select.value),movie));tools.append(select);
+    }
+    const retry=document.createElement('button');retry.className='btn sm';retry.textContent='Retry';
+    retry.addEventListener('click',async()=>{
+      retry.disabled=true;
+      try { if(movie&&movie.id){ const fresh=await TMDB.detail(movie.id);this.open(fresh.title,MovieDetail._trailer(fresh),fresh); }
+        else if(this.current)stage.innerHTML=this._embed(this.current.key,title);
+      }catch(e){note.textContent='Trailer lookup failed. Check your internet connection and try again.';}finally{retry.disabled=false;}
+    });tools.append(retry);
+    const out=document.createElement('a');out.className='btn sm';out.target='_blank';out.rel='noopener noreferrer';
+    out.textContent=this.current?'Watch on YouTube':'Search YouTube for a trailer';
+    out.href=this.current?'https://www.youtube.com/watch?v='+encodeURIComponent(this.current.key):'https://www.youtube.com/results?search_query='+encodeURIComponent((title||'')+' '+String((movie&&movie.release_date)||'').slice(0,4)+' official trailer');tools.append(out);
+    document.getElementById('player').classList.add('show');document.body.classList.add('noscroll');this.mini=false;
   },
   async fromMovie(id){
     Store.bump('trailerReq');
@@ -3404,7 +3487,7 @@ const Admin={
   render(){
     if(!State.user||!State.user.isAdmin){document.getElementById('view-admin').innerHTML=`<div class="state">${svg(ICON.alert,'icon lg')}<h4>Administrator access only</h4><p>This area is restricted to verified administrators.</p></div>`;return;}
     const tabs=[['overview','Overview'],['users','User Directory'],['analytics','Analytics'],['inbox','Inbox'],['announce','Announcements'],['audit','Audit & Security'],['config','Site Config']];
-    document.getElementById('view-admin').innerHTML=`<div class="admin-shell"><aside class="admin-side"><div class="admin-brand">${svg(ICON.film,'icon')} Admin Studio <span class="badge admin">ADMIN</span></div>${tabs.map(t=>`<button data-at="${t[0]}" class="${t[0]===this.tab?'active':''}">${t[1]}</button>`).join('')}</aside><div class="admin-main">${HAS_BACKEND?'':'<div class="nf-local-note" style="margin:0 0 14px;padding:11px 13px;border-radius:11px;background:rgba(255,204,102,.10);border:1px solid rgba(255,204,102,.34);font-size:12px;line-height:1.5;color:#e8e3d4"><b>Local mode.</b> Accounts, announcements, user lists and analytics live in this browser only, so a second device will look empty. Add your Supabase project URL and anon key in the app config, then redeploy, to share one database across every device.</div>'}<div id="adminMain"></div></div>`;
+    document.getElementById('view-admin').innerHTML=`<div class="admin-shell"><aside class="admin-side"><div class="admin-brand">${svg(ICON.film,'icon')} Admin Studio <span class="badge admin">ADMIN</span></div>${tabs.map(t=>`<button data-at="${t[0]}" class="${t[0]===this.tab?'active':''}">${t[1]}</button>`).join('')}</aside><div class="admin-main">${HAS_BACKEND?'':'<div class="nf-local-note" style="margin:0 0 14px;padding:11px 13px;border-radius:11px;background:rgba(255,204,102,.10);border:1px solid rgba(255,204,102,.34);font-size:12px;line-height:1.5;color:#e8e3d4"><b>Local mode.</b> Accounts, announcements, user lists and analytics live in this browser only, so a second device will look empty. Fill in the Firebase web config in the app, then redeploy, to share one database across every device.</div>'}<div id="adminMain"></div></div>`;
     document.querySelector('.admin-side').onclick=e=>{const b=e.target.closest('[data-at]');if(b){this.tab=b.dataset.at;this.page=1;this.render();}};
     this.renderTab();
   },
@@ -3532,6 +3615,7 @@ Admin.exportJSON=function(){const data={users:Analytics.users().map(u=>({name:u.
 const Auth={
   async register({name,email,password,gender,avatar}){
     email=email.toLowerCase().trim();
+    if(CONFIG.BACKEND==="firebase"&&window.FB){ return FB.register({name,email,password,gender,avatar}); }
     if(HAS_BACKEND&&window.SBX){ return SBX.register({name,email,password,gender,avatar}); }
     const users=Store.users();
     if(users.some(u=>u.email===email))throw new Error('An account with this email already exists.');
@@ -3548,6 +3632,7 @@ const Auth={
   },
   async login({email,password,remember}){
     email=email.toLowerCase().trim();
+    if(CONFIG.BACKEND==="firebase"&&window.FB){ return FB.login({email,password,remember}); }
     if(HAS_BACKEND&&window.SBX){ return SBX.login({email,password,remember}); }
     const users=Store.users();const user=users.find(u=>u.email===email);
     if(!user||user.pwHash!==await secureHash(password))throw new Error('Invalid email or password.');
@@ -3557,6 +3642,7 @@ const Auth={
     return user;
   },
   _welcomeEmail(user){
+    if(CONFIG.BACKEND==="firebase"){ try{Noti.add('Account ready','Your watchlist, history and settings now follow you to every device.','ok',{toast:false});}catch(e){} return; }
     if(HAS_BACKEND&&!CONFIG.WELCOME_EMAIL_FN){ try{Noti.add('Account synced','Your watchlist, history and notifications now follow you to every device.','ok',{toast:false});}catch(e){} return; }
     if(!HAS_BACKEND){Noti.add('Welcome email not sent','Your account is ready, but email delivery isn’t configured yet.','warn',{toast:false});return;}
     // In backend mode: POST to your Edge Function which calls the email provider.
@@ -3574,7 +3660,7 @@ const Auth={
     enterApp();
   },
   guest(){State.guest=true;State.user=null;State.watchlist=[];State.notifications=[];State.settings=LS.get('guestSettings',Settings.defaults());Theme.apply(State.settings.theme);Theme.font(State.settings.font);Theme.density(State.settings.density);this._applySettings();I18N.apply();Store.bumpGuest();Store.log('guest_session');this.refreshChrome();enterApp();},
-  async logout(){if(!await Confirm.ask('Are you sure you want to log out?','You can sign back in anytime.',{ok:'Yes, log me out',cancel:'Stay signed in'}))return;if(HAS_BACKEND&&window.SBX){try{await SBX.signOut();}catch(e){}}Store.setSession(null);Store.log('logout',State.user?State.user.email:'');State.user=null;State.guest=false;State.notifications=[];State.watchlist=[];Toast.show('Signed out','See you soon.','info');backToAuth('login');},
+  async logout(){if(!await Confirm.ask('Are you sure you want to log out?','You can sign back in anytime.',{ok:'Yes, log me out',cancel:'Stay signed in'}))return;if(CONFIG.BACKEND==="firebase"&&window.FB){try{await FB.logout();}catch(e){}}else if(HAS_BACKEND&&window.SBX){try{await SBX.signOut();}catch(e){}}Store.setSession(null);Store.log('logout',State.user?State.user.email:'');State.user=null;State.guest=false;State.notifications=[];State.watchlist=[];Toast.show('Signed out','See you soon.','info');backToAuth('login');},
   deleteSelf(){const id=State.user.id;let users=Store.users().filter(u=>u.id!==id);Store.saveUsers(users);LS.del(Store.wlKey(id));LS.del(Store.notiKey(id));Store.setSession(null);Store.log('account_deleted',State.user.email);State.user=null;Toast.show('Account removed','Your data was deleted.','info');backToAuth('reg');},
   async changePassword(){
     const u=State.user;if(!u)return;
@@ -4372,7 +4458,8 @@ async function resumeSession(){
   const sid=Store.session();
   const local=(sid&&Store.users().find(x=>x.id===sid))||null;
   if(HAS_BACKEND&&window.SBX){
-    try{ const ok=await SBX.resume(); if(ok) return; }catch(e){}
+    if(!local)backToAuth('login'); // Never leave a blank screen while Firebase loads.
+    try{ const ok = CONFIG.BACKEND==="firebase" ? await FB.resume() : await SBX.resume(); if(ok) return; }catch(e){}
     /* an update or a flaky network must never sign you out: keep the saved device session */
     if(local){
       try{ Auth._enter(local); }catch(e){ backToAuth('login'); return; }
@@ -4390,10 +4477,10 @@ async function resumeSession(){
    v5 — soft light theme helpers · update centre · 3-tier Premium ·
         Live TV · Live Football · cross-device entitlement · test mode
    ===================================================================== */
-const APP_VERSION = '8.7.2';
+const APP_VERSION = '8.8.1';
 const WHATS_NEW = [
   'Detailed match posters with real crests and quick social sharing',
-  'Google registration removed; admin tools restricted; guests stay on Free',
+  'Firebase Google sign-in restored; admin tools restricted; guests stay on Free',
   'Transparent app icon, smart offline status and stronger Light theme contrast',
   'Live is now football-first: a compact Live football bar, and TV channels sit quietly in their own tab',
   'New Rose, Violet, Ocean and Sunset themes, plus readable text in Light mode',
@@ -5829,7 +5916,7 @@ window.Live = Live;
     el.innerHTML = '<span class="tag">' + ic('signal') + 'Now</span><div class="vp"><div class="track" id="nfMarqueeTrack"></div></div>';
     main.parentNode.insertBefore(el, main);
     setMarquee([
-      'NANCYFLIX v8.7.2 is live',
+      'NANCYFLIX v8.8.1 is live',
       'Kenyan and East African channels inside Live TV',
       'Fixtures, results and tables open in the app',
       'Share any match with a private invite link',
@@ -6421,7 +6508,8 @@ window.Live = Live;
 /* ---------- 0. mobile drawer fix ----------
    The top bar uses backdrop-filter, which makes it a containing block for
    fixed children, so the slide-out menu was trapped inside a 60px strip.
-   Move the nav to <body> while the mobile layout is active. */
+   Move the nav to <body>
+ while the mobile layout is active. */
 (function(){
   const topbar=document.querySelector('.topbar');
   const nav=document.getElementById('mainNav');
@@ -7441,6 +7529,9 @@ if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',
   }
   async function call(path,opts){
     opts = opts||{};
+    if(CONFIG.BACKEND==="firebase" && window.FB && String(path).indexOf("/rest/")===0){
+      return window.FB.rest(path, opts);
+    }
     var token = opts.token!==undefined ? opts.token : (LS.get(SKEY,{})||{}).access_token;
     var r = await fetch(URLB+path,{method:opts.method||'GET',headers:jhead(token,opts.headers),body:opts.body?JSON.stringify(opts.body):undefined});
     var txt = await r.text(); var data=null;
@@ -7632,6 +7723,7 @@ if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',
       }
     },
     async sendCode(email){
+      if(CONFIG.BACKEND==="firebase") return FB.sendCode(email);
       email = (email||'').toLowerCase().trim();
       if(!email) throw new Error('Enter your email first.');
       var back = location.origin + location.pathname;
@@ -7639,6 +7731,7 @@ if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',
       return true;
     },
     async verifyCode(email,code){
+      if(CONFIG.BACKEND==="firebase") return FB.verifyCode(email,code);
       email = (email||'').toLowerCase().trim();
       var res = await call('/auth/v1/verify',{method:'POST',token:'',body:{type:'email',email:email,token:String(code||'').trim()}});
       if(!res || !res.access_token) throw new Error('That code did not work. Ask for a new one.');
@@ -7878,7 +7971,7 @@ if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',
       row.hidden=false; code.focus();
       say('Email sent to '+e+'. If it shows a 6-digit code, type it below. If it shows a button, tap it and this page opens signed in. Check spam if nothing arrives in a minute.');
     }).catch(function(err){
-      say('Could not send a code: '+String(err && err.message || err));
+      say('Could not send a code: '+String(err && err.message || err)+'. You can use the email sign-in link button below instead.');
     }).then(function(){ send.disabled=false; });
   };
   if(ver) ver.onclick=function(){
@@ -7942,7 +8035,7 @@ if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',
     { name: 'KidsFlix', cc: 'US', note: 'Free cartoon films', groups: ['Kids'], tier: 'free', feeds: [{ label: 'Official stream', type: 'hls', url: 'https://stream-us-east-1.getpublica.com/playlist.m3u8?network_id=50' }] }
   ];
 
-  var CATS = [['cartoons', 'Cartoons'], ['classics', 'Classic cartoons'], ['stories', 'Story time'], ['learn', 'Learn and play']];
+  var CATS = [['cartoons', 'Popular & newer'], ['tom', 'Tom & Jerry'], ['stories', 'Family adventures'], ['learn', 'Preschool & learning']];
   var state = { cat: 'cartoons', q: '', page: 1, items: [], total: 0, hasMore: false, busy: false, error: '', tab: 'live' };
   var cache = {};
 
@@ -7955,9 +8048,12 @@ if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',
   }
 
   function itemCard(it) {
-    return '<button class="kids-card" data-kiditem="' + esc(it.id) + '" aria-label="Play ' + esc(it.title) + '">' +
-      '<span class="thumb"><img src="' + esc(it.thumb) + '" alt="" loading="lazy" decoding="async" referrerpolicy="no-referrer"><span class="badge">FREE</span></span>' +
-      '<span class="body"><b>' + esc(it.title) + '</b><span>' + esc(it.year ? it.year + ' \u00b7 ' + (it.desc || 'Cartoon') : (it.desc || 'Cartoon')) + '</span><span class="go">Play</span></span></button>';
+    var initials=it.title.split(' ').slice(0,3).map(function(w){return w[0];}).join('');
+    var picture=it.thumb?'<img src="'+esc(it.thumb)+'" alt="" loading="lazy" decoding="async">':'<span style="font-size:28px;font-weight:900;color:#ffd98a">'+esc(initials)+'</span>';
+    var action=it.kind==='channel'?'Open official channel':it.kind==='playlist'?'Play official collection':'Play official video';
+    return '<button class="kids-card" data-kiditem="'+esc(it.id)+'" aria-label="'+esc(action+' '+it.title)+'">'+
+      '<span class="thumb" style="display:grid;place-items:center">'+picture+'<span class="badge">OFFICIAL</span></span>'+
+      '<span class="body"><b>'+esc(it.title)+'</b><span>'+esc(it.desc||'')+'</span><span>'+esc(it.source||'')+'</span><span class="go">'+action+'</span></span></button>';
   }
 
   function render() {
@@ -7965,15 +8061,20 @@ if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',
     var chips = CATS.map(function (c) { return '<button data-kidcat="' + c[0] + '" class="' + (state.cat === c[0] ? 'on' : '') + '">' + c[1] + '</button>'; }).join('');
     body.innerHTML =
       '<div class="kids-hero"><h2>A free corner for little ones</h2>' +
-      '<p>Public-domain cartoons, story time and gentle learning films, plus live children\u2019s channels. No card and no paid plan \u2014 pick something and press play.</p>' +
+      '<p>Tom & Jerry Gokko, The Tom and Jerry Show, Bluey, Gumball and Peppa Pig, plus live kids channels. Official free uploads and collections, with familiar characters and newer series.</p>' +
       '<div class="pills"><span>Free</span><span>Cartoons</span><span>Story time</span><span>Learning</span></div></div>' +
       '<div class="kids-sec"><h3>Live kids channels</h3><p class="sub">Official broadcaster feeds. Some channels only work in their own country; try another if one does not start.</p>' +
       '<div class="kids-grid">' + LIVE.map(liveCard).join('') + '</div></div>' +
-      '<div class="kids-sec"><h3>Cartoon library</h3><p class="sub">Animation from the Internet Archive public collections. Playing opens the archive\u2019s own player.</p>' +
+      '<div class="kids-sec"><h3>Cartoon library</h3><p class="sub">Official videos, collections and channels from the studios. Channel cards open YouTube; video and playlist cards can play here when embedding is allowed. Full seasons are not guaranteed.</p>' +
       '<div class="kids-search"><input type="search" id="kidsQ" placeholder="Search cartoons" aria-label="Search cartoons" value="' + esc(state.q) + '"><button class="btn sm" id="kidsGo">Search</button></div>' +
       '<div class="nf-cats">' + chips + '</div>' +
       '<div id="kidsGrid" class="kids-grid">' + gridHTML() + '</div>' +
       '<div id="kidsMoreBar" style="margin-top:12px">' + (state.hasMore ? '<button class="btn sm" id="kidsMore">Load more</button>' : '') + '</div></div>';
+
+    // Put the on-demand cartoon library first; live channels are preserved below.
+    var library=Q('#kidsGrid',body).closest('.kids-sec');
+    var liveSection=Q('[data-kidch]',body).closest('.kids-sec');
+    if(library && liveSection)body.insertBefore(library,liveSection);
 
     QA('[data-kidch]', body).forEach(function (b) {
       b.onclick = function () { openChannel(LIVE[+b.dataset.kidch]); };
@@ -8018,23 +8119,17 @@ if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',
     }
     state.busy = true; state.error = '';
     if (!more) { paintGrid(); }
-    var url = 'api/kids?cat=' + encodeURIComponent(state.cat) + '&page=' + state.page + (state.q ? '&q=' + encodeURIComponent(state.q) : '');
+    var url = '/api/kids?cat=' + encodeURIComponent(state.cat) + '&page=' + state.page + (state.q ? '&q=' + encodeURIComponent(state.q) : '');
     var ctl = new AbortController();
-    var timer = setTimeout(function () { ctl.abort(); }, 12000);
-    fetch(url, { headers: { Accept: 'application/json' }, signal: ctl.signal })
-      .then(function (r) { return r.json().then(function (j) { return { ok: r.ok, j: j }; }); })
-      .then(function (r) {
+    var timer = setTimeout(function () { ctl.abort(); }, 8000);
+    fetch('lib/kids-catalogue.json', {headers:{Accept:'application/json'},signal:ctl.signal})
+      .then(function(r){if(!r.ok)throw new Error('Catalogue request failed');return r.json();})
+      .then(function(all){
         clearTimeout(timer);
-        if (!r.ok || !r.j || r.j.ok === false) throw new Error((r.j && r.j.error) || 'The cartoon library is unavailable right now.');
-        cache[key] = r.j;
-        apply(r.j, more);
-      })
-      .catch(function (e) {
-        clearTimeout(timer);
-        state.busy = false;
-        state.error = e && e.name === 'AbortError' ? 'The cartoon library took too long to answer.' : ((e && e.message) || 'The cartoon library is unavailable right now.');
-        paintGrid();
-      });
+        var q=state.q.toLowerCase();
+        var list=all.filter(function(x){return (state.cat==='cartoons'||x.cats.indexOf(state.cat)>=0)&&(!q||(x.title+' '+x.desc+' '+x.source).toLowerCase().indexOf(q)>=0);});
+        var j={items:state.page===1?list:[],total:list.length,hasMore:false};cache[key]=j;apply(j,more);
+      }).catch(function(e){clearTimeout(timer);state.busy=false;state.error='The official cartoon library could not load. Check your connection and retry.';paintGrid();});
   }
 
   function apply(j, more) {
@@ -8099,6 +8194,7 @@ if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',
     var item = null;
     state.items.some(function (x) { if (x.id === id) { item = x; return true; } return false; });
     if (!item) return;
+    if(item.kind==='channel'){window.open(item.page,'_blank','noopener,noreferrer');return;}
     var ov = document.getElementById('nfKidsOv');
     if (!ov) {
       ov = document.createElement('div'); ov.id = 'nfKidsOv';
@@ -8107,9 +8203,9 @@ if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',
       document.addEventListener('keydown', function (e) { if (e.key === 'Escape' && ov.classList.contains('show')) close(); });
     }
     ov.innerHTML = '<div class="nf-kids-modal" role="dialog" aria-modal="true" aria-label="' + esc(item.title) + '">' +
-      '<div class="nf-kids-head"><div><h3>' + esc(item.title) + '</h3><p>' + esc((item.year ? item.year + ' \u00b7 ' : '') + 'Internet Archive \u00b7 free to watch') + '</p></div><div class="spacer"></div><button class="btn sm" data-kclose>Close</button></div>' +
-      '<div class="nf-kids-screen"><iframe src="' + esc(item.embed) + '" title="' + esc(item.title) + '" allow="autoplay; fullscreen; picture-in-picture; encrypted-media" allowfullscreen sandbox="allow-scripts allow-same-origin allow-presentation" referrerpolicy="no-referrer" loading="lazy"></iframe></div>' +
-      '<div class="nf-kids-foot"><p>Played from archive.org in its own player. If the frame is blank, open the item on its archive page.</p><a class="btn sm" href="' + esc(item.page) + '" target="_blank" rel="noopener noreferrer">Open on archive.org</a></div></div>';
+      '<div class="nf-kids-head"><div><h3>' + esc(item.title) + '</h3><p>' + esc((item.year ? item.year + ' \u00b7 ' : '') + (item.source || 'Official channel') + ' · official upload') + '</p></div><div class="spacer"></div><button class="btn sm" data-kclose>Close</button></div>' +
+      '<div class="nf-kids-screen"><iframe src="' + esc(item.embed) + '" title="' + esc(item.title) + '" allow="autoplay; fullscreen; picture-in-picture; encrypted-media" allowfullscreen sandbox="allow-scripts allow-same-origin allow-presentation" referrerpolicy="strict-origin-when-cross-origin" loading="lazy"></iframe></div>' +
+      '<div class="nf-kids-foot"><p>Official YouTube player. If the studio blocks embedding or restricts your region, use Open on YouTube. Available clips and episodes are chosen by the studio.</p><a class="btn sm" href="' + esc(item.page) + '" target="_blank" rel="noopener noreferrer">Open on YouTube</a></div></div>';
     ov.classList.add('show'); document.body.classList.add('noscroll');
     Q('[data-kclose]', ov).onclick = close;
     function close() {
@@ -8463,9 +8559,410 @@ if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',
   } catch (e) {}
 })();
 </script>
+<script type="module" id="nf-firebase">
+import { initializeApp } from "https://www.gstatic.com/firebasejs/13.4.0/firebase-app.js";
+import {
+  getAuth, createUserWithEmailAndPassword, signInWithEmailAndPassword, signOut,
+  onAuthStateChanged, updateProfile, sendPasswordResetEmail, sendSignInLinkToEmail,
+  isSignInWithEmailLink, signInWithEmailLink, signInWithPopup, GoogleAuthProvider,
+  signInWithCustomToken, getIdToken
+} from "https://www.gstatic.com/firebasejs/13.4.0/firebase-auth.js";
+import {
+  getFirestore, doc, getDoc, setDoc, updateDoc, collection, addDoc, getDocs,
+  query, orderBy, limit as fbLimit, where
+} from "https://www.gstatic.com/firebasejs/13.4.0/firebase-firestore.js";
+import {
+  getStorage, ref as sRef, uploadString, getDownloadURL
+} from "https://www.gstatic.com/firebasejs/13.4.0/firebase-storage.js";
+
+const firebaseConfig = (typeof CONFIG!=="undefined" && CONFIG.FIREBASE) || {
+  apiKey: "AIzaSyC-8kRBCqCK7ROk6Tpgwmq6eJvuc8oOLhU",
+  authDomain: "nancy-flix-a9615.firebaseapp.com",
+  projectId: "nancy-flix-a9615",
+  storageBucket: "nancy-flix-a9615.firebasestorage.app",
+  messagingSenderId: "610493911981",
+  appId: "1:610493911981:web:4f4225152a172150428724"
+};
+
+const app = initializeApp(firebaseConfig);
+const auth = getAuth(app);
+const db = getFirestore(app);
+const storage = getStorage(app);
+const ADMINS = (function () { try { return CONFIG.ADMIN_EMAILS || []; } catch (e) { return []; } })();
+
+/* ---------- helpers ---------- */
+function settingsDefaults() {
+  try { return Settings.defaults(); } catch (e) { return {}; }
+}
+function errText(err) {
+  const code = String((err && err.code) || '');
+  const map = {
+    'auth/invalid-credential': 'That email and password do not match an account.',
+    'auth/wrong-password': 'That password is not right. Try again or reset it.',
+    'auth/user-not-found': 'No account uses that email yet. Create one first.',
+    'auth/email-already-in-use': 'An account with this email already exists. Log in instead.',
+    'auth/weak-password': 'Use at least 6 characters for the password.',
+    'auth/invalid-email': 'That email address does not look right.',
+    'auth/too-many-requests': 'Too many tries. Wait a minute, then try again.',
+    'auth/popup-blocked': 'Your browser blocked the Google window. Allow pop-ups and try again.',
+    'auth/popup-closed-by-user': 'The Google sign-in was closed before it finished.',
+    'auth/unauthorized-domain': 'This address is not authorised in Firebase. Add it under Authentication, Settings, Authorized domains.',
+    'auth/operation-not-allowed': 'That sign-in method is switched off in the Firebase console.',
+    'auth/network-request-failed': 'The network dropped during sign-in. Check your connection and retry.'
+  };
+  return map[code] || String((err && err.message) || err || 'Something went wrong.');
+}
+async function buildUser(fu, prof) {
+  const d = prof || {};
+  const email = String((fu && fu.email) || d.email || '').toLowerCase();
+  let admin = false;
+  try { const res=await fu.getIdTokenResult();admin=res.claims.admin===true; } catch(e){}
+  const user = {
+    id: fu.uid,
+    name: d.name || fu.displayName || email.split('@')[0],
+    email: email,
+    gender: d.gender || 'unspecified',
+    avatar: d.avatar || fu.photoURL || null,
+    createdAt: d.created_at || Date.now(),
+    lastLogin: Date.now(),
+    isAdmin: admin,
+    cloudVerified: !!fu.emailVerified,
+    settings: Object.assign(settingsDefaults(), d.settings || {}),
+    pwHash: ''
+  };
+  return user;
+}
+async function ensureProfile(fu, extra) {
+  const ref = doc(db, 'users', fu.uid);
+  let snap = await getDoc(ref);
+  if (!snap.exists()) {
+    const email = String(fu.email || '').toLowerCase();
+    const base = {
+      id: fu.uid, email: email,
+      name: (extra && extra.name) || fu.displayName || email.split('@')[0],
+      gender: (extra && extra.gender) || 'unspecified',
+      avatar: (extra && extra.avatar) || fu.photoURL || null,
+      settings: {}, notifications: [], history: [],
+      is_admin: false,   /* admin is granted server-side only, never by the browser */
+      created_at: Date.now(), last_login: Date.now()
+    };
+    await setDoc(ref, base, { merge: true });
+    snap = await getDoc(ref);
+  } else {
+    try { await setDoc(ref, { last_login: Date.now() }, { merge: true }); } catch (e) {}
+  }
+  return await buildUser(fu, snap.data());
+}
+let enteredUid = '';
+function enter(user) {
+  enteredUid = user.id;
+  try { Auth._enter(user); } catch (e) { console.error(e); }
+  try { Sync.pull(); } catch (e) {}
+  try { Store.log('login', user.email); } catch (e) {}
+}
+function splitPath(path) {
+  const raw = String(path || '');
+  const i = raw.indexOf('?');
+  const p = i < 0 ? raw : raw.slice(0, i);
+  const qs = i < 0 ? '' : raw.slice(i + 1);
+  return { table: p.replace(/^\/+rest\/v1\//, '').replace(/^\/+/, ''), params: new URLSearchParams(qs) };
+}
+function bodyOf(opts) {
+  let b = opts && opts.body;
+  if (typeof b === 'string') { try { b = JSON.parse(b); } catch (e) { b = {}; } }
+  return b || {};
+}
+function pickProfile(data) {
+  const out = Object.assign({}, data);
+  delete out.notifications; delete out.history;
+  return out;
+}
+
+/* ---------- Firestore over the Supabase-shaped calls the app already makes ---------- */
+async function rest(path, opts) {
+  opts = opts || {};
+  const method = String(opts.method || 'GET').toUpperCase();
+  const { table, params } = splitPath(path);
+  const body = bodyOf(opts);
+  const idEq = params.get('id') || params.get('user_id');
+
+  if (table === 'profiles') {
+    if (method === 'GET') {
+      if (idEq && idEq.indexOf('eq.') === 0) {
+        const id = idEq.slice(3);
+        const snap = await getDoc(doc(db, 'users', id));
+        return snap.exists() ? [Object.assign({ id }, snap.data())] : [];
+      }
+      const snap = await getDocs(query(collection(db, 'users'), orderBy('created_at', 'desc'), fbLimit(500)));
+      return snap.docs.map(function (d) { return Object.assign({ id: d.id }, d.data()); });
+    }
+    if (method === 'POST' || method === 'PATCH') {
+      const target = body.id || (idEq && idEq.indexOf('eq.') === 0 ? idEq.slice(3) : '');
+      if (!target) throw new Error('profile without id');
+      const clean = Object.assign({}, body);
+      delete clean.is_admin; delete clean.isAdmin;
+      await setDoc(doc(db, 'users', target), clean, { merge: true });
+      return null;
+    }
+  }
+
+  if (table === 'watchlists') {
+    const uid = body.user_id || (idEq && idEq.indexOf('eq.') === 0 ? idEq.slice(3) : '');
+    if (!uid) throw new Error('watchlist without user');
+    if (method === 'GET') {
+      const snap = await getDoc(doc(db, 'watchlists', uid));
+      return snap.exists() ? [{ user_id: uid, items: snap.data().items || [] }] : [];
+    }
+    if (method === 'POST' || method === 'PATCH') {
+      await setDoc(doc(db, 'watchlists', uid), { user_id: uid, items: body.items || [], updated_at: Date.now() }, { merge: true });
+      return null;
+    }
+  }
+
+  if (table === 'announcements') {
+    if (method === 'GET') {
+      const snap = await getDocs(query(collection(db, 'announcements'), orderBy('ts', 'desc'), fbLimit(100)));
+      return snap.docs.map(function (d) { return Object.assign({ id: d.id }, d.data()); });
+    }
+    if (method === 'POST') {
+      const payload = Object.assign({}, body, { ts: body.ts || Date.now() });
+      if (payload.id) { await setDoc(doc(db, 'announcements', String(payload.id)), payload, { merge: true }); return null; }
+      delete payload.id;
+      await addDoc(collection(db, 'announcements'), payload);
+      return null;
+    }
+    if (method === 'PATCH' || method === 'DELETE') {
+      const target = idEq && idEq.indexOf('eq.') === 0 ? idEq.slice(3) : body.id;
+      if (!target) return null;
+      if (method === 'DELETE') return null;
+      await updateDoc(doc(db, 'announcements', target), body);
+      return null;
+    }
+  }
+
+  if (table === 'feedback') {
+    if (method === 'GET') {
+      const snap = await getDocs(query(collection(db, 'feedback'), orderBy('ts', 'desc'), fbLimit(300)));
+      return snap.docs.map(function (d) { return Object.assign({ id: d.id }, d.data()); });
+    }
+    if (method === 'POST') {
+      const payload = Object.assign({}, body, { ts: body.ts || Date.now() });
+      if (payload.id) { await setDoc(doc(db, 'feedback', String(payload.id)), payload, { merge: true }); return null; }
+      delete payload.id;
+      await addDoc(collection(db, 'feedback'), payload);
+      return null;
+    }
+    if (method === 'PATCH') {
+      const target = idEq && idEq.indexOf('eq.') === 0 ? idEq.slice(3) : body.id;
+      if (target) await updateDoc(doc(db, 'feedback', target), body);
+      return null;
+    }
+  }
+
+  /* anything else is a server-only table; answer empty instead of hitting a dead host */
+  return method === 'GET' ? [] : null;
+}
+
+/* ---------- auth ---------- */
+function fail(e) { const x = new Error(errText(e)); x.code = (e && e.code) || ''; throw x; }
+async function register(o) {
+  o = o || {};
+  const email = String(o.email || '').toLowerCase().trim();
+  let cred;
+  try { cred = await createUserWithEmailAndPassword(auth, email, String(o.password || '')); } catch (e) { fail(e); }
+  try { await updateProfile(cred.user, { displayName: o.name || '' }); } catch (e) {}
+  const user = await ensureProfile(cred.user, o);
+  enter(user);
+  try { Noti.add('Welcome to NANCYFLIX, ' + String(user.name || '').split(' ')[0] + '!', 'Your account now syncs on every device.', 'ok', { toast: true }); } catch (e) {}
+  try { Auth._welcomeEmail(user); } catch (e) {}
+  return user;
+}
+async function login(o) {
+  o = o || {};
+  const email = String(o.email || '').toLowerCase().trim();
+  let cred;
+  try { cred = await signInWithEmailAndPassword(auth, email, String(o.password || '')); } catch (e) { fail(e); }
+  const user = await ensureProfile(cred.user);
+  enter(user);
+  try { Toast.show('Welcome back', 'Signed in as ' + user.name, 'ok'); } catch (e) {}
+  return user;
+}
+async function google() {
+  const provider = new GoogleAuthProvider();
+  provider.setCustomParameters({ prompt: 'select_account' });
+  let cred;
+  try { cred = await signInWithPopup(auth, provider); } catch (e) { fail(e); }
+  const user = await ensureProfile(cred.user);
+  enter(user);
+  return user;
+}
+async function logout() {
+  enteredUid = '';
+  try { await signOut(auth); } catch (e) {}
+}
+async function resume() {
+  return await new Promise(function (resolve) {
+    let settled = false;
+    const stop = onAuthStateChanged(auth, async function (fu) {
+      if (settled) return;
+      settled = true;
+      stop();
+      if (!fu) return resolve(false);
+      try {
+        typeof fu.reload === 'function' ? await fu.reload() : null;
+      } catch (e) {}
+      try {
+        const user = await ensureProfile(fu);
+        enter(user);
+        resolve(true);
+      } catch (e) { resolve(false); }
+    }, function () { if (!settled) { settled = true; resolve(false); } });
+    setTimeout(function () { if (!settled) { settled = true; resolve(false); } }, 6000);
+  });
+}
+async function reset(email) {
+  await sendPasswordResetEmail(auth, String(email || '').trim());
+  return true;
+}
+async function emailLink(email) {
+  const target = location.origin + location.pathname + '?emailSignIn=1';
+  await sendSignInLinkToEmail(auth, String(email || '').trim(), { url: target, handleCodeInApp: true });
+  try { localStorage.setItem('nfEmailForLink', String(email || '').trim()); } catch (e) {}
+  return target;
+}
+async function completeEmailLink() {
+  if (!isSignInWithEmailLink(auth, location.href)) return false;
+  let email = '';
+  try { email = localStorage.getItem('nfEmailForLink') || ''; } catch (e) {}
+  if (!email) {
+    email = window.prompt('Confirm the email you used to request the link') || '';
+    if (!email) return false;
+  }
+  const cred = await signInWithEmailLink(auth, email, location.href);
+  try { localStorage.removeItem('nfEmailForLink'); } catch (e) {}
+  try { history.replaceState(null, '', location.pathname); } catch (e) {}
+  const user = await ensureProfile(cred.user);
+  enter(user);
+  return true;
+}
+async function sendCode(email) {
+  const r = await fetch('/api/auth-code', {
+    method: 'POST', headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({ action: 'send', email: String(email || '').trim() })
+  });
+  let data = null;
+  try { data = await r.json(); } catch (e) {}
+  if (!r.ok) {
+    const msg = (data && data.error) || ('Code service unavailable (' + r.status + ')');
+    const err = new Error(msg); err.code = (data && data.code) || 'code-failed'; throw err;
+  }
+  return true;
+}
+async function verifyCode(email, code) {
+  const r = await fetch('/api/auth-code', {
+    method: 'POST', headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({ action: 'verify', email: String(email || '').trim(), code: String(code || '').trim() })
+  });
+  let data = null;
+  try { data = await r.json(); } catch (e) {}
+  if (!r.ok || !data || !data.customToken) {
+    const err = new Error((data && data.error) || 'That code did not work. Ask for a new one.');
+    err.code = 'bad-code'; throw err;
+  }
+  const cred = await signInWithCustomToken(auth, data.customToken);
+  const user = await ensureProfile(cred.user);
+  enter(user);
+  return user;
+}
+async function profile() {
+  const fu = auth.currentUser;
+  if (!fu) return null;
+  const snap = await getDoc(doc(db, 'users', fu.uid));
+  return snap.exists() ? buildUser(fu, snap.data()) : null;
+}
+async function token() {
+  const fu = auth.currentUser;
+  return fu ? getIdToken(fu) : '';
+}
+async function updateAvatar(dataUrl) {
+  const fu = auth.currentUser;
+  if (!fu) throw new Error('Sign in first.');
+  const r = sRef(storage, 'avatars/' + fu.uid + '.jpg');
+  await uploadString(r, String(dataUrl), 'data_url');
+  const url = await getDownloadURL(r);
+  await setDoc(doc(db, 'users', fu.uid), { avatar: url }, { merge: true });
+  try { await updateProfile(fu, { photoURL: url }); } catch (e) {}
+  return url;
+}
+
+const impl = { register, login, google, logout, resume, reset, emailLink, completeEmailLink, sendCode, verifyCode, profile, token, rest, updateAvatar };
+window.__nfFBImpl = impl;
+window.__nfFBResolve(impl);
+
+/* finish an email-link landing even if boot already passed the gate */
+try { completeEmailLink().catch(function () {}); } catch (e) {}
+</script>
+<script id="nf-auth-ui">
+(function () {
+  function msg(t) { try { authMsg(t); } catch (e) {} }
+  var g = document.getElementById('googleBtn');
+  if (g) g.style.display = CONFIG.BACKEND==='firebase' ? 'flex' : 'none';
+  if (g) g.onclick = function () {
+    g.disabled = true;
+    FB.google().catch(function (e) { msg(String(e && e.message || e)); }).then(function () { g.disabled = false; });
+  };
+  var forgot = document.getElementById('forgotBtn');
+  if(forgot && CONFIG.BACKEND==='firebase')forgot.onclick=async function(){
+    var email=(document.getElementById('liEmail').value||'').trim();
+    if(!email){msg('Type your email first, then press Forgot password.');return;}
+    try{await FB.reset(email);msg('If an account exists, a reset email will arrive. Check spam.');}catch(e){msg(String(e.message||e));}
+  };
+  var linkBtn = document.getElementById('otpLink');
+  if (linkBtn) linkBtn.onclick = function () {
+    var email = (document.getElementById('otpEmail').value || '').trim();
+    if (!/^[^@\s]+@[^@\s]+\.[^@\s]+$/.test(email)) { msg('Type your email first, then request the link.'); return; }
+    linkBtn.disabled = true;
+    FB.emailLink(email).then(function () {
+      var hint = document.getElementById('otpHint');
+      if (hint) hint.textContent = 'Sign-in link sent to ' + email + '. Open it on this device. If it does not arrive, check spam.';
+    }).catch(function (e) { msg('Could not send the link: ' + String(e && e.message || e)); }).then(function () { linkBtn.disabled = false; });
+  };
+})();
+</script>
+
 </body>
 </html>
 
+<style id="nf-playback-fix">
+#playerStage{min-height:0;flex:1}
+#nfTrailerTools{display:flex;flex-wrap:wrap;align-items:center;justify-content:center;gap:8px;padding:10px 14px calc(10px + var(--safe-b));background:var(--surface);color:var(--text)}
+#nfTrailerTools span{font-size:12px;color:var(--muted);flex-basis:100%;text-align:center}
+#nfTrailerTools select{min-width:0;max-width:360px;padding:8px;border-radius:8px;background:var(--surface-2);color:var(--text);border:1px solid var(--border)}
+.auth-release{text-align:center;font-size:11px;color:var(--muted);margin:8px 0 0}
+</style>
+<style id="nf-auth-fit">
+/* v8.8.1: the sign-in card grew with Google, the 6-digit code and the email
+   link. Centred flex used to clip its top edge on short phones; auto margins
+   keep it centred when it fits and scrollable when it does not. */
+#auth{align-items:flex-start}
+.auth-card{margin:auto}
+/* Short screens: tighten the card so all four sign-in routes fit without
+   scrolling. Nothing is hidden — only spacing and type size change. */
+@media (max-height:960px){
+  .auth-card{padding:16px 18px 18px}
+  .auth-head{margin-bottom:12px}
+  .auth-head h1{font-size:29px;letter-spacing:4px;margin:6px 0 2px}
+  .auth-head p{font-size:12px;letter-spacing:1.4px}
+  .auth-tabs{margin-bottom:12px}
+  .auth-tabs button{padding:8px;font-size:13px}
+  .field{margin-bottom:9px}
+  .field label{margin-bottom:4px;font-size:12px}
+  .field input,.field select{padding:10px 12px;font-size:13.5px}
+  .otp-box{margin-top:9px;padding:10px}
+  .auth-alt{margin-top:8px!important;font-size:12.5px}
+  #auth .btn.block{padding:10px}
+}
+</style>
 <style id="nf13-brand">
 .nf7-logo{position:relative;overflow:hidden}
 .nf7-brand{position:absolute;inset:3px;width:calc(100% - 6px);height:calc(100% - 6px);object-fit:contain;background:#0b0b12;border-radius:8px;padding:2px}
@@ -8586,7 +9083,7 @@ if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',
     var b=document.createElement('button');b.className='btn sm';b.textContent='Compare Premium plans';b.onclick=function(){closeOverlay('settingsOverlay');switchView('premium');};plan.appendChild(b);m.appendChild(plan);
   };
   var resend=NF6.resendWelcome;NF6.resendWelcome=function(btn){if(!admin()){Toast.show('Admins only','Welcome-email tools are managed by administrators.','warn');return;}return resend(btn);};
-  if(window.SBX)SBX.oauth=function(){throw new Error('Google sign-in has been removed. Use email sign-in.');};
+  if(window.SBX && CONFIG.BACKEND==='firebase')SBX.oauth=function(){return FB.google();};
   var oldSync=window.NFSyncNow;window.NFSyncNow=function(){if(!admin()){Toast.show('Admins only','Use your personal account settings instead.','warn');return;}if(oldSync)return oldSync();};
   var panel=document.createElement('aside');panel.id='connectionPanel';panel.hidden=true;panel.setAttribute('role','status');panel.setAttribute('aria-live','polite');
   var title=document.createElement('strong');title.textContent='You’re offline';panel.appendChild(title);

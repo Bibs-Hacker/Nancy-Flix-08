@@ -1,0 +1,129 @@
+[
+  {
+    "id": "tom-jerry-gokko",
+    "title": "Tom & Jerry Gokko",
+    "desc": "Newer-style adventures · official WB Kids episode collection",
+    "source": "WB Kids",
+    "kind": "playlist",
+    "playlist": "PLJYf0JdTApCr67q5AR5gwC6DMUaPSbzxM",
+    "cats": [
+      "cartoons",
+      "tom",
+      "stories"
+    ],
+    "year": null,
+    "page": "https://www.youtube.com/playlist?list=PLJYf0JdTApCr67q5AR5gwC6DMUaPSbzxM",
+    "embed": "https://www.youtube-nocookie.com/embed/videoseries?list=PLJYf0JdTApCr67q5AR5gwC6DMUaPSbzxM&rel=0&playsinline=1",
+    "thumb": ""
+  },
+  {
+    "id": "tom-jerry-show",
+    "title": "The Tom and Jerry Show",
+    "desc": "Modern TV-series clips and compilations · official WB Kids",
+    "source": "WB Kids",
+    "kind": "playlist",
+    "playlist": "PLJYf0JdTApCqSeh0ZQNQDeR-Qc461ZUs4",
+    "cats": [
+      "cartoons",
+      "tom"
+    ],
+    "year": null,
+    "page": "https://www.youtube.com/playlist?list=PLJYf0JdTApCqSeh0ZQNQDeR-Qc461ZUs4",
+    "embed": "https://www.youtube-nocookie.com/embed/videoseries?list=PLJYf0JdTApCqSeh0ZQNQDeR-Qc461ZUs4&rel=0&playsinline=1",
+    "thumb": ""
+  },
+  {
+    "id": "tom-jerry-food",
+    "title": "Tom & Jerry Gokko: Fun with Food",
+    "desc": "Official episode compilation · no archive films",
+    "source": "WB Kids",
+    "kind": "video",
+    "video": "PIiyREym7FU",
+    "cats": [
+      "cartoons",
+      "tom"
+    ],
+    "year": null,
+    "page": "https://www.youtube.com/watch?v=PIiyREym7FU",
+    "embed": "https://www.youtube-nocookie.com/embed/PIiyREym7FU?rel=0&playsinline=1",
+    "thumb": "https://i.ytimg.com/vi/PIiyREym7FU/hqdefault.jpg"
+  },
+  {
+    "id": "bluey-pizza",
+    "title": "Bluey: Pizza Girls and Friends",
+    "desc": "Full episode compilation from the official Bluey channel",
+    "source": "Bluey - Official Channel",
+    "kind": "video",
+    "video": "UtxqHTxzQbU",
+    "cats": [
+      "cartoons",
+      "stories"
+    ],
+    "year": null,
+    "page": "https://www.youtube.com/watch?v=UtxqHTxzQbU",
+    "embed": "https://www.youtube-nocookie.com/embed/UtxqHTxzQbU?rel=0&playsinline=1",
+    "thumb": "https://i.ytimg.com/vi/UtxqHTxzQbU/hqdefault.jpg"
+  },
+  {
+    "id": "gumball",
+    "title": "The Amazing World of Gumball",
+    "desc": "Official Cartoon Network UK collection · comedy and adventures",
+    "source": "Cartoon Network UK",
+    "kind": "playlist",
+    "playlist": "PLJRBd5RNL15FNVJPiX_0Vw2YHjrkUG3Kc",
+    "cats": [
+      "cartoons",
+      "stories"
+    ],
+    "year": null,
+    "page": "https://www.youtube.com/playlist?list=PLJRBd5RNL15FNVJPiX_0Vw2YHjrkUG3Kc",
+    "embed": "https://www.youtube-nocookie.com/embed/videoseries?list=PLJRBd5RNL15FNVJPiX_0Vw2YHjrkUG3Kc&rel=0&playsinline=1",
+    "thumb": ""
+  },
+  {
+    "id": "bluey-channel",
+    "title": "Bluey: Official Channel",
+    "desc": "Browse the official channel for its latest clips, episodes and minisodes",
+    "source": "BBC Studios / Bluey",
+    "kind": "channel",
+    "page": "https://www.youtube.com/channel/UCVzLLZkDuFGAE2BGdBuBNBg",
+    "cats": [
+      "cartoons",
+      "stories",
+      "learn"
+    ],
+    "year": null,
+    "embed": "",
+    "thumb": ""
+  },
+  {
+    "id": "peppa-channel",
+    "title": "Peppa Pig: New Tales and Episodes",
+    "desc": "Browse new uploads on Peppa Pig’s official channel",
+    "source": "Peppa Pig - Official Channel",
+    "kind": "channel",
+    "page": "https://www.youtube.com/@PeppaPigOfficial/videos",
+    "cats": [
+      "cartoons",
+      "stories",
+      "learn"
+    ],
+    "year": null,
+    "embed": "",
+    "thumb": ""
+  },
+  {
+    "id": "gumball-channel",
+    "title": "Gumball: Latest Official Uploads",
+    "desc": "Latest uploads from the official Gumball channel",
+    "source": "The Amazing World of Gumball",
+    "kind": "channel",
+    "page": "https://www.youtube.com/@WorldOfGumballofficial/videos",
+    "cats": [
+      "cartoons"
+    ],
+    "year": null,
+    "embed": "",
+    "thumb": ""
+  }
+]
