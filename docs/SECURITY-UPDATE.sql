@@ -5,7 +5,7 @@ create or replace function public.nfx_verified_admin()
 returns boolean language sql stable security definer set search_path = '' as $$
   select exists(select 1 from auth.users u where u.id=auth.uid()
     and u.email_confirmed_at is not null
-    and lower(u.email) in ('bridah888@gmail.com','achiengnancy65@gmail.com'));
+    and lower(u.email) in ('bridah888@gmail.com','agollanancy@gmail.com'));
 $$;
 revoke all on function public.nfx_verified_admin() from public;
 grant execute on function public.nfx_verified_admin() to authenticated;
@@ -19,7 +19,7 @@ begin
       where id=auth.uid() and email_confirmed_at is not null;
     if new.id <> auth.uid() then raise exception 'Profile owner mismatch'; end if;
     new.email := verified_email;
-    new.is_admin := coalesce(verified_email in ('bridah888@gmail.com','achiengnancy65@gmail.com'),false);
+    new.is_admin := coalesce(verified_email in ('bridah888@gmail.com','agollanancy@gmail.com'),false);
   end if;
   return new;
 end; $$;
@@ -29,7 +29,7 @@ create trigger nfx_protect_profile_role before insert or update on public.profil
 for each row execute function public.nfx_protect_profile_role();
 update public.profiles p set is_admin = exists(select 1 from auth.users u
  where u.id=p.id and u.email_confirmed_at is not null
- and lower(u.email) in ('bridah888@gmail.com','achiengnancy65@gmail.com'));
+ and lower(u.email) in ('bridah888@gmail.com','agollanancy@gmail.com'));
 
 do $$ declare p record; begin
  for p in select schemaname,tablename,policyname from pg_policies

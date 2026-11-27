@@ -78,7 +78,7 @@ module.exports = async (req, res) => {
     if((s.client_reference_id && s.client_reference_id!==actor.id)||!email||String(email).toLowerCase()!==String(actor.email).toLowerCase()){res.status(403).json({active:false,reason:'checkout_owner_mismatch'});return;}
     /* ---- remember the membership server-side so other devices can restore it ---- */
     if (active && email) {
-      try { await saveEntitlement({ uid:actor.id, backend:actor.backend, email, plan: plan || 'premium', status, expires, customer: (cust && cust.id) || (typeof s.customer === 'string' ? s.customer : null), session: s.id }); } catch (e) {}
+      try { await saveEntitlement({ uid:actor.id,backend:actor.backend,email, plan: plan || 'premium', status, expires, customer: (cust && cust.id) || (typeof s.customer === 'string' ? s.customer : null), session: s.id }); } catch (e) {}
     }
 
     res.status(200).json({
@@ -103,12 +103,11 @@ module.exports = async (req, res) => {
  * ------------------------------------------------------------------------- */
 async function saveEntitlement(row) {
   if(row.backend==='firebase'){
-    await firebaseApp().firestore().collection('entitlements').doc(row.uid).set({
-      email:String(row.email).toLowerCase(),plan:row.plan,status:row.status,
-      customer:row.customer||null,session:row.session||null,expires:row.expires||null,
-      updated_at:new Date().toISOString()
-    },{merge:true});return true;
+    const admin=require('firebase-admin');
+    await admin.firestore(firebaseApp(true)).collection('entitlements').doc(row.uid).set({email:String(row.email).toLowerCase(),plan:row.plan,status:row.status,expires:row.expires||null,customer:row.customer||null,session:row.session,updated_at:new Date().toISOString()},{merge:true});
+    return true;
   }
+
   const url = (process.env.SUPABASE_URL || '').replace(/\/$/, '');
   const key = process.env.SUPABASE_SERVICE_KEY || process.env.SUPABASE_SERVICE_ROLE_KEY || '';
   if (!url || !key) return false;

@@ -1,6 +1,6 @@
-# Current release: NANCYFLIX 8.8.2
+# NANCYFLIX 8.9.0
 
-Start with **docs/UPDATE-8.8.2.md** for deployment, the four verified administrators, Firebase rule publication and Kids endpoint checks. Older release documents below are historical and do not override the current guide.
+Start with **docs/UPDATE-8.9.0.md** for this release and **docs/TESTING-8.9.0.md** for the verification scope. Older release guides below are historical.
 
 # NANCYFLIX v8.8.1 — trailer and kids fix
 

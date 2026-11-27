@@ -8,7 +8,7 @@ Earlier code exposed a public seven-day testing switch, stored a shared guest en
 
 - Guests have no membership. Stale `sub:guest` is removed on guest entry. Ordinary users cannot use tester/developer grants or the old unverified-client source.
 - Administrator settings, custom stream source controls, admin sync and the email tool are hidden/blocked for ordinary users. Personal appearance, language and notification preferences remain available.
-- The only owner emails are `bridah888@gmail.com` and `achiengnancy65@gmail.com`. Production owner access needs Supabase-confirmed email login, not a matching email typed into a local-only account.
+- The only owner emails are `bridah888@gmail.com` and `agollanancy@gmail.com`. Production owner access needs Supabase-confirmed email login, not a matching email typed into a local-only account.
 - The server validates bearer tokens with Supabase. Email-tool access additionally requires a confirmed owner account.
 - Entitlement lookup uses the authenticated email, not an arbitrary query email. Checkout verification checks the session's paid status, owner email/account reference and server-side plan metadata.
 - The SQL update protects profile email/admin fields and checks confirmed owner identity in RLS policies. Browser roles/local storage are never the protection for database rows.

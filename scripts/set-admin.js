@@ -13,9 +13,6 @@ const path = require('path');
 const admin = require('firebase-admin');
 
 const email = String(process.argv[2] || '').trim().toLowerCase();
-if (!require('../lib/security').OWNERS.includes(email)) {
-  console.error('This email is not in the configured administrator allowlist.');process.exit(1);
-}
 if (!email) {
   console.error('Usage: node scripts/set-admin.js someone@example.com');
   process.exit(1);

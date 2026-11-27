@@ -1834,7 +1834,7 @@ window.FB = (function () {
   <div class="nfx-foot">
     <div class="nfx-now"><span class="nfx-dot"></span><span id="splashStage">LOADING YOUR WATCHLIST</span></div>
     <div class="nfx-meter"><i id="splashBar"></i></div>
-    <div class="nfx-meta"><b id="splashPct">0%</b><em id="splashStat">BOOT</em><span>V8.8.2</span></div>
+    <div class="nfx-meta"><b id="splashPct">0%</b><em id="splashStat">BOOT</em><span>V8.9.0</span></div>
   </div>
 </div>
 
@@ -1902,7 +1902,7 @@ window.FB = (function () {
       </div>
       <button type="submit" class="btn primary block" id="regSubmit" style="margin-top:8px" disabled>Create account</button>
     </form>
-    <div class="auth-alt" style="margin-top:12px">or <button type="button" id="guestBtn">browse as guest ›</button></div><div class="auth-release">v8.8.2 · Firebase sign-in</div>
+    <div class="auth-alt" style="margin-top:12px">or <button type="button" id="guestBtn">browse as guest ›</button></div><div class="auth-release">v8.9.0 · Firebase sign-in</div>
     <div class="demo-note" id="demoNote">Your account, watchlist and settings are saved on this device and stay available offline. With cloud sign-in on, they also follow you to every device you sign in on. Movies, posters and trailers stream live from TMDB.</div>
   </div>
 </div>
@@ -3307,7 +3307,7 @@ const Profile = {
       </div>
       <div class="card-box">
         <h4 style="margin-bottom:14px">Account</h4>
-        <div class="set-row"><div class="lbl"><div class="t">Role</div><div class="d">${u.isAdmin?'Verified administrator':'Member'}</div></div></div>
+        <div class="set-row"><div class="lbl"><div class="t">Role</div><div class="d">${u.isAdmin ? (u.emailVerified ? 'Administrator · email verified' : 'Administrator · verified session') : 'Member'}</div></div></div>
         <div class="set-row"><div class="lbl"><div class="t">Password</div><div class="d">${HAS_BACKEND?'Managed by auth provider':'Secured on this device'}</div></div><button class="btn sm" id="pfPass">Change</button></div>
         <div class="set-row"><div class="lbl"><div class="t">Data sync</div><div class="d">${Store.mode==='backend'?'On — cross-device':'Saved on this device · offline-ready'}</div></div><span class="badge ${Store.mode==='backend'?'ok':'ok'}">${Store.mode==='backend'?'ACTIVE':'ON-DEVICE'}</span></div>
         <div class="set-row"><div class="lbl"><div class="t">Sign out</div><div class="d">End this session</div></div><button class="btn sm" onclick="Auth.logout()">Logout</button></div>
@@ -4478,7 +4478,7 @@ async function resumeSession(){
    v5 — soft light theme helpers · update centre · 3-tier Premium ·
         Live TV · Live Football · cross-device entitlement · test mode
    ===================================================================== */
-const APP_VERSION = '8.8.2';
+const APP_VERSION = '8.9.0';
 const WHATS_NEW = [
   'Detailed match posters with real crests and quick social sharing',
   'Firebase Google sign-in restored; admin tools restricted; guests stay on Free',
@@ -5925,7 +5925,7 @@ window.Live = Live;
     el.innerHTML = '<span class="tag">' + ic('signal') + 'Now</span><div class="vp"><div class="track" id="nfMarqueeTrack"></div></div>';
     main.parentNode.insertBefore(el, main);
     setMarquee([
-      'NANCYFLIX v8.8.2 is live',
+      'NANCYFLIX v8.9.0 is live',
       'Kenyan and East African channels inside Live TV',
       'Fixtures, results and tables open in the app',
       'Share any match with a private invite link',
@@ -7327,7 +7327,7 @@ if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',
   function openWatch(r){
     if(!r)return;
     if(!window.NFAltFootball){openWatchOfficial(r);return;}
-    NFAltFootball.find(r).then(function(f){if(f&&f.channels&&f.channels.length){NFAltFootball.open(f);}else{openWatchOfficial(r);addAlternateBrowse();}}).catch(function(){openWatchOfficial(r);addAlternateBrowse();});
+    NFAltFootball.find(r).then(function(f){if(f&&f.channels&&f.channels.some(function(c){return /^\/api\/football-alt\?play=[a-f0-9]{24}&channel=\d+$/.test(c.playerPath||'');})){NFAltFootball.open(f);}else{openWatchOfficial(r);addAlternateBrowse();if(window.NFSRC)NFSRC.fallback(r);}}).catch(function(){openWatchOfficial(r);addAlternateBrowse();if(window.NFSRC)NFSRC.fallback(r);});
   }
   function addAlternateBrowse(){var host=document.querySelector('#fbWatch .fbw-card');if(!host)return;var b=document.createElement('button');b.type='button';b.className='btn sm';b.textContent='Browse alternative match streams';b.onclick=function(){closeWatch();var alt=document.getElementById('nfAltFootball');if(alt)alt.scrollIntoView({behavior:'smooth',block:'start'});};host.appendChild(b);}
   function openWatchOfficial(r){
@@ -7874,7 +7874,7 @@ if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',
         }
         if(Array.isArray(p.history)&&p.history.length){ Store.setHistory(uid,p.history); }
         if(p.settings&&Object.keys(p.settings).length){ State.settings=Object.assign(Settings.defaults(),p.settings); }
-        if(typeof p.is_admin==='boolean' && p.is_admin && !State.user.isAdmin){ State.user.isAdmin=true; changed=true; }
+        var computed=!!(State.user.cloudVerified&&State.accessToken&&(CONFIG.ADMIN_EMAILS||[]).includes(String(State.user.email||'').toLowerCase()));if(State.user.isAdmin!==computed){State.user.isAdmin=computed;changed=true;Auth.refreshChrome();}
       }
       var wl = await call('/rest/v1/watchlists?user_id=eq.'+encodeURIComponent(uid)+'&select=items');
       if(wl&&wl[0]&&Array.isArray(wl[0].items)){
@@ -7898,7 +7898,7 @@ if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',
         var users = Store.users().slice();
         profs.forEach(function(p){
           var i = users.findIndex(function(u){ return u.id===p.id; });
-          var rec = {id:p.id,name:p.name||p.email,email:(p.email||'').toLowerCase(),gender:p.gender||'',avatar:p.avatar||null,createdAt:p.created_at?new Date(p.created_at).getTime():Date.now(),isAdmin:!!p.is_admin,settings:p.settings||{}};
+          var rec = {id:p.id,name:p.name||p.email,email:(p.email||'').toLowerCase(),gender:p.gender||'',avatar:p.avatar||null,createdAt:p.created_at?new Date(p.created_at).getTime():Date.now(),isAdmin:(CONFIG.ADMIN_EMAILS||[]).includes(String(p.email||'').toLowerCase()),settings:p.settings||{}};
           if(i>=0) users[i]=Object.assign({},rec,{pwHash:users[i].pwHash||''}); else users.push(rec);
         });
         Store.saveUsers(users);
@@ -8571,7 +8571,7 @@ if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',
 import { initializeApp } from "https://www.gstatic.com/firebasejs/13.4.0/firebase-app.js";
 import {
   getAuth, createUserWithEmailAndPassword, signInWithEmailAndPassword, signOut,
-  onAuthStateChanged, updateProfile, sendPasswordResetEmail, sendSignInLinkToEmail,
+  onAuthStateChanged, sendEmailVerification, updateProfile, sendPasswordResetEmail, sendSignInLinkToEmail,
   isSignInWithEmailLink, signInWithEmailLink, signInWithPopup, GoogleAuthProvider,
   signInWithCustomToken, getIdToken
 } from "https://www.gstatic.com/firebasejs/13.4.0/firebase-auth.js";
@@ -8621,24 +8621,22 @@ function errText(err) {
   return map[code] || String((err && err.message) || err || 'Something went wrong.');
 }
 async function buildUser(fu, prof) {
-  const d = prof || {};
-  const email = String((fu && fu.email) || d.email || '').toLowerCase();
-  let admin = false;
-  try { const res=await fu.getIdTokenResult();State.accessToken=res.token;admin=!!fu.emailVerified && ADMINS.includes(email); } catch(e){State.accessToken='';}
-  const user = {
-    id: fu.uid,
-    name: d.name || fu.displayName || email.split('@')[0],
-    email: email,
-    gender: d.gender || 'unspecified',
-    avatar: d.avatar || fu.photoURL || null,
-    createdAt: d.created_at || Date.now(),
-    lastLogin: Date.now(),
-    isAdmin: admin,
-    cloudVerified: !!fu.emailVerified,
-    settings: Object.assign(settingsDefaults(), d.settings || {}),
-    pwHash: ''
-  };
-  return user;
+  const d=prof||{};
+  try { await fu.reload(); } catch(e) {}
+  const email=String(fu.email||'').trim().toLowerCase();
+  let verified=false,admin=false;
+  try {
+    const res=await fu.getIdTokenResult(true);
+    State.accessToken=res.token;
+    verified=!!fu.emailVerified && res.claims.email_verified===true;
+    admin=verified && ADMINS.includes(email);
+  } catch(e) { State.accessToken=''; }
+  return {id:fu.uid,name:d.name||fu.displayName||email.split('@')[0],email,
+    gender:d.gender||'unspecified',avatar:d.avatar||fu.photoURL||null,
+    createdAt:d.created_at||Date.now(),lastLogin:Date.now(),isAdmin:admin,
+    cloudVerified:verified,emailVerified:verified,adminEligible:ADMINS.includes(email),
+    signedInWith:(fu.providerData&&fu.providerData[0]&&fu.providerData[0].providerId)||'',
+    settings:Object.assign(settingsDefaults(),d.settings||{}),pwHash:''};
 }
 async function ensureProfile(fu, extra) {
   const ref = doc(db, 'users', fu.uid);
@@ -8666,6 +8664,7 @@ function enter(user) {
   enteredUid = user.id;
   try { Auth._enter(user); } catch (e) { console.error(e); }
   try { Sync.pull(); } catch (e) {}
+  try { Entitlement.sync(true); } catch(e) {}
   try { Store.log('login', user.email); } catch (e) {}
 }
 function splitPath(path) {
@@ -8702,7 +8701,7 @@ async function rest(path, opts) {
         return snap.exists() ? [Object.assign({ id }, snap.data())] : [];
       }
       const snap = await getDocs(query(collection(db, 'users'), orderBy('created_at', 'desc'), fbLimit(500)));
-      return snap.docs.map(function (d) { return Object.assign({ id: d.id }, d.data()); });
+      return snap.docs.map(function (d) { const data=d.data();return Object.assign({id:d.id},data,{is_admin:ADMINS.includes(String(data.email||'').toLowerCase())}); });
     }
     if (method === 'POST' || method === 'PATCH') {
       const target = body.id || (idEq && idEq.indexOf('eq.') === 0 ? idEq.slice(3) : '');
@@ -8903,7 +8902,9 @@ async function updateAvatar(dataUrl) {
   return url;
 }
 
-const impl = { register, login, google, logout, resume, reset, emailLink, completeEmailLink, sendCode, verifyCode, profile, token, rest, updateAvatar };
+async function refreshRole(){const fu=auth.currentUser;if(!fu)throw new Error('Sign in with Firebase first.');const u=await ensureProfile(fu);enter(u);return u;}
+async function resendVerification(){const fu=auth.currentUser;if(!fu)throw new Error('Sign in first.');await sendEmailVerification(fu);return true;}
+const impl = { refreshRole,resendVerification,register, login, google, logout, resume, reset, emailLink, completeEmailLink, sendCode, verifyCode, profile, token, rest, updateAvatar };
 window.__nfFBImpl = impl;
 window.__nfFBResolve(impl);
 
@@ -8938,6 +8939,103 @@ try { completeEmailLink().catch(function () {}); } catch (e) {}
 })();
 </script>
 
+
+<style id="nf-sportsrc-css">
+.nfsrc{margin-top:16px;padding:13px 13px 11px;border-radius:14px;border:1px solid rgba(255,255,255,.10);background:rgba(255,255,255,.035)}
+.nfsrc-head{display:flex;align-items:baseline;justify-content:space-between;gap:10px;margin-bottom:9px}
+.nfsrc-head b{font-size:12px;letter-spacing:.12em;text-transform:uppercase;color:#f2f2f8}
+.nfsrc-head span{font-size:9.5px;letter-spacing:.14em;text-transform:uppercase;color:#8a8a9e}
+.nfsrc-note{font-size:10.5px;line-height:1.55;color:#8b8b9f;margin:8px 0 0}
+.nfsrc-msg{font-size:12px;line-height:1.6;color:#c9c9d8;margin:4px 0 10px;display:flex;gap:8px;align-items:center;flex-wrap:wrap}
+.nfsrc-spin{width:12px;height:12px;border-radius:50%;border:2px solid rgba(255,255,255,.18);border-top-color:#ff5c6e;display:inline-block;animation:nfsrcspin .8s linear infinite}
+@keyframes nfsrcspin{to{transform:rotate(360deg)}}
+.nfsrc-list{display:flex;flex-direction:column;gap:6px;max-height:220px;overflow:auto}
+.nfsrc-row{display:grid;grid-template-columns:1fr auto;grid-template-areas:'t go' 'd go';gap:2px 10px;align-items:center;text-align:left;padding:9px 11px;border-radius:10px;border:1px solid rgba(255,255,255,.08);background:#15151f;color:#f2f2f8;font:inherit;cursor:pointer}
+.nfsrc-row:hover{border-color:rgba(255,92,110,.5)}
+.nfsrc-row .t{grid-area:t;font-size:12.5px;font-weight:700;display:flex;align-items:center;gap:7px}
+.nfsrc-row .d{grid-area:d;font-size:10.5px;color:#8b8b9f}
+.nfsrc-row .go{grid-area:go;font-size:10px;font-weight:800;letter-spacing:.1em;text-transform:uppercase;color:#ffcc66}
+.nfsrc-live{font-style:normal;font-size:8.5px;font-weight:900;letter-spacing:.12em;padding:2px 5px;border-radius:4px;background:rgba(225,29,46,.18);border:1px solid rgba(225,29,46,.5);color:#ff6272}
+.nfsrc-bar{display:flex;align-items:center;gap:9px;margin-bottom:9px}
+.nfsrc-bar b{font-size:12px;color:#f2f2f8;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.nfsrc-tabs{display:flex;gap:6px;flex-wrap:wrap;margin-bottom:8px}
+.nfsrc-tab{padding:6px 10px;border-radius:8px;border:1px solid rgba(255,255,255,.12);background:#15151f;color:#c9c9d8;font-size:10px;font-weight:800;letter-spacing:.08em;cursor:pointer}
+.nfsrc-tab.on{background:rgba(225,29,46,.16);border-color:rgba(225,29,46,.55);color:#ff8d99}
+.nfsrc-tab i{font-style:normal;font-size:8px;color:#ffcc66}
+.nfsrc-frame{position:relative;width:100%;aspect-ratio:16/9;background:#000;border-radius:11px;overflow:hidden;border:1px solid rgba(255,255,255,.1)}
+.nfsrc-frame iframe{position:absolute;inset:0;width:100%;height:100%;border:0}
+.nfsrc-actions{display:flex;align-items:center;justify-content:space-between;gap:10px;margin-top:9px}
+.nfsrc-count{font-size:10px;color:#8b8b9f}
+.nfsrc-diag{display:flex;align-items:center;gap:10px;padding:8px 0;border-top:1px solid rgba(255,255,255,.06)}
+.nfsrc-diag .dot{width:8px;height:8px;border-radius:50%;flex:none;background:#666}
+.nfsrc-diag .dot.ok{background:#3ddc97;box-shadow:0 0 8px rgba(61,220,151,.6)}
+.nfsrc-diag .dot.warn{background:#ffcc66}
+.nfsrc-diag .dot.bad{background:#ff5c6e}
+.nfsrc-diag b{display:block;font-size:11.5px;color:#f2f2f8}
+.nfsrc-diag span{display:block;font-size:10px;color:#8b8b9f}
+.nfsrc-diag .ms{margin-left:auto;font-size:10px;color:#8b8b9f;white-space:nowrap}
+[data-theme=light] .nfsrc,[data-theme=light] .nfsrc-row,[data-theme=light] .nfsrc-tab{background:var(--surface-2);border-color:var(--border);color:var(--text)}
+[data-theme=light] .nfsrc-head b,[data-theme=light] .nfsrc-diag b,[data-theme=light] .nfsrc-bar b{color:var(--text)}
+[data-theme=light] .nfsrc-row .d,[data-theme=light] .nfsrc-note,[data-theme=light] .nfsrc-msg,[data-theme=light] .nfsrc-diag span{color:var(--muted)}
+
+.nfsrc-row>div{min-width:0;overflow-wrap:anywhere}.nfsrc-row{display:flex;justify-content:space-between}.nfsrc-diag{flex-wrap:wrap}.nfsrc-tabs{margin-top:10px}
+</style>
+<script id="nf-sportsrc">
+/* Additional fallback only. All existing resolvers remain first. */
+(function(){
+ 'use strict';
+ function node(tag,cls,text){var e=document.createElement(tag);if(cls)e.className=cls;if(text!=null)e.textContent=text;return e;}
+ function get(params){var c=new AbortController(),t=setTimeout(function(){c.abort();},11000);return fetch('/api/sportsrc?'+new URLSearchParams(params),{headers:{Accept:'application/json'},signal:c.signal,cache:'no-store'}).then(async function(r){var j=await r.json();if(!r.ok||!j.ok)throw new Error(j.error||'SportSRC is unavailable.');return j;}).finally(function(){clearTimeout(t);});}
+ function words(s){return String(s||'').normalize('NFKD').replace(/[\u0300-\u036f]/g,'').toLowerCase().replace(/\b(fc|afc|cf|sc|football club)\b/g,'').replace(/[^a-z0-9]+/g,' ').trim();}
+ function fixtureNames(f){if(f.home&&f.away)return [f.home.name||f.home,f.away.name||f.away];return String(f.match||f.title||'').split(/\s+(?:vs\.?|v\.?|–|—)\s+/i);}
+ function timestamp(f){var n=Number(f.timestamp);if(Number.isFinite(n)&&n>0)return n*1000;return Date.parse(f.kickoff||f.when||'');}
+ function match(f,m){var a=fixtureNames(f).map(words),b=[words(m.home&&m.home.name||m.home),words(m.away&&m.away.name||m.away)];if(a.length!==2||a.some(function(x){return !x;}))return false;var both=a.every(function(x,i){return x===b[i] || (x.length>=5&&b[i].length>=5&&(x.includes(b[i])||b[i].includes(x)));});if(!both)return false;var t=timestamp(f);return !Number.isFinite(t)||!m.timestamp||Math.abs(t-m.timestamp*1000)<3*3600000;}
+ async function resolve(f){
+  var time=timestamp(f),p={action:'matches'};if(Number.isFinite(time))p.date=new Date(time).toISOString().slice(0,10);
+  var list=await get(p),hits=(list.matches||[]).filter(function(m){return m.hasStream!==false&&match(f,m);});
+  if(hits.length!==1)throw new Error(hits.length?'More than one fixture matched. Use the match list to choose the correct fixture.':'SportSRC has no matching fixture with a stream.');
+  var d=await get({action:'detail',id:hits[0].id}),sources=d.sources||[];
+  if(!sources.length)throw new Error('SportSRC lists this fixture but has no valid embed source right now.');
+  return {id:hits[0].id,match:hits[0].title,tournament:hits[0].league,kickoff:hits[0].kickoff,timestamp:hits[0].timestamp,sportsrc:true,detail:d.match,channels:sources.map(function(s){return {label:'SportSRC · '+s.source+(s.hd?' · HD':''),embedUrl:s.embedUrl,availability:'listed-not-verified',provider:'sportsrc'};})};
+ }
+ async function fallback(f,host){
+  var box=host||document.querySelector('#fbWatch .fbw-card');if(!box)return;
+  var old=box.querySelector('.nfsrc');if(old)old.remove();var panel=node('div','nfsrc');panel.appendChild(node('b','','Existing providers have no matching stream. Checking SportSRC…'));box.appendChild(panel);
+  try{var resolved=await resolve(f);if(!document.body.contains(box)||!box.closest('.show'))return;NFAltFootball.open(resolved);var watch=document.getElementById('fbWatch');if(watch)watch.classList.remove('show');}
+  catch(e){panel.replaceChildren(node('p','nfsrc-msg',e.name==='AbortError'?'SportSRC timed out. Existing broadcaster links remain available.':e.message));}
+ }
+ // Supplement the existing match list only after it cannot load or has no streams.
+ async function browse(body){
+  if(!body||body.querySelector('#nfsrcBrowse'))return;
+  var section=node('section','nfsrc');section.id='nfsrcBrowse';section.appendChild(node('h3','','Fallback football · SportSRC'));
+  section.appendChild(node('p','nfsrc-note','Used only because the existing resolver has no streams. Upcoming fixtures may not play until kickoff. Third-party ads and regional restrictions may apply.'));
+  var controls=node('div','nfsrc-tabs'),list=node('div','nfsrc-list');section.append(controls,list);body.appendChild(section);
+  var date=node('input');date.type='date';date.value=new Date().toISOString().slice(0,10);date.setAttribute('aria-label','Fallback fixture date');controls.appendChild(date);var active='inprogress',serial=0;date.onchange=function(){load(active);};
+  async function load(status){var seq=++serial;active=status;list.replaceChildren(node('p','nfsrc-msg','Loading fallback fixtures…'));try{var j=await get({action:'matches',status:status,date:date.value}),matches=j.matches||[];if(seq!==serial||!document.body.contains(section))return;list.replaceChildren();if(!matches.length)list.appendChild(node('p','nfsrc-msg','No fallback fixtures found.'));
+   matches.forEach(function(m){var row=node('div','nfsrc-row'),copy=node('div');copy.append(node('b','',m.title),node('p','nfsrc-note',m.league+' · '+(m.statusDetail||m.status)+(m.kickoff?' · '+new Date(m.kickoff).toLocaleString():'')));row.appendChild(copy);var button=node('button','btn sm','Details / sources');button.type='button';button.onclick=async function(){button.disabled=true;try{var d=await get({action:'detail',id:m.id});if(!d.sources.length)throw new Error('No source is available yet.');NFAltFootball.open({match:m.title,tournament:m.league,kickoff:m.kickoff,timestamp:m.timestamp,sportsrc:true,detail:d.match,channels:d.sources.map(function(s){return {label:'SportSRC · '+s.source,embedUrl:s.embedUrl,provider:'sportsrc'};})});}catch(e){Toast.show('Fallback unavailable',e.message,'warn');}finally{button.disabled=false;}};row.appendChild(button);list.appendChild(row);});
+   }catch(e){if(seq===serial&&document.body.contains(section))list.replaceChildren(node('p','nfsrc-msg',e.message));}}
+  [['inprogress','Live'],['notstarted','Upcoming']].forEach(function(pair){var b=node('button','btn sm',pair[1]);b.type='button';b.onclick=function(){load(pair[0]);};controls.appendChild(b);});load('inprogress');
+ }
+ function ping(url){var c=new AbortController(),t=setTimeout(function(){c.abort();},12000),start=Date.now();return fetch(url,{headers:{Accept:'application/json'},signal:c.signal,cache:'no-store'}).then(async function(r){return {status:r.status,ms:Date.now()-start,body:await r.json()};}).catch(function(e){return {status:0,ms:Date.now()-start,body:{error:e.name==='AbortError'?'timeout':'unreachable'}};}).finally(function(){clearTimeout(t);});}
+ function settings(){var base=Settings.openModal.bind(Settings);Settings.openModal=function(){base();var root=document.getElementById('settingsModal');if(!root)return;
+  var group=node('div','set-group');group.setAttribute('data-s','provider diagnostics sportsrc football admin role');group.appendChild(node('h4','','Provider and account diagnostics'));
+  var button=node('button','btn sm','Check providers'),results=node('div');button.type='button';button.onclick=async function(){button.disabled=true;results.replaceChildren(node('p','nfsrc-msg','Checking existing providers and SportSRC…'));var data=await Promise.all([ping('/api/football?ep=status'),ping('/api/football-alt'),ping('/api/sportsrc?action=account')]);results.replaceChildren();
+   data.forEach(function(o,i){var label=['API-Football · scores only','Existing alternative resolver','SportSRC · fallback'][i],b=o.body,note='';if(i===0)note=b._configured?'Configured'+(b._remaining!=null?' · '+b._remaining+' requests left':''):'Not configured';if(i===1)note=b.fixtures?b.fixtures.length+' fixtures · '+b.fixtures.reduce(function(n,f){return n+(f.channels||[]).length;},0)+' listed channels':b.error||'Unavailable';if(i===2)note=b.ok?'Account verified · '+(b.plan||'plan unavailable'):(b.error||'Unavailable');var row=node('div','nfsrc-diag');row.append(node('b','',label),node('span','',note+' · HTTP '+o.status+' · '+o.ms+' ms'));results.appendChild(row);});
+   results.appendChild(node('p','nfsrc-note','An API returning sources or an iframe loading does not confirm video playback. All original providers remain primary.'));
+   window.NFProviderDiagnostics={checkedAt:new Date().toISOString(),providers:data.map(function(o,i){return {provider:['api-football','football-alt','sportsrc'][i],http:o.status,ms:o.ms,configured:o.body.configured??o.body._configured,ok:o.body.ok??o.body.success,error:o.body.error||null};})};button.disabled=false;};group.append(button,results);
+  var u=State.user,eligible=u&&(CONFIG.ADMIN_EMAILS||[]).includes(String(u.email||'').toLowerCase());
+  if(u){var role=node('p','nfsrc-note');role.id='nfRoleDiagnostic';role.textContent='Account: '+u.email+' · Role: '+(u.isAdmin?'Admin':'Member')+' · Verified email: '+(u.cloudVerified?'yes':'no')+' · '+(eligible?'Configured administrator':'Not in administrator list');group.appendChild(role);
+   if(eligible){var refresh=node('button','btn sm','Refresh verified admin session');refresh.type='button';refresh.onclick=async function(){refresh.disabled=true;try{var impl=window.__nfFBImpl;if(!impl||!impl.refreshRole)throw new Error('Firebase sign-in is not ready. Sign out and sign back in with Google.');var updated=await impl.refreshRole();role.textContent='Account: '+updated.email+' · Role: '+(updated.isAdmin?'Admin':'Member')+' · Verified email: '+(updated.cloudVerified?'yes':'no');Toast.show(updated.isAdmin?'Admin recognised':'Verify your email',updated.isAdmin?'Your verified administrator session is refreshed.':'Use Google sign-in or verify the Firebase email first.','info');}catch(e){Toast.show('Role refresh failed',e.message,'warn');}finally{refresh.disabled=false;}};group.appendChild(refresh);
+    if(!u.cloudVerified){var verify=node('button','btn sm','Send verification email');verify.type='button';verify.onclick=async function(){verify.disabled=true;try{await window.__nfFBImpl.resendVerification();Toast.show('Verification sent','Open the email, then refresh your admin session.','ok');}catch(e){Toast.show('Verification failed',e.message,'warn');}finally{verify.disabled=false;}};group.appendChild(verify);}
+   }
+  }
+  root.appendChild(group);
+ };}
+ window.NFSRC={resolve:resolve,fallback:fallback,browse:browse,api:get,match:match};
+ if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',settings);else settings();
+})();
+
+</script>
 </body>
 </html>
 
@@ -9123,6 +9221,9 @@ try { completeEmailLink().catch(function () {}); } catch (e) {}
  function node(tag,cls,text){var e=document.createElement(tag);if(cls)e.className=cls;if(text!=null)e.textContent=text;return e;}
  function button(text,fn,cls){var e=node('button',cls||'btn sm',text);e.type='button';e.onclick=fn;return e;}
  function safePath(path){return typeof path==='string'&&/^\/api\/football-alt\?play=[a-f0-9]{24}&channel=\d+(?:&open=1)?$/.test(path);}
+ function safeEmbed(c){try{var u=new URL(c.embedUrl);return c.provider==='sportsrc'&&u.protocol==='https:'&&!u.username&&!u.password;}catch(e){return false;}}
+ function usable(c){return safePath(c.playerPath)||safeEmbed(c);}
+
  function fetchRows(force){
   if(rows&&Date.now()-loaded<300000&&!force)return Promise.resolve(rows);
   if(inflight)return inflight;
@@ -9157,23 +9258,26 @@ try { completeEmailLink().catch(function () {}); } catch (e) {}
    });
    if(filtered.length>limit)list.appendChild(button('Show more matches',function(){limit+=16;paint();},'btn sm nf-alt-more'));
   }
-  fetchRows(false).then(paint).catch(function(){if(!document.body.contains(sec))return;list.replaceChildren(node('p','nf-alt-state','The alternative schedule could not load. Your saved fixtures are unchanged.'),button('Try again',function(){mount(body);}));});
+  fetchRows(false).then(function(fs){paint();if(!fs.some(function(f){return (f.channels||[]).some(usable);})&&window.NFSRC)NFSRC.browse(body);}).catch(function(){if(!document.body.contains(sec))return;if(window.NFSRC)NFSRC.browse(body);list.replaceChildren(node('p','nf-alt-state','The alternative schedule could not load. Your saved fixtures are unchanged.'),button('Try again',function(){mount(body);}));});
  }
  function close(){if(!player)return;var fr=player.querySelector('iframe');if(fr){fr.src='about:blank';fr.remove();}player.remove();player=null;if(!document.querySelector('.overlay.show'))document.body.classList.remove('noscroll');document.removeEventListener('keydown',escape);}
  function escape(e){if(e.key==='Escape')close();}
  function open(f){
-  close();var channels=(f.channels||[]).filter(function(c){return safePath(c.playerPath);});if(!channels.length){Toast.show('No stream available','Try an official broadcaster for this fixture.','warn');return;}
+  close();var channels=(f.channels||[]).filter(usable);if(!channels.length){Toast.show('No stream available','Try an official broadcaster for this fixture.','warn');return;}
   var ov=node('div','overlay nf-alt-overlay show'),sheet=node('div','nf-alt-player');sheet.setAttribute('role','dialog');sheet.setAttribute('aria-modal','true');sheet.setAttribute('aria-label','Football player');ov.appendChild(sheet);
   var head=node('div','nf-alt-player-head'),tx=node('div');tx.appendChild(node('h3','',f.match));tx.appendChild(node('p','',f.tournament+' • '+labelTime(f)));head.appendChild(tx);var x=button('Close',close,'btn sm');head.appendChild(x);sheet.appendChild(head);
+  if(f.detail){var info=[f.detail.venue?'Venue: '+f.detail.venue:'',f.detail.referee?'Referee: '+f.detail.referee:''].filter(Boolean).join(' · ');if(info)sheet.appendChild(node('p','nf-note',info));}
   var channelbar=node('div','nf-alt-channels');sheet.appendChild(channelbar);
   var screen=node('div','nf-alt-screen');sheet.appendChild(screen);var state=node('p','nf-alt-player-state','Choose a stream to connect.');sheet.appendChild(state);
   var actions=node('div','nf-alt-player-actions'),again=button('Reload stream',function(){play(chosen);}),next=button('Try next stream',function(){play((chosen+1)%channels.length);}),external=node('a','btn sm','Open player separately');external.target='_blank';external.rel='noopener noreferrer';actions.append(again,next,external);sheet.appendChild(actions);
   sheet.appendChild(node('p','nf-note','An embedded page loading does not confirm that its video is playing. If the player stays blank, try the next stream or open it separately. No paywall or DRM is bypassed.'));
   var chosen=0,timeout=null,frameSerial=0;
+  if(!f.sportsrc&&window.NFSRC){var fb=button('Existing streams failed · try SportSRC',async function(){fb.disabled=true;state.textContent='Checking fallback for this fixture…';try{var result=await NFSRC.resolve(f);if(document.body.contains(ov))open(result);}catch(e){if(document.body.contains(ov))state.textContent=e.message;}finally{fb.disabled=false;}});actions.appendChild(fb);}
+
   function play(index){
-   clearTimeout(timeout);chosen=index;frameSerial++;var seq=frameSerial,c=channels[index];screen.replaceChildren();state.textContent='Connecting to '+c.label+'…';external.href=safePath(c.openPath)?c.openPath:c.playerPath;
+   clearTimeout(timeout);chosen=index;frameSerial++;var seq=frameSerial,c=channels[index];screen.replaceChildren();state.textContent='Connecting to '+c.label+'…';external.href=safeEmbed(c)?c.embedUrl:(safePath(c.openPath)?c.openPath:c.playerPath);
    channelbar.querySelectorAll('button').forEach(function(b,i){b.classList.toggle('on',i===index);});next.disabled=channels.length<2;
-   var fr=node('iframe');fr.title=f.match+' — '+c.label;fr.setAttribute('sandbox','allow-scripts allow-same-origin allow-presentation');fr.allow='autoplay; encrypted-media; picture-in-picture; fullscreen';fr.setAttribute('allowfullscreen','');fr.referrerPolicy='no-referrer';fr.src=c.playerPath;
+   var fr=node('iframe');fr.title=f.match+' — '+c.label;fr.setAttribute('sandbox','allow-scripts allow-same-origin allow-presentation');fr.allow='autoplay; encrypted-media; picture-in-picture; fullscreen';fr.setAttribute('allowfullscreen','');fr.referrerPolicy='no-referrer';fr.src=safeEmbed(c)?c.embedUrl:c.playerPath;
    fr.onload=function(){if(seq!==frameSerial)return;clearTimeout(timeout);state.textContent='Player page opened. Press Play inside the player; if it stays blank, try another stream.';};
    fr.onerror=function(){if(seq!==frameSerial)return;state.textContent='This player could not open. Try another stream.';};screen.appendChild(fr);
    timeout=setTimeout(function(){if(seq===frameSerial&&document.body.contains(ov))state.textContent='This stream is taking too long. Try another stream or open the player separately.';},12000);
@@ -9298,3 +9402,4 @@ try { completeEmailLink().catch(function () {}); } catch (e) {}
 <script>
 (function(){var base=Settings.openModal.bind(Settings);Settings.openModal=function(){base();var root=document.getElementById('settingsModal');if(!root)return;var row=document.createElement('div');row.className='set-row';var copy=document.createElement('div');copy.className='lbl';var t=document.createElement('div');t.className='t';t.textContent='Extra live goal alerts';var d=document.createElement('div');d.className='d';d.textContent='Optional extra score checks while Football is open. Off saves your provider quota.';copy.append(t,d);var input=document.createElement('input');input.type='checkbox';input.checked=!!State.settings.liveScoreAlerts;input.setAttribute('aria-label','Enable extra live goal alerts');input.onchange=function(){State.settings.liveScoreAlerts=input.checked;Theme.save();};row.append(copy,input);root.appendChild(row);};})();
 </script>
+

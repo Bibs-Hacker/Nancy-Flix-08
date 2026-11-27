@@ -1,3 +1,7 @@
+# Current release: 8.9.0
+
+Follow UPDATE-8.9.0.md. The historical instructions below are superseded: verified email allowlist in the included Firestore rules now grants the four administrator roles. No custom claim setup or billing upgrade is required for this update.
+
 # Corrections and current release notes (8.8.1)
 
 Read `UPDATE-8.8.1.md` first. The guide below was written for 8.8.0 and describes some planned functionality too broadly:
@@ -121,7 +125,7 @@ Admin Studio reads a Firebase **custom claim** called `admin`. It cannot be set 
 ```
 npm install firebase-admin
 node scripts/set-admin.js bridah888@gmail.com
-node scripts/set-admin.js achiengnancy65@gmail.com
+node scripts/set-admin.js agollanancy@gmail.com
 ```
 
 3. Sign out and back in on the site. The Admin item appears.

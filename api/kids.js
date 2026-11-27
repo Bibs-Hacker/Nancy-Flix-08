@@ -11,5 +11,5 @@ module.exports = async function handler(req,res){
   const q=(u.searchParams.get('q')||'').trim().toLowerCase().slice(0,60);
   const page=Math.max(1,Number(u.searchParams.get('page'))||1);
   const matches=catalogue.filter(x=>(cat==='cartoons'||x.cats.includes(cat))&&(!q||(x.title+' '+x.desc+' '+x.source).toLowerCase().includes(q)));
-  return res.status(200).json({ok:true,version:'8.8.2',source:'official',cat,page,total:matches.length,hasMore:false,items:page===1?matches:[]});
+  return res.status(200).json({ok:true,cat,page,total:matches.length,hasMore:false,items:page===1?matches:[]});
 };

@@ -33,22 +33,24 @@ module.exports = async (req, res) => {
   if (req.method === 'OPTIONS') { res.status(204).end(); return; }
   if (req.method !== 'GET') { res.status(405).json({ active: false, reason: 'method_not_allowed' }); return; }
 
-  const url = (process.env.SUPABASE_URL || '').replace(/\/$/, '');
-  const key = process.env.SUPABASE_SERVICE_KEY || process.env.SUPABASE_SERVICE_ROLE_KEY || '';
   const actor=await authenticate(req);
   if(!actor){res.status(401).json({active:false,reason:'sign_in_required'});return;}
   if(actor.backend==='firebase'){
     try{
-      const snap=await firebaseApp().firestore().collection('entitlements').doc(actor.id).get();
-      if(!snap.exists){res.status(200).json({active:false,reason:'none'});return;}
-      const row=snap.data(),plan=String(row.plan||'').toLowerCase();
-      const expires=row.expires&&typeof row.expires.toDate==='function'?row.expires.toDate().toISOString():(row.expires||null);
-      const valid=expires===null || (Number.isFinite(Date.parse(expires))&&Date.parse(expires)>Date.now());
-      const active=['plus','premium','super'].includes(plan)&&['active','trialing'].includes(row.status)&&valid;
-      res.status(200).json({active,reason:active?undefined:'inactive_or_expired',plan,expires,customer:row.customer||null});return;
-    }catch(e){res.status(503).json({active:false,reason:'entitlement_service_unavailable'});return;}
+      const admin=require('firebase-admin');const db=admin.firestore(firebaseApp(true));
+      const snap=await db.collection('entitlements').doc(actor.id).get();
+      const row=snap.exists?snap.data():null;
+      if(!row){throw new Error('none');}
+      const plan=String(row.plan||'').toLowerCase(),status=String(row.status||'').toLowerCase();
+      const expires=row.expires&&typeof row.expires.toDate==='function'?row.expires.toDate().toISOString():row.expires||null;
+      const notExpired=!expires||new Date(expires).getTime()>Date.now();
+      const active=['plus','premium','super'].includes(plan)&&['active','trialing'].includes(status)&&notExpired;
+      res.status(200).json({active,plan,status,expires,reason:active?undefined:(!notExpired?'expired':'inactive')});return;
+    }catch(e){if(!(process.env.SUPABASE_URL&&(process.env.SUPABASE_SERVICE_KEY||process.env.SUPABASE_SERVICE_ROLE_KEY))){res.status(200).json({active:false,reason:e.message==='none'?'none':e.message==='firebase_admin_not_configured'?'not_configured':'lookup_failed'});return;}}
   }
-  if(!url||!key){res.status(503).json({active:false,reason:'not_configured'});return;}
+  const url = (process.env.SUPABASE_URL || '').replace(/\/$/, '');
+  const key = process.env.SUPABASE_SERVICE_KEY || process.env.SUPABASE_SERVICE_ROLE_KEY || '';
+  if(!url||!key){res.status(200).json({active:false,reason:'not_configured'});return;}
   const email=String(actor.email).toLowerCase();
   if (!/^[^@\s]+@[^@\s]+\.[^@\s]+$/.test(email)) {
     res.status(400).json({ active: false, reason: 'bad_email' });

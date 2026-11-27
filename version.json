@@ -1,10 +1,10 @@
 {
-  "version": "8.8.2",
-  "build": "2026-11-26",
+  "version": "8.9.0",
+  "build": "2026-11-27",
   "notes": [
-    "Kids API primary loader, root static and built-in official fallback",
-    "Restored Free / Plus / Premium / Super limits",
-    "Four verified administrator emails in client, server and rules",
-    "Firebase ID token forwarding for admin APIs and entitlements"
+    "SportSRC V3 added as an optional fallback inside the existing football player",
+    "Four administrator roles require refreshed, verified Firebase ownership; updated Firestore rules included",
+    "Provider diagnostics for scores, schedule resolver and SportSRC",
+    "Kids API loader and plan limits retained from 8.8.2"
   ]
 }

@@ -1,7 +1,7 @@
 /* NANCYFLIX service worker — app shell + offline + poster cache */
-const VERSION = 'nancyflix-v8.8.2';
+const VERSION = 'nancyflix-v8.9.0';
 const CORE = [
-  './', './index.html', './kids-catalogue.json', './manifest.webmanifest',
+  './', './index.html', './manifest.webmanifest',
   './icons/icon-192.png', './icons/icon-512.png',
   './icons/maskable-512.png', './icons/apple-touch-icon.png', './og-share.jpg', './audio/splash.mp3'
 ];

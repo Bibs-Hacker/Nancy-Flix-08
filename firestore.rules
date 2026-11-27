@@ -20,7 +20,7 @@ service cloud.firestore {
          or unlock Premium. Those two fields are server-side only. */
       allow update: if mine(uid)
                     && !request.resource.data.diff(resource.data).affectedKeys()
-                         .hasAny(['is_admin', 'isAdmin', 'entitlement']);
+                         .hasAny(['email', 'is_admin', 'isAdmin', 'entitlement']);
       allow delete: if isAdmin();
     }
 
