@@ -8,5 +8,5 @@
     "Existing providers, fallback player, subscriptions and verified roles retained",
     "Single-function deployment packaging; public app version stays 8.10.0"
   ],
-  "deploymentRevision": "deployfix-1"
+  "deploymentRevision": "deployfix-2"
 }

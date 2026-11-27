@@ -1,6 +1,6 @@
 {
   "appVersion": "8.10.0",
-  "deploymentRevision": "deployfix-1",
+  "deploymentRevision": "deployfix-2",
   "node": "24.11.1",
   "vercelCLI": "66.6.0",
   "vercelProductionLocalBuild": "passed",
@@ -13,5 +13,7 @@
   "mockedBrowserTests": "passed",
   "pageErrors": 0,
   "livePublishing": "Not performed; no account access",
-  "liveAuthVideoCloudAnalytics": "Not verified"
+  "liveAuthVideoCloudAnalytics": "Not verified",
+  "legacyApiEntriesPresentBeforeBuild": 14,
+  "automaticBuildCleanup": "passed"
 }

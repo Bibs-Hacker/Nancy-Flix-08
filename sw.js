@@ -1,6 +1,6 @@
 /* NANCYFLIX service worker — app shell + offline + poster cache */
 const APP_VERSION = '8.10.0';
-const VERSION = 'nancyflix-v'+APP_VERSION+'-deployfix-1';
+const VERSION = 'nancyflix-v'+APP_VERSION+'-deployfix-2';
 const CORE = [
   './', './index.html', './manifest.webmanifest', './lib/football-state.js', './assets/smart-discovery.js', './assets/smart-discovery.css',
   './icons/icon-192.png', './icons/icon-512.png',

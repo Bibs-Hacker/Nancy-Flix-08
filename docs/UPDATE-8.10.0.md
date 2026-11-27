@@ -1,4 +1,4 @@
-> **Deployment repair:** follow root **START-HERE.txt** first. API implementations now live in `lib/handlers`; only `api/index.js` belongs under `api`. Delete old API files rather than merging them. Framework: Other; build: `npm run build`; output: `public`; Node: 24.x. App version remains 8.10.0.
+> **Deployment repair:** follow root **START-HERE.txt** first (automatic-cleanup repair 2). API implementations now live in `lib/handlers`; only `api/index.js` belongs under `api`. Old API files are automatically removed from the temporary build copy; upload all files from this repair. Framework: Other; build: `npm run build`; output: `public`; Node: 24.x. App version remains 8.10.0.
 
 # NANCYFLIX 8.10.0 — smarter discovery and correct football tabs
 
