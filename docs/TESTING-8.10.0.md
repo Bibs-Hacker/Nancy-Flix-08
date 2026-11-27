@@ -1,3 +1,5 @@
+> **New deployment verification:** `npm test` passes on Node 24.11.1, including the new router tests. Vercel CLI 66.6.0 production-mode local build completed, generating exactly one `nodejs24.x` function. Private helpers were absent from static output. Browser tests were rerun against that generated static output with controlled provider responses. Live publishing still requires your Vercel account.
+
 # Testing 8.10.0
 
 ## Automated checks run here

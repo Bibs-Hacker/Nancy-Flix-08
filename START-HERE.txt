@@ -1,0 +1,66 @@
+NANCYFLIX — VERCEL DEPLOYMENT REPAIR
+APP VERSION: 8.10.0 (unchanged)
+DEPLOYMENT REVISION: deployfix-1
+
+WHAT WAS FOUND
+The supplied screenshot has a failed deployment indicator after a successful build.
+The uploaded GitHub commit c10f3b6 contains 14 JavaScript files under api, including
+api/lib/security.js, plus duplicated server files at the repository root.
+The earlier ZIP itself had 13 API entrypoints. Bare serverless projects on Vercel
+Hobby can run into a 12-function limit. The screenshot does not include the exact
+platform error, so the function count is an identified packaging fault and likely
+blocker, not proof of every possible account-side failure.
+
+WHAT WAS FIXED
+- ONE Vercel function: api/index.js.
+- All 13 original API features retained behind their existing URLs.
+- Implementations/private helpers moved to lib/handlers, outside api and public.
+- Static assets explicitly built into public; server source is not published.
+- Version.json and the app constant remain 8.10.0.
+- Internal cache revision changed so the deployment repair refreshes old assets.
+- Build fails with a specific message if old api files are accidentally retained.
+
+DO THESE STEPS EXACTLY — DO NOT JUST MERGE THE OLD API FOLDER
+1. Back up your repository. Keep all existing Vercel environment variables.
+2. Delete the OLD api folder in GitHub, INCLUDING api/lib/security.js.
+   Then upload this ZIP's api folder. It must contain ONLY index.js.
+   Leave the regular root lib folder: this ZIP replaces/updates it.
+3. Upload ALL extracted contents to the repository ROOT, preserving folders:
+   api, lib, scripts, tests, assets, icons, audio and docs.
+   index.html, package.json, package-lock.json and vercel.json belong at the root.
+   This ZIP is root-ready: do not create a new nested nancyflix folder.
+4. Vercel > Project > Settings > Build and Deployment:
+   Framework Preset: Other
+   Root Directory: empty (repository root)
+   Node.js Version: 24.x
+   Build Command: npm run build
+   Output Directory: public
+   Install Command: leave default
+   Remove conflicting old overrides. The included vercel.json specifies these.
+5. Vercel > Deployments: deploy the NEW commit, not c10f3b6 again.
+   Wait for Ready; then check it is Production. Promote to Production if needed.
+6. Open your domain's /version.json. It must report:
+   "version": "8.10.0"
+   "deploymentRevision": "deployfix-1"
+   Close all installed NANCYFLIX tabs and reopen the app after this check succeeds.
+7. Publish firestore.rules manually in Firebase if not already done.
+   Signing in, plans, real sports/movie providers and community analytics still
+   depend on your existing host credentials and provider configuration.
+
+DO NOT pay for Pro to deploy this repair. Do not put private keys, .env files or
+service-account JSON in GitHub. Environment variables stay in Vercel settings.
+
+WHAT WAS ACTUALLY VERIFIED
+- Vercel CLI 66.6.0 production-mode local build completed on Node 24.11.1.
+- Generated output: one nodejs24.x function, 60-second maximum duration.
+- All 13 handler modules and needed dependencies are in the compiled function.
+- Generated static version is 8.10.0; server helpers are absent from static output.
+- Node 24 backend/router tests and mocked desktop/mobile browser checks passed.
+
+LOCAL BUILD IS NOT LIVE DEPLOYMENT
+No authenticated access to your Vercel account is available here. This ZIP is
+build-tested and ready to upload; it has not been published to your account.
+If it still fails AFTER the new build logs show "Server functions: 1", send the
+full deployment error banner/details, not only the npm warnings. Account quotas,
+project settings and Vercel platform incidents cannot be repaired by changing an
+app version label. If logs say old api files remain, complete step 2 first.

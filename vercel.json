@@ -1,12 +1,64 @@
 {
   "rewrites": [
     {
+      "source": "/api/auth-code",
+      "destination": "/api/index?service=auth-code"
+    },
+    {
+      "source": "/api/discovery",
+      "destination": "/api/index?service=discovery"
+    },
+    {
+      "source": "/api/entitlement",
+      "destination": "/api/index?service=entitlement"
+    },
+    {
+      "source": "/api/football",
+      "destination": "/api/index?service=football"
+    },
+    {
+      "source": "/api/football-alt",
+      "destination": "/api/index?service=football-alt"
+    },
+    {
+      "source": "/api/kids",
+      "destination": "/api/index?service=kids"
+    },
+    {
+      "source": "/api/live",
+      "destination": "/api/index?service=live"
+    },
+    {
+      "source": "/api/livecheck",
+      "destination": "/api/index?service=livecheck"
+    },
+    {
+      "source": "/api/share",
+      "destination": "/api/index?service=share"
+    },
+    {
+      "source": "/api/sportsrc",
+      "destination": "/api/index?service=sportsrc"
+    },
+    {
+      "source": "/api/stripe-verify",
+      "destination": "/api/index?service=stripe-verify"
+    },
+    {
+      "source": "/api/tmdb",
+      "destination": "/api/index?service=tmdb"
+    },
+    {
+      "source": "/api/welcome",
+      "destination": "/api/index?service=welcome"
+    },
+    {
       "source": "/s/:id",
-      "destination": "/api/share?id=:id"
+      "destination": "/api/index?service=share&id=:id"
     },
     {
       "source": "/s",
-      "destination": "/api/share"
+      "destination": "/api/index?service=share"
     }
   ],
   "headers": [
@@ -72,6 +124,41 @@
           "value": "no-cache, must-revalidate"
         }
       ]
+    },
+    {
+      "source": "/version.json",
+      "headers": [
+        {
+          "key": "Cache-Control",
+          "value": "no-cache, no-store, must-revalidate"
+        }
+      ]
+    },
+    {
+      "source": "/assets/(.*)",
+      "headers": [
+        {
+          "key": "Cache-Control",
+          "value": "no-cache, no-store, must-revalidate"
+        }
+      ]
+    },
+    {
+      "source": "/lib/football-state.js",
+      "headers": [
+        {
+          "key": "Cache-Control",
+          "value": "no-cache, no-store, must-revalidate"
+        }
+      ]
     }
-  ]
+  ],
+  "framework": null,
+  "buildCommand": "npm run build",
+  "outputDirectory": "public",
+  "functions": {
+    "api/index.js": {
+      "maxDuration": 60
+    }
+  }
 }

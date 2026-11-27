@@ -5,6 +5,8 @@
     "Strict football status tabs with East Africa Time across providers",
     "Adaptive search suggestions, alternate movie titles and typo tolerance",
     "Search-driven trending, personalized discovery and private admin analytics",
-    "Existing providers, fallback player, subscriptions and verified roles retained"
-  ]
+    "Existing providers, fallback player, subscriptions and verified roles retained",
+    "Single-function deployment packaging; public app version stays 8.10.0"
+  ],
+  "deploymentRevision": "deployfix-1"
 }

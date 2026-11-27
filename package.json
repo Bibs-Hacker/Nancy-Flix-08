@@ -9,6 +9,8 @@
     "firebase-admin": "^12.7.0"
   },
   "scripts": {
-    "test": "node tests/discovery.test.js && node tests/football.test.js && node tests/sportsrc.test.js"
-  }
+    "test": "node tests/discovery.test.js && node tests/football.test.js && node tests/sportsrc.test.js && node tests/router.test.js",
+    "build": "node scripts/build.js"
+  },
+  "version": "8.10.0"
 }

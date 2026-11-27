@@ -1,3 +1,5 @@
+> **Deployment repair:** follow root **START-HERE.txt** first. API implementations now live in `lib/handlers`; only `api/index.js` belongs under `api`. Delete old API files rather than merging them. Framework: Other; build: `npm run build`; output: `public`; Node: 24.x. App version remains 8.10.0.
+
 # NANCYFLIX 8.10.0 — smarter discovery and correct football tabs
 
 ## What this update adds

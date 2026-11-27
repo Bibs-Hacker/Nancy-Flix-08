@@ -1,9 +1,9 @@
 const assert=require('assert');
 const path=require('path');
 const ROOT=path.join(__dirname,'..');
-const handler=require(path.join(ROOT,'api/sportsrc.js'));
+const handler=require(path.join(ROOT,'lib/handlers/sportsrc.js'));
 function res(){const o={statusCode:200,headers:{},body:null};o.setHeader=(k,v)=>{o.headers[k.toLowerCase()]=v;};o.status=c=>{o.statusCode=c;return o;};o.json=b=>{o.body=b;return o;};o.end=()=>o;return o;}
-function req(q,method='GET'){return {method,url:'/api/sportsrc?'+q,headers:{}};}
+function req(q,method='GET'){return {method,url:'/lib/sportsrc?'+q,headers:{}};}
 const realFetch=global.fetch;let calls=[];
 function mock(fn){calls=[];global.fetch=async(url,opt)=>{calls.push({url:String(url),headers:opt&&opt.headers});return fn(String(url),opt);};}
 const ok=(body,extra={})=>({status:200,headers:new Map(Object.entries(extra)),json:async()=>body});

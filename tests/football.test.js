@@ -2,7 +2,7 @@
 const assert=require('node:assert/strict');
 const path=require('path');
 process.env.API_FOOTBALL_KEY='unit-test-key';
-const handler=require(path.join(__dirname,'..','api/football.js'));
+const handler=require(path.join(__dirname,'..','lib/handlers/football.js'));
 function res(){const o={statusCode:200,headers:{}};o.setHeader=(k,v)=>o.headers[k.toLowerCase()]=v;o.status=c=>(o.statusCode=c,o);o.json=b=>(o.body=b,o);o.end=()=>o;return o;}
 const calls=[];global.fetch=async(u,opt)=>{calls.push({url:String(u),opt});
  return {ok:true,status:200,headers:new Map([['x-ratelimit-requests-remaining','12']]),json:async()=>({response:[{fixture:{id:calls.length,timestamp:1795798800,date:'2026-11-27T22:00:00+00:00',status:{short:'NS',long:'Not Started'}},league:{id:39,name:'Premier League'},teams:{home:{name:'Arsenal'},away:{name:'Chelsea'}},goals:{home:null,away:null}},{fixture:{id:99,timestamp:1795798800,date:'2026-11-27T22:00:00+00:00',status:{short:'NS',long:'Not Started'}},league:{id:39,name:'Premier League'},teams:{home:{name:'A'},away:{name:'B'}},goals:{home:null,away:null}}]})};};

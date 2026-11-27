@@ -18,8 +18,8 @@ check('Independent provider tabs are mutually correct',()=>{const rows=[{status:
 const realLoad=Module._load;
 const records=new Map();let user=null;
 const db={collection(){return {doc(id){return {id};},where(){return this;},async get(){return {docs:[...records.values()].map(data=>({data:()=>data}))};}}},async runTransaction(fn){return fn({async get(ref){return {exists:records.has(ref.id),data:()=>JSON.parse(JSON.stringify(records.get(ref.id)||{}))};},set(ref,data){records.set(ref.id,JSON.parse(JSON.stringify(data)));}});}};
-Module._load=function(name,parent,isMain){if(name==='../lib/security'&&parent.filename.endsWith('/api/discovery.js'))return {authenticate:async()=>user,isAdmin:u=>u.isAdmin===true,firebaseApp:()=>({})};if(name==='firebase-admin')return {firestore:()=>db};return realLoad.apply(this,arguments);};
-const handler=require('../api/discovery');const {payload,aggregate}=handler._test;
+Module._load=function(name,parent,isMain){if(name==='../security'&&parent.filename.endsWith('/lib/handlers/discovery.js'))return {authenticate:async()=>user,isAdmin:u=>u.isAdmin===true,firebaseApp:()=>({})};if(name==='firebase-admin')return {firestore:()=>db};return realLoad.apply(this,arguments);};
+const handler=require('../lib/handlers/discovery');const {payload,aggregate}=handler._test;
 check('Movie metadata stays bounded and valid',()=>{const e=payload({kind:'movie',id:27205,label:'Inception',action:'search',genre_ids:[28,-1,'878'],poster_path:'/abc.jpg',release_date:'2010-07-16'});assert.deepEqual(e.genre_ids,[28]);assert.equal(e.id,'27205');});
 for(const label of ['x@example.com','https://example.com','0712345678'])check('Private labels rejected '+label,()=>assert.throws(()=>payload({kind:'query',label})));
 check('Invalid IDs and kinds are rejected',()=>{assert.throws(()=>payload({kind:'movie',id:-1,label:'Wrong'}));assert.throws(()=>payload({kind:'password',label:'Wrong'}));});

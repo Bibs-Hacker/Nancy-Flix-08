@@ -1,0 +1,17 @@
+{
+  "appVersion": "8.10.0",
+  "deploymentRevision": "deployfix-1",
+  "node": "24.11.1",
+  "vercelCLI": "66.6.0",
+  "vercelProductionLocalBuild": "passed",
+  "generatedFunctions": 1,
+  "functionRuntime": "nodejs24.x",
+  "functionMaxDuration": 60,
+  "privateHandlerModulesBundled": 13,
+  "staticServerSourceExposed": false,
+  "node24Tests": "passed",
+  "mockedBrowserTests": "passed",
+  "pageErrors": 0,
+  "livePublishing": "Not performed; no account access",
+  "liveAuthVideoCloudAnalytics": "Not verified"
+}

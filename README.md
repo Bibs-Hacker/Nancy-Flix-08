@@ -1,3 +1,11 @@
+# Deployment repair — still version 8.10.0
+
+**Read START-HERE.txt before uploading. Delete the old api folder first.**
+
+This package contains one deployable function, preserves all existing API URLs, and uses `npm run build` with output `public`. Its production-mode local Vercel build passed on Node 24 using CLI 66.6.0. It is not already deployed to your account.
+
+---
+
 # NANCYFLIX 8.10.0
 
 Start with **docs/UPDATE-8.10.0.md** for this release and **docs/TESTING-8.10.0.md** for the verification scope. Older release guides below are historical.
