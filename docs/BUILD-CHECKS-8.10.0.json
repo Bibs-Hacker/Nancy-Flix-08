@@ -1,0 +1,18 @@
+{
+  "syntax_checked": 60,
+  "json": "passed",
+  "missing_assets": 0,
+  "unchanged_files_checked": [
+    "api/entitlement.js",
+    "api/kids.js",
+    "api/auth-code.js",
+    "api/stripe-verify.js",
+    "lib/security.js",
+    "kids-catalogue.json",
+    "storage.rules",
+    "icons/icon-512.png",
+    "audio/splash.mp3"
+  ],
+  "mocked_discovery_checks": 41,
+  "live_services": "Not tested"
+}

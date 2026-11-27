@@ -1,7 +1,7 @@
 /* NANCYFLIX service worker — app shell + offline + poster cache */
-const VERSION = 'nancyflix-v8.9.0';
+const VERSION = 'nancyflix-v8.10.0';
 const CORE = [
-  './', './index.html', './manifest.webmanifest',
+  './', './index.html', './manifest.webmanifest', './lib/football-state.js', './assets/smart-discovery.js', './assets/smart-discovery.css',
   './icons/icon-192.png', './icons/icon-512.png',
   './icons/maskable-512.png', './icons/apple-touch-icon.png', './og-share.jpg', './audio/splash.mp3'
 ];

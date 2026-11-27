@@ -85,7 +85,7 @@ module.exports = async function (req, res) {
   }
   if (ep === 'fixtures' && url.searchParams.get('dates')) days = Math.max(1, Math.min(5, Number(url.searchParams.get('dates')) || 3));
   const zone = qs.get('timezone') || 'Africa/Nairobi';
-  qs.delete('date');
+  if(days>0)qs.delete('date');
 
   try {
     if (days > 0) {

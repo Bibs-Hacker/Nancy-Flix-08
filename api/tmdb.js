@@ -10,7 +10,7 @@ const ALLOWED = [
   /^\/movie\/(now_playing|popular|top_rated|upcoming|latest)$/,
   /^\/tv\/(popular|top_rated|airing_today|on_the_air)$/,
   /^\/genre\/(movie|tv)\/list$/,
-  /^\/(movie|tv|person|collection)\/[0-9]+(\/(credits|videos|similar|recommendations|reviews|images|release_dates|external_ids))?$/,
+  /^\/(movie|tv|person|collection)\/[0-9]+(\/(credits|videos|similar|recommendations|reviews|images|release_dates|external_ids|alternative_titles))?$/,
   /^\/search\/(movie|tv|multi|person)$/,
   /^\/discover\/movie$/,
   /^\/configuration$/

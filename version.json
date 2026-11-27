@@ -1,10 +1,10 @@
 {
-  "version": "8.9.0",
+  "version": "8.10.0",
   "build": "2026-11-27",
   "notes": [
-    "SportSRC V3 added as an optional fallback inside the existing football player",
-    "Four administrator roles require refreshed, verified Firebase ownership; updated Firestore rules included",
-    "Provider diagnostics for scores, schedule resolver and SportSRC",
-    "Kids API loader and plan limits retained from 8.8.2"
+    "Strict football status tabs with East Africa Time across providers",
+    "Adaptive search suggestions, alternate movie titles and typo tolerance",
+    "Search-driven trending, personalized discovery and private admin analytics",
+    "Existing providers, fallback player, subscriptions and verified roles retained"
   ]
 }

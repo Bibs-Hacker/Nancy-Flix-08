@@ -1,3 +1,4 @@
+const football=require('../lib/football-state');
 /* NANCYFLIX - SportSRC V3 fallback bridge (server only).
  *
  *   GET /api/sportsrc?action=account
@@ -146,6 +147,7 @@ module.exports = async function handler(req, res) {
   if (status) keep.set('status', status);
 
   if(status&&!['inprogress','notstarted','finished','scheduled','live','ended'].includes(status)){res.status(400).json({ok:false,error:'Unsupported match status.'});return;}
+  const zone=params.get('timezone');if(zone&&zone!=='Africa/Nairobi'){res.status(400).json({ok:false,error:'Only Africa/Nairobi timezone is supported.'});return;}if(zone)keep.set('timezone',zone);
   const keyId = keyOf(action, keep);
   const hit = cache.get(keyId);
   if (hit && hit.until > Date.now()) {
@@ -161,7 +163,14 @@ module.exports = async function handler(req, res) {
 
   const job = (async () => {
     let out;
-    try { out = await call(action, keep, key); }
+    try {
+      if(action==='matches'&&keep.get('timezone')==='Africa/Nairobi'&&keep.get('date')){
+        const start=Date.parse(keep.get('date')+'T00:00:00+03:00');
+        const dates=[new Date(start).toISOString().slice(0,10),new Date(start+24*3600000-1).toISOString().slice(0,10)];
+        const results=await Promise.all([...new Set(dates)].map(utcDay=>{const p=new URLSearchParams(keep);p.delete('timezone');p.set('date',utcDay);return call(action,p,key);}));
+        out=results.find(r=>r.status!==200||r.body?.success===false)||{...results.at(-1),body:{success:true,data:results.flatMap(r=>Array.isArray(r.body?.data)?r.body.data:[])}};
+      }else{const p=new URLSearchParams(keep);p.delete('timezone');out=await call(action,p,key);}
+    }
     catch (e) {
       const timeout = e && (e.name === 'AbortError' || e.name === 'TimeoutError');
       return { ok: false, configured: true, upstream: timeout ? 'timeout' : 'network', error: timeout ? 'SportSRC did not answer in time. Try again shortly.' : 'SportSRC could not be reached.' };
@@ -188,7 +197,7 @@ module.exports = async function handler(req, res) {
       return { ok: false, configured: true, upstream: 'rejected', error: clean(out.body.message || 'SportSRC rejected this request.', 200), quota };
     }
     if (action === 'matches' || action === 'scores') {
-      const matches = flatten(out.body);
+      let matches=flatten(out.body);const seen=new Set();matches=matches.filter(m=>{if(seen.has(m.id))return false;seen.add(m.id);return true;});if(keep.get('timezone')==='Africa/Nairobi'&&keep.get('date'))matches=matches.filter(m=>m.timestamp&&football.date(m.timestamp*1000)===keep.get('date'));if(keep.get('status'))matches=football.filter(matches,keep.get('status'));matches=matches.map(m=>({...m,normalizedStatus:football.state(m),timezone:'Africa/Nairobi'}));
       return {
         ok: true, configured: true, action, matches,
         total: matches.length,

@@ -21,7 +21,7 @@ const ok=(body,extra={})=>({status:200,headers:new Map(Object.entries(extra)),js
   mock(async()=>({status:429,headers:new Map([['x-ratelimit-remaining','0']]),json:async()=>({success:false})}));
   r=res();await handler(req('action=matches'),r);assert.equal(r.statusCode,429);assert.equal(r.body.upstream,'rate_limited');
   mock(async()=>({status:200,headers:new Map([['x-plan','free'],['x-ratelimit-remaining','7']]),json:async()=>({success:true,data:[{league:{name:'Premier League',country:'England'},matches:[{id:'m1',title:'Arsenal vs Chelsea',timestamp:1790000000,status:'inprogress',is_live:true,has_stream:true,teams:{home:{name:'Arsenal'},away:{name:'Chelsea'}},score:{home:1,away:0}},{id:'m2',teams:{home:{name:'A'},away:{name:'B'}},has_stream:false}]}]})}));
-  r=res();await handler(req('action=matches&status=inprogress'),r);assert.equal(r.statusCode,200);assert.equal(r.body.matches.length,2);assert.equal(r.body.matches[0].home,'Arsenal');assert.equal(r.body.live,1);assert.equal(r.body.withStream,1);assert.equal(r.body.quota.plan,'free');
+  r=res();await handler(req('action=matches&status=inprogress'),r);assert.equal(r.statusCode,200);assert.equal(r.body.matches.length,1);assert.equal(r.body.matches[0].home,'Arsenal');assert.equal(r.body.live,1);assert.equal(r.body.withStream,1);assert.equal(r.body.quota.plan,'free');
   assert.ok(calls[0].url.includes('type=matches'));assert.ok(calls[0].url.includes('sport=football'));
   calls=[];r=res();await handler(req('action=matches&status=inprogress'),r);assert.equal(calls.length,0);assert.equal(r.body.cached,true);
   mock(async()=>({status:200,headers:new Map(),json:async()=>({success:true,data:{id:'m1',venue:{name:'Emirates'},referee:{name:'A Ref'},sources:[{source:'Alpha',embedUrl:'https://embed.example/1',hd:true},{source:'Alpha',embedUrl:'https://embed.example/1'},{source:'Bad',embedUrl:'javascript:alert(1)'},{source:'Insecure',embedUrl:'http://x.example/2'},{source:'Creds',embedUrl:'https://u:p@x.example/3'}]}})}));
@@ -36,6 +36,9 @@ const ok=(body,extra={})=>({status:200,headers:new Map(Object.entries(extra)),js
   r=res();await handler(req('action=detail&id=m3'),r);assert.equal(r.body.upstream,'invalid_json');
   mock(async()=>{const e=new Error('aborted');e.name='AbortError';throw e;});
   r=res();await handler(req('action=detail&id=m4'),r);assert.equal(r.statusCode,503);assert.equal(r.body.upstream,'timeout');
+  const FS=require('../lib/football-state');const d=FS.date(Date.now()+86400000),start=Date.parse(d+'T00:00:00+03:00')/1000;
+  mock(async()=>ok({success:true,data:[{league:{name:'League'},matches:[{id:'future-day',title:'A vs B',timestamp:start+12*3600,status:'notstarted'},{id:'cancelled-day',title:'C vs D',timestamp:start+12*3600,status:'cancelled'},{id:'outside-day',title:'E vs F',timestamp:start-3600,status:'notstarted'}]}]}));
+  r=res();await handler(req('action=matches&status=notstarted&date='+d+'&timezone=Africa%2FNairobi'),r);assert.equal(r.statusCode,200);assert.equal(r.body.matches.length,1);assert.equal(r.body.matches[0].id,'future-day');assert.equal(calls.length,2);assert.ok(calls.every(c=>!c.url.includes('timezone=')));assert.equal(new Set(calls.map(c=>new URL(c.url).searchParams.get('date'))).size,2);
   console.log('SportSRC API mocked behavior tests passed');
   global.fetch=realFetch;
 })().catch(e=>{console.error(e);process.exit(1);});

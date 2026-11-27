@@ -1,6 +1,6 @@
-# NANCYFLIX 8.9.0
+# NANCYFLIX 8.10.0
 
-Start with **docs/UPDATE-8.9.0.md** for this release and **docs/TESTING-8.9.0.md** for the verification scope. Older release guides below are historical.
+Start with **docs/UPDATE-8.10.0.md** for this release and **docs/TESTING-8.10.0.md** for the verification scope. Older release guides below are historical.
 
 # NANCYFLIX v8.8.1 — trailer and kids fix
 

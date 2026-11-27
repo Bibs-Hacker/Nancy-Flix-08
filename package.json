@@ -2,8 +2,13 @@
   "name": "nancyflix",
   "private": true,
   "description": "NANCYFLIX by Dev Brian + Dev Nancy. Static app plus serverless helpers on Vercel.",
-  "engines": { "node": ">=20" },
+  "engines": {
+    "node": "24.x"
+  },
   "dependencies": {
     "firebase-admin": "^12.7.0"
+  },
+  "scripts": {
+    "test": "node tests/discovery.test.js && node tests/football.test.js && node tests/sportsrc.test.js"
   }
 }

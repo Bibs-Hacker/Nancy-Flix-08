@@ -1,6 +1,8 @@
 <!DOCTYPE html>
 <html lang="en" dir="ltr" data-theme="dark" translate="no">
 <head>
+<script src="/lib/football-state.js"></script>
+<link rel="stylesheet" href="/assets/smart-discovery.css">
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover, maximum-scale=5" />
 <meta name="description" content="NANCYFLIX by Dev Brian + Dev Nancy — Every story deserves a screen. Premium movie discovery." />
@@ -611,7 +613,7 @@ tbody tr:hover{background:var(--glass)}
   .topbar{padding:10px 14px;gap:10px}
   .view{padding:16px 14px 70px}
   .search-box{display:none}
-  .search-box.mshow{display:flex;position:absolute;top:62px;left:14px;right:14px;z-index:5}
+  .search-box.mshow{display:flex;position:absolute;top:62px;left:10px;right:10px;z-index:90;padding:7px;border-radius:16px;background:var(--surface);border:1px solid var(--border);box-shadow:0 20px 44px rgba(0,0,0,.5)}
   .search-box.mshow input{width:100%}
   .grid{grid-template-columns:repeat(auto-fill,minmax(130px,1fr));gap:12px}
   .splash-sound{bottom:18px;left:18px}
@@ -1318,6 +1320,12 @@ select,input,textarea{font-size:16px} /* stops iOS zoom-on-focus */
 .nf8-kids-top:hover{background:rgba(255,204,102,.12)}
 @media (max-width:780px){.nf8-kids-top span{display:none}.nf8-kids-top{width:38px;padding:0;justify-content:center}}
 @media (max-width:520px){.nf8-kids-top{display:none}}
+.nf8-msearch{display:none}
+@media (max-width:560px){.nf8-msearch{display:inline-flex}#focusBtn{display:none}.top-right{gap:5px}.search-box.mshow input,.search-box.mshow input:focus{width:100%!important;min-width:0}.topbar{overflow:visible}.topbar .logo{min-width:0}}
+.nf8-msearch[aria-expanded="true"]{background:rgba(255,255,255,.1);color:var(--text)}
+.nf-search-backdrop{position:fixed;inset:0;z-index:79;background:rgba(4,4,8,.55);backdrop-filter:blur(2px);display:none}
+.nf-search-backdrop.on{display:block}
+.sd-card canvas{display:block;width:100%;height:auto}
 #nf8Update{position:fixed;z-index:1320;top:calc(var(--nf-top-h,64px) + 10px);left:50%;transform:translateX(-50%) translateY(-160%);width:min(560px,calc(100vw - 24px));display:flex;align-items:center;gap:10px;padding:10px 10px 10px 14px;border-radius:14px;background:linear-gradient(120deg,#1b1b26,#101018);border:1px solid rgba(255,204,102,.4);box-shadow:0 18px 55px rgba(0,0,0,.6);transition:transform .4s cubic-bezier(.2,.9,.3,1.05)}
 #nf8Update.show{transform:translateX(-50%) translateY(0)}
 #nf8Update .ic{width:30px;height:30px;border-radius:9px;background:rgba(255,204,102,.14);display:grid;place-items:center;color:#ffcc66;flex:0 0 auto}
@@ -1834,7 +1842,7 @@ window.FB = (function () {
   <div class="nfx-foot">
     <div class="nfx-now"><span class="nfx-dot"></span><span id="splashStage">LOADING YOUR WATCHLIST</span></div>
     <div class="nfx-meter"><i id="splashBar"></i></div>
-    <div class="nfx-meta"><b id="splashPct">0%</b><em id="splashStat">BOOT</em><span>V8.9.0</span></div>
+    <div class="nfx-meta"><b id="splashPct">0%</b><em id="splashStat">BOOT</em><span>V8.10.0</span></div>
   </div>
 </div>
 
@@ -1902,7 +1910,7 @@ window.FB = (function () {
       </div>
       <button type="submit" class="btn primary block" id="regSubmit" style="margin-top:8px" disabled>Create account</button>
     </form>
-    <div class="auth-alt" style="margin-top:12px">or <button type="button" id="guestBtn">browse as guest ›</button></div><div class="auth-release">v8.9.0 · Firebase sign-in</div>
+    <div class="auth-alt" style="margin-top:12px">or <button type="button" id="guestBtn">browse as guest ›</button></div><div class="auth-release">v8.10.0 · Firebase sign-in</div>
     <div class="demo-note" id="demoNote">Your account, watchlist and settings are saved on this device and stay available offline. With cloud sign-in on, they also follow you to every device you sign in on. Movies, posters and trailers stream live from TMDB.</div>
   </div>
 </div>
@@ -1924,6 +1932,7 @@ window.FB = (function () {
     </nav>
     <div class="top-right">
       <div class="search-box" id="searchBox"><input type="search" id="searchInput" data-i18n-ph="searchPh" placeholder="Search movies…" aria-label="Search movies"><button class="clr" id="searchClear" aria-label="Clear search" type="button"><svg class="icon sm" viewBox="0 0 24 24"><path d="M18 6L6 18M6 6l12 12"/></svg></button><button class="search-go" id="searchGo" aria-label="Search" type="button"><svg class="icon sm" viewBox="0 0 24 24"><circle cx="11" cy="11" r="7"/><path d="M21 21l-4-4"/></svg></button></div>
+      <button class="icon-btn nf8-msearch" id="mobileSearchBtn" aria-label="Search movies" title="Search"><svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="11" cy="11" r="7"/><path d="M21 21l-4-4"/></svg></button>
       <button class="icon-btn nf8-kids-top" id="navKidsTop" aria-label="Kids corner" title="Kids corner"><svg class="icon" viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M8 14s1.5 2 4 2 4-2 4-2M9 9h.01M15 9h.01"/></svg><span>Kids</span></button>
       <button class="icon-btn" id="installBtn" aria-label="Install NANCYFLIX" title="Install NANCYFLIX" style="display:none;color:#ffd47a"><svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3v11M8 11l4 4 4-4M5 20h14"/></svg></button>
       <button class="icon-btn nf8-focus-btn" id="focusBtn" aria-label="Focus timer" title="Focus and sleep timer"><svg class="icon" viewBox="0 0 24 24"><path d="M21 12.8A9 9 0 1111.2 3 7 7 0 0021 12.8z"/></svg></button>
@@ -3207,7 +3216,18 @@ const Search = {
     if(clr)clr.onclick=()=>{inp.value='';clr.style.display='none';if(State.view==='search')switchView('home');inp.focus();};
     const go=document.getElementById('searchGo');
     if(go)go.onclick=()=>{clearTimeout(this.timer);const q=inp.value.trim();if(q)this.run(q);else inp.focus();};
-    inp.addEventListener('keydown',e=>{if(e.key==='Enter'){clearTimeout(this.timer);const q=inp.value.trim();if(q)this.run(q);}});
+    inp.addEventListener('keydown',e=>{if(e.key==='Enter'){clearTimeout(this.timer);const q=inp.value.trim();if(q)this.run(q);}else if(e.key==='Escape'){this.closeMobile();}});
+    const box=document.getElementById('searchBox');
+    const mob=document.getElementById('mobileSearchBtn');
+    const back=document.createElement('div');back.className='nf-search-backdrop';document.body.appendChild(back);
+    const setMobile=(open)=>{if(!box)return;box.classList.toggle('mshow',open);back.classList.toggle('on',open);if(mob)mob.setAttribute('aria-expanded',open?'true':'false');if(open)setTimeout(()=>document.getElementById('searchInput').focus(),40);};
+    if(mob&&box)mob.addEventListener('click',()=>setMobile(!box.classList.contains('mshow')));
+    back.addEventListener('click',()=>setMobile(false));
+    document.addEventListener('pointerdown',e=>{if(!box||!box.classList.contains('mshow'))return;if(box.contains(e.target)||(mob&&mob.contains(e.target)))return;this.closeMobile();});
+  },
+  closeMobile(){
+    const box=document.getElementById('searchBox');const mob=document.getElementById('mobileSearchBtn');
+    if(box)box.classList.remove('mshow');if(mob)mob.setAttribute('aria-expanded','false');const bd=document.querySelector('.nf-search-backdrop');if(bd)bd.classList.remove('on');
   },
   async run(q,page=1){
     if(!q)return;
@@ -3446,27 +3466,27 @@ const Settings={
 <script>
 /* ============ 17. ANALYTICS & CHARTS (lightweight canvas, no CDN) ============ */
 const Chart={
-  bar(cv,labels,values,color){const ctx=cv.getContext('2d');const w=cv.width=cv.clientWidth*2,h=cv.height=260*2;ctx.scale(1,1);ctx.clearRect(0,0,w,h);
-    const pad=40*2,max=Math.max(1,...values),bw=(w-pad*1.5)/values.length;
-    ctx.fillStyle='#9a9aae';ctx.font='20px Inter';
-    values.forEach((v,i)=>{const bh=(h-pad*1.6)*(v/max);const x=pad+ i*bw;const y=h-pad-bh;
-      const g=ctx.createLinearGradient(0,y,0,h-pad);g.addColorStop(0,color);g.addColorStop(1,color+'33');ctx.fillStyle=g;
-      ctx.fillRect(x,y,bw*0.6,bh);ctx.fillStyle='#9a9aae';ctx.textAlign='center';
-      ctx.fillText(labels[i],x+bw*0.3,h-pad+24);ctx.fillStyle='#f5f5fa';ctx.fillText(v,x+bw*0.3,y-8);});
+  _setup(cv,H){const ctx=cv.getContext('2d');const dpr=Math.min(2,window.devicePixelRatio||1);const W=Math.max(240,cv.clientWidth||600);cv.width=Math.round(W*dpr);cv.height=Math.round(H*dpr);cv.style.height=H+'px';ctx.setTransform(dpr,0,0,dpr,0,0);ctx.clearRect(0,0,W,H);return {ctx,W,H};},
+  bar(cv,labels,values,color){const {ctx,W,H}=this._setup(cv,240);const pad=34,top=18,max=Math.max(1,...values),slot=(W-pad-8)/Math.max(1,values.length),barW=Math.max(8,Math.min(slot*0.62,64));
+    ctx.strokeStyle='rgba(255,255,255,.08)';ctx.lineWidth=1;
+    for(let g=0;g<=4;g++){const gy=top+(H-top-pad)*(g/4);ctx.beginPath();ctx.moveTo(pad,gy);ctx.lineTo(W-6,gy);ctx.stroke();}
+    ctx.textAlign='center';
+    values.forEach((v,i)=>{const bh=(H-top-pad)*(v/max);const x=pad+i*slot+(slot-barW)/2,y=H-pad-bh;
+      const gr=ctx.createLinearGradient(0,y,0,H-pad);gr.addColorStop(0,color);gr.addColorStop(1,color+'33');ctx.fillStyle=gr;
+      ctx.fillRect(x,y,barW,Math.max(bh,1));ctx.fillStyle='#9a9aae';ctx.font='11px Inter';ctx.fillText(labels[i],x+barW/2,H-pad+18);
+      if(v){ctx.fillStyle='#f5f5fa';ctx.font='700 11px Inter';ctx.fillText(v,x+barW/2,Math.max(y-7,12));}});
   },
-  line(cv,labels,values,color){const ctx=cv.getContext('2d');const w=cv.width=cv.clientWidth*2,h=cv.height=260*2;ctx.clearRect(0,0,w,h);
-    const pad=40*2,max=Math.max(1,...values),stepX=(w-pad*1.5)/Math.max(1,values.length-1);
-    ctx.strokeStyle=color;ctx.lineWidth=5;ctx.beginPath();
-    const pts=values.map((v,i)=>[pad+i*stepX,h-pad-(h-pad*1.6)*(v/max)]);
+  line(cv,labels,values,color){const {ctx,W,H}=this._setup(cv,240);const pad=34,top=18,max=Math.max(1,...values),stepX=(W-pad-10)/Math.max(1,values.length-1);
+    ctx.strokeStyle=color;ctx.lineWidth=2.5;ctx.beginPath();
+    const pts=values.map((v,i)=>[pad+i*stepX,H-pad-(H-top-pad)*(v/max)]);
     pts.forEach((p,i)=>i?ctx.lineTo(p[0],p[1]):ctx.moveTo(p[0],p[1]));ctx.stroke();
-    const g=ctx.createLinearGradient(0,pad,0,h-pad);g.addColorStop(0,color+'55');g.addColorStop(1,color+'00');ctx.lineTo(pts[pts.length-1][0],h-pad);ctx.lineTo(pad,h-pad);ctx.closePath();ctx.fillStyle=g;ctx.fill();
-    ctx.fillStyle='#9a9aae';ctx.font='20px Inter';ctx.textAlign='center';labels.forEach((l,i)=>ctx.fillText(l,pad+i*stepX,h-pad+24));
+    const gr=ctx.createLinearGradient(0,top,0,H-pad);gr.addColorStop(0,color+'55');gr.addColorStop(1,color+'00');ctx.lineTo(pts[pts.length-1][0],H-pad);ctx.lineTo(pad,H-pad);ctx.closePath();ctx.fillStyle=gr;ctx.fill();
+    ctx.fillStyle='#9a9aae';ctx.font='11px Inter';ctx.textAlign='center';labels.forEach((l,i)=>ctx.fillText(l,pad+i*stepX,H-pad+18));
   },
-  donut(cv,parts){const ctx=cv.getContext('2d');const w=cv.width=cv.clientWidth*2,h=cv.height=260*2;ctx.clearRect(0,0,w,h);
-    const cx=w/2,cy=h/2,r=Math.min(w,h)/2-30;const total=parts.reduce((a,p)=>a+p.v,0)||1;let a=-Math.PI/2;
+  donut(cv,parts){const {ctx,W,H}=this._setup(cv,240);const cx=W/2,cy=H/2,r=Math.min(W,H)/2-16;const total=parts.reduce((a,p)=>a+p.v,0)||1;let a=-Math.PI/2;
     parts.forEach(p=>{const ang=p.v/total*Math.PI*2;ctx.beginPath();ctx.moveTo(cx,cy);ctx.arc(cx,cy,r,a,a+ang);ctx.closePath();ctx.fillStyle=p.c;ctx.fill();a+=ang;});
-    ctx.beginPath();ctx.arc(cx,cy,r*0.6,0,Math.PI*2);ctx.fillStyle=getComputedStyle(document.body).getPropertyValue('--surface');ctx.fill();
-    ctx.fillStyle='#f5f5fa';ctx.font='bold 34px Inter';ctx.textAlign='center';ctx.fillText(total,cx,cy+10);
+    ctx.beginPath();ctx.arc(cx,cy,r*0.6,0,Math.PI*2);ctx.fillStyle=getComputedStyle(document.body).getPropertyValue('--surface')||'#12121a';ctx.fill();
+    ctx.fillStyle='#f5f5fa';ctx.font='700 20px Inter';ctx.textAlign='center';ctx.fillText(total,cx,cy+7);
   }
 };
 
@@ -4478,7 +4498,7 @@ async function resumeSession(){
    v5 — soft light theme helpers · update centre · 3-tier Premium ·
         Live TV · Live Football · cross-device entitlement · test mode
    ===================================================================== */
-const APP_VERSION = '8.9.0';
+const APP_VERSION = '8.10.0';
 const WHATS_NEW = [
   'Detailed match posters with real crests and quick social sharing',
   'Firebase Google sign-in restored; admin tools restricted; guests stay on Free',
@@ -5925,7 +5945,7 @@ window.Live = Live;
     el.innerHTML = '<span class="tag">' + ic('signal') + 'Now</span><div class="vp"><div class="track" id="nfMarqueeTrack"></div></div>';
     main.parentNode.insertBefore(el, main);
     setMarquee([
-      'NANCYFLIX v8.9.0 is live',
+      'NANCYFLIX v8.10.0 is live',
       'Kenyan and East African channels inside Live TV',
       'Fixtures, results and tables open in the app',
       'Share any match with a private invite link',
@@ -6282,12 +6302,11 @@ window.Live = Live;
     };
   }
   function upcoming(data, lg) {
-    var t = todayISO();
-    return data.matches.filter(function (m) { return (m.date || '') >= t; }).map(function (m) { return toEvent(m, lg); });
+    return data.matches.filter(function(m){return NFFootballState.upcoming(m);}).map(function (m) { return toEvent(m, lg); });
   }
   function results(data, lg) {
     var t = todayISO();
-    return data.matches.filter(function (m) { return (m.date || '') < t && m.score && m.score.ft; }).slice(-12).reverse().map(function (m) { return toEvent(m, lg); });
+    return data.matches.filter(function(m){return NFFootballState.state(m)==='finished';}).slice(-12).reverse().map(function (m) { return toEvent(m, lg); });
   }
   function tableOf(data, lg) {
     var rows = {};
@@ -6569,11 +6588,11 @@ const NF8={
         date:m.date||'', time:m.time||'',
         home:(m.team1&&(m.team1.name||m.team1))||'',
         away:(m.team2&&(m.team2.name||m.team2))||'',
-        score:m.score&&m.score.ft?m.score.ft:null,
+        score:m.score&&m.score.ft?m.score.ft:null,status:m.status||'',
         round:m.round||''
       })).filter(m=>m.home&&m.away);
       const today=new Date();today.setHours(0,0,0,0);
-      const up=list.filter(m=>m.date&&new Date(m.date+'T12:00:00')>=today&&!m.score).sort((a,b)=>a.date.localeCompare(b.date));
+      const up=list.filter(m=>NFFootballState.upcoming(m)).sort((a,b)=>a.date.localeCompare(b.date));
       return {up:up, all:list, lg:lg};
     });
   },
@@ -6599,7 +6618,7 @@ const NF8={
       rail.innerHTML=rows.slice(0,10).map((r,i)=>{
         const d=new Date(r.m.date+'T12:00:00');
         const ds=isNaN(d)?r.m.date:d.toLocaleDateString(undefined,{weekday:'short',day:'numeric',month:'short'});
-        return '<button class="nf8-game" data-nf8game="'+i+'"><span class="lg"><span class="nf8-logo" style="display:grid;place-items:center;background:rgba(225,29,46,.16);color:#ff8d99;font-size:8px;font-weight:900">'+esc(r.lg.cc)+'</span>'+esc(r.lg.name)+'</span><span class="tm">'+esc(r.m.home)+' <em>vs</em> '+esc(r.m.away)+'</span><span class="mt"><span>'+esc(ds)+(r.m.time?' · '+esc(r.m.time):'')+'</span><b>Details</b></span><span class="watch">'+IC('play')+'Watch options</span></button>';
+        return '<button class="nf8-game" data-nf8game="'+i+'"><span class="lg"><span class="nf8-logo" style="display:grid;place-items:center;background:rgba(225,29,46,.16);color:#ff8d99;font-size:8px;font-weight:900">'+esc(r.lg.cc)+'</span>'+esc(r.lg.name)+'</span><span class="tm">'+esc(r.m.home)+' <em>vs</em> '+esc(r.m.away)+'</span><span class="mt"><span>'+esc(ds)+(r.m.time?' · '+esc(r.m.time)+' (source time)':'')+'</span><b>Details</b></span><span class="watch">'+IC('play')+'Watch options</span></button>';
       }).join('');
       rail.querySelectorAll('[data-nf8game]').forEach(b=>{b.onclick=()=>{const r=rows[+b.dataset.nf8game];this.openGame(r.m,r.lg);};});
     });
@@ -6962,14 +6981,14 @@ if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',
     { id: 2, name: 'Champions League', cc: 'Europe', site: 'https://www.uefa.com/uefachampionsleague/', siteName: 'Champions League official site' }
   ];
   var BYID = {}; LGS.forEach(function (l) { BYID[l.id] = l; });
-  var TABS = [['live', 'Live now'], ['today', 'Today'], ['next', 'Upcoming']];
+  var TABS = [['live', 'Live now'], ['next', 'Upcoming'], ['finished', 'Finished'], ['today', 'Today']];
   var ST = { tab: 'live', lg: 'all', configured: null, remaining: null, fallback: false, fallbackWhy: '', quotaUntil:Number(LS.get('footballQuotaUntil',0))||0, at:{}, data: {}, busy: false, err: '', timer: null, rows: [] };
 
   function season() { var d = new Date(); return d.getMonth() >= 6 ? d.getFullYear() : d.getFullYear() - 1; }
-  function todayISO() { var d = new Date(); return d.getFullYear() + '-' + pad(d.getMonth() + 1) + '-' + pad(d.getDate()); }
-  function isToday(d) { var n = new Date(); return d && d.getDate() === n.getDate() && d.getMonth() === n.getMonth() && d.getFullYear() === n.getFullYear(); }
-  function hhmm(d) { try { return d.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }); } catch (e) { return ''; } }
-  function dmy(d) { try { return d.toLocaleDateString(undefined, { weekday: 'short', day: 'numeric', month: 'short' }); } catch (e) { return ''; } }
+  function todayISO(){return NFFootballState.date();}
+  function isToday(d){return d&&NFFootballState.date(d.getTime())===todayISO();}
+  function hhmm(d){return new Intl.DateTimeFormat('en-GB',{timeZone:'Africa/Nairobi',hour:'2-digit',minute:'2-digit'}).format(d)+' EAT';}
+  function dmy(d){return new Intl.DateTimeFormat('en-GB',{timeZone:'Africa/Nairobi',weekday:'short',day:'numeric',month:'short'}).format(d);}
 
   /* ---------- transport ---------- */
   function api(params) {
@@ -6993,6 +7012,7 @@ if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',
   function query() {
     var p = { ep: 'fixtures', timezone: 'Africa/Nairobi' };
     if (ST.tab === 'live') { p.live = 'all'; if (ST.lg !== 'all') p.league = ST.lg; }
+    else if (ST.tab === 'finished') {p.date=todayISO();if(ST.lg!=='all'){p.league=ST.lg;p.season=season();}}
     else if (ST.tab === 'today') { p.date = todayISO(); if (ST.lg !== 'all') { p.league = ST.lg; p.season = season(); } }
     else { p.dates = 3; if (ST.lg !== 'all') { p.league = ST.lg; p.season = season(); } }
     return p;
@@ -7002,7 +7022,7 @@ if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',
     f = f || {};
     var fx = f.fixture || {}, lg = f.league || {}, tm = f.teams || {}, gl = f.goals || {};
     var when = null;
-    if (fx.date) { when = new Date(fx.date); if (isNaN(when.getTime())) when = null; }
+    var epoch=NFFootballState.epoch(f);if(Number.isFinite(epoch))when=new Date(epoch);
     return {
       id: fx.id,
       when: when,
@@ -7016,12 +7036,13 @@ if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',
     };
   }
 
-  function live(row) { return /^(1H|2H|HT|ET|BT|P|LIVE|INT|SUSP)$/.test(row.status.short); }
-  function finished(row) { return /^(FT|AET|PEN)$/.test(row.status.short); }
+  function live(row){return NFFootballState.state(row)==='live';}
+  function finished(row){return NFFootballState.state(row)==='finished';}
   function badge(row) {
     var st = row.status.short, min = row.status.min != null ? row.status.min + "'" : '';
     if (live(row)) return '<span class="fbr-st live">' + esc(st === 'HT' ? 'HT' : (st === '1H' || st === '2H' || st === 'ET' || st === 'P') && min ? min : 'LIVE') + '</span>';
     if (finished(row)) return '<span class="fbr-st ft">' + esc(st) + '</span>';
+    if(['postponed','cancelled','suspended','other','unknown'].includes(NFFootballState.state(row)))return '<span class="fbr-st">'+esc(row.status.long||st||'Status unconfirmed')+'</span>';
     if (row.when) return '<span class="fbr-st">' + esc(isToday(row.when) ? hhmm(row.when) : dmy(row.when)) + '</span>';
     return '<span class="fbr-st">' + esc(st || 'TBC') + '</span>';
   }
@@ -7064,7 +7085,7 @@ if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',
   }
 
   function emptyHTML() {
-    var m = ST.tab === 'live' ? 'No match is being played right now.' : ST.tab === 'today' ? 'No fixtures are listed for today in this competition.' : 'No upcoming fixtures were returned for this competition.';
+    var m = ST.tab === 'live' ? 'No match is being played right now.' : ST.tab==='finished'?'No confirmed finished matches are listed for today.':ST.tab === 'today' ? 'No fixtures are listed for today in this competition.' : 'No upcoming fixtures were returned for this competition.';
     return '<div class="fb-empty">' + ic('ball', 'icon lg') + '<h4>' + esc(m) + '</h4><p>Switch competition above, or refresh in a moment.</p><button class="btn sm ghost" data-fbr="1" type="button">Refresh</button></div>';
   }
 
@@ -7109,20 +7130,21 @@ if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',
   }
 
   function paint() {
+    ST.rows=NFFootballState.filter(ST.rows,ST.tab);if(window.NFSmart)NFSmart.rememberFootball(ST.rows);
     var body = Q('#liveBody'); if (!body) return;
     if (window.Live && window.Live.tab && window.Live.tab !== 'footy') return;
     var html = shellHTML();
     if (ST.configured === false) html += setupHTML();
     else html += (ST.fallback ? '<p class="nf-note fb-fallback">' + (ST.fallbackWhy === 'quota' ? 'The score provider limit is used up, so these fixtures come from the free schedule feed. Scores return automatically when the provider resets.' : ST.fallbackWhy === 'plan' ? 'Your provider plan blocks that score filter, so these fixtures come from the free schedule feed.' : 'Live scores are unavailable right now, so these fixtures come from the free schedule feed.') + '</p>' : '') + '<div class="fb-list">' + listHTML() + '</div>' +
-      '<p class="nf-note">Scores, minutes and fixtures come from API-Football. Kick-off times are shown in your local time. Tap any match for the full view.</p>';
+      '<p class="nf-note">Scores, minutes and fixtures come from API-Football. Kick-off times are shown in East Africa Time (UTC+3). Tap any match for the full view.</p>';
     body.innerHTML = html;
     wire(body);
     schedule();if(window.NFAltFootball)NFAltFootball.mount(body);
   }
 
   function wire(body) {
-    QA('[data-fbt]', body).forEach(function (b) { b.onclick = function () { if (ST.tab === b.dataset.fbt) return; ST.tab = b.dataset.fbt; ST.err = ''; ST.rows = []; load(true); }; });
-    QA('[data-fblg]', body).forEach(function (b) { b.onclick = function () { var v = b.dataset.fblg; ST.lg = v === 'all' ? 'all' : Number(v); ST.err = ''; ST.rows = []; load(true); }; });
+    QA('[data-fbt]', body).forEach(function (b) { b.onclick = function () { if (ST.tab === b.dataset.fbt) return; ST.tab = b.dataset.fbt;ST.busy=false;ST.requestId=(ST.requestId||0)+1; ST.err = ''; ST.rows = []; load(true); }; });
+    QA('[data-fblg]', body).forEach(function (b) { b.onclick = function () { var v = b.dataset.fblg; ST.lg = v === 'all' ? 'all' : Number(v);ST.busy=false;ST.requestId=(ST.requestId||0)+1; ST.err = ''; ST.rows = []; load(true); }; });
     QA('[data-fbw]', body).forEach(function (b) { b.onclick = function (e) { e.stopPropagation(); openWatch(ST.rows[Number(b.dataset.fbw)]); }; });
     QA('[data-fbi]', body).forEach(function (b) {
       b.onclick = function (e) { if (e.target && e.target.closest && e.target.closest('[data-fbw],[data-fbcard],[data-fbquick]')) return; openDetail(Number(b.dataset.fbi)); };
@@ -7139,10 +7161,11 @@ if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',
 
   function schedule() {
     if (ST.timer) { clearInterval(ST.timer); ST.timer = null; }
+    if(ST.tab==='next'){ST.timer=setInterval(function(){if(document.visibilityState==='visible'&&Q('#view-live.show'))paint();},30000);return;}
     if(ST.tab!=='live'||ST.configured===false||ST.err||ST.quotaUntil>Date.now()||ST.remaining!==null&&ST.remaining<20)return;
     ST.timer = setInterval(function () {
       if (document.visibilityState !== 'visible') return;
-      if (!Q('#view-live.active')) return;
+      if (!Q('#view-live.show')) return;
       load(true);
     }, 180000);
   }
@@ -7159,7 +7182,8 @@ if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',
             id: 'alt-' + f.id,
             when: when,
             venue: '',
-            status: { short: 'NS', long: 'Scheduled' },
+            status: {short: ({live:'LIVE',finished:'FT',upcoming:'NS',postponed:'PST',cancelled:'CANC',suspended:'SUSP'})[NFFootballState.state(f)]||'UNKNOWN',long:NFFootballState.state(f)},
+            provider:'football-alt',timestamp:f.timestamp,
             lg: { id: 'alt', name: f.tournament || 'Football', country: '', logo: '', round: '' },
             home: { name: parts[0] || 'Home' },
             away: { name: parts[1] || 'Away' },
@@ -7167,21 +7191,22 @@ if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',
           };
         }).filter(function (r) { return r.when && !isNaN(r.when.getTime()); })
           .sort(function (a, b) { return a.when - b.when; });
-        var upcoming = rows.filter(function (r) { return r.when.getTime() > now - 3 * 3600e3; });
-        return ST.tab === 'next' && upcoming.length ? upcoming : rows;
+        return NFFootballState.filter(rows,ST.tab);
       });
   }
 
   function useAlt(key, reason, keep) {
-    altRows().then(function (rows) {
+    var fallbackId=ST.requestId;altRows().then(function (rows) {
+      if(fallbackId!==ST.requestId)return;
       ST.busy = false;
       ST.fallback = true;
       ST.fallbackWhy = reason || '';
-      ST.rows = rows.length ? rows : (keep || []);
+      ST.rows=NFFootballState.filter(rows.length?rows:(keep||[]),ST.tab);
       ST.err = '';
       if (rows.length) { ST.data['alt|' + key] = rows; }
       paint();
     }).catch(function () {
+      if(fallbackId!==ST.requestId)return;
       ST.busy = false;
       ST.rows = keep || [];
       paint();
@@ -7190,7 +7215,7 @@ if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',
 
   function load(force) {
     var key = ST.tab + '|' + ST.lg;
-    if (ST.busy) return;
+    if (ST.busy) return;var requestId=ST.requestId=(ST.requestId||0)+1;
     if (ST.quotaUntil > Date.now()) {
       ST.err = '';
       if (!ST.data[key] || !ST.data[key].length) { useAlt(key, 'quota', ST.data[key]); return; }
@@ -7205,6 +7230,7 @@ if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',
     ST.busy = true; ST.err = ''; ST.fallback = false;
     paint();
     api(query()).then(function (j) {
+      if(requestId!==ST.requestId)return;
       var rows = (j.response || []).map(norm).filter(function (r) { return r.home.name && r.away.name; });
       ST.busy = false; ST.configured = true;
       if (j.errors && Object.keys(j.errors).length) {
@@ -7218,6 +7244,7 @@ if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',
       }
       ST.data[key] = rows; ST.at[key] = Date.now(); ST.rows = rows; paint();
     }).catch(function (e) {
+      if(requestId!==ST.requestId)return;
       ST.busy = false;
       if (e && e.code === 'nocfg') { ST.configured = false; ST.rows = []; paint(); return; }
       if (e && (e.code === 'quota' || e.code === 'http' || e.code === 'parse')) {
@@ -7325,7 +7352,7 @@ if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',
     if (!Q('.overlay.show')) document.body.classList.remove('noscroll');
   }
   function openWatch(r){
-    if(!r)return;
+    if(!r)return;if(window.NFSmart)NFSmart.selectFootball(r);
     if(!window.NFAltFootball){openWatchOfficial(r);return;}
     NFAltFootball.find(r).then(function(f){if(f&&f.channels&&f.channels.some(function(c){return /^\/api\/football-alt\?play=[a-f0-9]{24}&channel=\d+$/.test(c.playerPath||'');})){NFAltFootball.open(f);}else{openWatchOfficial(r);addAlternateBrowse();if(window.NFSRC)NFSRC.fallback(r);}}).catch(function(){openWatchOfficial(r);addAlternateBrowse();if(window.NFSRC)NFSRC.fallback(r);});
   }
@@ -7460,7 +7487,7 @@ if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',
   var F = {
     render: function () {
       if (ST.configured === false) { paint(); return; }
-      var key = ST.tab + '|' + ST.lg;
+      var key = ST.tab + '|' + ST.lg;var requestId=ST.requestId=(ST.requestId||0)+1;
       if(ST.data[key]&&Date.now()-(ST.at[key]||0)<120000){ST.rows=ST.data[key];paint();}else{load(true);}
     },
     open: openDetail,
@@ -8991,12 +9018,12 @@ try { completeEmailLink().catch(function () {}); } catch (e) {}
  function timestamp(f){var n=Number(f.timestamp);if(Number.isFinite(n)&&n>0)return n*1000;return Date.parse(f.kickoff||f.when||'');}
  function match(f,m){var a=fixtureNames(f).map(words),b=[words(m.home&&m.home.name||m.home),words(m.away&&m.away.name||m.away)];if(a.length!==2||a.some(function(x){return !x;}))return false;var both=a.every(function(x,i){return x===b[i] || (x.length>=5&&b[i].length>=5&&(x.includes(b[i])||b[i].includes(x)));});if(!both)return false;var t=timestamp(f);return !Number.isFinite(t)||!m.timestamp||Math.abs(t-m.timestamp*1000)<3*3600000;}
  async function resolve(f){
-  var time=timestamp(f),p={action:'matches'};if(Number.isFinite(time))p.date=new Date(time).toISOString().slice(0,10);
+  var time=timestamp(f),p={action:'matches',timezone:'Africa/Nairobi'};if(Number.isFinite(time))p.date=NFFootballState.date(time);
   var list=await get(p),hits=(list.matches||[]).filter(function(m){return m.hasStream!==false&&match(f,m);});
   if(hits.length!==1)throw new Error(hits.length?'More than one fixture matched. Use the match list to choose the correct fixture.':'SportSRC has no matching fixture with a stream.');
   var d=await get({action:'detail',id:hits[0].id}),sources=d.sources||[];
   if(!sources.length)throw new Error('SportSRC lists this fixture but has no valid embed source right now.');
-  return {id:hits[0].id,match:hits[0].title,tournament:hits[0].league,kickoff:hits[0].kickoff,timestamp:hits[0].timestamp,sportsrc:true,detail:d.match,channels:sources.map(function(s){return {label:'SportSRC · '+s.source+(s.hd?' · HD':''),embedUrl:s.embedUrl,availability:'listed-not-verified',provider:'sportsrc'};})};
+  return {id:hits[0].id,match:hits[0].title,tournament:hits[0].league,kickoff:hits[0].kickoff,timestamp:hits[0].timestamp,status:hits[0].status,sportsrc:true,detail:d.match,channels:sources.map(function(s){return {label:'SportSRC · '+s.source+(s.hd?' · HD':''),embedUrl:s.embedUrl,availability:'listed-not-verified',provider:'sportsrc'};})};
  }
  async function fallback(f,host){
   var box=host||document.querySelector('#fbWatch .fbw-card');if(!box)return;
@@ -9010,11 +9037,11 @@ try { completeEmailLink().catch(function () {}); } catch (e) {}
   var section=node('section','nfsrc');section.id='nfsrcBrowse';section.appendChild(node('h3','','Fallback football · SportSRC'));
   section.appendChild(node('p','nfsrc-note','Used only because the existing resolver has no streams. Upcoming fixtures may not play until kickoff. Third-party ads and regional restrictions may apply.'));
   var controls=node('div','nfsrc-tabs'),list=node('div','nfsrc-list');section.append(controls,list);body.appendChild(section);
-  var date=node('input');date.type='date';date.value=new Date().toISOString().slice(0,10);date.setAttribute('aria-label','Fallback fixture date');controls.appendChild(date);var active='inprogress',serial=0;date.onchange=function(){load(active);};
-  async function load(status){var seq=++serial;active=status;list.replaceChildren(node('p','nfsrc-msg','Loading fallback fixtures…'));try{var j=await get({action:'matches',status:status,date:date.value}),matches=j.matches||[];if(seq!==serial||!document.body.contains(section))return;list.replaceChildren();if(!matches.length)list.appendChild(node('p','nfsrc-msg','No fallback fixtures found.'));
-   matches.forEach(function(m){var row=node('div','nfsrc-row'),copy=node('div');copy.append(node('b','',m.title),node('p','nfsrc-note',m.league+' · '+(m.statusDetail||m.status)+(m.kickoff?' · '+new Date(m.kickoff).toLocaleString():'')));row.appendChild(copy);var button=node('button','btn sm','Details / sources');button.type='button';button.onclick=async function(){button.disabled=true;try{var d=await get({action:'detail',id:m.id});if(!d.sources.length)throw new Error('No source is available yet.');NFAltFootball.open({match:m.title,tournament:m.league,kickoff:m.kickoff,timestamp:m.timestamp,sportsrc:true,detail:d.match,channels:d.sources.map(function(s){return {label:'SportSRC · '+s.source,embedUrl:s.embedUrl,provider:'sportsrc'};})});}catch(e){Toast.show('Fallback unavailable',e.message,'warn');}finally{button.disabled=false;}};row.appendChild(button);list.appendChild(row);});
+  var date=node('input');date.type='date';date.value=NFFootballState.date();date.setAttribute('aria-label','Fallback fixture date');controls.appendChild(date);var active='inprogress',serial=0;date.onchange=function(){load(active);};
+  async function load(status){var seq=++serial;active=status;list.replaceChildren(node('p','nfsrc-msg','Loading fallback fixtures…'));try{var j=await get({action:'matches',status:status,date:date.value,timezone:'Africa/Nairobi'}),matches=NFFootballState.filter(j.matches||[],status);if(window.NFSmart)NFSmart.rememberFootball(matches);if(seq!==serial||!document.body.contains(section))return;list.replaceChildren();if(!matches.length)list.appendChild(node('p','nfsrc-msg','No fallback fixtures found.'));
+   matches.forEach(function(m){var row=node('div','nfsrc-row'),copy=node('div');if(status==='notstarted')row.dataset.nfExpires=NFFootballState.epoch(m);copy.append(node('b','',m.title),node('p','nfsrc-note',m.league+' · '+(m.statusDetail||m.status)+(m.kickoff?' · '+NFFootballState.format(m):'')));row.appendChild(copy);var button=node('button','btn sm','Details / sources');button.type='button';button.onclick=async function(){button.disabled=true;try{var d=await get({action:'detail',id:m.id});if(!d.sources.length)throw new Error('No source is available yet.');NFAltFootball.open({match:m.title,tournament:m.league,kickoff:m.kickoff,timestamp:m.timestamp,status:m.status,sportsrc:true,detail:d.match,channels:d.sources.map(function(s){return {label:'SportSRC · '+s.source,embedUrl:s.embedUrl,provider:'sportsrc'};})});}catch(e){Toast.show('Fallback unavailable',e.message,'warn');}finally{button.disabled=false;}};row.appendChild(button);list.appendChild(row);});
    }catch(e){if(seq===serial&&document.body.contains(section))list.replaceChildren(node('p','nfsrc-msg',e.message));}}
-  [['inprogress','Live'],['notstarted','Upcoming']].forEach(function(pair){var b=node('button','btn sm',pair[1]);b.type='button';b.onclick=function(){load(pair[0]);};controls.appendChild(b);});load('inprogress');
+  [['inprogress','Live'],['notstarted','Upcoming'],['finished','Finished']].forEach(function(pair){var b=node('button','btn sm',pair[1]);b.type='button';b.onclick=function(){load(pair[0]);};controls.appendChild(b);});load('inprogress');
  }
  function ping(url){var c=new AbortController(),t=setTimeout(function(){c.abort();},12000),start=Date.now();return fetch(url,{headers:{Accept:'application/json'},signal:c.signal,cache:'no-store'}).then(async function(r){return {status:r.status,ms:Date.now()-start,body:await r.json()};}).catch(function(e){return {status:0,ms:Date.now()-start,body:{error:e.name==='AbortError'?'timeout':'unreachable'}};}).finally(function(){clearTimeout(t);});}
  function settings(){var base=Settings.openModal.bind(Settings);Settings.openModal=function(){base();var root=document.getElementById('settingsModal');if(!root)return;
@@ -9228,9 +9255,9 @@ try { completeEmailLink().catch(function () {}); } catch (e) {}
   if(rows&&Date.now()-loaded<300000&&!force)return Promise.resolve(rows);
   if(inflight)return inflight;
   var ctl=new AbortController(),tm=setTimeout(function(){ctl.abort();},18000);
-  inflight=fetch('/api/football-alt',{headers:{Accept:'application/json'},signal:ctl.signal}).then(function(r){if(!r.ok)throw Error('schedule');return r.json();}).then(function(j){if(!j||!j.success||!Array.isArray(j.fixtures))throw Error('schedule');rows=j.fixtures;loaded=Date.now();return rows;}).finally(function(){clearTimeout(tm);inflight=null;});return inflight;
+  inflight=fetch('/api/football-alt',{headers:{Accept:'application/json'},signal:ctl.signal}).then(function(r){if(!r.ok)throw Error('schedule');return r.json();}).then(function(j){if(!j||!j.success||!Array.isArray(j.fixtures))throw Error('schedule');rows=j.fixtures;if(window.NFSmart)NFSmart.rememberFootball(rows);loaded=Date.now();return rows;}).finally(function(){clearTimeout(tm);inflight=null;});return inflight;
  }
- function labelTime(f){var d=new Date(f.kickoff);return isNaN(d)?'Kick-off to be confirmed':d.toLocaleString(undefined,{weekday:'short',day:'numeric',month:'short',hour:'2-digit',minute:'2-digit'});}
+ function labelTime(f){return NFFootballState.format(f);}
  function matching(f,r){
   var split=String(f.match||'').split(/\s+(?:vs\.?|v\.?)\s+/i);if(split.length!==2)return false;
   function clean(s){return String(s).normalize('NFKD').replace(/[\u0300-\u036f]/g,'').toLowerCase().replace(/[^a-z0-9]/g,'');}
@@ -9242,13 +9269,13 @@ try { completeEmailLink().catch(function () {}); } catch (e) {}
   var sec=node('section','nf-alt');sec.id='nfAltFootball';body.appendChild(sec);
   var head=node('div','nf-alt-head');head.appendChild(node('div','',null));head.firstChild.appendChild(node('h3','','Watch matches'));head.firstChild.appendChild(node('p','','Alternative schedule • independent of the live-score quota'));head.appendChild(button('Refresh',function(){if(Date.now()-loaded<60000){Toast.show('Schedule is current','Please wait a minute before refreshing again.','info');return;}rows=null;mount(body);}));sec.appendChild(head);
   var controls=node('div','nf-alt-controls'),input=node('input');input.type='search';input.placeholder='Find a team or competition';input.setAttribute('aria-label','Search match streams');input.value=term;controls.appendChild(input);
-  var select=node('select');select.setAttribute('aria-label','Match schedule filter');[['all','All fixtures'],['today','Today'],['next','Upcoming']].forEach(function(v){var opt=node('option','',v[1]);opt.value=v[0];select.appendChild(opt);});select.value=scope;controls.appendChild(select);sec.appendChild(controls);
+  var select=node('select');select.setAttribute('aria-label','Match schedule filter');[['all','All fixtures'],['live','Live'],['next','Upcoming'],['finished','Finished'],['today','Today']].forEach(function(v){var opt=node('option','',v[1]);opt.value=v[0];select.appendChild(opt);});select.value=scope;controls.appendChild(select);sec.appendChild(controls);
   var list=node('div','nf-alt-list'),message=node('p','nf-alt-state','Loading match schedule…');list.appendChild(message);sec.appendChild(list);
   var note=node('p','nf-note','Stream availability is reported by the feed, not proof of working video. Use only streams you are authorized to watch. A broadcaster may block playback or require an account.');sec.appendChild(note);
-  input.oninput=function(){term=input.value;limit=16;paint();};select.onchange=function(){scope=select.value;limit=16;paint();};
+  var searchTimer;input.oninput=function(){term=input.value;limit=16;paint();clearTimeout(searchTimer);searchTimer=setTimeout(function(){if(window.NFSmart&&term.trim().length>=2)NFSmart.searchFootball(term,rows||[]);},1200);};select.onchange=function(){scope=select.value;limit=16;paint();};
   function paint(){
    if(!document.body.contains(sec))return;list.replaceChildren();var today=new Date().toDateString(),now=Date.now(),q=term.trim().toLowerCase();
-   var filtered=(rows||[]).filter(function(f){var d=new Date(f.kickoff);return(!q||String(f.match+' '+f.tournament).toLowerCase().includes(q))&&(scope==='all'||scope==='today'&&d.toDateString()===today||scope==='next'&&+d>now);});
+   var filtered=(rows||[]).filter(function(f){return(!q||String(f.match+' '+f.tournament).toLowerCase().includes(q))&&NFFootballState.accept(f,scope,now);});
    if(!filtered.length){list.appendChild(node('p','nf-alt-state','No matching fixtures. Try All fixtures or another team.'));return;}
    filtered.slice(0,limit).forEach(function(f){
     var row=node('article','nf-alt-match'),meta=node('div','nf-alt-meta');meta.appendChild(node('span','nf-alt-comp',f.tournament||'Football'));meta.appendChild(node('span','nf-alt-time',labelTime(f)));row.appendChild(meta);row.appendChild(node('h4','',f.match));
@@ -9258,12 +9285,13 @@ try { completeEmailLink().catch(function () {}); } catch (e) {}
    });
    if(filtered.length>limit)list.appendChild(button('Show more matches',function(){limit+=16;paint();},'btn sm nf-alt-more'));
   }
+  var expiryTimer=setInterval(function(){if(!document.body.contains(sec)){clearInterval(expiryTimer);return;}if(document.visibilityState==='visible'&&scope==='next')paint();},30000);
   fetchRows(false).then(function(fs){paint();if(!fs.some(function(f){return (f.channels||[]).some(usable);})&&window.NFSRC)NFSRC.browse(body);}).catch(function(){if(!document.body.contains(sec))return;if(window.NFSRC)NFSRC.browse(body);list.replaceChildren(node('p','nf-alt-state','The alternative schedule could not load. Your saved fixtures are unchanged.'),button('Try again',function(){mount(body);}));});
  }
  function close(){if(!player)return;var fr=player.querySelector('iframe');if(fr){fr.src='about:blank';fr.remove();}player.remove();player=null;if(!document.querySelector('.overlay.show'))document.body.classList.remove('noscroll');document.removeEventListener('keydown',escape);}
  function escape(e){if(e.key==='Escape')close();}
  function open(f){
-  close();var channels=(f.channels||[]).filter(usable);if(!channels.length){Toast.show('No stream available','Try an official broadcaster for this fixture.','warn');return;}
+  if(window.NFSmart)NFSmart.viewFootball(f);close();var channels=(f.channels||[]).filter(usable);if(!channels.length){Toast.show('No stream available','Try an official broadcaster for this fixture.','warn');return;}
   var ov=node('div','overlay nf-alt-overlay show'),sheet=node('div','nf-alt-player');sheet.setAttribute('role','dialog');sheet.setAttribute('aria-modal','true');sheet.setAttribute('aria-label','Football player');ov.appendChild(sheet);
   var head=node('div','nf-alt-player-head'),tx=node('div');tx.appendChild(node('h3','',f.match));tx.appendChild(node('p','',f.tournament+' • '+labelTime(f)));head.appendChild(tx);var x=button('Close',close,'btn sm');head.appendChild(x);sheet.appendChild(head);
   if(f.detail){var info=[f.detail.venue?'Venue: '+f.detail.venue:'',f.detail.referee?'Referee: '+f.detail.referee:''].filter(Boolean).join(' · ');if(info)sheet.appendChild(node('p','nf-note',info));}
@@ -9403,3 +9431,5 @@ try { completeEmailLink().catch(function () {}); } catch (e) {}
 (function(){var base=Settings.openModal.bind(Settings);Settings.openModal=function(){base();var root=document.getElementById('settingsModal');if(!root)return;var row=document.createElement('div');row.className='set-row';var copy=document.createElement('div');copy.className='lbl';var t=document.createElement('div');t.className='t';t.textContent='Extra live goal alerts';var d=document.createElement('div');d.className='d';d.textContent='Optional extra score checks while Football is open. Off saves your provider quota.';copy.append(t,d);var input=document.createElement('input');input.type='checkbox';input.checked=!!State.settings.liveScoreAlerts;input.setAttribute('aria-label','Enable extra live goal alerts');input.onchange=function(){State.settings.liveScoreAlerts=input.checked;Theme.save();};row.append(copy,input);root.appendChild(row);};})();
 </script>
 
+
+<script src="/assets/smart-discovery.js"></script>

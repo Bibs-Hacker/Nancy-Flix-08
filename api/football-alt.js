@@ -3,6 +3,7 @@
  * No video re-streaming, proxying, paywall or DRM bypass is performed.
  */
 const crypto = require('crypto');
+const football=require('../lib/football-state');
 const net = require('net');
 const SOURCE = 'https://api.omegatech.app/api/Sport/All-Sport?action=schedule&probe=true';
 const OTHER_FOOTBALL = new Set(['uefa nations league','serie a','club friendly','fifa world cup']);
@@ -32,7 +33,7 @@ function normalize(j) {
       if (!match || !Number.isFinite(timestamp) || timestamp <= 0 || !Number.isFinite(new Date(timestamp * 1000).getTime())) continue;
       const key = match.toLowerCase() + '_' + timestamp;
       const id = crypto.createHash('sha256').update(key).digest('hex').slice(0,24);
-      const row = matches.get(key) || { id, match, tournament, timestamp, kickoff:new Date(timestamp*1000).toISOString(), channels:[] };
+      const row = matches.get(key) || { id, match, tournament, timestamp, kickoff:new Date(timestamp*1000).toISOString(),status:typeof e.status==='object'?(e.status.short||e.status.type||e.status.long||''):e.status||e.status_short||'',isLive:e.is_live===true,channels:[] };
       for (const stream of Array.isArray(e.streams) ? e.streams : []) {
         if (!stream || stream.reachable === false) continue;
         const url = safeURL(stream.streamUrl);
@@ -78,7 +79,7 @@ module.exports = async function(req,res) {
     }
     res.setHeader('Cache-Control','public,s-maxage=300,stale-while-revalidate=60');
     return res.status(200).json({success:true,updatedAt:new Date(data.at).toISOString(),fixtures:data.fixtures.map(f=>({
-      id:f.id,match:f.match,tournament:f.tournament,timestamp:f.timestamp,kickoff:f.kickoff,
+      id:f.id,match:f.match,tournament:f.tournament,timestamp:f.timestamp,kickoff:f.kickoff,status:f.status||football.state(f),statusConfirmed:!!f.status,isLive:football.state(f)==='live',
       channels:f.channels.map((c,i)=>({label:'Stream '+(i+1),playerPath:'/api/football-alt?play='+f.id+'&channel='+i,openPath:'/api/football-alt?play='+f.id+'&channel='+i+'&open=1',availability:c.reachable?'reported-online':'unconfirmed'}))
     }))});
   } catch(e) {
